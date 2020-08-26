@@ -22,5 +22,8 @@
     <title>test_my_site</title>
     <url>/2020/08/26/test-my-site/</url>
     <content><![CDATA[]]></content>
+      <tags>
+        <tag>hello</tag>
+      </tags>
   </entry>
 </search>
