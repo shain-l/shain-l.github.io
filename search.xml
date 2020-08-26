@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>test_my_site</title>
-    <url>/2020/08/26/test-my-site/</url>
+    <title>123</title>
+    <url>/2020/08/26/123/</url>
     <content><![CDATA[]]></content>
-      <tags>
-        <tag>hello</tag>
-      </tags>
   </entry>
   <entry>
     <title>Hello World</title>
@@ -28,8 +25,11 @@
 ]]></content>
   </entry>
   <entry>
-    <title>123</title>
-    <url>/2020/08/26/123/</url>
+    <title>test_my_site</title>
+    <url>/2020/08/26/test-my-site/</url>
     <content><![CDATA[]]></content>
+      <tags>
+        <tag>hello</tag>
+      </tags>
   </entry>
 </search>
