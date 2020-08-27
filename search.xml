@@ -12,7 +12,7 @@
 
 </li>
 </ol>
-<h4 id="2、-拓扑结构"><a href="#2、-拓扑结构" class="headerlink" title="2、 拓扑结构"></a>2、 拓扑结构</h4><p><img src="https://s1.ax1x.com/2020/08/27/d5CPdU.png"></p>
+<h4 id="2、-拓扑结构"><a href="#2、-拓扑结构" class="headerlink" title="2、 拓扑结构"></a>2、 拓扑结构</h4><p><img src="https://s1.ax1x.com/2020/08/27/d5CPdU.png" alt="拓扑"></p>
 <h4 id="3、-实验步骤"><a href="#3、-实验步骤" class="headerlink" title="3、 实验步骤"></a>3、 实验步骤</h4><p>（1）完成各路由器的基本配置，实现各直连设备之间可以互 ping 对方， 要求 PC1 的 IP 地址设置为 172.16.1.1/24，网关设置为172.16.1.254， PC2 的 IP 地址设置为172.16.3.1/24，网关设置为172.16.3.254，各路由器接口间的地址自己规划。</p>
 <p><img src="https://s1.ax1x.com/2020/08/27/d5mDb9.png"></p>
 <p><img src="https://s1.ax1x.com/2020/08/27/d5uw79.png"></p>
@@ -49,12 +49,36 @@
 <p><img src="http://note.youdao.com/yws/res/67067/A2CDEB91A1CC42229877EBBEA838625A"></p>
 <p><img src="http://note.youdao.com/yws/res/67057/A4CD76F7D177455083DE851C3974EF1E"></p>
 <p><img src="http://note.youdao.com/yws/res/67059/F84DC33787BB4E328B39EF5458C3AC0E"></p>
+<p>（8）再次在R2上使用debug ip rip观察路由的发送情况，比较关闭自动汇总与开启自动汇总debug输出信息的不同</p>
+<p><img src="http://note.youdao.com/yws/res/67062/D227557941FC4EB59F561CDC9B48B4B7"></p>
+<p>（9）在R2上添加一个loopback1接口，地址自定</p>
+<p><img src="http://note.youdao.com/yws/res/67069/54739D77DAA3400D81BA69CBCD3E9E53"></p>
+<p>（10）添加必要配置，实现PC1和PC2都能够正常访问在R2上的loopback1</p>
+<p><img src="http://note.youdao.com/yws/res/67075/645F80CB8B0E4781BE9D895330DC6348"></p>
+<p><img src="http://note.youdao.com/yws/res/67074/E77DA75961154C4DB60CDAA2036627C3"></p>
+<p><img src="http://note.youdao.com/yws/res/67073/75598B61A25F4D57B8636A8D542D6D6A"></p>
+<p>（11）在R1上添加一个loopback1接口，地址自定，然后在RIP中通告，观察R2和R3是否能马上学习到R1上新增的loopback1网段</p>
+<p><img src="http://note.youdao.com/yws/res/67077/64CBA783E406422580D47F7F8BDF202A"></p>
+<p>由于rip的路由表的更新时间为30s，故在R2、R3上无法马上学习到在R1上新增的loopback1网段</p>
+<p><img src="http://note.youdao.com/yws/res/67079/0343BAFF7807486AB8E653867DF39995"></p>
+<p><img src="http://note.youdao.com/yws/res/67087/73381EAE18684B4AB98418842589AA43"></p>
+<p><img src="http://note.youdao.com/yws/res/67083/38CA556501374D09AAA953A6D22FEBD2"></p>
+<p>（12）将R1上的loopback1接口关闭，观察R2和R3上是否还存在关于R1上的loopback1网段的路由条目</p>
+<p>由于触发更新，R1上存在失效路由，则会马上发送更新给相邻的路由器，让他们将失效路由删除</p>
+<p><img src="http://note.youdao.com/yws/res/67089/0411A0E1BEF84D98B2134CD91AD75817"></p>
+<p><img src="http://note.youdao.com/yws/res/67091/10CF27092E9A49EFB148D51033C19031"></p>
+<p><img src="http://note.youdao.com/yws/res/67093/258996CC3D914A188160ED5771BE05BF"></p>
+<p>（13）使用wireshark抓取RIPv2报文，理解RIPv2报文各字段的含义</p>
+<p>RIPv2运行在UDP的520端口上，属于应用层协议</p>
+<p><img src="http://note.youdao.com/yws/res/67095/A207F7B921994C69BB791CF05948F564"></p>
 ]]></content>
       <categories>
-        <category>CCNA</category>
+        <category>实验</category>
       </categories>
       <tags>
         <tag>路由协议</tag>
+        <tag>RIP</tag>
+        <tag>CCNA</tag>
       </tags>
   </entry>
   <entry>
