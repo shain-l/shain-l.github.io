@@ -1,9 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>123</title>
-    <url>/2020/08/26/123/</url>
-    <content><![CDATA[]]></content>
+    <title>RIP的应用</title>
+    <url>/2020/08/27/RIP%E7%9A%84%E5%BA%94%E7%94%A8/</url>
+    <content><![CDATA[<h4 id="1、-实验目的"><a href="#1、-实验目的" class="headerlink" title="1、 实验目的"></a>1、 实验目的</h4><ol>
+<li>掌握RIPv2的基本配置<br></li>
+<li>理解RIPv2路由条目的结构含义<br></li>
+<li>理解自动汇总的含义<br></li>
+<li>理解和观察周期性更新<br></li>
+<li>理解debug ip rip 命令 的作用<a id="more"></a>
+
+</li>
+</ol>
+<h4 id="2、-拓扑结构"><a href="#2、-拓扑结构" class="headerlink" title="2、 拓扑结构"></a>2、 拓扑结构</h4><p><img src="https://s1.ax1x.com/2020/08/27/d5CPdU.png"></p>
+<h4 id="3、-实验步骤"><a href="#3、-实验步骤" class="headerlink" title="3、 实验步骤"></a>3、 实验步骤</h4>]]></content>
+      <categories>
+        <category>CCNA</category>
+      </categories>
+      <tags>
+        <tag>路由协议</tag>
+      </tags>
   </entry>
   <entry>
     <title>Hello World</title>
@@ -23,13 +39,11 @@
 
 <p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
 ]]></content>
-  </entry>
-  <entry>
-    <title>test_my_site</title>
-    <url>/2020/08/26/test-my-site/</url>
-    <content><![CDATA[]]></content>
+      <categories>
+        <category>Hello World</category>
+      </categories>
       <tags>
-        <tag>hello</tag>
+        <tag>hello world</tag>
       </tags>
   </entry>
 </search>
