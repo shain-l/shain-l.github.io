@@ -35,28 +35,66 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="shainの博客">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="1、实验目的1）掌握EIGRP的基本配置2）理解EIGRP的邻居表、拓扑表以及路由表的含义3）掌握查看EIGRP路由协议的相关信息4）掌握FD、AD、S、FS以及FC的含义5）理解EIGRP的hello报文作用6）理解路由快速收敛的含义7）理解EIGRP的不等价负载均衡">
+<meta property="og:type" content="article">
+<meta property="og:title" content="EIGRP的简单应用">
+<meta property="og:url" content="http://yoursite.com/2020/08/28/EIGRP%E7%9A%84%E7%AE%80%E5%8D%95%E5%BA%94%E7%94%A8/index.html">
 <meta property="og:site_name" content="shainの博客">
+<meta property="og:description" content="1、实验目的1）掌握EIGRP的基本配置2）理解EIGRP的邻居表、拓扑表以及路由表的含义3）掌握查看EIGRP路由协议的相关信息4）掌握FD、AD、S、FS以及FC的含义5）理解EIGRP的hello报文作用6）理解路由快速收敛的含义7）理解EIGRP的不等价负载均衡">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/28/dTeEvT.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/28/dTmotA.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/28/dTmj0g.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/28/dTnCpq.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/28/dTnHUJ.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTuKaQ.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTulPs.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTu1Gn.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTuRde.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTuWIH.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTuhid.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTuTQP.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTuOoQ.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTuvJs.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTKGYd.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTKaOf.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTK00S.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTKsYj.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTKcpn.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTKglq.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTKTh9.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTKj0O.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTKv7D.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTMphd.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTM0jx.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTQP54.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTQlPH.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTlmSs.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTl00K.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTlfnP.png">
+<meta property="article:published_time" content="2020-08-28T15:34:08.000Z">
+<meta property="article:modified_time" content="2020-08-28T16:39:50.217Z">
 <meta property="article:author" content="shain-l">
+<meta property="article:tag" content="路由协议">
+<meta property="article:tag" content="EIGRP">
+<meta property="article:tag" content="CCNA">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.ax1x.com/2020/08/28/dTeEvT.png">
 
-<link rel="canonical" href="http://yoursite.com/">
+<link rel="canonical" href="http://yoursite.com/2020/08/28/EIGRP%E7%9A%84%E7%AE%80%E5%8D%95%E5%BA%94%E7%94%A8/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>shainの博客</title>
+  <title>EIGRP的简单应用 | shainの博客</title>
   
 
 
@@ -201,9 +239,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -219,10 +258,9 @@
       <meta itemprop="name" content="shainの博客">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/08/28/EIGRP%E7%9A%84%E7%AE%80%E5%8D%95%E5%BA%94%E7%94%A8/" class="post-title-link" itemprop="url">EIGRP的简单应用</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          EIGRP的简单应用
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -275,225 +313,151 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h4 id="1、实验目的"><a href="#1、实验目的" class="headerlink" title="1、实验目的"></a>1、实验目的</h4><p>1）掌握EIGRP的基本配置<br><br>2）理解EIGRP的邻居表、拓扑表以及路由表的含义<br><br>3）掌握查看EIGRP路由协议的相关信息<br><br>4）掌握FD、AD、S、FS以及FC的含义<br><br>5）理解EIGRP的hello报文作用<br><br>6）理解路由快速收敛的含义<br><br>7）理解EIGRP的不等价负载均衡<br></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/08/28/EIGRP%E7%9A%84%E7%AE%80%E5%8D%95%E5%BA%94%E7%94%A8/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
+        <h4 id="1、实验目的"><a href="#1、实验目的" class="headerlink" title="1、实验目的"></a>1、实验目的</h4><p>1）掌握EIGRP的基本配置<br><br>2）理解EIGRP的邻居表、拓扑表以及路由表的含义<br><br>3）掌握查看EIGRP路由协议的相关信息<br><br>4）掌握FD、AD、S、FS以及FC的含义<br><br>5）理解EIGRP的hello报文作用<br><br>6）理解路由快速收敛的含义<br><br>7）理解EIGRP的不等价负载均衡<br></p>
+<a id="more"></a>
+
+<h4 id="2、实验拓扑"><a href="#2、实验拓扑" class="headerlink" title="2、实验拓扑"></a>2、实验拓扑</h4><p><img src="https://s1.ax1x.com/2020/08/28/dTeEvT.png"></p>
+<h4 id="3、实验步骤"><a href="#3、实验步骤" class="headerlink" title="3、实验步骤"></a>3、实验步骤</h4><p><strong>（1）完成各路由器的基本配置，实现各直连设备之间可以互ping对方，要求PC1的IP地址设置为172.16.1.1/24，网关设置为172.16.1.254，PC2的IP地址设置为172.16.3.1/24，网关设置为172.16.3.254，各路由器接口间的地址自己规划</strong></p>
+<blockquote>
+<p>IP地址规划如拓扑图标记所示，此处不再列出</p>
+</blockquote>
+<p><strong>（2）全网启用EIGRP，通告各自的直连网络路由，并关闭自动汇总</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//启用EIGRP进程，AS号为90，AS号是邻居建立的前提，邻居要建立AS号必须要一样</span></span><br><span class="line">R3(config)#router eigrp 90 </span><br><span class="line"><span class="comment">//关闭自动汇总</span></span><br><span class="line">R3(config-router)#no auto-summary  </span><br><span class="line"><span class="comment">//通告网段</span></span><br><span class="line">R3(config-router)#network 192.168.23.0  //通告直连网段</span><br><span class="line">R3(config-router)#network 172.16.3.0 0.0.0.255</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/08/28/dTmotA.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/dTmj0g.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/dTnCpq.png"></p>
+<p><strong>（3）在R1上使用show ip protocols命令，观察并理解该命令的输出信息</strong></p>
+<blockquote>
+<p>Metric weight K1=1, K2=0, K3=1, K4=0, K5=0   – EIGRP的开销计算与这5个K值有关系</p>
+<p>邻居要建立，则五个K值必须相同</p>
+<p>K1：带宽；K2：负载；K3：延迟；K4：可靠性；K5：MTU</p>
+<p>真正与EIGRP开销计算有关系的，只有带宽和延迟；</p>
+<p>EIGRP开销=带宽+延迟</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/08/28/dTnHUJ.png"></p>
+<p><strong>（4）查看各路由器的邻居表、拓扑表以及路由表，分别找出FD、AD以及S等重要信息</strong></p>
+<blockquote>
+<p>邻居表各字段含义</p>
+<p>H：建立顺序</p>
+<p>Address：对端的IP</p>
+<p>Interface：从哪个接口学习到</p>
+<p>Hold：定义了等待没有从邻居那里接收到任何包的最大时间，当接收到新的包以后，Hold复位（在10~15s之间循环）</p>
+<p>Uptime：建立了多久</p>
+<p>SRTT：向邻居发送包以及受到邻居回应ACK的平均回程时间</p>
+<p>RTO：重传超时时间，路由器在重新传输包之前等待ACK的时间（应为SRTT的6倍，最大5000，若重传16次还未得到确认，则此邻居被宣布无效）</p>
+<p>Q：队列计数，表示有多少个可靠报文还没有得到确认，在运行正常的环境下该值应为0（如果值大于0则说明发生了拥塞）</p>
+<p>Seq：序列号</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTuKaQ.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTulPs.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTu1Gn.png"></p>
+<blockquote>
+<p>拓扑表</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTuRde.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTuWIH.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTuhid.png"></p>
+<blockquote>
+<p>路由表</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTuTQP.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTuOoQ.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTuvJs.png"></p>
+<p><strong>（5）测试PC1与PC2之间的连通性</strong></p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTKGYd.png"></p>
+<p><strong>（6）在R2上添加一个loopback1接口，地址为200.200.200.200/24，然后在EIGRP中通告，观察R1和R3是否能马上学习到R2上新增的loopback1网段，并测试各主机与该loopback1之间的联通性</strong></p>
+<blockquote>
+<p>R1和R3能马上学习到R2上新增的loopback1网段</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTKaOf.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTK00S.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTKsYj.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTKcpn.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTKglq.png"></p>
+<p><strong>（7）使用wireshark抓取EIGRP的报文，理解EIGRP报文各字段的含义</strong></p>
+<blockquote>
+<p>每隔5s发送一个hello包，保持时间为15s，即超过3个hello时间未收到hello则认为对端Down，断开连接</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTKTh9.png"></p>
+<p><strong>（8）在R1上添加一个loopback1接口，地址为100.100.100.100/24，然后在EIGRP中通告</strong></p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTKj0O.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTKv7D.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTMphd.png"></p>
+<p><strong>（9）断开R1和R3与各主机之间的连接，连接R1与R3之间的以太网接口，完成必要配置，实现200.200.200.200访问100.100.100.100的不等价负载均衡</strong></p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTM0jx.png"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//使用源200.200.200.200去访问目标100.100.100.100</span></span><br><span class="line"><span class="comment">//若没有跟上source，那么默认情况下就是使用出接口去访问目标</span></span><br><span class="line">R2#ping 100.100.100.100 source 200.200.200.200  </span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/08/29/dTQP54.png"></p>
+<blockquote>
+<p>由于此时R2的路由表中只存在一条路径到达100.100.100.100，所以此时不存在负载均衡</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTQlPH.png"></p>
+<blockquote>
+<p>等价负载均衡：有多条开销相等的路径，此时可以同时从这些开销相等的路径去发送数量相同的数据包。</p>
+<p>不等价负载均衡：有多条路径，但是开销不一样，此时会根据一定的比例去发送数据包。</p>
+<p>对于EIGRP，默认情况下只支持等价负载均衡，并且默认情况下最多可以同时存在4条的等价负载均衡。</p>
+<p>R2(config)#router eigrp 90</p>
+<p>R2(config-router)#maximum-paths 8     –将等价负载均衡的条数改为8条</p>
+<p>EIGRP还可以支持不等价负载均衡，但是有前提：</p>
+<p>①次优路径的AD值要小于最优路径的FD值–称为FC条件，只有满足了该条件，才会存在FS。</p>
+<p>②当存在FS之后，EIGRP拓扑表会存在两个下一跳，但是只会选择最优的添加进路由表。此时如果要保证路由表也有两条路径，必须手动修改V值(variance)，使得满足”最优路径的FD*V值&gt;次优路径的FD值”（默认情况下，v值为1）</p>
+</blockquote>
+<blockquote>
+<p>此题中，最优路径为R2通过R1到达100.100.100.100，次优路径为经过R3、R1到达100.100.100.100</p>
+</blockquote>
+<blockquote>
+<p>查看R2的路由表，此时显示的为最优路径，FD=409600</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTlmSs.png"></p>
+<blockquote>
+<p>次优路径的AD即为R3到达100.100.100.100的开销（FD），也为409600</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTl00K.png"></p>
+<blockquote>
+<p>此时不满足FC条件，则需更改开销，修改K值，更改R2的e0/0接口的延迟为3000（默认为1000）</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTlfnP.png"></p>
+
     </div>
 
     
     
     
+	  
+	  <div>
+		
+			<div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+		
+	  </div>
+	  
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
+          <div class="post-tags">
+              <a href="/tags/%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE/" rel="tag"><i class="fa fa-tag"></i></a>
+              <a href="/tags/EIGRP/" rel="tag"><i class="fa fa-tag"></i></a>
+              <a href="/tags/CCNA/" rel="tag"><i class="fa fa-tag"></i></a>
+          </div>
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/27/RIP%E7%9A%84%E5%BA%94%E7%94%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="shain-l">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="shainの博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/08/27/RIP%E7%9A%84%E5%BA%94%E7%94%A8/" class="post-title-link" itemprop="url">RIP的应用</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-08-27 21:39:13" itemprop="dateCreated datePublished" datetime="2020-08-27T21:39:13+08:00">2020-08-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-28 23:39:34" itemprop="dateModified" datetime="2020-08-28T23:39:34+08:00">2020-08-28</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AE%9E%E9%AA%8C/" itemprop="url" rel="index"><span itemprop="name">实验</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>1.1k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h4 id="1、-实验目的"><a href="#1、-实验目的" class="headerlink" title="1、 实验目的"></a>1、 实验目的</h4><ol>
-<li>掌握RIPv2的基本配置<br></li>
-<li>理解RIPv2路由条目的结构含义<br></li>
-<li>理解自动汇总的含义<br></li>
-<li>理解和观察周期性更新<br></li>
-<li>理解debug ip rip 命令 的作用
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/08/27/RIP%E7%9A%84%E5%BA%94%E7%94%A8/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
-    </div>
 
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/26/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="shain-l">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="shainの博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/08/26/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-08-26 13:18:32" itemprop="dateCreated datePublished" datetime="2020-08-26T13:18:32+08:00">2020-08-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-27 21:33:13" itemprop="dateModified" datetime="2020-08-27T21:33:13+08:00">2020-08-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Hello-World/" itemprop="url" rel="index"><span itemprop="name">Hello World</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>367</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/08/26/hello-world/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/08/27/RIP%E7%9A%84%E5%BA%94%E7%94%A8/" rel="prev" title="RIP的应用">
+      <i class="fa fa-chevron-left"></i> RIP的应用
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
       </footer>
+    
   </article>
   
   
-  
-
-
   
 
 
@@ -546,6 +510,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%E3%80%81%E5%AE%9E%E9%AA%8C%E7%9B%AE%E7%9A%84"><span class="nav-number">1.</span> <span class="nav-text">1、实验目的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%E3%80%81%E5%AE%9E%E9%AA%8C%E6%8B%93%E6%89%91"><span class="nav-number">2.</span> <span class="nav-text">2、实验拓扑</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3%E3%80%81%E5%AE%9E%E9%AA%8C%E6%AD%A5%E9%AA%A4"><span class="nav-number">3.</span> <span class="nav-text">3、实验步骤</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
