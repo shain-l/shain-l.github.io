@@ -72,12 +72,19 @@
 <meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTlmSs.png">
 <meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTl00K.png">
 <meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTlfnP.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTgwut.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTgRvn.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTgjDx.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dT2nIS.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dT26Z6.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dT27eP.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTRdTf.png">
 <meta property="article:published_time" content="2020-08-28T15:34:08.000Z">
-<meta property="article:modified_time" content="2020-08-28T16:54:46.722Z">
+<meta property="article:modified_time" content="2020-08-29T01:23:55.939Z">
 <meta property="article:author" content="shain-l">
 <meta property="article:tag" content="路由协议">
-<meta property="article:tag" content="CCNA">
 <meta property="article:tag" content="EIGRP">
+<meta property="article:tag" content="CCNA">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://s1.ax1x.com/2020/08/28/dTeEvT.png">
 
@@ -276,7 +283,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-29 00:54:46" itemprop="dateModified" datetime="2020-08-29T00:54:46+08:00">2020-08-29</time>
+                <time title="修改时间：2020-08-29 09:23:55" itemprop="dateModified" datetime="2020-08-29T09:23:55+08:00">2020-08-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -294,7 +301,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.2k</span>
+              <span>2.6k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -415,9 +422,32 @@
 </blockquote>
 <p><img src="https://s1.ax1x.com/2020/08/29/dTl00K.png"></p>
 <blockquote>
-<p>此时不满足FC条件，则需更改开销，修改K值，更改R2的e0/0接口的延迟为3000（默认为1000）</p>
+<p>此时不满足FC条件，则需更改开销，修改K值，更改R2的e0/0接口的延迟为3000（默认为1000），注意倍数关系</p>
 </blockquote>
 <p><img src="https://s1.ax1x.com/2020/08/29/dTlfnP.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTgwut.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTgRvn.png"></p>
+<blockquote>
+<p>将修改延迟的接口关闭再打开</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTgjDx.png"></p>
+<blockquote>
+<p>此时满足FC条件，即次优路径的AD值小于最优路径的FD值，在拓扑表中存在两条路径</p>
+<p>此时的FS为R3</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/08/29/dT2nIS.png"></p>
+<blockquote>
+<p>但是此时路由表中到达100.100.100.100仍然只存在一条最优路径</p>
+<p>若想让次优路径加表，则需满足：最优路径的FD*v值 &gt; 次优路径的FD才能加入到路由表</p>
+<p>修改V值为6，此时满足条件，路由表中到达100.100.100.0网段存在两个下一跳</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/08/29/dT26Z6.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dT27eP.png"></p>
+<blockquote>
+<p>查看该路由的详细信息，可知基本满足1:5的关系</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTRdTf.png"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">相关命令</span><br><span class="line">R2(config)#int e0&#x2F;0</span><br><span class="line">R2(config-if)#delay n  --修改延迟，但是注意，如果输入的是n，那么延迟会改为10*n</span><br><span class="line">R2(config-if)#bandwidth n  --修改带宽，如果输入的是n，那么带宽就为n</span><br><span class="line"></span><br><span class="line">R2#show interfaces e0&#x2F;0  --看接口的详细信息，比如说带宽、延迟</span><br><span class="line">R2#show ip route 100.100.100.0 255.255.255.0  --查看该路由的详细信息</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -438,8 +468,8 @@
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE/" rel="tag"><i class="fa fa-tag"></i></a>
-              <a href="/tags/CCNA/" rel="tag"><i class="fa fa-tag"></i></a>
               <a href="/tags/EIGRP/" rel="tag"><i class="fa fa-tag"></i></a>
+              <a href="/tags/CCNA/" rel="tag"><i class="fa fa-tag"></i></a>
           </div>
 
         
@@ -582,7 +612,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">3 分钟</span>
+    <span title="站点阅读时长">4 分钟</span>
 </div>
 
 <div class="powered-by">
@@ -618,7 +648,7 @@ setInterval("createtime()",250);
 <!--
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共2.1k字</span>
+  <span class="post-count">博客全站共2.4k字</span>
 </div>
 -->
 
