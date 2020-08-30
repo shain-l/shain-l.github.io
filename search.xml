@@ -1,100 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>RIP的应用</title>
-    <url>/2020/08/27/RIP%E7%9A%84%E5%BA%94%E7%94%A8/</url>
-    <content><![CDATA[<h4 id="1、-实验目的"><a href="#1、-实验目的" class="headerlink" title="1、 实验目的"></a>1、 实验目的</h4><ol>
-<li>掌握RIPv2的基本配置<br></li>
-<li>理解RIPv2路由条目的结构含义<br></li>
-<li>理解自动汇总的含义<br></li>
-<li>理解和观察周期性更新<br></li>
-<li>理解debug ip rip 命令 的作用<a id="more"></a>
-
-</li>
-</ol>
-<h4 id="2、-拓扑结构"><a href="#2、-拓扑结构" class="headerlink" title="2、 拓扑结构"></a>2、 拓扑结构</h4><p><img src="https://s1.ax1x.com/2020/08/28/doIIiV.png"></p>
-<h4 id="3、-实验步骤"><a href="#3、-实验步骤" class="headerlink" title="3、 实验步骤"></a>3、 实验步骤</h4><p><strong>（1）完成各路由器的基本配置，实现各直连设备之间可以互 ping 对方， 要求 PC1 的 IP 地址设置为 172.16.1.1/24，网关设置为172.16.1.254， PC2 的 IP 地址设置为172.16.3.1/24，网关设置为172.16.3.254，各路由器接口间的地址自己规划。</strong></p>
-<p><img src="https://s1.ax1x.com/2020/08/27/d5mDb9.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/27/d5uw79.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/27/d5NpXn.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/27/d5NkkT.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/27/d5Ne1J.png"></p>
-<p><strong>（2）在三台路由器上都启用RIPv2协议，通告各自的直连网络路由，并开启自动汇总</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">默认开启自动汇总，会在边界处把一个网段汇总成主类</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/08/28/do543D.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/do5HHI.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/do5v8S.png"></p>
-<p><strong>（3）在R1上使用show ip protocols命令，观察并理解该命令的输出信息</strong></p>
-<blockquote>
-<p>路由更新计时器：30s（默认）<br>路由无效时间：180s（默认）<br>抑制计时器：180s（默认）<br>路由刷新计时器：240s（默认）</p>
-</blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/28/dooEdI.png"></p>
-<p><strong>（4）查看各路由器的路由表，观察RIP路由条目的特征</strong></p>
-<blockquote>
-<p>由于没有关闭自动汇总，R1上存在172.16.0.0网段的路由，则不会再学习R2上的172.16.0.0的路由</p>
-<p>同理，R2上存在172.16.0.0网段的路由，则不会学习R1上的172.16.0.0的路由</p>
-</blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/28/doowy4.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/dooRSO.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/doo7kt.png"></p>
-<p><strong>（5）分别在R2和PC2上测试R2与PC1以及PC2与PC1之间的连通性</strong></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/doTJnH.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/doTtHA.png"></p>
-<p><strong>（6）在R2上使用debug ip rip观察路由的发送情况</strong></p>
-<blockquote>
-<p>RIPv2组播地址：224.0.0.9</p>
-<p>由于没有关闭自动汇总，此时发送的报文都为主类路由</p>
-</blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/28/doT09f.png"></p>
-<p><strong>（7）在三台路由器上都关闭自动汇总，观察各路由表的变化，并再次测试R2与PC1以及PC2与PC1之间的连通性</strong></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/doTrjg.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/doT43T.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/doTLU1.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/do7Z28.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/do7urQ.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/do7QVs.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/do70aR.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/do7yRK.png"></p>
-<p><strong>（8）再次在R2上使用debug ip rip观察路由的发送情况，比较关闭自动汇总与开启自动汇总debug输出信息的不同</strong></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/do7von.png"></p>
-<p><strong>（9）在R2上添加一个loopback1接口，地址自定</strong></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/doHAeJ.png"></p>
-<p><strong>（10）添加必要配置，实现PC1和PC2都能够正常访问在R2上的loopback1</strong></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTPgQH.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTPhwt.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTPTfS.png"></p>
-<p><strong>（11）在R1上添加一个loopback1接口，地址自定，然后在RIP中通告，观察R2和R3是否能马上学习到R1上新增的loopback1网段</strong></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTiwcQ.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTi7Ax.png"></p>
-<blockquote>
-<p>由于rip的路由表的更新时间为30s，故在R2、R3上无法马上学习到在R1上新增的loopback1网段</p>
-</blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTFJKJ.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTFtbR.png"></p>
-<p><strong>（12）将R1上的loopback1接口关闭，观察R2和R3上是否还存在关于R1上的loopback1网段的路由条目</strong></p>
-<blockquote>
-<p>由于触发更新，R1上存在失效路由，则会马上发送更新给相邻的路由器，让他们将失效路由删除</p>
-</blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTA5uQ.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTAoHs.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTA7En.png"></p>
-<p><strong>（13）使用wireshark抓取RIPv2报文，理解RIPv2报文各字段的含义</strong></p>
-<blockquote>
-<p>RIPv2运行在UDP的520端口上，属于应用层协议</p>
-</blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTAHNq.png"></p>
-]]></content>
-      <categories>
-        <category>实验</category>
-      </categories>
-      <tags>
-        <tag>路由协议</tag>
-        <tag>RIP</tag>
-        <tag>CCNA</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>EIGRP的简单应用</title>
     <url>/2020/08/28/EIGRP%E7%9A%84%E7%AE%80%E5%8D%95%E5%BA%94%E7%94%A8/</url>
     <content><![CDATA[<h4 id="1、实验目的"><a href="#1、实验目的" class="headerlink" title="1、实验目的"></a>1、实验目的</h4><p>1）掌握EIGRP的基本配置<br>2）理解EIGRP的邻居表、拓扑表以及路由表的含义<br>3）掌握查看EIGRP路由协议的相关信息<br>4）掌握FD、AD、S、FS以及FC的含义<br>5）理解EIGRP的hello报文作用<br>6）理解路由快速收敛的含义<br>7）理解EIGRP的不等价负载均衡</p>
@@ -231,8 +137,102 @@
       </categories>
       <tags>
         <tag>路由协议</tag>
-        <tag>CCNA</tag>
         <tag>EIGRP</tag>
+        <tag>CCNA</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>RIP的应用</title>
+    <url>/2020/08/27/RIP%E7%9A%84%E5%BA%94%E7%94%A8/</url>
+    <content><![CDATA[<h4 id="1、-实验目的"><a href="#1、-实验目的" class="headerlink" title="1、 实验目的"></a>1、 实验目的</h4><ol>
+<li>掌握RIPv2的基本配置<br></li>
+<li>理解RIPv2路由条目的结构含义<br></li>
+<li>理解自动汇总的含义<br></li>
+<li>理解和观察周期性更新<br></li>
+<li>理解debug ip rip 命令 的作用<a id="more"></a>
+
+</li>
+</ol>
+<h4 id="2、-拓扑结构"><a href="#2、-拓扑结构" class="headerlink" title="2、 拓扑结构"></a>2、 拓扑结构</h4><p><img src="https://s1.ax1x.com/2020/08/28/doIIiV.png"></p>
+<h4 id="3、-实验步骤"><a href="#3、-实验步骤" class="headerlink" title="3、 实验步骤"></a>3、 实验步骤</h4><p><strong>（1）完成各路由器的基本配置，实现各直连设备之间可以互 ping 对方， 要求 PC1 的 IP 地址设置为 172.16.1.1/24，网关设置为172.16.1.254， PC2 的 IP 地址设置为172.16.3.1/24，网关设置为172.16.3.254，各路由器接口间的地址自己规划。</strong></p>
+<p><img src="https://s1.ax1x.com/2020/08/27/d5mDb9.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/27/d5uw79.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/27/d5NpXn.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/27/d5NkkT.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/27/d5Ne1J.png"></p>
+<p><strong>（2）在三台路由器上都启用RIPv2协议，通告各自的直连网络路由，并开启自动汇总</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">默认开启自动汇总，会在边界处把一个网段汇总成主类</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/08/28/do543D.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/do5HHI.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/do5v8S.png"></p>
+<p><strong>（3）在R1上使用show ip protocols命令，观察并理解该命令的输出信息</strong></p>
+<blockquote>
+<p>路由更新计时器：30s（默认）<br>路由无效时间：180s（默认）<br>抑制计时器：180s（默认）<br>路由刷新计时器：240s（默认）</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/08/28/dooEdI.png"></p>
+<p><strong>（4）查看各路由器的路由表，观察RIP路由条目的特征</strong></p>
+<blockquote>
+<p>由于没有关闭自动汇总，R1上存在172.16.0.0网段的路由，则不会再学习R2上的172.16.0.0的路由</p>
+<p>同理，R2上存在172.16.0.0网段的路由，则不会学习R1上的172.16.0.0的路由</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/08/28/doowy4.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/dooRSO.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/doo7kt.png"></p>
+<p><strong>（5）分别在R2和PC2上测试R2与PC1以及PC2与PC1之间的连通性</strong></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/doTJnH.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/doTtHA.png"></p>
+<p><strong>（6）在R2上使用debug ip rip观察路由的发送情况</strong></p>
+<blockquote>
+<p>RIPv2组播地址：224.0.0.9</p>
+<p>由于没有关闭自动汇总，此时发送的报文都为主类路由</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/08/28/doT09f.png"></p>
+<p><strong>（7）在三台路由器上都关闭自动汇总，观察各路由表的变化，并再次测试R2与PC1以及PC2与PC1之间的连通性</strong></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/doTrjg.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/doT43T.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/doTLU1.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/do7Z28.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/do7urQ.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/do7QVs.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/do70aR.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/do7yRK.png"></p>
+<p><strong>（8）再次在R2上使用debug ip rip观察路由的发送情况，比较关闭自动汇总与开启自动汇总debug输出信息的不同</strong></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/do7von.png"></p>
+<p><strong>（9）在R2上添加一个loopback1接口，地址自定</strong></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/doHAeJ.png"></p>
+<p><strong>（10）添加必要配置，实现PC1和PC2都能够正常访问在R2上的loopback1</strong></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/dTPgQH.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/dTPhwt.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/dTPTfS.png"></p>
+<p><strong>（11）在R1上添加一个loopback1接口，地址自定，然后在RIP中通告，观察R2和R3是否能马上学习到R1上新增的loopback1网段</strong></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/dTiwcQ.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/dTi7Ax.png"></p>
+<blockquote>
+<p>由于rip的路由表的更新时间为30s，故在R2、R3上无法马上学习到在R1上新增的loopback1网段</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/08/28/dTFJKJ.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/dTFtbR.png"></p>
+<p><strong>（12）将R1上的loopback1接口关闭，观察R2和R3上是否还存在关于R1上的loopback1网段的路由条目</strong></p>
+<blockquote>
+<p>由于触发更新，R1上存在失效路由，则会马上发送更新给相邻的路由器，让他们将失效路由删除</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/08/28/dTA5uQ.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/dTAoHs.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/dTA7En.png"></p>
+<p><strong>（13）使用wireshark抓取RIPv2报文，理解RIPv2报文各字段的含义</strong></p>
+<blockquote>
+<p>RIPv2运行在UDP的520端口上，属于应用层协议</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/08/28/dTAHNq.png"></p>
+]]></content>
+      <categories>
+        <category>实验</category>
+      </categories>
+      <tags>
+        <tag>路由协议</tag>
+        <tag>CCNA</tag>
+        <tag>RIP</tag>
       </tags>
   </entry>
   <entry>
@@ -300,8 +300,8 @@
 </blockquote>
 <blockquote>
 <p>-————————————————————————————————————————–</p>
-<p>Neighbor ID        Pri        State     Dead Time     Address                         Interface</p>
-<p>  邻居的ID        优先级     状态          死亡时间      邻居的IP地址       自己用于建立邻居的接口</p>
+<p>Neighbor ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pri &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;State &nbsp;&nbsp;&nbsp;Dead Time &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Address    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Interface</p>
+<p>&nbsp;&nbsp;&nbsp;邻居的ID &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;优先级 &nbsp;&nbsp;状态 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;死亡时间 &nbsp;&nbsp;&nbsp;&nbsp;邻居的IP地址 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;自己用于建立邻居的接口</p>
 <p>-————————————————————————————————————————–</p>
 </blockquote>
 <ul>
@@ -416,6 +416,94 @@
         <tag>路由协议</tag>
         <tag>CCNA</tag>
         <tag>OSPF</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>单臂路由运用</title>
+    <url>/2020/08/30/%E5%8D%95%E8%87%82%E8%B7%AF%E7%94%B1%E8%BF%90%E7%94%A8/</url>
+    <content><![CDATA[<h4 id="1、实验目的"><a href="#1、实验目的" class="headerlink" title="1、实验目的"></a>1、实验目的</h4><p>1）掌握交换机上VLAN的创建和划分<br>2)掌握trunk的作用<br>3)掌握VTP的作用与配置<br>4)掌握单臂路由原理与配置<br>5)理解trunk链路上的802.1Q标记的作用</p>
+<a id="more"></a>
+<h4 id="2、拓扑结构"><a href="#2、拓扑结构" class="headerlink" title="2、拓扑结构"></a>2、拓扑结构</h4><p><img src="https://s1.ax1x.com/2020/08/30/dqOjXR.png"></p>
+<h4 id="3、实验步骤"><a href="#3、实验步骤" class="headerlink" title="3、实验步骤"></a>3、实验步骤</h4><p><strong>（1）在SW1上创建两个vlan，vlan10和vlan20，并将vlan10命名为sales，将vlan20命名为engineers</strong></p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqXEjA.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqXeBt.png"></p>
+<p><strong>（2）完成必要的配置，实现两交换机的vlan数据库同步，并使用相关命令验证和查看vlan数据库的信息</strong></p>
+<blockquote>
+<p>要实现两交换机的vlan数据库同步，需要进行vtp的配置</p>
+</blockquote>
+<ul>
+<li>将两交换机相连的端口设置为trunk</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqXJun.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqj8PO.png"></p>
+<ul>
+<li>指定vtp的域和密码，并指定SW1的vtp模式为server，SW2的vtp模式为client</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqjyRg.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqvFOA.png"></p>
+<ul>
+<li>在SW2上查看vlna信息，此前并未在SW2上创建vlan，由此可知两交换机之间实现了vlan数据库的同步</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqv6k6.png"></p>
+<ul>
+<li>尝试在SW2上创建一个vlan，日志提示在vtp的模式为client的条件下不允许创建vlan</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqvRpD.png"></p>
+<ul>
+<li>在SW1上查看vtp的状态信息，从下图可知SW1的vtp模式为server（默认），已存在的vlan数量为7，修订版本号为8</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqx9A0.png"></p>
+<p><strong>（3）将连接PC1和PC3的交换端口划分进vlan10，将连接PC2的交换端口划分进vlan20中，并为各PC配置合适的IP地址和网关</strong></p>
+<ul>
+<li>依题意将交换机上的端口划分进对应的vlan</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqxYDA.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqxUEt.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqxd4f.png"></p>
+<ul>
+<li>由于各PC为使用路由器镜像模拟，需在PC上关闭路由功能。按下图所示为各PC配置IP地址和网关</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqxIv4.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqxHbR.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqxLUx.png"></p>
+<p><strong>（4）使用show vlan brief查看各交换机的vlan信息</strong></p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqzFat.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqzEPf.png"></p>
+<p><strong>（5）测试各主机之间的连通性</strong></p>
+<blockquote>
+<p>PC1和PC3之间可以相互ping通（两PC属于同一vlan，无需经过三层设备）</p>
+<p>PC1和PC2之间无法通信（两PC属于不同vlan，需要经过三层设备，此时还未在路由器上进行相应的配置）</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqzlaq.png"></p>
+<p><strong>（6）在交换机和路由器上完成必要的配置，实现各主机间可以互相通信</strong></p>
+<ul>
+<li>将SW1上连路由器的端口配置成trunk</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqzTW8.png">、</p>
+<ul>
+<li><p>在R1上进行单臂路由的配置</p>
+<blockquote>
+<p>单臂路由是指在路由器的一个接口上通过配置子接口(或”逻辑接口”，并不真实存在)的方式，实现原来相互隔离的不同vlan之间的互联互通</p>
+<p>值得注意的是这些逻辑子接口不能被单独的开启或关闭，即当物理接口被开启或关闭时，所有的该物理接口的子接口也将对应的被开启或关闭</p>
+<p>由于单臂路由存在瓶颈和单点故障的问题，因此必须限制主机/vlan的数量。此时可以通过SVI实现不同vlan间的通信（后续会进行介绍）</p>
+</blockquote>
+</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqzHSS.png"></p>
+<ul>
+<li>测试各主机之间的连通性，如下图所示，三台PC之间可以互相ping通</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqzbQg.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqzLLj.png"></p>
+]]></content>
+      <categories>
+        <category>实验</category>
+      </categories>
+      <tags>
+        <tag>CCNA</tag>
+        <tag>单臂路由</tag>
+        <tag>trunk</tag>
+        <tag>vtp</tag>
       </tags>
   </entry>
 </search>
