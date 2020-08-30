@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>shainの博客</title>
   
-  <subtitle>生于忧患,死于安乐</subtitle>
+  <subtitle>shain-l</subtitle>
   <link href="http://yoursite.com/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
@@ -60,9 +60,9 @@
     
     <category term="路由协议" scheme="http://yoursite.com/tags/%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE/"/>
     
-    <category term="EIGRP" scheme="http://yoursite.com/tags/EIGRP/"/>
-    
     <category term="CCNA" scheme="http://yoursite.com/tags/CCNA/"/>
+    
+    <category term="EIGRP" scheme="http://yoursite.com/tags/EIGRP/"/>
     
   </entry>
   
@@ -90,9 +90,9 @@
     
     <category term="路由协议" scheme="http://yoursite.com/tags/%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE/"/>
     
-    <category term="CCNA" scheme="http://yoursite.com/tags/CCNA/"/>
-    
     <category term="RIP" scheme="http://yoursite.com/tags/RIP/"/>
+    
+    <category term="CCNA" scheme="http://yoursite.com/tags/CCNA/"/>
     
   </entry>
   
