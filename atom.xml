@@ -6,7 +6,7 @@
   <link href="http://yoursite.com/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-08-30T16:04:08.722Z</updated>
+  <updated>2020-08-31T16:00:08.291Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>STP的运用</title>
+    <link href="http://yoursite.com/2020/08/31/STP%E7%9A%84%E8%BF%90%E7%94%A8/"/>
+    <id>http://yoursite.com/2020/08/31/STP%E7%9A%84%E8%BF%90%E7%94%A8/</id>
+    <published>2020-08-31T14:57:13.000Z</published>
+    <updated>2020-08-31T16:00:08.291Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="1、实验目的"><a href="#1、实验目的" class="headerlink" title="1、实验目的"></a>1、实验目的</h4><p>1）理解STP的作用<br>2）熟悉STP的工作原理<br>3）掌握STP的查看命令</p><a id="more"></a><h4 id="2、拓扑结构"><a href="#2、拓扑结构" class="headerlink" title="2、拓扑结构"></a>2、拓扑结构</h4><p><img src="https://s1.ax1x.com/2020/08/31/djPbAe.png"></p><h4 id="3、实验步骤"><a href="#3、实验步骤" class="headerlink" title="3、实验步骤"></a>3、实验步骤</h4><p><strong>（1）在相应的交换机上创建vlan10，并将连接PC1和PC2的交换端口都划分进该vlan中</strong></p><p><img src="https://s1.ax1x.com/2020/08/31/djiiNQ.png"></p><p><img src="https://s1.ax1x.com/2020/08/31/djiVcq.png"></p><p><strong>（2）为主机设置合适的IP地址，IP地址自定，完成必要的配置实现主机间的通信</strong></p><ul><li>为两台PC配置IP地址（注意关闭路由功能，因为实验中的PC使用的是路由器的镜像）</li></ul><p><img src="https://s1.ax1x.com/2020/08/31/djiUHO.png"></p><p><img src="https://s1.ax1x.com/2020/08/31/djiDCd.png"></p><ul><li>将交换机之间的端口封装802.1Q，并配置成trunk</li></ul><p><img src="https://s1.ax1x.com/2020/08/31/djFmRA.png"></p><p><img src="https://s1.ax1x.com/2020/08/31/djFKMt.png"></p><p><img src="https://s1.ax1x.com/2020/08/31/djFYGj.png"></p><ul><li>测试PC的连通性</li></ul><blockquote><p>由于PC1和PC2属于同一vlan，所以通过上述配置即可相互ping通</p></blockquote><p><img src="https://s1.ax1x.com/2020/08/31/djFxw8.png"></p><p><strong>（3）查看各交换机的STP信息</strong></p><p><img src="https://s1.ax1x.com/2020/08/31/djksnP.png"></p><p><img src="https://s1.ax1x.com/2020/08/31/djk678.png"></p><p><img src="https://s1.ax1x.com/2020/08/31/djkgAS.png"></p><p><strong>（4）将SW1设置为vlan10的根桥，使用相关命令验证和查看各交换机上根桥的变化</strong></p><ul><li>设置SW1为vlan10的根桥</li></ul><p><img src="https://s1.ax1x.com/2020/08/31/djAmut.png"></p><ul><li>使用<span style="color:red">show spanning-tree</span>命令查看交换机状态</li></ul><blockquote><p>由于设置SW1为vlan10的根桥，由下图可知，优先级默认降低2*4096，即为24576，加上vlan-id的10，所以优先级为24586</p></blockquote><p><img src="https://s1.ax1x.com/2020/08/31/djZVgJ.png"></p><p><img src="https://s1.ax1x.com/2020/08/31/djZQUK.png"></p><p><img src="https://s1.ax1x.com/2020/08/31/djZGgH.png"></p><p><strong>（5）测试正常链路出现故障对主机通信的影响</strong></p><ul><li>将SW2的e0/1接口shutdown</li></ul><p><img src="https://s1.ax1x.com/2020/08/31/djZcKs.png"></p><ul><li>PC1仍然可以ping通PC2</li></ul><p><img src="https://s1.ax1x.com/2020/08/31/djZ2bq.png"></p><p><strong>（6）先断开PC1与交换机的连接，然后恢复PC1与交换机的连接，观察主机重新接入交换机要经历多久才能够进行数据转发</strong></p><blockquote><p>由下图可知，PC1重新接入交换机需要经历30s（由于关闭的是SW2上的端口，可以直接进入listening状态（无需经历20s的blocking状态），再经历15s进入learning状态，最后经历15s进入forwarding状态）</p></blockquote><p><img src="https://s1.ax1x.com/2020/08/31/djero6.png"></p>]]></content>
+    
+    
+    <summary type="html">&lt;h4 id=&quot;1、实验目的&quot;&gt;&lt;a href=&quot;#1、实验目的&quot; class=&quot;headerlink&quot; title=&quot;1、实验目的&quot;&gt;&lt;/a&gt;1、实验目的&lt;/h4&gt;&lt;p&gt;1）理解STP的作用&lt;br&gt;2）熟悉STP的工作原理&lt;br&gt;3）掌握STP的查看命令&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="实验" scheme="http://yoursite.com/categories/%E5%AE%9E%E9%AA%8C/"/>
+    
+    
+    <category term="CCNA" scheme="http://yoursite.com/tags/CCNA/"/>
+    
+    <category term="交换" scheme="http://yoursite.com/tags/%E4%BA%A4%E6%8D%A2/"/>
+    
+    <category term="STP" scheme="http://yoursite.com/tags/STP/"/>
+    
+  </entry>
   
   <entry>
     <title>单臂路由运用</title>
@@ -87,9 +112,9 @@
     
     <category term="路由协议" scheme="http://yoursite.com/tags/%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE/"/>
     
-    <category term="EIGRP" scheme="http://yoursite.com/tags/EIGRP/"/>
-    
     <category term="CCNA" scheme="http://yoursite.com/tags/CCNA/"/>
+    
+    <category term="EIGRP" scheme="http://yoursite.com/tags/EIGRP/"/>
     
   </entry>
   
@@ -117,9 +142,9 @@
     
     <category term="路由协议" scheme="http://yoursite.com/tags/%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE/"/>
     
-    <category term="CCNA" scheme="http://yoursite.com/tags/CCNA/"/>
-    
     <category term="RIP" scheme="http://yoursite.com/tags/RIP/"/>
+    
+    <category term="CCNA" scheme="http://yoursite.com/tags/CCNA/"/>
     
   </entry>
   
