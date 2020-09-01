@@ -6,7 +6,7 @@
   <link href="http://yoursite.com/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-09-01T12:07:55.749Z</updated>
+  <updated>2020-09-01T15:58:45.883Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>ACL的运用</title>
+    <link href="http://yoursite.com/2020/09/01/ACL%E7%9A%84%E8%BF%90%E7%94%A8/"/>
+    <id>http://yoursite.com/2020/09/01/ACL%E7%9A%84%E8%BF%90%E7%94%A8/</id>
+    <published>2020-09-01T13:46:13.000Z</published>
+    <updated>2020-09-01T15:58:45.883Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="1、实验目的"><a href="#1、实验目的" class="headerlink" title="1、实验目的"></a>1、实验目的</h3><p>1）掌握ACL的作用<br>2）理解标准和扩展ACL的区别<br>3）熟悉标准和扩展ACL的配置<br>4）掌握ACL的验证和查看命令<br>5）理解命名的ACL的作用与配置</p><a id="more"></a><h3 id="2、拓扑结构"><a href="#2、拓扑结构" class="headerlink" title="2、拓扑结构"></a>2、拓扑结构</h3><p><img src="https://s1.ax1x.com/2020/09/01/dz9FzR.png"></p><h3 id="3、实验步骤"><a href="#3、实验步骤" class="headerlink" title="3、实验步骤"></a>3、实验步骤</h3><p><strong>（1）完成各路由器的基本配置，实现各直连设备之间可以互ping对方，主机和路由器接口的地址自己规划</strong></p><blockquote><p>两台PC及三台路由器的IP地址配置如拓扑图所示，此处不再将图贴出</p></blockquote><p><strong>（2）在R2上添加两个loopback接口，loopback1和loopback2，其中loopback1地址为2.2.2.2/24，loopback2地址为22.22.22.22/24</strong></p><p><img src="https://s1.ax1x.com/2020/09/01/dzCFAS.png"></p><p><strong>（3）完成必要的配置实现全网可达</strong></p><blockquote><p>在路由器上运行路由协议，实现全网可达</p></blockquote><p><img src="https://s1.ax1x.com/2020/09/01/dzCVpj.png"></p><p><img src="https://s1.ax1x.com/2020/09/01/dzCecn.png"></p><p><img src="https://s1.ax1x.com/2020/09/01/dzCKBV.png"></p><p><strong>（4）使用标准ACL实现PC1不能访问PC2，并使用ping命令验证结果</strong></p><blockquote><p>标准ACL建议在离目标近的设备上配置，在R3上配置ACL拒绝来自主机172.16.1.1的流量，并在进接口方向调用，此时实现PC1不能访问PC2</p></blockquote><p><img src="https://s1.ax1x.com/2020/09/01/dzCT3j.png"></p><p><img src="https://s1.ax1x.com/2020/09/01/dzCHvn.png"></p><p><strong>（5）使用标准ACL实现只允许PC2远程登录到路由器R2，并使用telnet命令验证结果</strong></p><blockquote><p>在R2上配置ACL，允许主机172.16.3.1的流量，默认隐含一条拒绝所有，即拒绝除PC2之外的流量。在vty中允许其他设备使用telnet远程登录，并在in方向调用ACL</p></blockquote><p><img src="https://s1.ax1x.com/2020/09/01/dzPGa8.png"></p><blockquote><p>在PC1和PC2上进行测试，此时实现了只允许PC2远程登录到R2</p></blockquote><p><img src="https://s1.ax1x.com/2020/09/01/dziPJg.png"></p><p><img src="https://s1.ax1x.com/2020/09/01/dziVLq.png"></p><p><strong>（6）使用标准ACL实现禁止loopback2所在网段的所有主机访问PC1，对loopback1所在网段主机的访问不做限制</strong></p><blockquote><p>在R1上配置ACL，允许loopback1网段，拒绝loopback2网段，然后在e0/1接口的in方向调用</p></blockquote><p><img src="https://s1.ax1x.com/2020/09/01/dzizc9.png"></p><blockquote><p>此时实现了R2上的loopback1网段可以访问PC1，而loopback2网段不能</p></blockquote><p><img src="https://s1.ax1x.com/2020/09/01/dzFtjs.png"></p><p><strong>（7）使用命名ACL完整上述标准ACL的需求</strong></p><ul><li>实现PC1不能访问PC2</li></ul><p><img src="https://s1.ax1x.com/2020/09/01/dzecvD.png"></p><p><img src="https://s1.ax1x.com/2020/09/01/dzeoPP.png"></p><ul><li>实现只允许PC2远程登录到路由器R2</li></ul><p><img src="https://s1.ax1x.com/2020/09/01/dznifP.png"></p><p><img src="https://s1.ax1x.com/2020/09/01/dznAl8.png"></p><p><img src="https://s1.ax1x.com/2020/09/01/dznVOg.png"></p><ul><li>实现禁止loopback2所在网段的所有主机访问PC1，对loopback1所在网段主机的访问不做限制</li></ul><p><img src="https://s1.ax1x.com/2020/09/01/dzuCB4.png"></p><p><img src="https://s1.ax1x.com/2020/09/01/dzuPHJ.png"></p><p><strong>（8）使用扩展ACL实现禁止PC1远程登录到R2，对其他访问不做限制</strong></p><p><img src="https://s1.ax1x.com/2020/09/01/dzu34I.png"></p><p><img src="https://s1.ax1x.com/2020/09/01/dzu1UA.png"></p><p><img src="https://s1.ax1x.com/2020/09/01/dzulEd.png"></p><p><strong>（9）使用扩展ACL实现PC2可以telnet到路由器R1，但不能ping通路由器R1，分别使用ping和telnet验证结果</strong></p><p><img src="https://s1.ax1x.com/2020/09/01/dzuOqe.png"></p><p><img src="https://s1.ax1x.com/2020/09/01/dzuLrD.png"></p><p><img src="https://s1.ax1x.com/2020/09/01/dzuHxK.png"></p><p><img src="https://s1.ax1x.com/2020/09/01/dzuqKO.png"></p><p><img src="https://s1.ax1x.com/2020/09/01/dzu726.png"></p><p><strong>（10）使用扩展ACL实现PC1可以pingPC2，但禁止PC2pingPC1，其他的访问不受限制，使用ping验证结果</strong></p><blockquote><p>ICMP</p><ul><li><p>echo request    –echo的请求包</p></li><li><p>echo reply         –echo的响应包</p></li></ul><p>只有以上两种报文是正常的，那么此时的ping才是能通的</p><p>PC1 ping PC2 正常</p><ul><li><p>PC1 给 PC2 发送的echo request是正常的（源是PC1，目标是PC2）</p></li><li><p>PC2给PC1发送的echo reply也是正常的（源是PC2，目标是PC1）</p></li></ul><p>PC2 ping PC1 不正常</p><ul><li><p>PC2不能给PC1发送 echo request（源是PC2，目的是PC1）</p></li><li><p>PC2不能接收到来自PC1的echo  reply（源是PC1，目的是PC2）</p></li></ul></blockquote><p><img src="https://s1.ax1x.com/2020/09/01/dzKOS0.png"></p><p><img src="https://s1.ax1x.com/2020/09/01/dzKqWq.png"></p><p><img src="https://s1.ax1x.com/2020/09/01/dzKbYn.png"></p><p><strong>（11）使用命名ACL完成上述扩展ACL的需求</strong></p><ul><li>实现禁止PC1远程登录到R2，对其他访问不做限制</li></ul><p><img src="https://s1.ax1x.com/2020/09/01/dzQCDS.png"></p><p><img src="https://s1.ax1x.com/2020/09/01/dzQPHg.png"></p><p><img src="https://s1.ax1x.com/2020/09/01/dzQ9u8.png"></p><ul><li>实现PC2可以telnet到路由器R1，但不能ping路由器R1，分别使用ping和telnet验证结果</li></ul><p><img src="https://s1.ax1x.com/2020/09/01/dzQKDU.png"></p><p><img src="https://s1.ax1x.com/2020/09/01/dzQuuT.png"></p><ul><li>实现PC1可以pingPC2，但禁止PC2pingPC1，其他的访问不受限制，使用ping验证结果</li></ul><p><span style="color:red">方法一：拒绝PC2向PC1发送icmp的echo-request报文</span></p><p><img src="https://s1.ax1x.com/2020/09/01/dzQWqS.png"></p><p><img src="https://s1.ax1x.com/2020/09/01/dzQRr8.png"></p><p><img src="https://s1.ax1x.com/2020/09/01/dzQ2Kf.png"></p><p><span style="color:red">方法二：拒绝PC1向PC2发送icmp的echo-reply报文</span></p><p><img src="https://s1.ax1x.com/2020/09/01/dzl1L8.png"></p><p><img src="https://s1.ax1x.com/2020/09/01/dzllsf.png"></p><p><img src="https://s1.ax1x.com/2020/09/01/dzlQQP.png"></p>]]></content>
+    
+    
+    <summary type="html">&lt;h3 id=&quot;1、实验目的&quot;&gt;&lt;a href=&quot;#1、实验目的&quot; class=&quot;headerlink&quot; title=&quot;1、实验目的&quot;&gt;&lt;/a&gt;1、实验目的&lt;/h3&gt;&lt;p&gt;1）掌握ACL的作用&lt;br&gt;2）理解标准和扩展ACL的区别&lt;br&gt;3）熟悉标准和扩展ACL的配置&lt;br&gt;4）掌握ACL的验证和查看命令&lt;br&gt;5）理解命名的ACL的作用与配置&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="实验" scheme="http://yoursite.com/categories/%E5%AE%9E%E9%AA%8C/"/>
+    
+    
+    <category term="CCNA" scheme="http://yoursite.com/tags/CCNA/"/>
+    
+    <category term="ACL" scheme="http://yoursite.com/tags/ACL/"/>
+    
+  </entry>
   
   <entry>
     <title>DMVPN验证</title>
@@ -110,9 +133,9 @@
     <category term="实验" scheme="http://yoursite.com/categories/%E5%AE%9E%E9%AA%8C/"/>
     
     
-    <category term="路由协议" scheme="http://yoursite.com/tags/%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE/"/>
-    
     <category term="CCNA" scheme="http://yoursite.com/tags/CCNA/"/>
+    
+    <category term="路由协议" scheme="http://yoursite.com/tags/%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE/"/>
     
     <category term="OSPF" scheme="http://yoursite.com/tags/OSPF/"/>
     
@@ -135,11 +158,11 @@
     <category term="实验" scheme="http://yoursite.com/categories/%E5%AE%9E%E9%AA%8C/"/>
     
     
+    <category term="CCNA" scheme="http://yoursite.com/tags/CCNA/"/>
+    
     <category term="路由协议" scheme="http://yoursite.com/tags/%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE/"/>
     
     <category term="EIGRP" scheme="http://yoursite.com/tags/EIGRP/"/>
-    
-    <category term="CCNA" scheme="http://yoursite.com/tags/CCNA/"/>
     
   </entry>
   
@@ -165,9 +188,9 @@
     <category term="实验" scheme="http://yoursite.com/categories/%E5%AE%9E%E9%AA%8C/"/>
     
     
-    <category term="路由协议" scheme="http://yoursite.com/tags/%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE/"/>
-    
     <category term="CCNA" scheme="http://yoursite.com/tags/CCNA/"/>
+    
+    <category term="路由协议" scheme="http://yoursite.com/tags/%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE/"/>
     
     <category term="RIP" scheme="http://yoursite.com/tags/RIP/"/>
     
