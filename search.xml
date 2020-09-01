@@ -1,97 +1,215 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>RIP的应用</title>
-    <url>/2020/08/27/RIP%E7%9A%84%E5%BA%94%E7%94%A8/</url>
-    <content><![CDATA[<h4 id="1、-实验目的"><a href="#1、-实验目的" class="headerlink" title="1、 实验目的"></a>1、 实验目的</h4><ol>
-<li>掌握RIPv2的基本配置<br></li>
-<li>理解RIPv2路由条目的结构含义<br></li>
-<li>理解自动汇总的含义<br></li>
-<li>理解和观察周期性更新<br></li>
-<li>理解debug ip rip 命令 的作用<a id="more"></a>
+    <title>DMVPN验证</title>
+    <url>/2020/09/01/DMVPN%E9%AA%8C%E8%AF%81/</url>
+    <content><![CDATA[<p>DMVPN三个阶段</p>
+<ul>
+<li>阶段一：中心到节点的设计（Hub-to-Spoke Design）</li>
+<li>阶段二：节点到节点的设计（Spoke-to-Spoke Design）</li>
+<li>阶段三：分层（基于树的）设计（Hierachical [Tree-Based] Design）</li>
+</ul>
+<p>本文将从三个阶段对DMVPN进行验证</p>
+<a id="more"></a>
 
-</li>
-</ol>
-<h4 id="2、-拓扑结构"><a href="#2、-拓扑结构" class="headerlink" title="2、 拓扑结构"></a>2、 拓扑结构</h4><p><img src="https://s1.ax1x.com/2020/08/28/doIIiV.png"></p>
-<h4 id="3、-实验步骤"><a href="#3、-实验步骤" class="headerlink" title="3、 实验步骤"></a>3、 实验步骤</h4><p><strong>（1）完成各路由器的基本配置，实现各直连设备之间可以互 ping 对方， 要求 PC1 的 IP 地址设置为 172.16.1.1/24，网关设置为172.16.1.254， PC2 的 IP 地址设置为172.16.3.1/24，网关设置为172.16.3.254，各路由器接口间的地址自己规划。</strong></p>
-<p><img src="https://s1.ax1x.com/2020/08/27/d5mDb9.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/27/d5uw79.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/27/d5NpXn.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/27/d5NkkT.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/27/d5Ne1J.png"></p>
-<p><strong>（2）在三台路由器上都启用RIPv2协议，通告各自的直连网络路由，并开启自动汇总</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">默认开启自动汇总，会在边界处把一个网段汇总成主类</span><br></pre></td></tr></table></figure>
+<h3 id="1、拓扑结构"><a href="#1、拓扑结构" class="headerlink" title="1、拓扑结构"></a>1、拓扑结构</h3><p><img src="https://s1.ax1x.com/2020/09/01/dxEvT0.png"></p>
+<p>在进行验证之前，确保R1、R3、R4存在默认路由，使得三台路由器之间可以相互ping通</p>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxulw9.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxu8F1.png"></p>
+<h3 id="2、phase-1验证"><a href="#2、phase-1验证" class="headerlink" title="2、phase-1验证"></a>2、phase-1验证</h3><blockquote>
+<p>hub端是mGRE，分支端是常规的GRE，分支之间的流量必须经过hub，可以采取关闭水平分割来实现分支之间的路由互相学习，可以在hub端进行手工的路由汇总，来优化分支的路由条目</p>
+</blockquote>
+<ul>
+<li>hub配置</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R1(config)#int tunnel 1</span><br><span class="line">R1(config-if)#ip address 10.1.1.1 255.255.255.0    //隧道地址</span><br><span class="line">R1(config-if)#tunnel source 202.101.12.1    //指定隧道源地址(隧道目的地址可通过nhrp解析)</span><br><span class="line">R1(config-if)#tunnel mode gre multipoin    //R1为hub，所以指定gre隧道模式为multipoint</span><br><span class="line">R1(config-if)#tunnel key 100000    //指定隧道的key，可用于隧道的身份验证</span><br><span class="line">R1(config-if)#ip nhrp network-id 12345    //指定nhrp的标识，hub和spoke之间的network-id必须一致</span><br><span class="line">R1(config-if)#ip nhrp authentication cisco123    //nhrp身份验证</span><br><span class="line">R1(config-if)#ip nhrp map multicast dynamic    //开启组播映射功能</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://s1.ax1x.com/2020/08/28/do543D.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/do5HHI.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/do5v8S.png"></p>
-<p><strong>（3）在R1上使用show ip protocols命令，观察并理解该命令的输出信息</strong></p>
-<blockquote>
-<p>路由更新计时器：30s（默认）<br>路由无效时间：180s（默认）<br>抑制计时器：180s（默认）<br>路由刷新计时器：240s（默认）</p>
+<ul>
+<li>spoke(R3)配置</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R3(config)#int tunnel 1</span><br><span class="line">R3(config-if)#ip address 10.1.1.3 255.255.255.0</span><br><span class="line">R3(config-if)#tunnel source 202.101.23.3</span><br><span class="line">R3(config-if)#tunnel destination 202.101.12.1</span><br><span class="line">R3(config-if)#tunnel key 100000</span><br><span class="line">R3(config-if)#ip nhrp network-id 12345</span><br><span class="line">R3(config-if)#ip nhrp authentication cisco123 </span><br><span class="line">R3(config-if)#ip nhrp map 10.1.1.1 202.101.12.1    //映射hub的逻辑地址到物理地址</span><br><span class="line">R3(config-if)#ip nhrp map multicast 202.101.12.1    //映射组播信息到hub地址</span><br><span class="line">R3(config-if)#ip nhrp nhs 10.1.1.1    //指定next-hop-server为10.1.1.1</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>R1和R3的隧道地址可以相互ping通</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxKljS.png"></p>
+<ul>
+<li>在R1上查看地址的映射关系——10.1.1.3映射到的公网地址为202.101.23.3</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxKNhq.png"></p>
+<ul>
+<li>spoke(R4)配置</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R4(config)#int tunnel 1</span><br><span class="line">R4(config-if)#ip address 10.1.1.4 255.255.255.0</span><br><span class="line">R4(config-if)#ip nhrp network-id 12345</span><br><span class="line">R4(config-if)#ip nhrp authentication cisco123</span><br><span class="line">R4(config-if)#ip nhrp nhs 10.1.1.1</span><br><span class="line">R4(config-if)#ip nhrp map 10.1.1.1 202.101.12.1</span><br><span class="line">R4(config-if)#ip nhrp map multicast 202.101.12.1</span><br><span class="line">R4(config-if)#tunnel source 202.101.24.4</span><br><span class="line">R4(config-if)#tunnel destination 202.101.12.1</span><br><span class="line">R4(config-if)#tunnel key 100000</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>无需再在R1上配置，即可ping通R4的隧道地址，并且也记录了R4的逻辑地址和物理地址的映射关系</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxMdIA.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxMRaj.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxMWIs.png"></p>
+<ul>
+<li>分别在R1、R3、R4上各启用一个loopback接口，地址设置如下所示</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R1(config)#int loopback 1</span><br><span class="line">R1(config-if)#ip add 172.16.1.1 255.255.255.0</span><br><span class="line">R3(config)#int loopback 1</span><br><span class="line">R3(config-if)#ip address 172.16.3.1 255.255.255.0</span><br><span class="line">R4(config)#int loopback 1</span><br><span class="line">R4(config-if)#ip add 172.16.4.1 255.255.255.0</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>启用EIGRP协议</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R1(config)#router eigrp 110</span><br><span class="line">R1(config-router)#no auto-summary </span><br><span class="line">R1(config-router)#network 172.16.1.0 0.0.0.255</span><br><span class="line">R1(config-router)#network 10.1.1.0 0.0.0.255</span><br><span class="line"></span><br><span class="line">R3(config)#router eigrp 110</span><br><span class="line">R3(config-router)#no auto-summary </span><br><span class="line">R3(config-router)#network 172.16.3.0 0.0.0.255</span><br><span class="line">R3(config-router)#network 10.1.1.0 0.0.0.255</span><br><span class="line"></span><br><span class="line">R4(config)#router eigrp 110</span><br><span class="line">R4(config-router)#no auto-summary </span><br><span class="line">R4(config-router)#network 172.16.4.0 0.0.0.255</span><br><span class="line">R4(config-router)#network 10.1.1.0 0.0.0.255</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在R1上查看EIGRP邻居表，可知R1通过1个隧道接口建立了两个邻居关系</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxQj0g.png"></p>
+<ul>
+<li>在R1的e0/0接口抓包，报文如下图所示，但是此时的报文都为明文显示，需要进行加密</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxlEBF.png"></p>
+<ul>
+<li>在R1、R3和R4上配置IPSec，保护隧道上的数据</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">R1(config)#crypto isakmp policy 10</span><br><span class="line">R1(config-isakmp)#authentication pre-share</span><br><span class="line">R1(config-isakmp)#exit </span><br><span class="line">R1(config)#crypto isakmp key cisco123 address 0.0.0.0</span><br><span class="line">R1(config)#crypto ipsec transform-set dmvpn esp-3des esp-sha256-hmac </span><br><span class="line">R1(cfg-crypto-trans)#mode transport </span><br><span class="line">R1(cfg-crypto-trans)#exit</span><br><span class="line">R1(config)#crypto ipsec profile dprofile</span><br><span class="line">R1(ipsec-profile)#set transform-set dmvpn</span><br><span class="line">R1(ipsec-profile)#exit</span><br><span class="line">R1(config)#int tunnel 1</span><br><span class="line">R1(config-if)#tunnel protection ipsec profile dprofile</span><br><span class="line">*Aug <span class="number">31</span> <span class="number">02</span>:<span class="number">59</span>:<span class="number">34.650</span>: %CRYPTO<span class="number">-6</span>-ISAKMP_ON_OFF: ISAKMP is ON</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">R3(config)#crypto isakmp policy 10</span><br><span class="line">R3(config-isakmp)#authentication pre-share </span><br><span class="line">R3(config-isakmp)#exit</span><br><span class="line">R3(config)#crypto isakmp key cisco123 address 0.0.0.0</span><br><span class="line">R3(config)#crypto ipsec transform-set dmvpn esp-3des esp-sha256-hmac </span><br><span class="line">R3(cfg-crypto-trans)#mode transport </span><br><span class="line">R3(cfg-crypto-trans)#exit</span><br><span class="line">R3(config)#crypto ipsec profile dprofile</span><br><span class="line">R3(ipsec-profile)#set transform-set dmvpn</span><br><span class="line">R3(ipsec-profile)#exit</span><br><span class="line">R3(config)#int tunnel 1</span><br><span class="line">R3(config-if)#tunnel protection ipsec profile dprofile</span><br><span class="line">*Aug <span class="number">31</span> <span class="number">03</span>:<span class="number">02</span>:<span class="number">49.557</span>: %CRYPTO<span class="number">-6</span>-ISAKMP_ON_OFF: ISAKMP is ON</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">R4(config)#crypto isakmp policy 10</span><br><span class="line">R4(config-isakmp)#authentication pre-share </span><br><span class="line">R4(config-isakmp)#exit </span><br><span class="line">R4(config)#crypto isakmp key cisco123 address 0.0.0.0</span><br><span class="line">R4(config)#crypto ipsec transform-set dmvpn  esp-3des esp-sha256-hmac </span><br><span class="line">R4(cfg-crypto-trans)#mode transport </span><br><span class="line">R4(cfg-crypto-trans)#exit</span><br><span class="line">R4(config)#crypto ipsec profile dprofile</span><br><span class="line">R4(ipsec-profile)#set transform-set dmvpn</span><br><span class="line">R4(ipsec-profile)#exit</span><br><span class="line">R4(config)#int tunnel 1</span><br><span class="line">R4(config-if)#tunnel protection ipsec profile dprofile</span><br><span class="line">*Aug <span class="number">31</span> <span class="number">03</span>:<span class="number">06</span>:<span class="number">36.128</span>: %CRYPTO<span class="number">-6</span>-ISAKMP_ON_OFF: ISAKMP is ON</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>验证是否进行了加密</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/01/dx1KaQ.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/01/dx1UZF.png"></p>
+<ul>
+<li>此时R3上的路由表并没有172.16.4.0的路由条目，因为存在水平分割问题</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/01/dx1xWn.png"></p>
+<ul>
+<li>在R1的隧道接口中关闭水平分割</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R1(config)#int tunnel 1</span><br><span class="line">R1(config-if)#no ip split-horizon eigrp 110</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>再次查看R3的路由表 ，此时学习到了172.16.4.0的路由条目</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/01/dx31Te.png"></p>
+<ul>
+<li>跟踪路由，可知分支之间的流量必须经过hub</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/01/dx3rkQ.png"></p>
+<ul>
+<li>可通过在hub上进行路由汇总的方式来优化分支的路由条目，为了便于观察结果，在R3和R4上分别再开启一个回环口，并在EIGRP中通告</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R3(config)#int loopback 2</span><br><span class="line">R3(config-if)#ip address 172.16.33.1 255.255.255.0</span><br><span class="line">R3(config)#router eigrp 110</span><br><span class="line">R3(config-router)#network 172.16.33.0  0.0.0.255</span><br><span class="line"></span><br><span class="line">R4(config)#int loopback 2</span><br><span class="line">R4(config-if)#ip add 172.16.44.1 255.255.255.0</span><br><span class="line">R4(config)#router eigrp 110</span><br><span class="line">R4(config-router)#network 172.16.44.0 0.0.0.255</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看R3和R4的路由表，都学习到了相应的路由条目</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/01/dx3HpR.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/01/dx3b11.png"></p>
+<ul>
+<li>在R1的tunnel接口进行路由汇总</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R1(config)#int tunnel 1</span><br><span class="line">R1(config-if)#ip summary-address eigrp 110 172.16.0.0/16</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>再次查看R3和R4的路由表，此时学习到的是经过R1汇总的路由</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxDFvF.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxDEDJ.png"></p>
+<h3 id="3、phase-2验证"><a href="#3、phase-2验证" class="headerlink" title="3、phase-2验证"></a>3、phase-2验证</h3><blockquote>
+<p>所有站点都采用mGRE，分支的流量可以无需经过hub，不能在hub端对路由进行汇总；eigrp环境，需要关闭下一跳规则——<span style="color:red">no ip next-hop-self eigrp</span>，缺点所有的分支都需要维护整个网络的所有路由信息。</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/28/dooEdI.png"></p>
-<p><strong>（4）查看各路由器的路由表，观察RIP路由条目的特征</strong></p>
+<ul>
+<li>在phase1的基础上，将R3、R4的隧道模式改为multipoint</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R3(config)#int tunnel 1</span><br><span class="line">R3(config-if)#no tunnel destination 202.101.12.1</span><br><span class="line">R3(config-if)#tunnel mode gre multipoint </span><br><span class="line"></span><br><span class="line">R4(config)#int tunnel 1</span><br><span class="line">R4(config-if)#no tunnel destination 202.101.12.1</span><br><span class="line">R4(config-if)#tunnel mode gre multipoint </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在R3上使用traceroute跟踪路由，可知去往172.16.4.1仍然要经过hub</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxDDKg.png"></p>
+<ul>
+<li>查看R3的路由表，可知去往172.16.4.0/24网段的路由的下一跳为hub</li>
+</ul>
 <blockquote>
-<p>由于没有关闭自动汇总，R1上存在172.16.0.0网段的路由，则不会再学习R2上的172.16.0.0的路由</p>
-<p>同理，R2上存在172.16.0.0网段的路由，则不会学习R1上的172.16.0.0的路由</p>
+<p>【注】<span style="color:red">此时并未在R1的隧道接口汇总路由</span></p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/28/doowy4.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/dooRSO.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/doo7kt.png"></p>
-<p><strong>（5）分别在R2和PC2上测试R2与PC1以及PC2与PC1之间的连通性</strong></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/doTJnH.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/doTtHA.png"></p>
-<p><strong>（6）在R2上使用debug ip rip观察路由的发送情况</strong></p>
-<blockquote>
-<p>RIPv2组播地址：224.0.0.9</p>
-<p>由于没有关闭自动汇总，此时发送的报文都为主类路由</p>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxDsbj.png"></p>
+<ul>
+<li>出现上述问题的原因在于EIGRP路由在传递的时候会将下一跳改为自己，将R1的tunnel接口将该属性关闭</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R1(config)#int tunnel 1</span><br><span class="line">R1(config-if)#no ip next-hop-self eigrp 110</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>此时查看R3的路由表可知去往172.16.4.0/24网段的路由的下一跳变为R4</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxDHaR.png"></p>
+<ul>
+<li>在R3上再次跟踪路由，如下图所示，可知此时R3直接通过R4访问172.16.4.1，无需再经过hub</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxDLPx.png"></p>
+<h3 id="4、phase-3验证"><a href="#4、phase-3验证" class="headerlink" title="4、phase-3验证"></a>4、phase-3验证</h3><blockquote>
+<p>在阶段三引入了shortcut（短路）和redirect（重定向）</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/28/doT09f.png"></p>
-<p><strong>（7）在三台路由器上都关闭自动汇总，观察各路由表的变化，并再次测试R2与PC1以及PC2与PC1之间的连通性</strong></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/doTrjg.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/doT43T.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/doTLU1.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/do7Z28.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/do7urQ.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/do7QVs.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/do70aR.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/do7yRK.png"></p>
-<p><strong>（8）再次在R2上使用debug ip rip观察路由的发送情况，比较关闭自动汇总与开启自动汇总debug输出信息的不同</strong></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/do7von.png"></p>
-<p><strong>（9）在R2上添加一个loopback1接口，地址自定</strong></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/doHAeJ.png"></p>
-<p><strong>（10）添加必要配置，实现PC1和PC2都能够正常访问在R2上的loopback1</strong></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTPgQH.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTPhwt.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTPTfS.png"></p>
-<p><strong>（11）在R1上添加一个loopback1接口，地址自定，然后在RIP中通告，观察R2和R3是否能马上学习到R1上新增的loopback1网段</strong></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTiwcQ.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTi7Ax.png"></p>
-<blockquote>
-<p>由于rip的路由表的更新时间为30s，故在R2、R3上无法马上学习到在R1上新增的loopback1网段</p>
-</blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTFJKJ.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTFtbR.png"></p>
-<p><strong>（12）将R1上的loopback1接口关闭，观察R2和R3上是否还存在关于R1上的loopback1网段的路由条目</strong></p>
-<blockquote>
-<p>由于触发更新，R1上存在失效路由，则会马上发送更新给相邻的路由器，让他们将失效路由删除</p>
-</blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTA5uQ.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTAoHs.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTA7En.png"></p>
-<p><strong>（13）使用wireshark抓取RIPv2报文，理解RIPv2报文各字段的含义</strong></p>
-<blockquote>
-<p>RIPv2运行在UDP的520端口上，属于应用层协议</p>
-</blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTAHNq.png"></p>
+<ul>
+<li>在R1上开启redirect，在R3和R4上开启shortcut</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R1(config)#int tunnel 1</span><br><span class="line">R1(config-if)#ip nhrp redirect </span><br><span class="line"></span><br><span class="line">R3(config)#int tunnel 1</span><br><span class="line">R3(config-if)#ip nhrp shortcut </span><br><span class="line"></span><br><span class="line">R4(config)#int tunnel 1</span><br><span class="line">R4(config-if)#ip nhrp shortcut </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在R1上将下一跳属性和水平分割恢复</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R1(config)#int tunnel 1</span><br><span class="line">R1(config-if)#ip next-hop-self eigrp 110</span><br><span class="line">R1(config-if)#ip split-horizon eigrp 110</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>此时R3和R4的路由表还是无法学习到其他站点的路由条目</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxrMon.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxrliq.png"></p>
+<ul>
+<li>为了验证实验结果，此时在R3启用多个回环口，并在eigrp中通告</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R3(config)#int loopback 3</span><br><span class="line">R3(config-if)#ip add 192.168.3.1 255.255.255.0</span><br><span class="line">R3(config)#int loopback 4</span><br><span class="line">R3(config-if)#ip add 192.168.4.1 255.255.255.0</span><br><span class="line">R3(config)#int loopback 5</span><br><span class="line">R3(config-if)#ip add 192.168.5.1 255.255.255.0</span><br><span class="line"></span><br><span class="line">R3(config)#router eigrp 110</span><br><span class="line">R3(config-router)#network 192.168.3.0</span><br><span class="line">R3(config-router)#network 192.168.4.0</span><br><span class="line">R3(config-router)#network 192.168.5.0</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在R1上进行路由汇总</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R1(config)#int tunnel 1</span><br><span class="line">R1(config-if)#ip summary-address eigrp 110 172.16.0.0/16</span><br><span class="line">R1(config-if)#ip summary-address eigrp 110 192.168.0.0/16</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>再次查看R3和R4的路由表，此时学习到的为经过R1汇总的条目，并且下一跳都指向R1</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxrsSK.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxr6yD.png"></p>
+<ul>
+<li>在R4上跟踪到达172.16.3.1所经过的路径，可知需经过R1</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxr4Yt.png"></p>
+<ul>
+<li>查看R4的路由表，此时出现了”H”的路由条目</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxroSf.png"></p>
+<ul>
+<li>此时再次使用traceroute跟踪172.16.3.1，则无需再经过R1</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxs96U.png"></p>
+<ul>
+<li>再次进行验证，使用traceroute命令跟踪到达192.168.3.1所经过的路径，首次traceroute需要经过R1</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxsUc8.png"></p>
+<ul>
+<li>查看R4的路由表，此时通过NHRP学习到了更详细的路由去往192.168.3.0/24网段，下一跳为10.1.1.3</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxsrAs.png"></p>
+<ul>
+<li>再次使用traceroute跟踪路径，则无需再经过R1</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxsT41.png"></p>
+<h3 id="5、总结"><a href="#5、总结" class="headerlink" title="5、总结"></a>5、总结</h3><p><img src="https://s1.ax1x.com/2020/09/01/dx5hkT.png"></p>
 ]]></content>
-      <categories>
-        <category>实验</category>
-      </categories>
       <tags>
-        <tag>路由协议</tag>
-        <tag>RIP</tag>
-        <tag>CCNA</tag>
+        <tag>VPN</tag>
       </tags>
   </entry>
   <entry>
@@ -231,8 +349,102 @@
       </categories>
       <tags>
         <tag>路由协议</tag>
-        <tag>CCNA</tag>
         <tag>EIGRP</tag>
+        <tag>CCNA</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>RIP的应用</title>
+    <url>/2020/08/27/RIP%E7%9A%84%E5%BA%94%E7%94%A8/</url>
+    <content><![CDATA[<h4 id="1、-实验目的"><a href="#1、-实验目的" class="headerlink" title="1、 实验目的"></a>1、 实验目的</h4><ol>
+<li>掌握RIPv2的基本配置<br></li>
+<li>理解RIPv2路由条目的结构含义<br></li>
+<li>理解自动汇总的含义<br></li>
+<li>理解和观察周期性更新<br></li>
+<li>理解debug ip rip 命令 的作用<a id="more"></a>
+
+</li>
+</ol>
+<h4 id="2、-拓扑结构"><a href="#2、-拓扑结构" class="headerlink" title="2、 拓扑结构"></a>2、 拓扑结构</h4><p><img src="https://s1.ax1x.com/2020/08/28/doIIiV.png"></p>
+<h4 id="3、-实验步骤"><a href="#3、-实验步骤" class="headerlink" title="3、 实验步骤"></a>3、 实验步骤</h4><p><strong>（1）完成各路由器的基本配置，实现各直连设备之间可以互 ping 对方， 要求 PC1 的 IP 地址设置为 172.16.1.1/24，网关设置为172.16.1.254， PC2 的 IP 地址设置为172.16.3.1/24，网关设置为172.16.3.254，各路由器接口间的地址自己规划。</strong></p>
+<p><img src="https://s1.ax1x.com/2020/08/27/d5mDb9.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/27/d5uw79.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/27/d5NpXn.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/27/d5NkkT.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/27/d5Ne1J.png"></p>
+<p><strong>（2）在三台路由器上都启用RIPv2协议，通告各自的直连网络路由，并开启自动汇总</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">默认开启自动汇总，会在边界处把一个网段汇总成主类</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/08/28/do543D.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/do5HHI.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/do5v8S.png"></p>
+<p><strong>（3）在R1上使用show ip protocols命令，观察并理解该命令的输出信息</strong></p>
+<blockquote>
+<p>路由更新计时器：30s（默认）<br>路由无效时间：180s（默认）<br>抑制计时器：180s（默认）<br>路由刷新计时器：240s（默认）</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/08/28/dooEdI.png"></p>
+<p><strong>（4）查看各路由器的路由表，观察RIP路由条目的特征</strong></p>
+<blockquote>
+<p>由于没有关闭自动汇总，R1上存在172.16.0.0网段的路由，则不会再学习R2上的172.16.0.0的路由</p>
+<p>同理，R2上存在172.16.0.0网段的路由，则不会学习R1上的172.16.0.0的路由</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/08/28/doowy4.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/dooRSO.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/doo7kt.png"></p>
+<p><strong>（5）分别在R2和PC2上测试R2与PC1以及PC2与PC1之间的连通性</strong></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/doTJnH.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/doTtHA.png"></p>
+<p><strong>（6）在R2上使用debug ip rip观察路由的发送情况</strong></p>
+<blockquote>
+<p>RIPv2组播地址：224.0.0.9</p>
+<p>由于没有关闭自动汇总，此时发送的报文都为主类路由</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/08/28/doT09f.png"></p>
+<p><strong>（7）在三台路由器上都关闭自动汇总，观察各路由表的变化，并再次测试R2与PC1以及PC2与PC1之间的连通性</strong></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/doTrjg.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/doT43T.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/doTLU1.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/do7Z28.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/do7urQ.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/do7QVs.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/do70aR.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/do7yRK.png"></p>
+<p><strong>（8）再次在R2上使用debug ip rip观察路由的发送情况，比较关闭自动汇总与开启自动汇总debug输出信息的不同</strong></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/do7von.png"></p>
+<p><strong>（9）在R2上添加一个loopback1接口，地址自定</strong></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/doHAeJ.png"></p>
+<p><strong>（10）添加必要配置，实现PC1和PC2都能够正常访问在R2上的loopback1</strong></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/dTPgQH.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/dTPhwt.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/dTPTfS.png"></p>
+<p><strong>（11）在R1上添加一个loopback1接口，地址自定，然后在RIP中通告，观察R2和R3是否能马上学习到R1上新增的loopback1网段</strong></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/dTiwcQ.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/dTi7Ax.png"></p>
+<blockquote>
+<p>由于rip的路由表的更新时间为30s，故在R2、R3上无法马上学习到在R1上新增的loopback1网段</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/08/28/dTFJKJ.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/dTFtbR.png"></p>
+<p><strong>（12）将R1上的loopback1接口关闭，观察R2和R3上是否还存在关于R1上的loopback1网段的路由条目</strong></p>
+<blockquote>
+<p>由于触发更新，R1上存在失效路由，则会马上发送更新给相邻的路由器，让他们将失效路由删除</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/08/28/dTA5uQ.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/dTAoHs.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/dTA7En.png"></p>
+<p><strong>（13）使用wireshark抓取RIPv2报文，理解RIPv2报文各字段的含义</strong></p>
+<blockquote>
+<p>RIPv2运行在UDP的520端口上，属于应用层协议</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/08/28/dTAHNq.png"></p>
+]]></content>
+      <categories>
+        <category>实验</category>
+      </categories>
+      <tags>
+        <tag>路由协议</tag>
+        <tag>CCNA</tag>
+        <tag>RIP</tag>
       </tags>
   </entry>
   <entry>
@@ -304,6 +516,31 @@
         <tag>CCNA</tag>
         <tag>交换</tag>
         <tag>STP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2020/08/26/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<a id="more"></a>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+      <categories>
+        <category>Hello World</category>
+      </categories>
+      <tags>
+        <tag>hello world</tag>
       </tags>
   </entry>
   <entry>
@@ -462,31 +699,6 @@
         <tag>路由协议</tag>
         <tag>CCNA</tag>
         <tag>OSPF</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2020/08/26/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<a id="more"></a>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
-      <categories>
-        <category>Hello World</category>
-      </categories>
-      <tags>
-        <tag>hello world</tag>
       </tags>
   </entry>
   <entry>

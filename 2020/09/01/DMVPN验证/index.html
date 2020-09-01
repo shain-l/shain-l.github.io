@@ -6,60 +6,55 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>EIGRP的简单应用 | shainの博客</title>
+  <title>DMVPN验证 | shainの博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="1、实验目的1）掌握EIGRP的基本配置2）理解EIGRP的邻居表、拓扑表以及路由表的含义3）掌握查看EIGRP路由协议的相关信息4）掌握FD、AD、S、FS以及FC的含义5）理解EIGRP的hello报文作用6）理解路由快速收敛的含义7）理解EIGRP的不等价负载均衡">
+  <meta name="description" content="DMVPN三个阶段  阶段一：中心到节点的设计（Hub-to-Spoke Design） 阶段二：节点到节点的设计（Spoke-to-Spoke Design） 阶段三：分层（基于树的）设计（Hierachical [Tree-Based] Design）  本文将从三个阶段对DMVPN进行验证">
 <meta property="og:type" content="article">
-<meta property="og:title" content="EIGRP的简单应用">
-<meta property="og:url" content="http://yoursite.com/2020/08/28/EIGRP%E7%9A%84%E7%AE%80%E5%8D%95%E5%BA%94%E7%94%A8/index.html">
+<meta property="og:title" content="DMVPN验证">
+<meta property="og:url" content="http://yoursite.com/2020/09/01/DMVPN%E9%AA%8C%E8%AF%81/index.html">
 <meta property="og:site_name" content="shainの博客">
-<meta property="og:description" content="1、实验目的1）掌握EIGRP的基本配置2）理解EIGRP的邻居表、拓扑表以及路由表的含义3）掌握查看EIGRP路由协议的相关信息4）掌握FD、AD、S、FS以及FC的含义5）理解EIGRP的hello报文作用6）理解路由快速收敛的含义7）理解EIGRP的不等价负载均衡">
+<meta property="og:description" content="DMVPN三个阶段  阶段一：中心到节点的设计（Hub-to-Spoke Design） 阶段二：节点到节点的设计（Spoke-to-Spoke Design） 阶段三：分层（基于树的）设计（Hierachical [Tree-Based] Design）  本文将从三个阶段对DMVPN进行验证">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/28/dTeEvT.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/28/dTmotA.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/28/dTmj0g.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/28/dTnCpq.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/28/dTnHUJ.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTuKaQ.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTulPs.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTu1Gn.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTuRde.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTuWIH.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTuhid.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTuTQP.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTuOoQ.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTuvJs.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTKGYd.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTKaOf.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTK00S.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTKsYj.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTKcpn.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTKglq.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTKTh9.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTKj0O.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTKv7D.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTMphd.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTM0jx.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTQP54.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTQlPH.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTlmSs.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTl00K.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTlfnP.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTgwut.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTgRvn.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTgjDx.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dT2nIS.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dT26Z6.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dT27eP.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTRdTf.png">
-<meta property="article:published_time" content="2020-08-28T15:34:08.000Z">
-<meta property="article:modified_time" content="2020-08-29T01:23:55.939Z">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/01/dxEvT0.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/01/dxulw9.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/01/dxu8F1.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/01/dxKljS.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/01/dxKNhq.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/01/dxMdIA.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/01/dxMRaj.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/01/dxMWIs.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/01/dxQj0g.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/01/dxlEBF.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/01/dx1KaQ.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/01/dx1UZF.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/01/dx1xWn.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/01/dx31Te.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/01/dx3rkQ.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/01/dx3HpR.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/01/dx3b11.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/01/dxDFvF.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/01/dxDEDJ.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/01/dxDDKg.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/01/dxDsbj.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/01/dxDHaR.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/01/dxDLPx.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/01/dxrMon.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/01/dxrliq.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/01/dxrsSK.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/01/dxr6yD.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/01/dxr4Yt.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/01/dxroSf.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/01/dxs96U.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/01/dxsUc8.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/01/dxsrAs.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/01/dxsT41.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/01/dx5hkT.png">
+<meta property="article:published_time" content="2020-09-01T08:14:49.000Z">
+<meta property="article:modified_time" content="2020-09-01T12:07:55.749Z">
 <meta property="article:author" content="shain-l">
-<meta property="article:tag" content="路由协议">
-<meta property="article:tag" content="EIGRP">
-<meta property="article:tag" content="CCNA">
+<meta property="article:tag" content="VPN">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://s1.ax1x.com/2020/08/28/dTeEvT.png">
+<meta name="twitter:image" content="https://s1.ax1x.com/2020/09/01/dxEvT0.png">
   
     <link rel="alternative" href="/atom.xml" title="shainの博客" type="application/atom+xml">
   
@@ -201,14 +196,14 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-EIGRP的简单应用" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-DMVPN验证" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      EIGRP的简单应用
+      DMVPN验证
     </h1>
   
 
@@ -226,146 +221,222 @@
 		<!--显示阅读次数完毕-->
 		<!--字数统计-->
 		<div align="right" class="post-count">
-			<img src="/assets/img/word_count.png" width="26px" title="字数">&nbsp;1.6k&nbsp; | &nbsp;<img src="/assets/img/time_2.png" width="26px" title="阅读时长">&nbsp;6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<img src="/assets/img/word_count.png" width="26px" title="字数">&nbsp;2.2k&nbsp; | &nbsp;<img src="/assets/img/time_2.png" width="26px" title="阅读时长">&nbsp;10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		</div>
 		
         
-        <a href="/2020/08/28/EIGRP%E7%9A%84%E7%AE%80%E5%8D%95%E5%BA%94%E7%94%A8/" class="archive-article-date">
-  	<time datetime="2020-08-28T15:34:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-28</time>
+        <a href="/2020/09/01/DMVPN%E9%AA%8C%E8%AF%81/" class="archive-article-date">
+  	<time datetime="2020-09-01T08:14:49.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-01</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h4 id="1、实验目的"><a href="#1、实验目的" class="headerlink" title="1、实验目的"></a>1、实验目的</h4><p>1）掌握EIGRP的基本配置<br>2）理解EIGRP的邻居表、拓扑表以及路由表的含义<br>3）掌握查看EIGRP路由协议的相关信息<br>4）掌握FD、AD、S、FS以及FC的含义<br>5）理解EIGRP的hello报文作用<br>6）理解路由快速收敛的含义<br>7）理解EIGRP的不等价负载均衡</p>
+        <p>DMVPN三个阶段</p>
+<ul>
+<li>阶段一：中心到节点的设计（Hub-to-Spoke Design）</li>
+<li>阶段二：节点到节点的设计（Spoke-to-Spoke Design）</li>
+<li>阶段三：分层（基于树的）设计（Hierachical [Tree-Based] Design）</li>
+</ul>
+<p>本文将从三个阶段对DMVPN进行验证</p>
 <a id="more"></a>
 
-<h4 id="2、实验拓扑"><a href="#2、实验拓扑" class="headerlink" title="2、实验拓扑"></a>2、实验拓扑</h4><p><img src="https://s1.ax1x.com/2020/08/28/dTeEvT.png"></p>
-<h4 id="3、实验步骤"><a href="#3、实验步骤" class="headerlink" title="3、实验步骤"></a>3、实验步骤</h4><p><strong>（1）完成各路由器的基本配置，实现各直连设备之间可以互ping对方，要求PC1的IP地址设置为172.16.1.1/24，网关设置为172.16.1.254，PC2的IP地址设置为172.16.3.1/24，网关设置为172.16.3.254，各路由器接口间的地址自己规划</strong></p>
-<blockquote>
-<p>IP地址规划如拓扑图标记所示，此处不再列出</p>
+<h3 id="1、拓扑结构"><a href="#1、拓扑结构" class="headerlink" title="1、拓扑结构"></a>1、拓扑结构</h3><p><img src="https://s1.ax1x.com/2020/09/01/dxEvT0.png"></p>
+<p>在进行验证之前，确保R1、R3、R4存在默认路由，使得三台路由器之间可以相互ping通</p>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxulw9.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxu8F1.png"></p>
+<h3 id="2、phase-1验证"><a href="#2、phase-1验证" class="headerlink" title="2、phase-1验证"></a>2、phase-1验证</h3><blockquote>
+<p>hub端是mGRE，分支端是常规的GRE，分支之间的流量必须经过hub，可以采取关闭水平分割来实现分支之间的路由互相学习，可以在hub端进行手工的路由汇总，来优化分支的路由条目</p>
 </blockquote>
-<p><strong>（2）全网启用EIGRP，通告各自的直连网络路由，并关闭自动汇总</strong></p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//启用EIGRP进程，AS号为90，AS号是邻居建立的前提，邻居要建立AS号必须要一样</span></span><br><span class="line">R3(config)#router eigrp 90 </span><br><span class="line"><span class="comment">//关闭自动汇总</span></span><br><span class="line">R3(config-router)#no auto-summary  </span><br><span class="line"><span class="comment">//通告网段</span></span><br><span class="line">R3(config-router)#network 192.168.23.0  //通告直连网段</span><br><span class="line">R3(config-router)#network 172.16.3.0 0.0.0.255</span><br></pre></td></tr></table></figure>
+<ul>
+<li>hub配置</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">R1(config)#int tunnel 1</span><br><span class="line">R1(config-if)#ip address 10.1.1.1 255.255.255.0    //隧道地址</span><br><span class="line">R1(config-if)#tunnel source 202.101.12.1    //指定隧道源地址(隧道目的地址可通过nhrp解析)</span><br><span class="line">R1(config-if)#tunnel mode gre multipoin    //R1为hub，所以指定gre隧道模式为multipoint</span><br><span class="line">R1(config-if)#tunnel key 100000    //指定隧道的key，可用于隧道的身份验证</span><br><span class="line">R1(config-if)#ip nhrp network-id 12345    //指定nhrp的标识，hub和spoke之间的network-id必须一致</span><br><span class="line">R1(config-if)#ip nhrp authentication cisco123    //nhrp身份验证</span><br><span class="line">R1(config-if)#ip nhrp map multicast dynamic    //开启组播映射功能</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://s1.ax1x.com/2020/08/28/dTmotA.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTmj0g.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTnCpq.png"></p>
-<p><strong>（3）在R1上使用show ip protocols命令，观察并理解该命令的输出信息</strong></p>
-<blockquote>
-<p>Metric weight K1=1, K2=0, K3=1, K4=0, K5=0   – EIGRP的开销计算与这5个K值有关系</p>
-<p>邻居要建立，则五个K值必须相同</p>
-<p>K1：带宽；K2：负载；K3：延迟；K4：可靠性；K5：MTU</p>
-<p>真正与EIGRP开销计算有关系的，只有带宽和延迟；</p>
-<p>EIGRP开销=带宽+延迟</p>
-</blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTnHUJ.png"></p>
-<p><strong>（4）查看各路由器的邻居表、拓扑表以及路由表，分别找出FD、AD以及S等重要信息</strong></p>
-<blockquote>
-<p>邻居表各字段含义</p>
-<p>H：建立顺序</p>
-<p>Address：对端的IP</p>
-<p>Interface：从哪个接口学习到</p>
-<p>Hold：定义了等待没有从邻居那里接收到任何包的最大时间，当接收到新的包以后，Hold复位（在10~15s之间循环）</p>
-<p>Uptime：建立了多久</p>
-<p>SRTT：向邻居发送包以及受到邻居回应ACK的平均回程时间</p>
-<p>RTO：重传超时时间，路由器在重新传输包之前等待ACK的时间（应为SRTT的6倍，最大5000，若重传16次还未得到确认，则此邻居被宣布无效）</p>
-<p>Q：队列计数，表示有多少个可靠报文还没有得到确认，在运行正常的环境下该值应为0（如果值大于0则说明发生了拥塞）</p>
-<p>Seq：序列号</p>
-</blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTuKaQ.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTulPs.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTu1Gn.png"></p>
-<blockquote>
-<p>拓扑表</p>
-</blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTuRde.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTuWIH.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTuhid.png"></p>
-<blockquote>
-<p>路由表</p>
-</blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTuTQP.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTuOoQ.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTuvJs.png"></p>
-<p><strong>（5）测试PC1与PC2之间的连通性</strong></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTKGYd.png"></p>
-<p><strong>（6）在R2上添加一个loopback1接口，地址为200.200.200.200/24，然后在EIGRP中通告，观察R1和R3是否能马上学习到R2上新增的loopback1网段，并测试各主机与该loopback1之间的联通性</strong></p>
-<blockquote>
-<p>R1和R3能马上学习到R2上新增的loopback1网段</p>
-</blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTKaOf.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTK00S.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTKsYj.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTKcpn.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTKglq.png"></p>
-<p><strong>（7）使用wireshark抓取EIGRP的报文，理解EIGRP报文各字段的含义</strong></p>
-<blockquote>
-<p>每隔5s发送一个hello包，保持时间为15s，即超过3个hello时间未收到hello则认为对端Down，断开连接</p>
-</blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTKTh9.png"></p>
-<p><strong>（8）在R1上添加一个loopback1接口，地址为100.100.100.100/24，然后在EIGRP中通告</strong></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTKj0O.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTKv7D.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTMphd.png"></p>
-<p><strong>（9）断开R1和R3与各主机之间的连接，连接R1与R3之间的以太网接口，完成必要配置，实现200.200.200.200访问100.100.100.100的不等价负载均衡</strong></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTM0jx.png"></p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//使用源200.200.200.200去访问目标100.100.100.100</span></span><br><span class="line"><span class="comment">//若没有跟上source，那么默认情况下就是使用出接口去访问目标</span></span><br><span class="line">R2#ping 100.100.100.100 source 200.200.200.200  </span><br></pre></td></tr></table></figure>
+<ul>
+<li>spoke(R3)配置</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">R3(config)#int tunnel 1</span><br><span class="line">R3(config-if)#ip address 10.1.1.3 255.255.255.0</span><br><span class="line">R3(config-if)#tunnel source 202.101.23.3</span><br><span class="line">R3(config-if)#tunnel destination 202.101.12.1</span><br><span class="line">R3(config-if)#tunnel key 100000</span><br><span class="line">R3(config-if)#ip nhrp network-id 12345</span><br><span class="line">R3(config-if)#ip nhrp authentication cisco123 </span><br><span class="line">R3(config-if)#ip nhrp map 10.1.1.1 202.101.12.1    //映射hub的逻辑地址到物理地址</span><br><span class="line">R3(config-if)#ip nhrp map multicast 202.101.12.1    //映射组播信息到hub地址</span><br><span class="line">R3(config-if)#ip nhrp nhs 10.1.1.1    //指定next-hop-server为10.1.1.1</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://s1.ax1x.com/2020/08/29/dTQP54.png"></p>
-<blockquote>
-<p>由于此时R2的路由表中只存在一条路径到达100.100.100.100，所以此时不存在负载均衡</p>
+<ul>
+<li>R1和R3的隧道地址可以相互ping通</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxKljS.png"></p>
+<ul>
+<li>在R1上查看地址的映射关系——10.1.1.3映射到的公网地址为202.101.23.3</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxKNhq.png"></p>
+<ul>
+<li>spoke(R4)配置</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">R4(config)#int tunnel 1</span><br><span class="line">R4(config-if)#ip address 10.1.1.4 255.255.255.0</span><br><span class="line">R4(config-if)#ip nhrp network-id 12345</span><br><span class="line">R4(config-if)#ip nhrp authentication cisco123</span><br><span class="line">R4(config-if)#ip nhrp nhs 10.1.1.1</span><br><span class="line">R4(config-if)#ip nhrp map 10.1.1.1 202.101.12.1</span><br><span class="line">R4(config-if)#ip nhrp map multicast 202.101.12.1</span><br><span class="line">R4(config-if)#tunnel source 202.101.24.4</span><br><span class="line">R4(config-if)#tunnel destination 202.101.12.1</span><br><span class="line">R4(config-if)#tunnel key 100000</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>无需再在R1上配置，即可ping通R4的隧道地址，并且也记录了R4的逻辑地址和物理地址的映射关系</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxMdIA.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxMRaj.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxMWIs.png"></p>
+<ul>
+<li>分别在R1、R3、R4上各启用一个loopback接口，地址设置如下所示</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">R1(config)#int loopback 1</span><br><span class="line">R1(config-if)#ip add 172.16.1.1 255.255.255.0</span><br><span class="line">R3(config)#int loopback 1</span><br><span class="line">R3(config-if)#ip address 172.16.3.1 255.255.255.0</span><br><span class="line">R4(config)#int loopback 1</span><br><span class="line">R4(config-if)#ip add 172.16.4.1 255.255.255.0</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>启用EIGRP协议</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">R1(config)#router eigrp 110</span><br><span class="line">R1(config-router)#no auto-summary </span><br><span class="line">R1(config-router)#network 172.16.1.0 0.0.0.255</span><br><span class="line">R1(config-router)#network 10.1.1.0 0.0.0.255</span><br><span class="line"></span><br><span class="line">R3(config)#router eigrp 110</span><br><span class="line">R3(config-router)#no auto-summary </span><br><span class="line">R3(config-router)#network 172.16.3.0 0.0.0.255</span><br><span class="line">R3(config-router)#network 10.1.1.0 0.0.0.255</span><br><span class="line"></span><br><span class="line">R4(config)#router eigrp 110</span><br><span class="line">R4(config-router)#no auto-summary </span><br><span class="line">R4(config-router)#network 172.16.4.0 0.0.0.255</span><br><span class="line">R4(config-router)#network 10.1.1.0 0.0.0.255</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在R1上查看EIGRP邻居表，可知R1通过1个隧道接口建立了两个邻居关系</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxQj0g.png"></p>
+<ul>
+<li>在R1的e0/0接口抓包，报文如下图所示，但是此时的报文都为明文显示，需要进行加密</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxlEBF.png"></p>
+<ul>
+<li>在R1、R3和R4上配置IPSec，保护隧道上的数据</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">R1(config)#crypto isakmp policy 10</span><br><span class="line">R1(config-isakmp)#authentication pre-share</span><br><span class="line">R1(config-isakmp)#exit </span><br><span class="line">R1(config)#crypto isakmp key cisco123 address 0.0.0.0</span><br><span class="line">R1(config)#crypto ipsec transform-set dmvpn esp-3des esp-sha256-hmac </span><br><span class="line">R1(cfg-crypto-trans)#mode transport </span><br><span class="line">R1(cfg-crypto-trans)#exit</span><br><span class="line">R1(config)#crypto ipsec profile dprofile</span><br><span class="line">R1(ipsec-profile)#set transform-set dmvpn</span><br><span class="line">R1(ipsec-profile)#exit</span><br><span class="line">R1(config)#int tunnel 1</span><br><span class="line">R1(config-if)#tunnel protection ipsec profile dprofile</span><br><span class="line">*Aug <span class="number">31</span> <span class="number">02</span>:<span class="number">59</span>:<span class="number">34.650</span>: %CRYPTO<span class="number">-6</span>-ISAKMP_ON_OFF: ISAKMP is ON</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">R3(config)#crypto isakmp policy 10</span><br><span class="line">R3(config-isakmp)#authentication pre-share </span><br><span class="line">R3(config-isakmp)#exit</span><br><span class="line">R3(config)#crypto isakmp key cisco123 address 0.0.0.0</span><br><span class="line">R3(config)#crypto ipsec transform-set dmvpn esp-3des esp-sha256-hmac </span><br><span class="line">R3(cfg-crypto-trans)#mode transport </span><br><span class="line">R3(cfg-crypto-trans)#exit</span><br><span class="line">R3(config)#crypto ipsec profile dprofile</span><br><span class="line">R3(ipsec-profile)#set transform-set dmvpn</span><br><span class="line">R3(ipsec-profile)#exit</span><br><span class="line">R3(config)#int tunnel 1</span><br><span class="line">R3(config-if)#tunnel protection ipsec profile dprofile</span><br><span class="line">*Aug <span class="number">31</span> <span class="number">03</span>:<span class="number">02</span>:<span class="number">49.557</span>: %CRYPTO<span class="number">-6</span>-ISAKMP_ON_OFF: ISAKMP is ON</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">R4(config)#crypto isakmp policy 10</span><br><span class="line">R4(config-isakmp)#authentication pre-share </span><br><span class="line">R4(config-isakmp)#exit </span><br><span class="line">R4(config)#crypto isakmp key cisco123 address 0.0.0.0</span><br><span class="line">R4(config)#crypto ipsec transform-set dmvpn  esp-3des esp-sha256-hmac </span><br><span class="line">R4(cfg-crypto-trans)#mode transport </span><br><span class="line">R4(cfg-crypto-trans)#exit</span><br><span class="line">R4(config)#crypto ipsec profile dprofile</span><br><span class="line">R4(ipsec-profile)#set transform-set dmvpn</span><br><span class="line">R4(ipsec-profile)#exit</span><br><span class="line">R4(config)#int tunnel 1</span><br><span class="line">R4(config-if)#tunnel protection ipsec profile dprofile</span><br><span class="line">*Aug <span class="number">31</span> <span class="number">03</span>:<span class="number">06</span>:<span class="number">36.128</span>: %CRYPTO<span class="number">-6</span>-ISAKMP_ON_OFF: ISAKMP is ON</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>验证是否进行了加密</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/01/dx1KaQ.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/01/dx1UZF.png"></p>
+<ul>
+<li>此时R3上的路由表并没有172.16.4.0的路由条目，因为存在水平分割问题</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/01/dx1xWn.png"></p>
+<ul>
+<li>在R1的隧道接口中关闭水平分割</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">R1(config)#int tunnel 1</span><br><span class="line">R1(config-if)#no ip split-horizon eigrp 110</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>再次查看R3的路由表 ，此时学习到了172.16.4.0的路由条目</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/01/dx31Te.png"></p>
+<ul>
+<li>跟踪路由，可知分支之间的流量必须经过hub</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/01/dx3rkQ.png"></p>
+<ul>
+<li>可通过在hub上进行路由汇总的方式来优化分支的路由条目，为了便于观察结果，在R3和R4上分别再开启一个回环口，并在EIGRP中通告</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">R3(config)#int loopback 2</span><br><span class="line">R3(config-if)#ip address 172.16.33.1 255.255.255.0</span><br><span class="line">R3(config)#router eigrp 110</span><br><span class="line">R3(config-router)#network 172.16.33.0  0.0.0.255</span><br><span class="line"></span><br><span class="line">R4(config)#int loopback 2</span><br><span class="line">R4(config-if)#ip add 172.16.44.1 255.255.255.0</span><br><span class="line">R4(config)#router eigrp 110</span><br><span class="line">R4(config-router)#network 172.16.44.0 0.0.0.255</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看R3和R4的路由表，都学习到了相应的路由条目</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/01/dx3HpR.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/01/dx3b11.png"></p>
+<ul>
+<li>在R1的tunnel接口进行路由汇总</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">R1(config)#int tunnel 1</span><br><span class="line">R1(config-if)#ip summary-address eigrp 110 172.16.0.0/16</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>再次查看R3和R4的路由表，此时学习到的是经过R1汇总的路由</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxDFvF.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxDEDJ.png"></p>
+<h3 id="3、phase-2验证"><a href="#3、phase-2验证" class="headerlink" title="3、phase-2验证"></a>3、phase-2验证</h3><blockquote>
+<p>所有站点都采用mGRE，分支的流量可以无需经过hub，不能在hub端对路由进行汇总；eigrp环境，需要关闭下一跳规则——<span style="color:red">no ip next-hop-self eigrp</span>，缺点所有的分支都需要维护整个网络的所有路由信息。</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTQlPH.png"></p>
+<ul>
+<li>在phase1的基础上，将R3、R4的隧道模式改为multipoint</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">R3(config)#int tunnel 1</span><br><span class="line">R3(config-if)#no tunnel destination 202.101.12.1</span><br><span class="line">R3(config-if)#tunnel mode gre multipoint </span><br><span class="line"></span><br><span class="line">R4(config)#int tunnel 1</span><br><span class="line">R4(config-if)#no tunnel destination 202.101.12.1</span><br><span class="line">R4(config-if)#tunnel mode gre multipoint </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在R3上使用traceroute跟踪路由，可知去往172.16.4.1仍然要经过hub</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxDDKg.png"></p>
+<ul>
+<li>查看R3的路由表，可知去往172.16.4.0/24网段的路由的下一跳为hub</li>
+</ul>
 <blockquote>
-<p>等价负载均衡：有多条开销相等的路径，此时可以同时从这些开销相等的路径去发送数量相同的数据包。</p>
-<p>不等价负载均衡：有多条路径，但是开销不一样，此时会根据一定的比例去发送数据包。</p>
-<p>对于EIGRP，默认情况下只支持等价负载均衡，并且默认情况下最多可以同时存在4条的等价负载均衡。</p>
-<p>R2(config)#router eigrp 90</p>
-<p>R2(config-router)#maximum-paths 8     –将等价负载均衡的条数改为8条</p>
-<p>EIGRP还可以支持不等价负载均衡，但是有前提：</p>
-<p>①次优路径的AD值要小于最优路径的FD值–称为FC条件，只有满足了该条件，才会存在FS。</p>
-<p>②当存在FS之后，EIGRP拓扑表会存在两个下一跳，但是只会选择最优的添加进路由表。此时如果要保证路由表也有两条路径，必须手动修改V值(variance)，使得满足”最优路径的FD*V值&gt;次优路径的FD值”（默认情况下，v值为1）</p>
+<p>【注】<span style="color:red">此时并未在R1的隧道接口汇总路由</span></p>
 </blockquote>
-<blockquote>
-<p>此题中，最优路径为R2通过R1到达100.100.100.100，次优路径为经过R3、R1到达100.100.100.100</p>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxDsbj.png"></p>
+<ul>
+<li>出现上述问题的原因在于EIGRP路由在传递的时候会将下一跳改为自己，将R1的tunnel接口将该属性关闭</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">R1(config)#int tunnel 1</span><br><span class="line">R1(config-if)#no ip next-hop-self eigrp 110</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>此时查看R3的路由表可知去往172.16.4.0/24网段的路由的下一跳变为R4</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxDHaR.png"></p>
+<ul>
+<li>在R3上再次跟踪路由，如下图所示，可知此时R3直接通过R4访问172.16.4.1，无需再经过hub</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxDLPx.png"></p>
+<h3 id="4、phase-3验证"><a href="#4、phase-3验证" class="headerlink" title="4、phase-3验证"></a>4、phase-3验证</h3><blockquote>
+<p>在阶段三引入了shortcut（短路）和redirect（重定向）</p>
 </blockquote>
-<blockquote>
-<p>查看R2的路由表，此时显示的为最优路径，FD=409600</p>
-</blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTlmSs.png"></p>
-<blockquote>
-<p>次优路径的AD即为R3到达100.100.100.100的开销（FD），也为409600</p>
-</blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTl00K.png"></p>
-<blockquote>
-<p>此时不满足FC条件，则需更改开销，修改K值，更改R2的e0/0接口的延迟为3000（默认为1000），注意倍数关系</p>
-</blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTlfnP.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTgwut.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTgRvn.png"></p>
-<blockquote>
-<p>将修改延迟的接口关闭再打开</p>
-</blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTgjDx.png"></p>
-<blockquote>
-<p>此时满足FC条件，即次优路径的AD值小于最优路径的FD值，在拓扑表中存在两条路径</p>
-<p>此时的FS为R3</p>
-</blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/29/dT2nIS.png"></p>
-<blockquote>
-<p>但是此时路由表中到达100.100.100.100仍然只存在一条最优路径</p>
-<p>若想让次优路径加表，则需满足：最优路径的FD*v值 &gt; 次优路径的FD才能加入到路由表</p>
-<p>修改V值为6，此时满足条件，路由表中到达100.100.100.0网段存在两个下一跳</p>
-</blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/29/dT26Z6.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dT27eP.png"></p>
-<blockquote>
-<p>查看该路由的详细信息，可知基本满足1:5的关系</p>
-</blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTRdTf.png"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">相关命令</span><br><span class="line">R2(config)#int e0&#x2F;0</span><br><span class="line">R2(config-if)#delay n  --修改延迟，但是注意，如果输入的是n，那么延迟会改为10*n</span><br><span class="line">R2(config-if)#bandwidth n  --修改带宽，如果输入的是n，那么带宽就为n</span><br><span class="line"></span><br><span class="line">R2#show interfaces e0&#x2F;0  --看接口的详细信息，比如说带宽、延迟</span><br><span class="line">R2#show ip route 100.100.100.0 255.255.255.0  --查看该路由的详细信息</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在R1上开启redirect，在R3和R4上开启shortcut</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">R1(config)#int tunnel 1</span><br><span class="line">R1(config-if)#ip nhrp redirect </span><br><span class="line"></span><br><span class="line">R3(config)#int tunnel 1</span><br><span class="line">R3(config-if)#ip nhrp shortcut </span><br><span class="line"></span><br><span class="line">R4(config)#int tunnel 1</span><br><span class="line">R4(config-if)#ip nhrp shortcut </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在R1上将下一跳属性和水平分割恢复</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">R1(config)#int tunnel 1</span><br><span class="line">R1(config-if)#ip next-hop-self eigrp 110</span><br><span class="line">R1(config-if)#ip split-horizon eigrp 110</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>此时R3和R4的路由表还是无法学习到其他站点的路由条目</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxrMon.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxrliq.png"></p>
+<ul>
+<li>为了验证实验结果，此时在R3启用多个回环口，并在eigrp中通告</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">R3(config)#int loopback 3</span><br><span class="line">R3(config-if)#ip add 192.168.3.1 255.255.255.0</span><br><span class="line">R3(config)#int loopback 4</span><br><span class="line">R3(config-if)#ip add 192.168.4.1 255.255.255.0</span><br><span class="line">R3(config)#int loopback 5</span><br><span class="line">R3(config-if)#ip add 192.168.5.1 255.255.255.0</span><br><span class="line"></span><br><span class="line">R3(config)#router eigrp 110</span><br><span class="line">R3(config-router)#network 192.168.3.0</span><br><span class="line">R3(config-router)#network 192.168.4.0</span><br><span class="line">R3(config-router)#network 192.168.5.0</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在R1上进行路由汇总</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">R1(config)#int tunnel 1</span><br><span class="line">R1(config-if)#ip summary-address eigrp 110 172.16.0.0/16</span><br><span class="line">R1(config-if)#ip summary-address eigrp 110 192.168.0.0/16</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>再次查看R3和R4的路由表，此时学习到的为经过R1汇总的条目，并且下一跳都指向R1</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxrsSK.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxr6yD.png"></p>
+<ul>
+<li>在R4上跟踪到达172.16.3.1所经过的路径，可知需经过R1</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxr4Yt.png"></p>
+<ul>
+<li>查看R4的路由表，此时出现了”H”的路由条目</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxroSf.png"></p>
+<ul>
+<li>此时再次使用traceroute跟踪172.16.3.1，则无需再经过R1</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxs96U.png"></p>
+<ul>
+<li>再次进行验证，使用traceroute命令跟踪到达192.168.3.1所经过的路径，首次traceroute需要经过R1</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxsUc8.png"></p>
+<ul>
+<li>查看R4的路由表，此时通过NHRP学习到了更详细的路由去往192.168.3.0/24网段，下一跳为10.1.1.3</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxsrAs.png"></p>
+<ul>
+<li>再次使用traceroute跟踪路径，则无需再经过R1</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxsT41.png"></p>
+<h3 id="5、总结"><a href="#5、总结" class="headerlink" title="5、总结"></a>5、总结</h3><p><img src="https://s1.ax1x.com/2020/09/01/dx5hkT.png"></p>
 
       
 	  
@@ -424,32 +495,13 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">路由协议</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">EIGRP</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">CCNA</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">VPN</a>
         		</li>
       		
 		</ul>
 	</div>
 
       
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/实验//" class="article-tag-list-link color3">实验</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
 
       
 
@@ -462,18 +514,9 @@
   
 <nav id="article-nav">
   
-    <a href="/2020/08/29/%E5%8D%95%E5%8C%BA%E5%9F%9FOSPF%E7%9A%84%E5%AE%9E%E7%8E%B0/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          单区域OSPF的实现
-        
-      </div>
-    </a>
   
-  
-    <a href="/2020/08/27/RIP%E7%9A%84%E5%BA%94%E7%94%A8/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">RIP的应用</div>
+    <a href="/2020/08/31/STP%E7%9A%84%E8%BF%90%E7%94%A8/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">STP的运用</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -500,7 +543,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#1%E3%80%81%E5%AE%9E%E9%AA%8C%E7%9B%AE%E7%9A%84"><span class="toc-number">1.</span> <span class="toc-text">1、实验目的</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2%E3%80%81%E5%AE%9E%E9%AA%8C%E6%8B%93%E6%89%91"><span class="toc-number">2.</span> <span class="toc-text">2、实验拓扑</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3%E3%80%81%E5%AE%9E%E9%AA%8C%E6%AD%A5%E9%AA%A4"><span class="toc-number">3.</span> <span class="toc-text">3、实验步骤</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84"><span class="toc-number">1.</span> <span class="toc-text">1、拓扑结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81phase-1%E9%AA%8C%E8%AF%81"><span class="toc-number">2.</span> <span class="toc-text">2、phase-1验证</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81phase-2%E9%AA%8C%E8%AF%81"><span class="toc-number">3.</span> <span class="toc-text">3、phase-2验证</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E3%80%81phase-3%E9%AA%8C%E8%AF%81"><span class="toc-number">4.</span> <span class="toc-text">4、phase-3验证</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5%E3%80%81%E6%80%BB%E7%BB%93"><span class="toc-number">5.</span> <span class="toc-text">5、总结</span></a></li></ol>
                     </div>
                 </span>
             </div>
