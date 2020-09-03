@@ -132,6 +132,147 @@
       </tags>
   </entry>
   <entry>
+    <title>NAT和PPP的应用</title>
+    <url>/2020/09/02/NAT%E5%92%8CPPP%E7%9A%84%E5%BA%94%E7%94%A8/</url>
+    <content><![CDATA[<h3 id="1、实验目的"><a href="#1、实验目的" class="headerlink" title="1、实验目的"></a>1、实验目的</h3><p>1）理解NAT的作用<br>2）理解不同NAT的特点及配置<br>3）理解不同NAT的使用场合<br>4）掌握PPP的PAP和CHAP验证<br>5）理解辅助地址的作用<br>6）掌握NAT的验证和查看命令</p>
+<a id="more"></a>
+<h3 id="2、拓扑结构"><a href="#2、拓扑结构" class="headerlink" title="2、拓扑结构"></a>2、拓扑结构</h3><p><img src="https://s1.ax1x.com/2020/09/02/w9dK7d.png"></p>
+<h3 id="3、实验步骤"><a href="#3、实验步骤" class="headerlink" title="3、实验步骤"></a>3、实验步骤</h3><p><strong>（1）公司COM1和COM2内部网段都为192.168.1.0/24，其中COM1的SRV地址为192.168.1.100/24，COM2的user地址为192.168.1.10/24，COM1内部的其他主机地址自己规划；ISP上的Web_Server地址为211.1.1.1/24，ISP与COM2之间的地址段为202.101.12.0/24，ISP与COM1之间的地址段为202.101.23.0/24，其中COM2连接ISP的接口地址为202.101.12.1/24，COM1连接ISP的接口地址为202.101.23.3/24</strong></p>
+<blockquote>
+<p>IP地址规划如拓扑图所示</p>
+</blockquote>
+<p><strong>（2）要求COM1与ISP之间的PPP链路采用CHAP验证，用户名为20164120，密码为123456</strong></p>
+<ul>
+<li>在ISP的s2/0封装PPP，并指定PPP的认证方式为CHAP，指定对方的IP地址为202.101.23.3</li>
+<li>在全局下设置用户名和密码，用于chap验证</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/02/w9wMKU.png"></p>
+<ul>
+<li>在COM1上s2/0接口封装PPP，指定IP地址为通过协商获取，填写用户名和密码，并让ISP下发默认路由</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/02/w9wuvT.png"></p>
+<ul>
+<li>查看COM1上的IP地址，可知s2/0接口的IP地址为通过IPCP方式获得</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/02/w9wm80.png"></p>
+<ul>
+<li>查看COM1的路由表中的静态路由条目，可知存在一条默认路由</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/02/w9wn2V.png"></p>
+<p><strong>（3）在COM1上使用静态NAT实现SRV可以访问ISP上的Web_Server，分别使用ping和debug ip nat进行验证和测试</strong></p>
+<ul>
+<li>在COM1上启用一个loopback接口，用于静态nat的一对一映射</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/02/w90HTH.png"></p>
+<ul>
+<li>配置静态nat，将SRV的IP地址192.168.1.100映射到COM1上的loopback接口的地址</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/02/w90qkd.png"></p>
+<ul>
+<li>在ISP上配置静态路由，实现ISP可以访问COM1上的loopback接口</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/02/w90jpt.png"></p>
+<ul>
+<li>在COM1上配置内部接口和外部接口</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/02/w90LtA.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/02/w90OfI.png"></p>
+<ul>
+<li>此时SRV可以访问ISP上的Web_Server</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/02/w90v1P.png"></p>
+<ul>
+<li>在COM1上查看nat转换表，可知将192.168.1.100转换成200.100.1.1</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/02/w90x6f.png"></p>
+<ul>
+<li>由于采用静态NAT，所以此时Web_Server也可以通过200.100.1.1访问SRV</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/02/w90zX8.png"></p>
+<ul>
+<li>在Web_Server上使用telnet命令远程登录到200.100.1.1，由下图可知此时登录到的设备为SRV</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/02/w9BpnS.png"></p>
+<p><strong>（4）在COM1上使用复用地址池的方式实现COM1内的所有用户可以访问ISP上的Web_Server，分别使用ping和debug ip nat进行验证和测试</strong></p>
+<ul>
+<li>在COM1上配置地址池，范围为202.101.23.10~202.101.23.12，掩码为/24</li>
+<li>配置ACL，匹配192.168.1.0/24网段的流量</li>
+<li>配置复用地址池NAT</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/03/w9siAe.png"></p>
+<ul>
+<li>此时各PC可以访问Web_Server</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/03/w9s90O.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/03/w9sC7D.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/03/w9spnK.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/03/w9rzX6.png"></p>
+<ul>
+<li>在COM1上查看nat转换表，地址在COM1上执行了地址转换</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/03/w9sFtH.png"></p>
+<ul>
+<li>使用debug ip nat命令查看地址转换信息</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/03/w9skhd.png"></p>
+<p><strong>（5）在COM1和COM2上使用PAT方式实现COM1和COM2内部的用户都可以访问ISP上的Web_Server</strong></p>
+<ul>
+<li>由于COM1上已存在ACL 1匹配192.168.1.0/24网段的流量，所以此时可以直接在COM1上配置端口复用NAT</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/03/w96EOP.png"></p>
+<ul>
+<li>测试COM1内部的用户与Web_Server的连通性</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/03/w96Ayt.png"></p>
+<ul>
+<li>查看地址转换表</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/03/w96Zef.png"></p>
+<ul>
+<li>在COM2上配置默认路由，下一跳指向ISP的e0/0接口的地址202.101.12.2，确保COM2可以访问Web_Server</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/03/w96ew8.png"></p>
+<ul>
+<li>在COM2上使用命名的标准ACL匹配192.168.1.0/24网段的流量</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/03/w96kQI.png"></p>
+<ul>
+<li>配置PAT</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/03/w96mTS.png"></p>
+<ul>
+<li>指定内外部接口</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/03/w960p9.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/03/w96aY4.png"></p>
+<ul>
+<li>测试COM2内部用户与Web_Server的连通性</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/03/w96dfJ.png"></p>
+<ul>
+<li>在COM2上查看nat转换表，可知内部用户192.168.1.10在访问外部网络时将地址转换成了202.101.12.1</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/03/w96UkF.png"></p>
+<p><strong>（6）实现COM2内部的COM2_USER可以远程登录到SRV</strong></p>
+<ul>
+<li>在COM1上配置静态nat，将SRV的地址192.168.1.100的tcp23号端口静态映射成200.100.1.1的5656号端口</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/03/wC9w6J.png"></p>
+<ul>
+<li>在COM2_USER上使用telnet命令远程登录到SRV，此时应注意加上端口号</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/03/wC9dl4.png"></p>
+]]></content>
+      <categories>
+        <category>实验</category>
+      </categories>
+      <tags>
+        <tag>CCNA</tag>
+        <tag>NAT</tag>
+        <tag>PPP</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>DMVPN验证</title>
     <url>/2020/09/01/DMVPN%E9%AA%8C%E8%AF%81/</url>
     <content><![CDATA[<p>DMVPN三个阶段</p>
@@ -579,6 +720,31 @@
       </tags>
   </entry>
   <entry>
+    <title>Hello World</title>
+    <url>/2020/08/26/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<a id="more"></a>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+      <categories>
+        <category>Hello World</category>
+      </categories>
+      <tags>
+        <tag>hello world</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>STP的运用</title>
     <url>/2020/08/31/STP%E7%9A%84%E8%BF%90%E7%94%A8/</url>
     <content><![CDATA[<h4 id="1、实验目的"><a href="#1、实验目的" class="headerlink" title="1、实验目的"></a>1、实验目的</h4><p>1）理解STP的作用<br>2）熟悉STP的工作原理<br>3）掌握STP的查看命令</p>
@@ -893,31 +1059,6 @@
         <tag>单臂路由</tag>
         <tag>trunk</tag>
         <tag>vtp</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2020/08/26/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<a id="more"></a>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
-      <categories>
-        <category>Hello World</category>
-      </categories>
-      <tags>
-        <tag>hello world</tag>
       </tags>
   </entry>
 </search>

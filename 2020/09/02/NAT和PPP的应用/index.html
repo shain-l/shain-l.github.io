@@ -6,17 +6,56 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Tag: trunk | shainの博客</title>
+  <title>NAT和PPP的应用 | shainの博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="shain-l">
-<meta property="og:type" content="website">
-<meta property="og:title" content="shainの博客">
-<meta property="og:url" content="http://yoursite.com/tags/trunk/index.html">
+  <meta name="description" content="1、实验目的1）理解NAT的作用2）理解不同NAT的特点及配置3）理解不同NAT的使用场合4）掌握PPP的PAP和CHAP验证5）理解辅助地址的作用6）掌握NAT的验证和查看命令">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NAT和PPP的应用">
+<meta property="og:url" content="http://yoursite.com/2020/09/02/NAT%E5%92%8CPPP%E7%9A%84%E5%BA%94%E7%94%A8/index.html">
 <meta property="og:site_name" content="shainの博客">
-<meta property="og:description" content="shain-l">
+<meta property="og:description" content="1、实验目的1）理解NAT的作用2）理解不同NAT的特点及配置3）理解不同NAT的使用场合4）掌握PPP的PAP和CHAP验证5）理解辅助地址的作用6）掌握NAT的验证和查看命令">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/02/w9dK7d.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/02/w9wMKU.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/02/w9wuvT.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/02/w9wm80.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/02/w9wn2V.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/02/w90HTH.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/02/w90qkd.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/02/w90jpt.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/02/w90LtA.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/02/w90OfI.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/02/w90v1P.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/02/w90x6f.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/02/w90zX8.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/02/w9BpnS.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/03/w9siAe.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/03/w9s90O.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/03/w9sC7D.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/03/w9spnK.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/03/w9rzX6.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/03/w9sFtH.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/03/w9skhd.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/03/w96EOP.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/03/w96Ayt.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/03/w96Zef.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/03/w96ew8.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/03/w96kQI.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/03/w96mTS.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/03/w960p9.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/03/w96aY4.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/03/w96dfJ.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/03/w96UkF.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/03/wC9w6J.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/03/wC9dl4.png">
+<meta property="article:published_time" content="2020-09-02T15:27:30.000Z">
+<meta property="article:modified_time" content="2020-09-03T01:35:21.332Z">
 <meta property="article:author" content="shain-l">
+<meta property="article:tag" content="CCNA">
+<meta property="article:tag" content="NAT">
+<meta property="article:tag" content="PPP">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.ax1x.com/2020/09/02/w9dK7d.png">
   
     <link rel="alternative" href="/atom.xml" title="shainの博客" type="application/atom+xml">
   
@@ -158,36 +197,224 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-NAT和PPP的应用" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/08/30/%E5%8D%95%E8%87%82%E8%B7%AF%E7%94%B1%E8%BF%90%E7%94%A8/" class="archive-article-date">
-  	<time datetime="2020-08-30T15:03:42.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-30</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/08/30/%E5%8D%95%E8%87%82%E8%B7%AF%E7%94%B1%E8%BF%90%E7%94%A8/">单臂路由运用</a>
+    <h1 class="article-title" itemprop="name">
+      NAT和PPP的应用
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+		
+		<!--显示阅读次数-->
+		
+			<br/>
+			<a class="cloud-tie-join-count" href="javascript:void(0);" style="color:gray;font-size:14px;">
+			<span class="icon-sort"></span>
+			<span id="busuanzi_container_page_pv" style="color:#ef7522;font-size:14px;">
+				阅读数: <span id="busuanzi_value_page_pv"></span>次 &nbsp;&nbsp;
+			</span>
+			</a>
+		
+		<!--显示阅读次数完毕-->
+		<!--字数统计-->
+		<div align="right" class="post-count">
+			<img src="/assets/img/word_count.png" width="26px" title="字数">&nbsp;928&nbsp; | &nbsp;<img src="/assets/img/time_2.png" width="26px" title="阅读时长">&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		</div>
+		
+        
+        <a href="/2020/09/02/NAT%E5%92%8CPPP%E7%9A%84%E5%BA%94%E7%94%A8/" class="archive-article-date">
+  	<time datetime="2020-09-02T15:27:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-02</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="1、实验目的"><a href="#1、实验目的" class="headerlink" title="1、实验目的"></a>1、实验目的</h3><p>1）理解NAT的作用<br>2）理解不同NAT的特点及配置<br>3）理解不同NAT的使用场合<br>4）掌握PPP的PAP和CHAP验证<br>5）理解辅助地址的作用<br>6）掌握NAT的验证和查看命令</p>
+<a id="more"></a>
+<h3 id="2、拓扑结构"><a href="#2、拓扑结构" class="headerlink" title="2、拓扑结构"></a>2、拓扑结构</h3><p><img src="https://s1.ax1x.com/2020/09/02/w9dK7d.png"></p>
+<h3 id="3、实验步骤"><a href="#3、实验步骤" class="headerlink" title="3、实验步骤"></a>3、实验步骤</h3><p><strong>（1）公司COM1和COM2内部网段都为192.168.1.0/24，其中COM1的SRV地址为192.168.1.100/24，COM2的user地址为192.168.1.10/24，COM1内部的其他主机地址自己规划；ISP上的Web_Server地址为211.1.1.1/24，ISP与COM2之间的地址段为202.101.12.0/24，ISP与COM1之间的地址段为202.101.23.0/24，其中COM2连接ISP的接口地址为202.101.12.1/24，COM1连接ISP的接口地址为202.101.23.3/24</strong></p>
+<blockquote>
+<p>IP地址规划如拓扑图所示</p>
+</blockquote>
+<p><strong>（2）要求COM1与ISP之间的PPP链路采用CHAP验证，用户名为20164120，密码为123456</strong></p>
+<ul>
+<li>在ISP的s2/0封装PPP，并指定PPP的认证方式为CHAP，指定对方的IP地址为202.101.23.3</li>
+<li>在全局下设置用户名和密码，用于chap验证</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/02/w9wMKU.png"></p>
+<ul>
+<li>在COM1上s2/0接口封装PPP，指定IP地址为通过协商获取，填写用户名和密码，并让ISP下发默认路由</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/02/w9wuvT.png"></p>
+<ul>
+<li>查看COM1上的IP地址，可知s2/0接口的IP地址为通过IPCP方式获得</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/02/w9wm80.png"></p>
+<ul>
+<li>查看COM1的路由表中的静态路由条目，可知存在一条默认路由</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/02/w9wn2V.png"></p>
+<p><strong>（3）在COM1上使用静态NAT实现SRV可以访问ISP上的Web_Server，分别使用ping和debug ip nat进行验证和测试</strong></p>
+<ul>
+<li>在COM1上启用一个loopback接口，用于静态nat的一对一映射</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/02/w90HTH.png"></p>
+<ul>
+<li>配置静态nat，将SRV的IP地址192.168.1.100映射到COM1上的loopback接口的地址</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/02/w90qkd.png"></p>
+<ul>
+<li>在ISP上配置静态路由，实现ISP可以访问COM1上的loopback接口</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/02/w90jpt.png"></p>
+<ul>
+<li>在COM1上配置内部接口和外部接口</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/02/w90LtA.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/02/w90OfI.png"></p>
+<ul>
+<li>此时SRV可以访问ISP上的Web_Server</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/02/w90v1P.png"></p>
+<ul>
+<li>在COM1上查看nat转换表，可知将192.168.1.100转换成200.100.1.1</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/02/w90x6f.png"></p>
+<ul>
+<li>由于采用静态NAT，所以此时Web_Server也可以通过200.100.1.1访问SRV</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/02/w90zX8.png"></p>
+<ul>
+<li>在Web_Server上使用telnet命令远程登录到200.100.1.1，由下图可知此时登录到的设备为SRV</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/02/w9BpnS.png"></p>
+<p><strong>（4）在COM1上使用复用地址池的方式实现COM1内的所有用户可以访问ISP上的Web_Server，分别使用ping和debug ip nat进行验证和测试</strong></p>
+<ul>
+<li>在COM1上配置地址池，范围为202.101.23.10~202.101.23.12，掩码为/24</li>
+<li>配置ACL，匹配192.168.1.0/24网段的流量</li>
+<li>配置复用地址池NAT</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/03/w9siAe.png"></p>
+<ul>
+<li>此时各PC可以访问Web_Server</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/03/w9s90O.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/03/w9sC7D.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/03/w9spnK.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/03/w9rzX6.png"></p>
+<ul>
+<li>在COM1上查看nat转换表，地址在COM1上执行了地址转换</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/03/w9sFtH.png"></p>
+<ul>
+<li>使用debug ip nat命令查看地址转换信息</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/03/w9skhd.png"></p>
+<p><strong>（5）在COM1和COM2上使用PAT方式实现COM1和COM2内部的用户都可以访问ISP上的Web_Server</strong></p>
+<ul>
+<li>由于COM1上已存在ACL 1匹配192.168.1.0/24网段的流量，所以此时可以直接在COM1上配置端口复用NAT</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/03/w96EOP.png"></p>
+<ul>
+<li>测试COM1内部的用户与Web_Server的连通性</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/03/w96Ayt.png"></p>
+<ul>
+<li>查看地址转换表</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/03/w96Zef.png"></p>
+<ul>
+<li>在COM2上配置默认路由，下一跳指向ISP的e0/0接口的地址202.101.12.2，确保COM2可以访问Web_Server</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/03/w96ew8.png"></p>
+<ul>
+<li>在COM2上使用命名的标准ACL匹配192.168.1.0/24网段的流量</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/03/w96kQI.png"></p>
+<ul>
+<li>配置PAT</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/03/w96mTS.png"></p>
+<ul>
+<li>指定内外部接口</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/03/w960p9.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/03/w96aY4.png"></p>
+<ul>
+<li>测试COM2内部用户与Web_Server的连通性</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/03/w96dfJ.png"></p>
+<ul>
+<li>在COM2上查看nat转换表，可知内部用户192.168.1.10在访问外部网络时将地址转换成了202.101.12.1</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/03/w96UkF.png"></p>
+<p><strong>（6）实现COM2内部的COM2_USER可以远程登录到SRV</strong></p>
+<ul>
+<li>在COM1上配置静态nat，将SRV的地址192.168.1.100的tcp23号端口静态映射成200.100.1.1的5656号端口</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/03/wC9w6J.png"></p>
+<ul>
+<li>在COM2_USER上使用telnet命令远程登录到SRV，此时应注意加上端口号</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/03/wC9dl4.png"></p>
+
+      
+	  
+	  <!--阅读结束-->
+	   
+         <div class="essayending">
+           <div>
+            <div style="text-align:center;color: #ccc;font-size:18px;">
+            <br/>
+            <br/>
+ -------------本文结束<i class="fa fa-paw">&nbsp;</i><img src="/assets/img/end.png" width="18px">&nbsp;感谢您的阅读-------------
+            <br/>
+            <br/>
+             <br/>
+             <br/>
+            </div>
+           </div>
+         </div>
+         
+       
+  
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>你真好看<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/img/alipay.jpg">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -197,21 +424,17 @@
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">单臂路由</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">NAT</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">trunk</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">vtp</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">PPP</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -224,17 +447,66 @@
 	</div>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/2020/09/01/ACL%E7%9A%84%E8%BF%90%E7%94%A8/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">ACL的运用</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E5%AE%9E%E9%AA%8C%E7%9B%AE%E7%9A%84"><span class="toc-number">1.</span> <span class="toc-text">1、实验目的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84"><span class="toc-number">2.</span> <span class="toc-text">2、拓扑结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81%E5%AE%9E%E9%AA%8C%E6%AD%A5%E9%AA%A4"><span class="toc-number">3.</span> <span class="toc-text">3、实验步骤</span></a></li></ol>
+                    </div>
+                </span>
+            </div>
+        </div>
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -268,9 +540,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
