@@ -6,17 +6,46 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Category: Hello World | shainの博客</title>
+  <title>VTP协议 | shainの博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="shain-l">
-<meta property="og:type" content="website">
-<meta property="og:title" content="shainの博客">
-<meta property="og:url" content="http://yoursite.com/categories/Hello-World/index.html">
+  <meta name="description" content="VTP（VLAN Trunking Protocol）用来在整个交换网络中分发和同步VLAN数据库，可以将配置错误和配置不一致等问题导致障碍的几率降至最低。这些问题包括重复的VLAN名称、不正确的VLAN类型，以及安全性违规等。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VTP协议">
+<meta property="og:url" content="http://yoursite.com/2020/09/03/VTP%E5%8D%8F%E8%AE%AE/index.html">
 <meta property="og:site_name" content="shainの博客">
-<meta property="og:description" content="shain-l">
+<meta property="og:description" content="VTP（VLAN Trunking Protocol）用来在整个交换网络中分发和同步VLAN数据库，可以将配置错误和配置不一致等问题导致障碍的几率降至最低。这些问题包括重复的VLAN名称、不正确的VLAN类型，以及安全性违规等。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/04/wAKLaq.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/04/wABjxJ.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/04/wADxfS.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/05/wAroNV.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/05/wAsQgg.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/05/wA6rA1.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/05/wA617n.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/05/wA6wnJ.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/05/wA62cD.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/05/wAcAu4.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/05/wAcM8K.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/05/wAcYVA.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/05/wAcN5t.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/05/wActUI.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/05/wAg5fP.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/05/wEfxTe.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/05/wEhkOf.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/05/wE46K0.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/05/wEIl6I.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/05/wEIsBV.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/05/wEbL6J.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/05/wEqtA0.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/05/wELA8U.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/05/wELkCT.png">
+<meta property="article:published_time" content="2020-09-03T15:27:59.000Z">
+<meta property="article:modified_time" content="2020-09-05T07:57:14.244Z">
 <meta property="article:author" content="shain-l">
+<meta property="article:tag" content="交换">
+<meta property="article:tag" content="VTP">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.ax1x.com/2020/09/04/wAKLaq.png">
   
     <link rel="alternative" href="/atom.xml" title="shainの博客" type="application/atom+xml">
   
@@ -158,71 +187,411 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-VTP协议" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/08/26/hello-world/" class="archive-article-date">
-  	<time datetime="2020-08-26T05:18:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-26</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/08/26/hello-world/">Hello World</a>
+    <h1 class="article-title" itemprop="name">
+      VTP协议
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+		
+		<!--显示阅读次数-->
+		
+			<br/>
+			<a class="cloud-tie-join-count" href="javascript:void(0);" style="color:gray;font-size:14px;">
+			<span class="icon-sort"></span>
+			<span id="busuanzi_container_page_pv" style="color:#ef7522;font-size:14px;">
+				阅读数: <span id="busuanzi_value_page_pv"></span>次 &nbsp;&nbsp;
+			</span>
+			</a>
+		
+		<!--显示阅读次数完毕-->
+		<!--字数统计-->
+		<div align="right" class="post-count">
+			<img src="/assets/img/word_count.png" width="26px" title="字数">&nbsp;4.2k&nbsp; | &nbsp;<img src="/assets/img/time_2.png" width="26px" title="阅读时长">&nbsp;15&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		</div>
+		
+        
+        <a href="/2020/09/03/VTP%E5%8D%8F%E8%AE%AE/" class="archive-article-date">
+  	<time datetime="2020-09-03T15:27:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-03</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>　　VTP（VLAN Trunking Protocol）用来在整个交换网络中分发和同步VLAN数据库，可以将配置错误和配置不一致等问题导致障碍的几率降至最低。这些问题包括重复的VLAN名称、不正确的VLAN类型，以及安全性违规等。</p>
+<a id="more"></a>
+
+<h3 id="1、VTP概述"><a href="#1、VTP概述" class="headerlink" title="1、VTP概述"></a>1、VTP概述</h3><p>　　VTP是一种通过添加、删除、修改VLAN等管理操作，来维护网络内VLAN配置一致性的2层协议。</p>
+<p>　　交换机只能通过802.1Q或ISL Trunk传输VTP消息。Cisco交换机会通过管理VLAN（默认为VLAN 1），使用2层组播数据帧每5分钟传输一次VTP汇总通告。在单台VTP服务器上的VLAN配置会通过Trunk链路宣告给网络中的所有互联交换机。例如，当管理者添加了一个新的VLAN，那么VTP会将VLAN信息宣告给VTP域内的所有交换机，每台交换机会同步VLAN信息，再将这些信息合并成新的VLAN数据库。</p>
+<p>　　VTP域是由一台或多台共享相同VTP配置的互联的交换机组成的，每台交换机只能处于一个VTP域中。默认情况下，Cisco Catalyst交换机处于”no-management-domain”状态（null状态），直到通过Trunk链路收到了带有域名的VTP通告，或手动配置了VTP域名。配置应在VTP服务器上执行，随后会通过Trunk链路宣告给网络中的所有互联交换机。当VTP域名及VTP密码匹配之后，配置信息将会同步。</p>
+<p>　　<span style="color:red">VTP是Cisco私有的协议。</span></p>
+<h3 id="2、VTP模式"><a href="#2、VTP模式" class="headerlink" title="2、VTP模式"></a>2、VTP模式</h3><p>　　VTP可以工作在3种模式下：服务器（server）模式、客户端（client）模式、透明（transparent）模式。VTP服务器模式是默认的模式，不过在未配置或未学习到 VTP域名时，VLAN信息是不会宣告到网络中的。需要注意的是，VTP消息仅会在Trunk链路上传播。VTP客户端模式与服务器模式相似，在Trunk链路上发送和接收VTP更新。处于VTP客户端模式的交换机无法创建、删除或修改VLAN，其学习到的VLAN都是由域内的VTP服务器模式的交换机所创建的。处于VTP透明模式的交换机对VLAN进行操作时，配置仅会影响到本地交换机，VLAN的修改信息并不会宣告给VTP域中的其他交换机，但是在该模式下的交换机可以将收到的VTP宣告转发出去。三种模式总结如下所示：</p>
+<ul>
+<li>服务器模式<ul>
+<li>可以创建、删除、修改VLAN</li>
+<li>可以发送及转发VTP通告</li>
+<li>同步VLAN的配置</li>
+</ul>
+</li>
+<li>客户端模式<ul>
+<li>不能创建、删除、修改VLAN</li>
+<li>可以发送及转发VTP通告</li>
+<li>同步VLAN的配置</li>
+</ul>
+</li>
+<li>透明模式<ul>
+<li>可以创建、删除、修改<span style="color:red">本地VLAN</span></li>
+<li>可以转发VTP通告</li>
+<li>不同步VLAN配置</li>
+</ul>
+</li>
+</ul>
+<h3 id="3、VTP版本"><a href="#3、VTP版本" class="headerlink" title="3、VTP版本"></a>3、VTP版本</h3><p>　　Ｃisco Catalyst交换机支持三种不同版本的VTP：版本1、版本2、版本3。不同版本的VTP之间无法通信，因此管理者必须确定使用哪个版本的VTP。此外，出于稳定性方面的考虑，Cisco建议只使用一种版本的VTP。</p>
+<p>　　Ｃisco交换机上默认启用的VTP版本是版本1。相比于旧版本的VTP，新版本的VTP支持以下特性：</p>
+<ul>
+<li><strong>与版本无关的透明模式：</strong>在VTP版本1中，VTP透明模式的网络设备会检查VTP消息中的域名和版本信息，而且只有当域名和版本号相匹配时才会转发此消息。由于Cisco IOS软件中只支持一个VTP域，因此在VTP版本2中会直接转发VTP消息，而不会检查其版本号。</li>
+<li><strong>一致性检查：</strong>在VTP版本2中，会对VLAN名称及VLAN编号进行VLAN一致性检查。不过，只有通过命令行界面（CLI）或简单网络管理协议（SNMP）输入的信息才会触发一致性检查，如果新信息是通过VTP消息或NVRAM中读取的，则不会执行一致性检查。如果接收到的VTP消息MD5比对正确，VTP版本2会直接接收此消息，而不会执行一致性检查。</li>
+<li><strong>支持令牌环：</strong>VTP版本2支持令牌环交换和令牌环VLAN。</li>
+<li><strong>支持未识别TLV（Type-Length-Value）：</strong>在VTP版本1中，未被识别的VTP消息会被直接丢弃，而VTP版本2会将未识别的消息转发出去并将其保存在NVRAM中。</li>
+<li><strong>支持扩展VLAN：</strong>VTP版本3可支持VLAN1025<del>4094的消息通告（VLAN编号1006</del>1024以及4095~4096被保留）。</li>
+<li><strong>域名不自动学习：</strong>在VTP版本2中，交换机会从接收的VTP信息中自动学习到新的VTP域名。由于这种行为比较危险，因此在VTP版本3中，此功能需要手动强制开启。</li>
+<li><strong>更优的安全性：</strong>VTP域密码以一种安全的方式传输并存储在交换机数据库中。</li>
+<li><strong>更优的数据库宣告机制：</strong>只有主用服务器允许更新其他设备，而且每个VTP域内一台主用服务器。</li>
+<li><strong>支持多生成树（MST）：</strong>VTP版本3加入了对MST进程通告的支持。</li>
+</ul>
+<h3 id="4、VTP修剪"><a href="#4、VTP修剪" class="headerlink" title="4、VTP修剪"></a>4、VTP修剪</h3><p>　　VTP修剪（pruning）技术使用VLAN通告消息来判断Trunk连接何时正在泛洪不必要的流量。默认情况下，Trunk连接会承受VTP管理域中所有的VLAN流量，但一般情况下，企业网络中的多数交换机并没有为每个VLAN都配置本地端口。</p>
+<p>　　VTP修剪技术可以将可泛洪的流量限制在合适的范围内，仅允许必要的VLAN流量通过Trunk链路，从而提高链路的可用带宽。如下图所示的交换网络启用了VTP的修剪功能，从Red VLAN中的主机或工作站发出的广播流量不会转发给交换机3、5和6，因为Red VLAN已经在交换机2、4的链路上被修剪掉了。</p>
+<p><img src="https://s1.ax1x.com/2020/09/04/wAKLaq.png" alt="VTP修剪"></p>
+<p>　　无论是否使用了VTP修剪功能，Catalyst交换机都会为每个VLAN运行一个STP实例，即使VLAN中没有活动端口，或VTP修剪已经将VLAN从接口上移除了出去。因此，VTP修剪能够防止将流量泛洪传播给没有特定VLAN成员的交换机。不过，VTP修剪不会将已被修剪的VLAN信息从交换机上删除。</p>
+<h3 id="5、VTP认证"><a href="#5、VTP认证" class="headerlink" title="5、VTP认证"></a>5、VTP认证</h3><p>　　管理员可以使用VTP密码特性来增强VTP域的安全性。必须要保证VTP域内的所有交换机使用了相同的密码及域名；否则，交换机无法成为VTP域的成员。Cisco交换机使用MD5算法将密码编码成16字节的密码。这些密码会在VTP汇总通告中进行传播。在VTP中，密码是区分大小写的，长度为8~64个字符。建议在所有VTP域中使用VTP认证特性。</p>
+<h3 id="6、VTP通告"><a href="#6、VTP通告" class="headerlink" title="6、VTP通告"></a>6、VTP通告</h3><p>　　VTP通告会在整个管理域中泛洪。交换机默认每隔5分钟发送过一次VTP通告，当VLAN的配置发生变化时会触发发送VTP通告。VTP通告使用组播帧在native VLAN（默认为VLAN 1）中以不打标签的方式传播。每个VTP通告中都包含了一个配置修订号。配置修订号越高，表示VLAN信息越新。配置修订号（configuration revision number）是VTP中非常重要的参数。每次VTP服务器在对VLAN进行操作（增加、删除、修改VLAN信息）时，都会将配置修订号加1。随后VTP服务器发送的VTP通告将带有新的配置修订号。如果VTP域内的其他交换机收到了带有更高配置修订号的VTP通告，将会使用新收到的VLAN信息更新自身的VLAN配置。由于VTP透明模式的交换机不会与域内的其他交换机同步VLAN的信息，所以其配置修订号或VLAN数据库将不会改变（始终为0）。</p>
+<blockquote>
+<p>注意：根据VTP的更新规则，如果一台删除了所有VLAN并带有更高的配置修订号的VTP服务器加入到VTP域中，那么域内所有设备上的VLAN都会被覆盖删除</p>
+</blockquote>
+<p>　　设备在接收到VTP通告后，需要对一些参数进行检查，之后才会合并其中的VLAN信息。首先就是管理域名和密码必须与本地交换机配置的一致。其次，如果配置修订号比当前交换机的高时，交换机才会合并这条VLAN通告信息。在许多Cisco Catalyst交换机上，可以通过修改VTP域名称的方式重置配置修订号；还可以将其模式修改成透明模式，再改回先前的服务器或客户端模式。这两种方法都可以让配置修订号归零。</p>
+<h3 id="7、VTP消息类型"><a href="#7、VTP消息类型" class="headerlink" title="7、VTP消息类型"></a>7、VTP消息类型</h3><ul>
+<li>汇总通告（Summary Advertisement）</li>
+</ul>
+<p>　　默认情况下，Catalyst交换机会每5分钟发送一次汇总通告消息。汇总通告消息会通知邻接Catalyst交换机当前的VTP域名及配置修订号。当交换机接收到汇总通告数据包时，会将数据包中的域名与本地配置的VTP域名相比较。如果名称不同，交换机就会忽略这个数据包。如果域名相同，交换机会继续比较配置修订号，如果自身的配置修订号高于或等于接收数据包的修订号，数据包也会被忽略。如果本地的配置修订号比收到的低，交换机则会发送一个请求通告消息。</p>
+<ul>
+<li>子集通告（Subnet Advertisement）</li>
+</ul>
+<p>　　当管理员在Catalyst交换机上添加、删除或修改VLAN时，配置修订号会相应地增加，并且会发送一条汇总通告消息。随后，还会发送一条或多条子集通告消息。每条自己通告包含一个VLAN信息列表。如果VLAN的数量很多，就会以多条子集通告的形式通告所有VLAN。</p>
+<ul>
+<li>请求通告（Request Advertisement）</li>
+</ul>
+<p>　　当交换机重启、VTP域名被修改或当交换机收到了一个配置修订号高于自身的VTP汇总通告时，交换机会发送VTP请求通告消息。在收到了一个请求通告后，VTP设备会发送一条汇总通告消息，随后再发送一条或多条子集通告消息。</p>
+<h3 id="8、VTP配置实例"><a href="#8、VTP配置实例" class="headerlink" title="8、VTP配置实例"></a>8、VTP配置实例</h3><blockquote>
+<p>VTP配置所使用的拓扑如下图所示，其中SW1配置成了VTP服务器模式；SW2配置成了VTP客户端模式；SW3配置成了透明模式</p>
+</blockquote>
+<blockquote>
+<p>在进行VTP配置前，应注意将三台交换机之间的链路配置成Trunk链路，因为VTP消息仅会在Trunk链路上传播</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/09/04/wABjxJ.png"></p>
+<ul>
+<li>在所有交换机上配置VTP，SW1配置成服务器模式，SW2配置成客户端模式，SW3配置成透明模式</li>
+</ul>
+<blockquote>
+<p>默认状态下的交换机运行的是VTP版本1</p>
+</blockquote>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">SW1(config)#vtp password cisco</span><br><span class="line">SW1(config)#vtp mode server</span><br><span class="line">SW1(config)#vtp domain shain</span><br><span class="line">SW1(config)#vtp version 1</span><br><span class="line"></span><br><span class="line">SW2(config)#vtp password cisco</span><br><span class="line">SW2(config)#vtp mode client </span><br><span class="line">SW2(config)#vtp domain shain</span><br><span class="line">SW2(config)#vtp version 1</span><br><span class="line"></span><br><span class="line">SW3(config)#vtp password cisco</span><br><span class="line">SW3(config)#vtp mode transparent </span><br><span class="line">SW3(config)#vtp domain shain</span><br><span class="line">SW3(config)#vtp version 1</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在SW2上输入命令<span style="color:red">show vtp status</span>查看本交换机的VTP状态信息</li>
+</ul>
+<blockquote>
+<p>能看到SW2配置成了VTP客户端模式（client），处于VTP域shain内</p>
+</blockquote>
+<blockquote>
+<p>当前交换机上只有5个默认的VLAN：VLAN1和VLAN1002~1005。VTP配置修订号为0。此值为0以为着这台交换机的VLAN数据库未做任何修改。每次对VLAN进行操作（增加、删除、修改），配置修订号都会加1。</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/09/04/wADxfS.png"></p>
+<ul>
+<li>在SW1上输入命令show vtp status</li>
+</ul>
+<blockquote>
+<p>可以看到SW1配置成了VTP服务器模式（server）</p>
+</blockquote>
+<blockquote>
+<p>与SW2一样，当前设备上只有默认VLAN。VTP配置修订号为0，VTP域名为shain。</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/09/05/wAroNV.png"></p>
+<ul>
+<li>在SW3输入命令show vtp status</li>
+</ul>
+<blockquote>
+<p>SW3配置成了VTP透明模式（transparent）</p>
+</blockquote>
+<blockquote>
+<p>和SW1、SW2一样，当前设备上只有默认VLAN。VTP配置修订号为0，VTP域名为shain</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/09/05/wAsQgg.png"></p>
+<ul>
+<li>在SW1上创建VLAN 10</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SW1(config)<span class="meta">#vlan 10</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意：在VTP客户端模式下是无法添加VLAN的。若在SW2上尝试添加VLAN 5，SW2则会提示如下信息：</p>
+<p>SW2(config)#vlan 5<br>VTP VLAN configuration not allowed when device is in CLIENT mode.</p>
+</blockquote>
+<ul>
+<li>在SW1上检查VLAN数据库及VTP状态</li>
+</ul>
+<blockquote>
+<p>使用命令show vlan和命令show vtp status</p>
+<p>VLAN 10此时已经出现在了SW1的数据库中</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/09/05/wA6rA1.png"></p>
+<blockquote>
+<p>SW1上的配置修订号也增加到了1</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/09/05/wA617n.png"></p>
+<ul>
+<li>检查SW2上的VLAN数据库和VTP状态</li>
+</ul>
+<blockquote>
+<p>使用命令show vlan和命令show vtp status</p>
+<p>由于SW2为VTP客户端模式，因此从SW1学习到了VLAN 10</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/09/05/wA6wnJ.png"></p>
+<blockquote>
+<p>SW2当前的配置修订号与SW1相同，代表两台交换机拥有相同的VLAN数据库</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/09/05/wA62cD.png"></p>
+<ul>
+<li>检查SW3上的VLAN数据库和VTP状态</li>
+</ul>
+<blockquote>
+<p>使用命令show vlan和命令show vtp status</p>
+<p>由于SW3处于VTP透明模式，因此永远不会和其他处于任何VTP模式的交换机同步自身的VLAN数据库</p>
+<p>从某种程度上讲，启用VTP透明模式就等同于关闭了VTP功能</p>
+</blockquote>
+<blockquote>
+<p>注意此时SW3上并没有VLAN 10</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/09/05/wAcAu4.png"></p>
+<blockquote>
+<p>VTP透明模式的交换机配置修订号始终为0</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/09/05/wAcM8K.png"></p>
+<ul>
+<li>在SW3上创建VLAN 20</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SW3(config)#vlan 20</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在三台交换机上检查VLAN 20是否存在</li>
+</ul>
+<blockquote>
+<p>从以下显示结果中可以看出VTP透明模式的交换机可以创建、删除本地VLAN，但是不会将本地VLAN的信息通告给其他交换机</p>
+<p>VLAN 20仅存在与SW3上</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/09/05/wAcYVA.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/05/wAcN5t.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/05/wActUI.png"></p>
+<h3 id="9、VTP配置覆盖（VTP常见问题）"><a href="#9、VTP配置覆盖（VTP常见问题）" class="headerlink" title="9、VTP配置覆盖（VTP常见问题）"></a>9、VTP配置覆盖（VTP常见问题）</h3><p>　　VTP的一个常见问题就是由于管理员的粗心大意，错误地将整个网络中的VLAN数据库配置删除。因此，当向网络中添加一台交换机时，一定不能将错误的信息注入到现网中。如下图所示，SW1是一台VTP服务器，SW2和SW3是VTP客户端。所有交换机同步后的配置修订号均为12，并带有VLAN 10、20、30和40。每台交换机上有多个用户连接到不同的VLAN。</p>
+<p><img src="https://s1.ax1x.com/2020/09/05/wAg5fP.png"></p>
+<ul>
+<li>查看SW1上的VTP状态和VLAN数据库信息</li>
+</ul>
+<blockquote>
+<p>SW2和SW3有着与SW1同样的配置修订号及VLAN信息，这是因为VTP已经完全同步</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/09/05/wEfxTe.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/05/wEhkOf.png"></p>
+<ul>
+<li>现在假定SW2发生了故障，从配线间取出了另外一台交换机来替代SW2</li>
+</ul>
+<blockquote>
+<p>backup交换机配置了与其他两台交换机相同的VTP域名，VTP的配置修订号为29，比现网中的VTP修订号要高</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/09/05/wE46K0.png"></p>
+<blockquote>
+<p>backup交换机的VLAN信息和VTP信息如下图所示</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/09/05/wEIl6I.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/05/wEIsBV.png"></p>
+<blockquote>
+<p>默认情况下，Cisco IOS VTP服务器和客户端会将VLAN信息保存在flash下的vlan.dat文件中，其中包括了VLAN表以及配置修订号。删除vlan.dat文件并重启交换机可以将VTP和VLAN信息彻底删除，其删除方式根据具体交换机型号而定。</p>
+<p>处于VTP透明模式的交换机可以使用show running-config命令查看VLAN和VTP配置，这是由于配置是存放在配置文本文件中的，而不是vlan.dat。因此在VTP透明模式的交换机上执行erase startup-config命令的话，所有的VLAN信息都会被删除。</p>
+</blockquote>
+<ul>
+<li>由于backup交换机带有更高的配置修订号，因此SW1和SW3都会与其同步。分别在SW1和SW3上查看VLAN和VTP状态</li>
+</ul>
+<blockquote>
+<p>VLAN20、30、40将从SW1和SW3上删除，连接到这些VLAN的终端用户也会失去其连通性</p>
+</blockquote>
+<blockquote>
+<p>查看SW1的VLAN信息和VTP状态</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/09/05/wEbL6J.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/05/wEqtA0.png"></p>
+<blockquote>
+<p>查看SW3上的VLAN信息和VTP状态</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/09/05/wELA8U.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/05/wELkCT.png"></p>
+<blockquote>
+<p>因此，当一台带有更高配置修订号的交换机加入到VTP域中时，很有可能会导致重大的网络故障。当VTP客户端交换机加入到网络时，会发送一个自身数据库的汇总通告。也就是说，带有更高配置修订号的交换机，无论是服务器模式还是客户端模式，都会导致现网交换机的VTP配置覆盖（VLAN重新学习）。</p>
+</blockquote>
+<h3 id="10、VTP部署的推荐做法"><a href="#10、VTP部署的推荐做法" class="headerlink" title="10、VTP部署的推荐做法"></a>10、VTP部署的推荐做法</h3><p>　　VTP一般使用在新建网络中，用来减轻VLAN的配置工作。不过，随着网络规模数日渐增大，伴随而来的也有一些风险。如果VTP域内的某台VTP服务器意外地删除了一个VLAN，那么VTP域所在网络都会删除这个VLAN。已经预先配置过VLAN的交换机加入到了网络中，那么VTP域所在网络中的所有交换机的VLAN数据库都可能被覆盖。因此，部署VTP时建议先将所有交换机配置成VTP透明模式，并手动按需添加VLAN，尤其是在大型园区网环境中。</p>
+
+      
+	  
+	  <!--阅读结束-->
+	   
+         <div class="essayending">
+           <div>
+            <div style="text-align:center;color: #ccc;font-size:18px;">
+            <br/>
+            <br/>
+ -------------本文结束<i class="fa fa-paw">&nbsp;</i><img src="/assets/img/end.png" width="18px">&nbsp;感谢您的阅读-------------
+            <br/>
+            <br/>
+             <br/>
+             <br/>
+            </div>
+           </div>
+         </div>
+         
+       
+  
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>你真好看<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/img/alipay.jpg">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">hello world</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">交换</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">VTP</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/Hello-World//" class="article-tag-list-link color2">Hello World</a>
+        			<a href="/categories/学习笔记//" class="article-tag-list-link color5">学习笔记</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2020/09/05/%E5%9C%A8%E4%BA%A4%E6%8D%A2%E7%BD%91%E7%BB%9C%E4%B8%AD%E9%83%A8%E7%BD%B2EtherChannel%E6%8A%80%E6%9C%AF/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          在交换网络中部署EtherChannel技术
+        
+      </div>
+    </a>
   
   
-    </div></section>
+    <a href="/2020/09/02/NAT%E5%92%8CPPP%E7%9A%84%E5%BA%94%E7%94%A8/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">NAT和PPP的应用</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81VTP%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">1、VTP概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81VTP%E6%A8%A1%E5%BC%8F"><span class="toc-number">2.</span> <span class="toc-text">2、VTP模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81VTP%E7%89%88%E6%9C%AC"><span class="toc-number">3.</span> <span class="toc-text">3、VTP版本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E3%80%81VTP%E4%BF%AE%E5%89%AA"><span class="toc-number">4.</span> <span class="toc-text">4、VTP修剪</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5%E3%80%81VTP%E8%AE%A4%E8%AF%81"><span class="toc-number">5.</span> <span class="toc-text">5、VTP认证</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6%E3%80%81VTP%E9%80%9A%E5%91%8A"><span class="toc-number">6.</span> <span class="toc-text">6、VTP通告</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7%E3%80%81VTP%E6%B6%88%E6%81%AF%E7%B1%BB%E5%9E%8B"><span class="toc-number">7.</span> <span class="toc-text">7、VTP消息类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8%E3%80%81VTP%E9%85%8D%E7%BD%AE%E5%AE%9E%E4%BE%8B"><span class="toc-number">8.</span> <span class="toc-text">8、VTP配置实例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9%E3%80%81VTP%E9%85%8D%E7%BD%AE%E8%A6%86%E7%9B%96%EF%BC%88VTP%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%EF%BC%89"><span class="toc-number">9.</span> <span class="toc-text">9、VTP配置覆盖（VTP常见问题）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10%E3%80%81VTP%E9%83%A8%E7%BD%B2%E7%9A%84%E6%8E%A8%E8%8D%90%E5%81%9A%E6%B3%95"><span class="toc-number">10.</span> <span class="toc-text">10、VTP部署的推荐做法</span></a></li></ol>
+                    </div>
+                </span>
+            </div>
+        </div>
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -256,10 +625,10 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
-		isCategory: true,
+		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
 		root: "/",

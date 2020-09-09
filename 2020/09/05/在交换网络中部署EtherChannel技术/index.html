@@ -6,17 +6,45 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Category: Hello World | shainの博客</title>
+  <title>在交换网络中部署EtherChannel技术 | shainの博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="shain-l">
-<meta property="og:type" content="website">
-<meta property="og:title" content="shainの博客">
-<meta property="og:url" content="http://yoursite.com/categories/Hello-World/index.html">
+  <meta name="description" content="在有些网络环境中，用户与资源之间的距离也许非常远，交换机与交换机之间或交换机与服务器之间的链路可能会变得非常阻塞。虽然通过线路改造可以增加这些链路的带宽，但并不是所有的链路都具备带宽升级的条件。因此，在以最大化节省现有投资为目的的前提下，EtherChannel技术应运而生。EtherChannel技术可以将多条物理链路捆绑成一条逻辑链路来解决流量拥塞的问题，在提升带宽的同时，也实现了冗余性。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在交换网络中部署EtherChannel技术">
+<meta property="og:url" content="http://yoursite.com/2020/09/05/%E5%9C%A8%E4%BA%A4%E6%8D%A2%E7%BD%91%E7%BB%9C%E4%B8%AD%E9%83%A8%E7%BD%B2EtherChannel%E6%8A%80%E6%9C%AF/index.html">
 <meta property="og:site_name" content="shainの博客">
-<meta property="og:description" content="shain-l">
+<meta property="og:description" content="在有些网络环境中，用户与资源之间的距离也许非常远，交换机与交换机之间或交换机与服务器之间的链路可能会变得非常阻塞。虽然通过线路改造可以增加这些链路的带宽，但并不是所有的链路都具备带宽升级的条件。因此，在以最大化节省现有投资为目的的前提下，EtherChannel技术应运而生。EtherChannel技术可以将多条物理链路捆绑成一条逻辑链路来解决流量拥塞的问题，在提升带宽的同时，也实现了冗余性。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/06/wmAPhT.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/06/wmVMlD.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/06/wmDsbQ.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/06/wmsEk9.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/06/wmsg10.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/06/wmyrDO.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/06/wmyYE4.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/06/wmyn4s.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/06/wmcKXV.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/06/wmcwnK.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/06/wmcaX6.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/06/wmcXuV.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/06/wmcjBT.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/06/wmg8Df.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/06/wm2Ysx.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/06/wm2JQ1.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/07/wm2WTS.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/07/wm2Rw8.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/09/wlxaVI.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/09/wlxnbR.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/09/wlzMLj.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/09/wlz5TI.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/09/w1sPPO.png">
+<meta property="article:published_time" content="2020-09-05T08:09:30.000Z">
+<meta property="article:modified_time" content="2020-09-09T05:22:34.556Z">
 <meta property="article:author" content="shain-l">
+<meta property="article:tag" content="交换">
+<meta property="article:tag" content="EtherChannel">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.ax1x.com/2020/09/06/wmAPhT.png">
   
     <link rel="alternative" href="/atom.xml" title="shainの博客" type="application/atom+xml">
   
@@ -158,71 +186,349 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-在交换网络中部署EtherChannel技术" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/08/26/hello-world/" class="archive-article-date">
-  	<time datetime="2020-08-26T05:18:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-26</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/08/26/hello-world/">Hello World</a>
+    <h1 class="article-title" itemprop="name">
+      在交换网络中部署EtherChannel技术
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+		
+		<!--显示阅读次数-->
+		
+			<br/>
+			<a class="cloud-tie-join-count" href="javascript:void(0);" style="color:gray;font-size:14px;">
+			<span class="icon-sort"></span>
+			<span id="busuanzi_container_page_pv" style="color:#ef7522;font-size:14px;">
+				阅读数: <span id="busuanzi_value_page_pv"></span>次 &nbsp;&nbsp;
+			</span>
+			</a>
+		
+		<!--显示阅读次数完毕-->
+		<!--字数统计-->
+		<div align="right" class="post-count">
+			<img src="/assets/img/word_count.png" width="26px" title="字数">&nbsp;3.1k&nbsp; | &nbsp;<img src="/assets/img/time_2.png" width="26px" title="阅读时长">&nbsp;12&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		</div>
+		
+        
+        <a href="/2020/09/05/%E5%9C%A8%E4%BA%A4%E6%8D%A2%E7%BD%91%E7%BB%9C%E4%B8%AD%E9%83%A8%E7%BD%B2EtherChannel%E6%8A%80%E6%9C%AF/" class="archive-article-date">
+  	<time datetime="2020-09-05T08:09:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-05</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>　　在有些网络环境中，用户与资源之间的距离也许非常远，交换机与交换机之间或交换机与服务器之间的链路可能会变得非常阻塞。虽然通过线路改造可以增加这些链路的带宽，但并不是所有的链路都具备带宽升级的条件。因此，在以最大化节省现有投资为目的的前提下，EtherChannel技术应运而生。EtherChannel技术可以将多条物理链路捆绑成一条逻辑链路来解决流量拥塞的问题，在提升带宽的同时，也实现了冗余性。</p>
+<a id="more"></a>
+
+<h3 id="1、EtherChannel技术背景"><a href="#1、EtherChannel技术背景" class="headerlink" title="1、EtherChannel技术背景"></a>1、EtherChannel技术背景</h3><p>　　EtherChannel技术最初是由Cisco开发的一种LAN交换机之间的链路技术，用来将多个百兆或千兆以太网端口放入一个逻辑的通道中。EtherChannel拥有以下多种优势：</p>
+<ul>
+<li>利用已有交换机端口。无需升级交换机互联链路，从而节省投资成本。</li>
+<li>大多数的配置都可以在EtherChannel接口下完成，而不需要分别在每个端口进行配置，这可以保证交换机之间端口配置的一致性。</li>
+<li>EtherChannel技术支持多条链路的负载均衡。根据硬件平台的不同，可以在多条物理链路之间部署多种方式的负载均衡，如基于源MAC和目的MAC，或是基于源IP和目的IP。</li>
+</ul>
+<p>　　除了交换机，其他网络设备也广泛地支持EtherChannel技术。在任何情况下，EtherChannel创建的都是一对一的逻辑链路。EtherChannel链路可以部署在两台交换机之间，也可以部署在启用了EtherChannel服务的服务器和交换机之间，但是，同一条EtherChannel不能向两台不同的交换机发送流量。一条EtherChannel链路的两端始终只连接着两台设备，而且这两台设备上EtherChannel组成员的端口配置也必须相同。</p>
+<p>　　EtherChannel创建的汇聚链路会被看做是一条逻辑链路。当两台交换机之间存在多条EtherChannel链路时，生成树可能会阻塞其中的一条来防止出现环路。当生成树阻断了某条冗余链路时，也就阻断了一条EtherChannel链路，这条EtherChannel链路中的所有端口也都会被阻塞。如果仅有一条EtherChannel链路，捆绑中所有物理端口都会处于Active状态。因为对于生成树算法来说，多条物理链路捆绑后的EtherChannel链路是一条逻辑链路。如果EtherChannel中的某条物理链路出现了故障，EtherChannel会自动更新其捆绑带宽，对应的STP开销也会重新计算。</p>
+<blockquote>
+<p>注：在三层交换机上，可以将设备的交换端口转化成路由端口。转换后的三层端口同样可以配置EtherChannel链路。在使用了例如VSS（虚拟交换系统）或vPC（虚拟端口通道）技术后，可以在一台接入层交换机和两台不同的汇聚层交换机之间创建EtherChannel链路。</p>
+</blockquote>
+<h3 id="2、EtherChannel协商协议"><a href="#2、EtherChannel协商协议" class="headerlink" title="2、EtherChannel协商协议"></a>2、EtherChannel协商协议</h3><p>　　可以使用以下三种机制之一来创建EtherChannel</p>
+<blockquote>
+<p>LACP： IEEE标准协商协议</p>
+<p>PAgP： Cisco私有协商协议</p>
+<p>静态配置： 无协商协议</p>
+</blockquote>
+<ul>
+<li><strong>LACP</strong></li>
+</ul>
+<p>　　链路汇聚控制协议（LACP）是一种由IEEE定义的标准（802.3ad），允许将多个 物理端口捆绑到一起形成一个逻辑通道。LACP允许交换机发送LACP数据包来与对端自动协商捆绑通道。由于LACP属于IEEE制定的业界标准，因此可以在不同厂商设备的环境中协商EtherChannel链路。LACP会检查两台交换机的配置一致性以及链路状态，用来确保EtherChannel创建时，所有端口配置有相同的端口速率、双工模式、VLAN信息等。在通道建立之后，任一端口的配置修改都会影响通道另一端的端口状态。</p>
+<p>　　LACP数据包会在启用了EtherChannel功能的端口上进行交换。接收方会将对端的端口属性与自身的端口属性进行比较。LACP会为EtherChannel端口分配角色。带有最低的系统优先级的交换机将决定哪些活动端口可以加入EtherChannel。端口根据其优先级选举出Active端口。<span style="color:red">数值越低表示越优先。</span>一般来说，一个EtherChannel最大支持16条链路。同一时间只能有8条处于Active（活动）状态。其余8条非Active端口将处于Standby（备用）状态。如果某条Active链路发生故障，Standby端口将接管成为Active端口。</p>
+<blockquote>
+<p>两台交换机之间建立EtherChannel的最大Active链路数量是可变的</p>
+</blockquote>
+<p>　　LACP操作模式如下</p>
+<p>　　　　①Active：使端口进入主动协商状态，发送LACP数据包主动与其他接口进行协商</p>
+<p>　　　　②Passive：使端口进入被动协商状态，对LACP数据包做出响应</p>
+<p>　　　　③On：强制端口形成EtherChannel，不需要使用LACP或PAgP进行协商</p>
+<ul>
+<li><strong>PAgP</strong></li>
+</ul>
+<p>　　端口聚合协议（PAgP）提供了与LACP类似的协商优点。PAgP是Cisco私有协议，因此只能运行在Cisco设备上。PAgP数据包会在启用了EtherChannel功能的端口上进行交换，每30s发送过一次。接收方会将对端的端口属性与自身的端口属性进行比较，具有相同属性的端口将被捆绑进同一个EtherChannel中。PAgP只能在配置有相同VLAN或Trunk属性的端口上形成EtherChannel。如果捆绑中的端口修改了配置，那么PAgP也会重新协商EtherChannel的参数。例如，捆绑中的某个端口的速率、双工模式或VLAN信息做了配置修改，PAgP将会重新考虑捆绑中其他端口的参数。<span style="color:red">PAgP与LACP协议之间不能兼容。</span></p>
+<p>　　PAgP操作模式如下：</p>
+<p>　　　　①Desirable：使端口进入主动协商的状态，发送PAgP数据包</p>
+<p>　　　　②Auto：使端口进入被动协商的状态，对PAgP数据包做出响应</p>
+<p>　　　　③On：强制端口不使用PAgP而形成EtherChannel，不会交换PAgP数据包</p>
+<h3 id="3、EtherChannel配置实例"><a href="#3、EtherChannel配置实例" class="headerlink" title="3、EtherChannel配置实例"></a>3、EtherChannel配置实例</h3><ul>
+<li>LACP验证</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/06/wmAPhT.png"></p>
+<p>①首先将交换机之间的端口配置成Trunk</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">SW1(config)#int range e0/0-1</span><br><span class="line">SW1(config-if-range)#switchport trunk encapsulation dot1q </span><br><span class="line">SW1(config-if-range)#switchport mode trunk </span><br><span class="line">SW2(config)#int range e0/0-1</span><br><span class="line">SW2(config-if-range)#switchport trunk encapsulation dot1q </span><br><span class="line">SW2(config-if-range)#switchport mode trunk </span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/09/06/wmVMlD.png"></p>
+<p>②在SW1上配置EtherChannel，创建端口组1，模式为Active</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SW1(config)#int range e0/0-1</span><br><span class="line">SW1(config-if-range)#channel-group 1 mode active </span><br><span class="line">Creating a port-channel interface Port-channel <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>③在SW2上配置EtherChannel，创建端口组1，模式为Passive</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SW2(config)#int range e0/0-1</span><br><span class="line">SW2(config-if-range)#channel-group 1 mode passive </span><br><span class="line">Creating a port-channel interface Port-channel <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>配置后，两个端口将被捆绑到channel-group 1中。由于使用了active关键字，因此将使用LACP协议进行协商。SW1配置了LACP的active模式，SW2配置了LACP的passive模式，因此EtherChannel可以协商成功。</p>
+</blockquote>
+<p>④在SW1和SW2上分别进入新建的port-channel的接口配置模式，将其配置成dot1Q的trunk模式</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">SW1(config)#int port-channel 1</span><br><span class="line">SW1(config-if)#switchport trunk encapsulation dot1q </span><br><span class="line">SW1(config-if)#switchport mode trunk </span><br><span class="line">SW2(config)#int port-channel 1</span><br><span class="line">SW2(config-if)#switchport trunk encapsulation dot1q </span><br><span class="line">SW2(config-if)#switchport mode trunk </span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/09/06/wmDsbQ.png"></p>
+<p>⑤在SW1和SW2上使用show etherchannel summary命令查看EtherChannel的摘要信息</p>
+<blockquote>
+<p>如下图所示，port-channel 1是一个正在使用的2层EtherChannel（SU标志）。协商协议使用的是LACP，捆绑成功的端口包括Ethernet 0/0和Ethernet 0/1（P标志）</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/09/06/wmsEk9.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/06/wmsg10.png"></p>
+<p>⑥在SW1上查看Ethernet 0/0和port-channel 1的信息，可知带宽变为原来的两倍</p>
+<p><img src="https://s1.ax1x.com/2020/09/06/wmyrDO.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/06/wmyYE4.png"></p>
+<hr>
+
+<ul>
+<li>PAgP验证</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/06/wmyn4s.png"></p>
+<p>①将交换机之间的端口配置成Trunk</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">SW1(config)#int range e0/0-1</span><br><span class="line">SW1(config-if-range)#switchport trunk encapsulation dot1q </span><br><span class="line">SW1(config-if-range)#switchport mode trunk </span><br><span class="line">SW2(config)#int range e0/0-1</span><br><span class="line">SW2(config-if-range)#switchport trunk encapsulation dot1q </span><br><span class="line">SW2(config-if-range)#switchport mode trunk </span><br></pre></td></tr></table></figure>
+
+<p>②在SW1上配置EtherChannel，创建端口组1，模式为Desirable</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SW1(config)#int range e0/0-1</span><br><span class="line">SW1(config-if-range)#channel-group 1 mode desirable </span><br><span class="line">Creating a port-channel interface Port-channel <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>③在SW2上配置EtherChannel，创建端口组2，模式为auto</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SW2(config)#int range e0/0-1</span><br><span class="line">SW2(config-if-range)#channel-group 2 mode auto </span><br><span class="line">Creating a port-channel interface Port-channel <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<p>④在SW1和SW2上分别进入新建的port-channel的接口配置模式，将其配置成dot1Q的trunk模式</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">SW1(config)#int port-channel 1</span><br><span class="line">SW1(config-if)#switchport trunk encapsulation dot1q </span><br><span class="line">SW1(config-if)#switchport mode trunk </span><br><span class="line">SW2(config)#int port-channel 2</span><br><span class="line">SW2(config-if)#switchport trunk encapsulation dot1q </span><br><span class="line">SW2(config-if)#switchport mode trunk </span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/09/06/wmcKXV.png"></p>
+<p>⑤在SW1和SW2上使用show etherchannel summary命令查看EtherChannel的摘要信息</p>
+<p><img src="https://s1.ax1x.com/2020/09/06/wmcwnK.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/06/wmcaX6.png"></p>
+<p>⑥在SW2上查看Ethernet 0/0和port-channel 2的信息，可知带宽变为原来的两倍</p>
+<p><img src="https://s1.ax1x.com/2020/09/06/wmcXuV.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/06/wmcjBT.png"></p>
+<hr>
+
+<ul>
+<li>On验证</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/06/wmg8Df.png"></p>
+<p>①将交换机之间的端口配置成Trunk</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">SW1(config)#int range e0/0-1</span><br><span class="line">SW1(config-if-range)#switchport trunk encapsulation dot1q </span><br><span class="line">SW1(config-if-range)#switchport mode trunk </span><br><span class="line">SW2(config)#int range e0/0-1</span><br><span class="line">SW2(config-if-range)#switchport trunk encapsulation dot1q </span><br><span class="line">SW2(config-if-range)#switchport mode trunk </span><br></pre></td></tr></table></figure>
+
+<p>②在SW1和SW2上配置EtherChannel，创建端口组1，模式为On</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">SW1(config)#int range e0/0-1</span><br><span class="line">SW1(config-if-range)#channel-group 1 mode on</span><br><span class="line">SW2(config)#int range e0/0-1</span><br><span class="line">SW2(config-if-range)#channel-group 1 mode on </span><br><span class="line">Creating a port-channel interface Port-channel <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>④在SW1和SW2上分别进入新建的port-channel的接口配置模式，将其配置成dot1Q的trunk模式</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">SW1(config)#int range e0/0-1</span><br><span class="line">SW1(config-if-range)#switchport trunk encapsulation dot1q </span><br><span class="line">SW1(config-if-range)#switchport mode trunk </span><br><span class="line">SW2(config)#int range e0/0-1</span><br><span class="line">SW2(config-if-range)#switchport trunk encapsulation dot1q </span><br><span class="line">SW2(config-if-range)#switchport mode trunk </span><br></pre></td></tr></table></figure>
+
+<p>⑤在SW1和SW2上使用show etherchannel summary命令查看EtherChannel的摘要信息</p>
+<p><img src="https://s1.ax1x.com/2020/09/06/wm2Ysx.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/06/wm2JQ1.png"></p>
+<p>⑥在SW2上查看Ethernet 0/0和port-channel 2的信息，可知带宽变为原来的两倍</p>
+<p><img src="https://s1.ax1x.com/2020/09/07/wm2WTS.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/07/wm2Rw8.png"></p>
+<h3 id="4、EtherChannel负载均衡方式"><a href="#4、EtherChannel负载均衡方式" class="headerlink" title="4、EtherChannel负载均衡方式"></a>4、EtherChannel负载均衡方式</h3><p>　　EtherChannel中的流量可以分担到捆绑中的每条链路上。不过，流量并不是严格平均分布到每条链路上的。数据帧选择EtherChannel链路上哪条链路转发取决于哈希算法的结果，不同的设备平台使用的哈希计算算法也不尽相同。</p>
+<p>　　在同一个EtherChannel的多个端口成员之间实现负载分担是配置EtherChannel的一个重要因素。管理员可以把负载分担选项当作一个规则，从而极大程度上丰富配置的多样性。举例来说，如果某条通道上的流量只去往单一的MAC地址，那么管理员既可以根据目的MAC地址进行配置，使其总是选择通道中的相同链路;也可以根据源地址进行配置，这样做可以实现更好的负载分担。</p>
+<p>　　负载分担会在全局应用于交换机上的所有EtherChannel，可以使用命令<strong>port-channel load-balance</strong>来实现这项技术。负载分担可以基于以下变量实现：</p>
+<ul>
+<li>src-mac：源MAC地址</li>
+<li>dst-mac：目的MAC地址</li>
+<li>src-dst-mac：源和目的MAC地址</li>
+<li>src-ip：源IP地址</li>
+<li>dst-ip：目的IP地址</li>
+<li>src-dst-ip：源和目的IP地址（默认）</li>
+<li>src-port：源TCP/UDP（用户数据报协议）端口</li>
+<li>dst-port：目的TCP/UDP端口</li>
+<li>src-dst-port：源和目的TCP/UDP端口</li>
+</ul>
+<p>　　例如，源MAC地址转发是指当数据包被发送给EtherChannel，设备会根据入站数据包的源MAC地址来判断应该将数据包从通道的哪个端口转发出去。于是，来自不同主机的数据包就会从通道的不同端口中转发出去，而来自同一台主机的数据包会从通道的同一端口中转发出去，这就是实现了负载分担。</p>
+<p>　　SW1和SW2之间使用LACP协商建立EtherChannel链路，如下图所示</p>
+<p><img src="https://s1.ax1x.com/2020/09/09/wlxaVI.png"></p>
+<ul>
+<li>输入<span style="color:red">show etherchannel load-balance</span>命令来查看EtherChannel使用的负载均衡信息</li>
+</ul>
+<blockquote>
+<p>此前并未在交换机上配置负载均衡，可见该交换机上默认的负载均衡方式为src-dst-ip，即基于源和目的IP地址进行负载分担</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/09/09/wlxnbR.png"></p>
+<ul>
+<li>为了测试上图所示的拓扑中每条链路上分布的流量，在SW1上输入<span style="color:red">clear counters</span>命令清空计数器，即可准确地测试出每条链路分布的流量</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SW1#clear counters </span><br><span class="line">Clear <span class="string">&quot;show interface&quot;</span> counters on all interfaces [confirm]</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>使用扩展ping命令，从PC1上 ping PC3</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/09/wlzMLj.png"></p>
+<ul>
+<li>在SW1上查看两个端口的计数器</li>
+</ul>
+<blockquote>
+<p>可见大多数流量都分布在了E0/0接口上，通过E0/0端口承载</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/09/09/wlz5TI.png"></p>
+<ul>
+<li>将SW1的负载均衡方式修改为dst-ip</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SW1(config)#port-channel load-balance dst-ip</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看修改后的负载均衡方式</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/09/09/w1sPPO.png"></p>
+
+      
+	  
+	  <!--阅读结束-->
+	   
+         <div class="essayending">
+           <div>
+            <div style="text-align:center;color: #ccc;font-size:18px;">
+            <br/>
+            <br/>
+ -------------本文结束<i class="fa fa-paw">&nbsp;</i><img src="/assets/img/end.png" width="18px">&nbsp;感谢您的阅读-------------
+            <br/>
+            <br/>
+             <br/>
+             <br/>
+            </div>
+           </div>
+         </div>
+         
+       
+  
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>你真好看<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/img/alipay.jpg">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">hello world</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">交换</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">EtherChannel</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/Hello-World//" class="article-tag-list-link color2">Hello World</a>
+        			<a href="/categories/学习笔记//" class="article-tag-list-link color5">学习笔记</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/2020/09/03/VTP%E5%8D%8F%E8%AE%AE/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">VTP协议</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81EtherChannel%E6%8A%80%E6%9C%AF%E8%83%8C%E6%99%AF"><span class="toc-number">1.</span> <span class="toc-text">1、EtherChannel技术背景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81EtherChannel%E5%8D%8F%E5%95%86%E5%8D%8F%E8%AE%AE"><span class="toc-number">2.</span> <span class="toc-text">2、EtherChannel协商协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81EtherChannel%E9%85%8D%E7%BD%AE%E5%AE%9E%E4%BE%8B"><span class="toc-number">3.</span> <span class="toc-text">3、EtherChannel配置实例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E3%80%81EtherChannel%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E6%96%B9%E5%BC%8F"><span class="toc-number">4.</span> <span class="toc-text">4、EtherChannel负载均衡方式</span></a></li></ol>
+                    </div>
+                </span>
+            </div>
+        </div>
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -256,10 +562,10 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
-		isCategory: true,
+		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
 		root: "/",
