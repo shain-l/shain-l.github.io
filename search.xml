@@ -5,72 +5,72 @@
     <url>/2020/09/01/ACL%E7%9A%84%E8%BF%90%E7%94%A8/</url>
     <content><![CDATA[<h3 id="1、实验目的"><a href="#1、实验目的" class="headerlink" title="1、实验目的"></a>1、实验目的</h3><p>1）掌握ACL的作用<br>2）理解标准和扩展ACL的区别<br>3）熟悉标准和扩展ACL的配置<br>4）掌握ACL的验证和查看命令<br>5）理解命名的ACL的作用与配置</p>
 <a id="more"></a>
-<h3 id="2、拓扑结构"><a href="#2、拓扑结构" class="headerlink" title="2、拓扑结构"></a>2、拓扑结构</h3><p><img src="https://s1.ax1x.com/2020/09/01/dz9FzR.png"></p>
+<h3 id="2、拓扑结构"><a href="#2、拓扑结构" class="headerlink" title="2、拓扑结构"></a>2、拓扑结构</h3><p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dz9FzR.png"></p>
 <h3 id="3、实验步骤"><a href="#3、实验步骤" class="headerlink" title="3、实验步骤"></a>3、实验步骤</h3><p><strong>（1）完成各路由器的基本配置，实现各直连设备之间可以互ping对方，主机和路由器接口的地址自己规划</strong></p>
 <blockquote>
 <p>两台PC及三台路由器的IP地址配置如拓扑图所示，此处不再将图贴出</p>
 </blockquote>
 <p><strong>（2）在R2上添加两个loopback接口，loopback1和loopback2，其中loopback1地址为2.2.2.2/24，loopback2地址为22.22.22.22/24</strong></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dzCFAS.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzCFAS.png"></p>
 <p><strong>（3）完成必要的配置实现全网可达</strong></p>
 <blockquote>
 <p>在路由器上运行路由协议，实现全网可达</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/09/01/dzCVpj.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dzCecn.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dzCKBV.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzCVpj.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzCecn.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzCKBV.png"></p>
 <p><strong>（4）使用标准ACL实现PC1不能访问PC2，并使用ping命令验证结果</strong></p>
 <blockquote>
 <p>标准ACL建议在离目标近的设备上配置，在R3上配置ACL拒绝来自主机172.16.1.1的流量，并在进接口方向调用，此时实现PC1不能访问PC2</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/09/01/dzCT3j.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dzCHvn.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzCT3j.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzCHvn.png"></p>
 <p><strong>（5）使用标准ACL实现只允许PC2远程登录到路由器R2，并使用telnet命令验证结果</strong></p>
 <blockquote>
 <p>在R2上配置ACL，允许主机172.16.3.1的流量，默认隐含一条拒绝所有，即拒绝除PC2之外的流量。在vty中允许其他设备使用telnet远程登录，并在in方向调用ACL</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/09/01/dzPGa8.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzPGa8.png"></p>
 <blockquote>
 <p>在PC1和PC2上进行测试，此时实现了只允许PC2远程登录到R2</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/09/01/dziPJg.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dziVLq.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dziPJg.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dziVLq.png"></p>
 <p><strong>（6）使用标准ACL实现禁止loopback2所在网段的所有主机访问PC1，对loopback1所在网段主机的访问不做限制</strong></p>
 <blockquote>
 <p>在R1上配置ACL，允许loopback1网段，拒绝loopback2网段，然后在e0/1接口的in方向调用</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/09/01/dzizc9.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzizc9.png"></p>
 <blockquote>
 <p>此时实现了R2上的loopback1网段可以访问PC1，而loopback2网段不能</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/09/01/dzFtjs.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzFtjs.png"></p>
 <p><strong>（7）使用命名ACL完整上述标准ACL的需求</strong></p>
 <ul>
 <li>实现PC1不能访问PC2</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/09/01/dzecvD.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dzeoPP.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzecvD.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzeoPP.png"></p>
 <ul>
 <li>实现只允许PC2远程登录到路由器R2</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/09/01/dznifP.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dznAl8.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dznVOg.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dznifP.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dznAl8.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dznVOg.png"></p>
 <ul>
 <li>实现禁止loopback2所在网段的所有主机访问PC1，对loopback1所在网段主机的访问不做限制</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/09/01/dzuCB4.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dzuPHJ.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzuCB4.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzuPHJ.png"></p>
 <p><strong>（8）使用扩展ACL实现禁止PC1远程登录到R2，对其他访问不做限制</strong></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dzu34I.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dzu1UA.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dzulEd.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzu34I.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzu1UA.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzulEd.png"></p>
 <p><strong>（9）使用扩展ACL实现PC2可以telnet到路由器R1，但不能ping通路由器R1，分别使用ping和telnet验证结果</strong></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dzuOqe.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dzuLrD.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dzuHxK.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dzuqKO.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dzu726.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzuOqe.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzuLrD.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzuHxK.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzuqKO.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzu726.png"></p>
 <p><strong>（10）使用扩展ACL实现PC1可以pingPC2，但禁止PC2pingPC1，其他的访问不受限制，使用ping验证结果</strong></p>
 <blockquote>
 <p>ICMP</p>
@@ -96,32 +96,32 @@
 </li>
 </ul>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/09/01/dzKOS0.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dzKqWq.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dzKbYn.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzKOS0.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzKqWq.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzKbYn.png"></p>
 <p><strong>（11）使用命名ACL完成上述扩展ACL的需求</strong></p>
 <ul>
 <li>实现禁止PC1远程登录到R2，对其他访问不做限制</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/09/01/dzQCDS.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dzQPHg.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dzQ9u8.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzQCDS.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzQPHg.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzQ9u8.png"></p>
 <ul>
 <li>实现PC2可以telnet到路由器R1，但不能ping路由器R1，分别使用ping和telnet验证结果</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/09/01/dzQKDU.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dzQuuT.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzQKDU.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzQuuT.png"></p>
 <ul>
 <li>实现PC1可以pingPC2，但禁止PC2pingPC1，其他的访问不受限制，使用ping验证结果</li>
 </ul>
 <p><span style="color:red">方法一：拒绝PC2向PC1发送icmp的echo-request报文</span></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dzQWqS.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dzQRr8.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dzQ2Kf.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzQWqS.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzQRr8.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzQ2Kf.png"></p>
 <p><span style="color:red">方法二：拒绝PC1向PC2发送icmp的echo-reply报文</span></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dzl1L8.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dzllsf.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dzlQQP.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzl1L8.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzllsf.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzlQQP.png"></p>
 ]]></content>
       <categories>
         <category>实验</category>
@@ -143,10 +143,10 @@
 <p>本文将从三个阶段对DMVPN进行验证</p>
 <a id="more"></a>
 
-<h3 id="1、拓扑结构"><a href="#1、拓扑结构" class="headerlink" title="1、拓扑结构"></a>1、拓扑结构</h3><p><img src="https://s1.ax1x.com/2020/09/01/dxEvT0.png"></p>
+<h3 id="1、拓扑结构"><a href="#1、拓扑结构" class="headerlink" title="1、拓扑结构"></a>1、拓扑结构</h3><p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dxEvT0.png"></p>
 <p>在进行验证之前，确保R1、R3、R4存在默认路由，使得三台路由器之间可以相互ping通</p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dxulw9.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dxu8F1.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dxulw9.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dxu8F1.png"></p>
 <h3 id="2、phase-1验证"><a href="#2、phase-1验证" class="headerlink" title="2、phase-1验证"></a>2、phase-1验证</h3><blockquote>
 <p>hub端是mGRE，分支端是常规的GRE，分支之间的流量必须经过hub，可以采取关闭水平分割来实现分支之间的路由互相学习，可以在hub端进行手工的路由汇总，来优化分支的路由条目</p>
 </blockquote>
@@ -163,11 +163,11 @@
 <ul>
 <li>R1和R3的隧道地址可以相互ping通</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/09/01/dxKljS.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dxKljS.png"></p>
 <ul>
 <li>在R1上查看地址的映射关系——10.1.1.3映射到的公网地址为202.101.23.3</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/09/01/dxKNhq.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dxKNhq.png"></p>
 <ul>
 <li>spoke(R4)配置</li>
 </ul>
@@ -176,9 +176,9 @@
 <ul>
 <li>无需再在R1上配置，即可ping通R4的隧道地址，并且也记录了R4的逻辑地址和物理地址的映射关系</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/09/01/dxMdIA.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dxMRaj.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dxMWIs.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dxMdIA.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dxMRaj.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dxMWIs.png"></p>
 <ul>
 <li>分别在R1、R3、R4上各启用一个loopback接口，地址设置如下所示</li>
 </ul>
@@ -192,11 +192,11 @@
 <ul>
 <li>在R1上查看EIGRP邻居表，可知R1通过1个隧道接口建立了两个邻居关系</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/09/01/dxQj0g.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dxQj0g.png"></p>
 <ul>
 <li>在R1的e0/0接口抓包，报文如下图所示，但是此时的报文都为明文显示，需要进行加密</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/09/01/dxlEBF.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dxlEBF.png"></p>
 <ul>
 <li>在R1、R3和R4上配置IPSec，保护隧道上的数据</li>
 </ul>
@@ -209,12 +209,12 @@
 <ul>
 <li>验证是否进行了加密</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/09/01/dx1KaQ.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dx1UZF.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dx1KaQ.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dx1UZF.png"></p>
 <ul>
 <li>此时R3上的路由表并没有172.16.4.0的路由条目，因为存在水平分割问题</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/09/01/dx1xWn.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dx1xWn.png"></p>
 <ul>
 <li>在R1的隧道接口中关闭水平分割</li>
 </ul>
@@ -223,11 +223,11 @@
 <ul>
 <li>再次查看R3的路由表 ，此时学习到了172.16.4.0的路由条目</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/09/01/dx31Te.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dx31Te.png"></p>
 <ul>
 <li>跟踪路由，可知分支之间的流量必须经过hub</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/09/01/dx3rkQ.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dx3rkQ.png"></p>
 <ul>
 <li>可通过在hub上进行路由汇总的方式来优化分支的路由条目，为了便于观察结果，在R3和R4上分别再开启一个回环口，并在EIGRP中通告</li>
 </ul>
@@ -236,8 +236,8 @@
 <ul>
 <li>查看R3和R4的路由表，都学习到了相应的路由条目</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/09/01/dx3HpR.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dx3b11.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dx3HpR.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dx3b11.png"></p>
 <ul>
 <li>在R1的tunnel接口进行路由汇总</li>
 </ul>
@@ -246,8 +246,8 @@
 <ul>
 <li>再次查看R3和R4的路由表，此时学习到的是经过R1汇总的路由</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/09/01/dxDFvF.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dxDEDJ.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dxDFvF.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dxDEDJ.png"></p>
 <h3 id="3、phase-2验证"><a href="#3、phase-2验证" class="headerlink" title="3、phase-2验证"></a>3、phase-2验证</h3><blockquote>
 <p>所有站点都采用mGRE，分支的流量可以无需经过hub，不能在hub端对路由进行汇总；eigrp环境，需要关闭下一跳规则——<span style="color:red">no ip next-hop-self eigrp</span>，缺点所有的分支都需要维护整个网络的所有路由信息。</p>
 </blockquote>
@@ -259,14 +259,14 @@
 <ul>
 <li>在R3上使用traceroute跟踪路由，可知去往172.16.4.1仍然要经过hub</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/09/01/dxDDKg.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dxDDKg.png"></p>
 <ul>
 <li>查看R3的路由表，可知去往172.16.4.0/24网段的路由的下一跳为hub</li>
 </ul>
 <blockquote>
 <p>【注】<span style="color:red">此时并未在R1的隧道接口汇总路由</span></p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/09/01/dxDsbj.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dxDsbj.png"></p>
 <ul>
 <li>出现上述问题的原因在于EIGRP路由在传递的时候会将下一跳改为自己，将R1的tunnel接口将该属性关闭</li>
 </ul>
@@ -275,11 +275,11 @@
 <ul>
 <li>此时查看R3的路由表可知去往172.16.4.0/24网段的路由的下一跳变为R4</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/09/01/dxDHaR.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dxDHaR.png"></p>
 <ul>
 <li>在R3上再次跟踪路由，如下图所示，可知此时R3直接通过R4访问172.16.4.1，无需再经过hub</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/09/01/dxDLPx.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dxDLPx.png"></p>
 <h3 id="4、phase-3验证"><a href="#4、phase-3验证" class="headerlink" title="4、phase-3验证"></a>4、phase-3验证</h3><blockquote>
 <p>在阶段三引入了shortcut（短路）和redirect（重定向）</p>
 </blockquote>
@@ -296,8 +296,8 @@
 <ul>
 <li>此时R3和R4的路由表还是无法学习到其他站点的路由条目</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/09/01/dxrMon.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dxrliq.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dxrMon.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dxrliq.png"></p>
 <ul>
 <li>为了验证实验结果，此时在R3启用多个回环口，并在eigrp中通告</li>
 </ul>
@@ -311,177 +311,36 @@
 <ul>
 <li>再次查看R3和R4的路由表，此时学习到的为经过R1汇总的条目，并且下一跳都指向R1</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/09/01/dxrsSK.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dxr6yD.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dxrsSK.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dxr6yD.png"></p>
 <ul>
 <li>在R4上跟踪到达172.16.3.1所经过的路径，可知需经过R1</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/09/01/dxr4Yt.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dxr4Yt.png"></p>
 <ul>
 <li>查看R4的路由表，此时出现了”H”的路由条目</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/09/01/dxroSf.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dxroSf.png"></p>
 <ul>
 <li>此时再次使用traceroute跟踪172.16.3.1，则无需再经过R1</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/09/01/dxs96U.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dxs96U.png"></p>
 <ul>
 <li>再次进行验证，使用traceroute命令跟踪到达192.168.3.1所经过的路径，首次traceroute需要经过R1</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/09/01/dxsUc8.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dxsUc8.png"></p>
 <ul>
 <li>查看R4的路由表，此时通过NHRP学习到了更详细的路由去往192.168.3.0/24网段，下一跳为10.1.1.3</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/09/01/dxsrAs.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dxsrAs.png"></p>
 <ul>
 <li>再次使用traceroute跟踪路径，则无需再经过R1</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/09/01/dxsT41.png"></p>
-<h3 id="5、总结"><a href="#5、总结" class="headerlink" title="5、总结"></a>5、总结</h3><p><img src="https://s1.ax1x.com/2020/09/01/dx5hkT.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dxsT41.png"></p>
+<h3 id="5、总结"><a href="#5、总结" class="headerlink" title="5、总结"></a>5、总结</h3><p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dx5hkT.png"></p>
 ]]></content>
       <tags>
         <tag>VPN</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>NAT和PPP的应用</title>
-    <url>/2020/09/02/NAT%E5%92%8CPPP%E7%9A%84%E5%BA%94%E7%94%A8/</url>
-    <content><![CDATA[<h3 id="1、实验目的"><a href="#1、实验目的" class="headerlink" title="1、实验目的"></a>1、实验目的</h3><p>1）理解NAT的作用<br>2）理解不同NAT的特点及配置<br>3）理解不同NAT的使用场合<br>4）掌握PPP的PAP和CHAP验证<br>5）理解辅助地址的作用<br>6）掌握NAT的验证和查看命令</p>
-<a id="more"></a>
-<h3 id="2、拓扑结构"><a href="#2、拓扑结构" class="headerlink" title="2、拓扑结构"></a>2、拓扑结构</h3><p><img src="https://s1.ax1x.com/2020/09/02/w9dK7d.png"></p>
-<h3 id="3、实验步骤"><a href="#3、实验步骤" class="headerlink" title="3、实验步骤"></a>3、实验步骤</h3><p><strong>（1）公司COM1和COM2内部网段都为192.168.1.0/24，其中COM1的SRV地址为192.168.1.100/24，COM2的user地址为192.168.1.10/24，COM1内部的其他主机地址自己规划；ISP上的Web_Server地址为211.1.1.1/24，ISP与COM2之间的地址段为202.101.12.0/24，ISP与COM1之间的地址段为202.101.23.0/24，其中COM2连接ISP的接口地址为202.101.12.1/24，COM1连接ISP的接口地址为202.101.23.3/24</strong></p>
-<blockquote>
-<p>IP地址规划如拓扑图所示</p>
-</blockquote>
-<p><strong>（2）要求COM1与ISP之间的PPP链路采用CHAP验证，用户名为20164120，密码为123456</strong></p>
-<ul>
-<li>在ISP的s2/0封装PPP，并指定PPP的认证方式为CHAP，指定对方的IP地址为202.101.23.3</li>
-<li>在全局下设置用户名和密码，用于chap验证</li>
-</ul>
-<p><img src="https://s1.ax1x.com/2020/09/02/w9wMKU.png"></p>
-<ul>
-<li>在COM1上s2/0接口封装PPP，指定IP地址为通过协商获取，填写用户名和密码，并让ISP下发默认路由</li>
-</ul>
-<p><img src="https://s1.ax1x.com/2020/09/02/w9wuvT.png"></p>
-<ul>
-<li>查看COM1上的IP地址，可知s2/0接口的IP地址为通过IPCP方式获得</li>
-</ul>
-<p><img src="https://s1.ax1x.com/2020/09/02/w9wm80.png"></p>
-<ul>
-<li>查看COM1的路由表中的静态路由条目，可知存在一条默认路由</li>
-</ul>
-<p><img src="https://s1.ax1x.com/2020/09/02/w9wn2V.png"></p>
-<p><strong>（3）在COM1上使用静态NAT实现SRV可以访问ISP上的Web_Server，分别使用ping和debug ip nat进行验证和测试</strong></p>
-<ul>
-<li>在COM1上启用一个loopback接口，用于静态nat的一对一映射</li>
-</ul>
-<p><img src="https://s1.ax1x.com/2020/09/02/w90HTH.png"></p>
-<ul>
-<li>配置静态nat，将SRV的IP地址192.168.1.100映射到COM1上的loopback接口的地址</li>
-</ul>
-<p><img src="https://s1.ax1x.com/2020/09/02/w90qkd.png"></p>
-<ul>
-<li>在ISP上配置静态路由，实现ISP可以访问COM1上的loopback接口</li>
-</ul>
-<p><img src="https://s1.ax1x.com/2020/09/02/w90jpt.png"></p>
-<ul>
-<li>在COM1上配置内部接口和外部接口</li>
-</ul>
-<p><img src="https://s1.ax1x.com/2020/09/02/w90LtA.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/02/w90OfI.png"></p>
-<ul>
-<li>此时SRV可以访问ISP上的Web_Server</li>
-</ul>
-<p><img src="https://s1.ax1x.com/2020/09/02/w90v1P.png"></p>
-<ul>
-<li>在COM1上查看nat转换表，可知将192.168.1.100转换成200.100.1.1</li>
-</ul>
-<p><img src="https://s1.ax1x.com/2020/09/02/w90x6f.png"></p>
-<ul>
-<li>由于采用静态NAT，所以此时Web_Server也可以通过200.100.1.1访问SRV</li>
-</ul>
-<p><img src="https://s1.ax1x.com/2020/09/02/w90zX8.png"></p>
-<ul>
-<li>在Web_Server上使用telnet命令远程登录到200.100.1.1，由下图可知此时登录到的设备为SRV</li>
-</ul>
-<p><img src="https://s1.ax1x.com/2020/09/02/w9BpnS.png"></p>
-<p><strong>（4）在COM1上使用复用地址池的方式实现COM1内的所有用户可以访问ISP上的Web_Server，分别使用ping和debug ip nat进行验证和测试</strong></p>
-<ul>
-<li>在COM1上配置地址池，范围为202.101.23.10~202.101.23.12，掩码为/24</li>
-<li>配置ACL，匹配192.168.1.0/24网段的流量</li>
-<li>配置复用地址池NAT</li>
-</ul>
-<p><img src="https://s1.ax1x.com/2020/09/03/w9siAe.png"></p>
-<ul>
-<li>此时各PC可以访问Web_Server</li>
-</ul>
-<p><img src="https://s1.ax1x.com/2020/09/03/w9s90O.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/03/w9sC7D.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/03/w9spnK.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/03/w9rzX6.png"></p>
-<ul>
-<li>在COM1上查看nat转换表，地址在COM1上执行了地址转换</li>
-</ul>
-<p><img src="https://s1.ax1x.com/2020/09/03/w9sFtH.png"></p>
-<ul>
-<li>使用debug ip nat命令查看地址转换信息</li>
-</ul>
-<p><img src="https://s1.ax1x.com/2020/09/03/w9skhd.png"></p>
-<p><strong>（5）在COM1和COM2上使用PAT方式实现COM1和COM2内部的用户都可以访问ISP上的Web_Server</strong></p>
-<ul>
-<li>由于COM1上已存在ACL 1匹配192.168.1.0/24网段的流量，所以此时可以直接在COM1上配置端口复用NAT</li>
-</ul>
-<p><img src="https://s1.ax1x.com/2020/09/03/w96EOP.png"></p>
-<ul>
-<li>测试COM1内部的用户与Web_Server的连通性</li>
-</ul>
-<p><img src="https://s1.ax1x.com/2020/09/03/w96Ayt.png"></p>
-<ul>
-<li>查看地址转换表</li>
-</ul>
-<p><img src="https://s1.ax1x.com/2020/09/03/w96Zef.png"></p>
-<ul>
-<li>在COM2上配置默认路由，下一跳指向ISP的e0/0接口的地址202.101.12.2，确保COM2可以访问Web_Server</li>
-</ul>
-<p><img src="https://s1.ax1x.com/2020/09/03/w96ew8.png"></p>
-<ul>
-<li>在COM2上使用命名的标准ACL匹配192.168.1.0/24网段的流量</li>
-</ul>
-<p><img src="https://s1.ax1x.com/2020/09/03/w96kQI.png"></p>
-<ul>
-<li>配置PAT</li>
-</ul>
-<p><img src="https://s1.ax1x.com/2020/09/03/w96mTS.png"></p>
-<ul>
-<li>指定内外部接口</li>
-</ul>
-<p><img src="https://s1.ax1x.com/2020/09/03/w960p9.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/03/w96aY4.png"></p>
-<ul>
-<li>测试COM2内部用户与Web_Server的连通性</li>
-</ul>
-<p><img src="https://s1.ax1x.com/2020/09/03/w96dfJ.png"></p>
-<ul>
-<li>在COM2上查看nat转换表，可知内部用户192.168.1.10在访问外部网络时将地址转换成了202.101.12.1</li>
-</ul>
-<p><img src="https://s1.ax1x.com/2020/09/03/w96UkF.png"></p>
-<p><strong>（6）实现COM2内部的COM2_USER可以远程登录到SRV</strong></p>
-<ul>
-<li>在COM1上配置静态nat，将SRV的地址192.168.1.100的tcp23号端口静态映射成200.100.1.1的5656号端口</li>
-</ul>
-<p><img src="https://s1.ax1x.com/2020/09/03/wC9w6J.png"></p>
-<ul>
-<li>在COM2_USER上使用telnet命令远程登录到SRV，此时应注意加上端口号</li>
-</ul>
-<p><img src="https://s1.ax1x.com/2020/09/03/wC9dl4.png"></p>
-]]></content>
-      <categories>
-        <category>实验</category>
-      </categories>
-      <tags>
-        <tag>CCNA</tag>
-        <tag>NAT</tag>
-        <tag>PPP</tag>
       </tags>
   </entry>
   <entry>
@@ -490,7 +349,7 @@
     <content><![CDATA[<h4 id="1、实验目的"><a href="#1、实验目的" class="headerlink" title="1、实验目的"></a>1、实验目的</h4><p>1）掌握EIGRP的基本配置<br>2）理解EIGRP的邻居表、拓扑表以及路由表的含义<br>3）掌握查看EIGRP路由协议的相关信息<br>4）掌握FD、AD、S、FS以及FC的含义<br>5）理解EIGRP的hello报文作用<br>6）理解路由快速收敛的含义<br>7）理解EIGRP的不等价负载均衡</p>
 <a id="more"></a>
 
-<h4 id="2、实验拓扑"><a href="#2、实验拓扑" class="headerlink" title="2、实验拓扑"></a>2、实验拓扑</h4><p><img src="https://s1.ax1x.com/2020/08/28/dTeEvT.png"></p>
+<h4 id="2、实验拓扑"><a href="#2、实验拓扑" class="headerlink" title="2、实验拓扑"></a>2、实验拓扑</h4><p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTeEvT.png"></p>
 <h4 id="3、实验步骤"><a href="#3、实验步骤" class="headerlink" title="3、实验步骤"></a>3、实验步骤</h4><p><strong>（1）完成各路由器的基本配置，实现各直连设备之间可以互ping对方，要求PC1的IP地址设置为172.16.1.1/24，网关设置为172.16.1.254，PC2的IP地址设置为172.16.3.1/24，网关设置为172.16.3.254，各路由器接口间的地址自己规划</strong></p>
 <blockquote>
 <p>IP地址规划如拓扑图标记所示，此处不再列出</p>
@@ -498,9 +357,9 @@
 <p><strong>（2）全网启用EIGRP，通告各自的直连网络路由，并关闭自动汇总</strong></p>
 <figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="comment">//启用EIGRP进程，AS号为90，AS号是邻居建立的前提，邻居要建立AS号必须要一样</span></span><br><span class="line">R3(config)#router eigrp 90 </span><br><span class="line"><span class="comment">//关闭自动汇总</span></span><br><span class="line">R3(config-router)#no auto-summary  </span><br><span class="line"><span class="comment">//通告网段</span></span><br><span class="line">R3(config-router)#network 192.168.23.0  //通告直连网段</span><br><span class="line">R3(config-router)#network 172.16.3.0 0.0.0.255</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://s1.ax1x.com/2020/08/28/dTmotA.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTmj0g.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTnCpq.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTmotA.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTmj0g.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTnCpq.png"></p>
 <p><strong>（3）在R1上使用show ip protocols命令，观察并理解该命令的输出信息</strong></p>
 <blockquote>
 <p>Metric weight K1=1, K2=0, K3=1, K4=0, K5=0   – EIGRP的开销计算与这5个K值有关系</p>
@@ -509,7 +368,7 @@
 <p>真正与EIGRP开销计算有关系的，只有带宽和延迟；</p>
 <p>EIGRP开销=带宽+延迟</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTnHUJ.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTnHUJ.png"></p>
 <p><strong>（4）查看各路由器的邻居表、拓扑表以及路由表，分别找出FD、AD以及S等重要信息</strong></p>
 <blockquote>
 <p>邻居表各字段含义</p>
@@ -523,50 +382,50 @@
 <p>Q：队列计数，表示有多少个可靠报文还没有得到确认，在运行正常的环境下该值应为0（如果值大于0则说明发生了拥塞）</p>
 <p>Seq：序列号</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTuKaQ.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTulPs.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTu1Gn.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dTuKaQ.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dTulPs.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dTu1Gn.png"></p>
 <blockquote>
 <p>拓扑表</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTuRde.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTuWIH.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTuhid.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dTuRde.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dTuWIH.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dTuhid.png"></p>
 <blockquote>
 <p>路由表</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTuTQP.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTuOoQ.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTuvJs.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dTuTQP.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dTuOoQ.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dTuvJs.png"></p>
 <p><strong>（5）测试PC1与PC2之间的连通性</strong></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTKGYd.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dTKGYd.png"></p>
 <p><strong>（6）在R2上添加一个loopback1接口，地址为200.200.200.200/24，然后在EIGRP中通告，观察R1和R3是否能马上学习到R2上新增的loopback1网段，并测试各主机与该loopback1之间的联通性</strong></p>
 <blockquote>
 <p>R1和R3能马上学习到R2上新增的loopback1网段</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTKaOf.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTK00S.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTKsYj.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTKcpn.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTKglq.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dTKaOf.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dTK00S.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dTKsYj.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dTKcpn.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dTKglq.png"></p>
 <p><strong>（7）使用wireshark抓取EIGRP的报文，理解EIGRP报文各字段的含义</strong></p>
 <blockquote>
 <p>每隔5s发送一个hello包，保持时间为15s，即超过3个hello时间未收到hello则认为对端Down，断开连接</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTKTh9.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dTKTh9.png"></p>
 <p><strong>（8）在R1上添加一个loopback1接口，地址为100.100.100.100/24，然后在EIGRP中通告</strong></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTKj0O.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTKv7D.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTMphd.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dTKj0O.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dTKv7D.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dTMphd.png"></p>
 <p><strong>（9）断开R1和R3与各主机之间的连接，连接R1与R3之间的以太网接口，完成必要配置，实现200.200.200.200访问100.100.100.100的不等价负载均衡</strong></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTM0jx.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dTM0jx.png"></p>
 <figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="comment">//使用源200.200.200.200去访问目标100.100.100.100</span></span><br><span class="line"><span class="comment">//若没有跟上source，那么默认情况下就是使用出接口去访问目标</span></span><br><span class="line">R2#ping 100.100.100.100 source 200.200.200.200  </span><br></pre></td></tr></table></figure>
 
-<p><img src="https://s1.ax1x.com/2020/08/29/dTQP54.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dTQP54.png"></p>
 <blockquote>
 <p>由于此时R2的路由表中只存在一条路径到达100.100.100.100，所以此时不存在负载均衡</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTQlPH.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dTQlPH.png"></p>
 <blockquote>
 <p>等价负载均衡：有多条开销相等的路径，此时可以同时从这些开销相等的路径去发送数量相同的数据包。</p>
 <p>不等价负载均衡：有多条路径，但是开销不一样，此时会根据一定的比例去发送数据包。</p>
@@ -583,37 +442,37 @@
 <blockquote>
 <p>查看R2的路由表，此时显示的为最优路径，FD=409600</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTlmSs.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dTlmSs.png"></p>
 <blockquote>
 <p>次优路径的AD即为R3到达100.100.100.100的开销（FD），也为409600</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTl00K.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dTl00K.png"></p>
 <blockquote>
 <p>此时不满足FC条件，则需更改开销，修改K值，更改R2的e0/0接口的延迟为3000（默认为1000），注意倍数关系</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTlfnP.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTgwut.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTgRvn.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dTlfnP.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dTgwut.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dTgRvn.png"></p>
 <blockquote>
 <p>将修改延迟的接口关闭再打开</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTgjDx.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dTgjDx.png"></p>
 <blockquote>
 <p>此时满足FC条件，即次优路径的AD值小于最优路径的FD值，在拓扑表中存在两条路径</p>
 <p>此时的FS为R3</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/29/dT2nIS.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dT2nIS.png"></p>
 <blockquote>
 <p>但是此时路由表中到达100.100.100.100仍然只存在一条最优路径</p>
 <p>若想让次优路径加表，则需满足：最优路径的FD*v值 &gt; 次优路径的FD才能加入到路由表</p>
 <p>修改V值为6，此时满足条件，路由表中到达100.100.100.0网段存在两个下一跳</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/29/dT26Z6.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dT27eP.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dT26Z6.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dT27eP.png"></p>
 <blockquote>
 <p>查看该路由的详细信息，可知基本满足1:5的关系</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTRdTf.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dTRdTf.png"></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">相关命令</span><br><span class="line">R2(config)#int e0&#x2F;0</span><br><span class="line">R2(config-if)#delay n  --修改延迟，但是注意，如果输入的是n，那么延迟会改为10*n</span><br><span class="line">R2(config-if)#bandwidth n  --修改带宽，如果输入的是n，那么带宽就为n</span><br><span class="line"></span><br><span class="line">R2#show interfaces e0&#x2F;0  --看接口的详细信息，比如说带宽、延迟</span><br><span class="line">R2#show ip route 100.100.100.0 255.255.255.0  --查看该路由的详细信息</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
@@ -623,6 +482,147 @@
         <tag>CCNA</tag>
         <tag>路由协议</tag>
         <tag>EIGRP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>NAT和PPP的应用</title>
+    <url>/2020/09/02/NAT%E5%92%8CPPP%E7%9A%84%E5%BA%94%E7%94%A8/</url>
+    <content><![CDATA[<h3 id="1、实验目的"><a href="#1、实验目的" class="headerlink" title="1、实验目的"></a>1、实验目的</h3><p>1）理解NAT的作用<br>2）理解不同NAT的特点及配置<br>3）理解不同NAT的使用场合<br>4）掌握PPP的PAP和CHAP验证<br>5）理解辅助地址的作用<br>6）掌握NAT的验证和查看命令</p>
+<a id="more"></a>
+<h3 id="2、拓扑结构"><a href="#2、拓扑结构" class="headerlink" title="2、拓扑结构"></a>2、拓扑结构</h3><p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/02/w9dK7d.png"></p>
+<h3 id="3、实验步骤"><a href="#3、实验步骤" class="headerlink" title="3、实验步骤"></a>3、实验步骤</h3><p><strong>（1）公司COM1和COM2内部网段都为192.168.1.0/24，其中COM1的SRV地址为192.168.1.100/24，COM2的user地址为192.168.1.10/24，COM1内部的其他主机地址自己规划；ISP上的Web_Server地址为211.1.1.1/24，ISP与COM2之间的地址段为202.101.12.0/24，ISP与COM1之间的地址段为202.101.23.0/24，其中COM2连接ISP的接口地址为202.101.12.1/24，COM1连接ISP的接口地址为202.101.23.3/24</strong></p>
+<blockquote>
+<p>IP地址规划如拓扑图所示</p>
+</blockquote>
+<p><strong>（2）要求COM1与ISP之间的PPP链路采用CHAP验证，用户名为20164120，密码为123456</strong></p>
+<ul>
+<li>在ISP的s2/0封装PPP，并指定PPP的认证方式为CHAP，指定对方的IP地址为202.101.23.3</li>
+<li>在全局下设置用户名和密码，用于chap验证</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/02/w9wMKU.png"></p>
+<ul>
+<li>在COM1上s2/0接口封装PPP，指定IP地址为通过协商获取，填写用户名和密码，并让ISP下发默认路由</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/02/w9wuvT.png"></p>
+<ul>
+<li>查看COM1上的IP地址，可知s2/0接口的IP地址为通过IPCP方式获得</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/02/w9wm80.png"></p>
+<ul>
+<li>查看COM1的路由表中的静态路由条目，可知存在一条默认路由</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/02/w9wn2V.png"></p>
+<p><strong>（3）在COM1上使用静态NAT实现SRV可以访问ISP上的Web_Server，分别使用ping和debug ip nat进行验证和测试</strong></p>
+<ul>
+<li>在COM1上启用一个loopback接口，用于静态nat的一对一映射</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/02/w90HTH.png"></p>
+<ul>
+<li>配置静态nat，将SRV的IP地址192.168.1.100映射到COM1上的loopback接口的地址</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/02/w90qkd.png"></p>
+<ul>
+<li>在ISP上配置静态路由，实现ISP可以访问COM1上的loopback接口</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/02/w90jpt.png"></p>
+<ul>
+<li>在COM1上配置内部接口和外部接口</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/02/w90LtA.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/02/w90OfI.png"></p>
+<ul>
+<li>此时SRV可以访问ISP上的Web_Server</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/02/w90v1P.png"></p>
+<ul>
+<li>在COM1上查看nat转换表，可知将192.168.1.100转换成200.100.1.1</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/02/w90x6f.png"></p>
+<ul>
+<li>由于采用静态NAT，所以此时Web_Server也可以通过200.100.1.1访问SRV</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/02/w90zX8.png"></p>
+<ul>
+<li>在Web_Server上使用telnet命令远程登录到200.100.1.1，由下图可知此时登录到的设备为SRV</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/02/w9BpnS.png"></p>
+<p><strong>（4）在COM1上使用复用地址池的方式实现COM1内的所有用户可以访问ISP上的Web_Server，分别使用ping和debug ip nat进行验证和测试</strong></p>
+<ul>
+<li>在COM1上配置地址池，范围为202.101.23.10~202.101.23.12，掩码为/24</li>
+<li>配置ACL，匹配192.168.1.0/24网段的流量</li>
+<li>配置复用地址池NAT</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w9siAe.png"></p>
+<ul>
+<li>此时各PC可以访问Web_Server</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w9s90O.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w9sC7D.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w9spnK.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w9rzX6.png"></p>
+<ul>
+<li>在COM1上查看nat转换表，地址在COM1上执行了地址转换</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w9sFtH.png"></p>
+<ul>
+<li>使用debug ip nat命令查看地址转换信息</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w9skhd.png"></p>
+<p><strong>（5）在COM1和COM2上使用PAT方式实现COM1和COM2内部的用户都可以访问ISP上的Web_Server</strong></p>
+<ul>
+<li>由于COM1上已存在ACL 1匹配192.168.1.0/24网段的流量，所以此时可以直接在COM1上配置端口复用NAT</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w96EOP.png"></p>
+<ul>
+<li>测试COM1内部的用户与Web_Server的连通性</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w96Ayt.png"></p>
+<ul>
+<li>查看地址转换表</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w96Zef.png"></p>
+<ul>
+<li>在COM2上配置默认路由，下一跳指向ISP的e0/0接口的地址202.101.12.2，确保COM2可以访问Web_Server</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w96ew8.png"></p>
+<ul>
+<li>在COM2上使用命名的标准ACL匹配192.168.1.0/24网段的流量</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w96kQI.png"></p>
+<ul>
+<li>配置PAT</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w96mTS.png"></p>
+<ul>
+<li>指定内外部接口</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w960p9.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w96aY4.png"></p>
+<ul>
+<li>测试COM2内部用户与Web_Server的连通性</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w96dfJ.png"></p>
+<ul>
+<li>在COM2上查看nat转换表，可知内部用户192.168.1.10在访问外部网络时将地址转换成了202.101.12.1</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w96UkF.png"></p>
+<p><strong>（6）实现COM2内部的COM2_USER可以远程登录到SRV</strong></p>
+<ul>
+<li>在COM1上配置静态nat，将SRV的地址192.168.1.100的tcp23号端口静态映射成200.100.1.1的5656号端口</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/wC9w6J.png"></p>
+<ul>
+<li>在COM2_USER上使用telnet命令远程登录到SRV，此时应注意加上端口号</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/wC9dl4.png"></p>
+]]></content>
+      <categories>
+        <category>实验</category>
+      </categories>
+      <tags>
+        <tag>CCNA</tag>
+        <tag>NAT</tag>
+        <tag>PPP</tag>
       </tags>
   </entry>
   <entry>
@@ -637,78 +637,78 @@
 
 </li>
 </ol>
-<h4 id="2、-拓扑结构"><a href="#2、-拓扑结构" class="headerlink" title="2、 拓扑结构"></a>2、 拓扑结构</h4><p><img src="https://s1.ax1x.com/2020/08/28/doIIiV.png"></p>
+<h4 id="2、-拓扑结构"><a href="#2、-拓扑结构" class="headerlink" title="2、 拓扑结构"></a>2、 拓扑结构</h4><p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doIIiV.png"></p>
 <h4 id="3、-实验步骤"><a href="#3、-实验步骤" class="headerlink" title="3、 实验步骤"></a>3、 实验步骤</h4><p><strong>（1）完成各路由器的基本配置，实现各直连设备之间可以互 ping 对方， 要求 PC1 的 IP 地址设置为 172.16.1.1/24，网关设置为172.16.1.254， PC2 的 IP 地址设置为172.16.3.1/24，网关设置为172.16.3.254，各路由器接口间的地址自己规划。</strong></p>
-<p><img src="https://s1.ax1x.com/2020/08/27/d5mDb9.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/27/d5uw79.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/27/d5NpXn.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/27/d5NkkT.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/27/d5Ne1J.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/27/d5mDb9.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/27/d5uw79.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/27/d5NpXn.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/27/d5NkkT.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/27/d5Ne1J.png"></p>
 <p><strong>（2）在三台路由器上都启用RIPv2协议，通告各自的直连网络路由，并开启自动汇总</strong></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">默认开启自动汇总，会在边界处把一个网段汇总成主类</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://s1.ax1x.com/2020/08/28/do543D.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/do5HHI.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/do5v8S.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/do543D.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/do5HHI.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/do5v8S.png"></p>
 <p><strong>（3）在R1上使用show ip protocols命令，观察并理解该命令的输出信息</strong></p>
 <blockquote>
 <p>路由更新计时器：30s（默认）<br>路由无效时间：180s（默认）<br>抑制计时器：180s（默认）<br>路由刷新计时器：240s（默认）</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/28/dooEdI.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dooEdI.png"></p>
 <p><strong>（4）查看各路由器的路由表，观察RIP路由条目的特征</strong></p>
 <blockquote>
 <p>由于没有关闭自动汇总，R1上存在172.16.0.0网段的路由，则不会再学习R2上的172.16.0.0的路由</p>
 <p>同理，R2上存在172.16.0.0网段的路由，则不会学习R1上的172.16.0.0的路由</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/28/doowy4.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/dooRSO.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/doo7kt.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doowy4.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dooRSO.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doo7kt.png"></p>
 <p><strong>（5）分别在R2和PC2上测试R2与PC1以及PC2与PC1之间的连通性</strong></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/doTJnH.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/doTtHA.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doTJnH.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doTtHA.png"></p>
 <p><strong>（6）在R2上使用debug ip rip观察路由的发送情况</strong></p>
 <blockquote>
 <p>RIPv2组播地址：224.0.0.9</p>
 <p>由于没有关闭自动汇总，此时发送的报文都为主类路由</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/28/doT09f.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doT09f.png"></p>
 <p><strong>（7）在三台路由器上都关闭自动汇总，观察各路由表的变化，并再次测试R2与PC1以及PC2与PC1之间的连通性</strong></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/doTrjg.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/doT43T.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/doTLU1.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/do7Z28.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/do7urQ.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/do7QVs.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/do70aR.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/do7yRK.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doTrjg.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doT43T.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doTLU1.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/do7Z28.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/do7urQ.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/do7QVs.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/do70aR.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/do7yRK.png"></p>
 <p><strong>（8）再次在R2上使用debug ip rip观察路由的发送情况，比较关闭自动汇总与开启自动汇总debug输出信息的不同</strong></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/do7von.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/do7von.png"></p>
 <p><strong>（9）在R2上添加一个loopback1接口，地址自定</strong></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/doHAeJ.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doHAeJ.png"></p>
 <p><strong>（10）添加必要配置，实现PC1和PC2都能够正常访问在R2上的loopback1</strong></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTPgQH.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTPhwt.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTPTfS.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTPgQH.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTPhwt.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTPTfS.png"></p>
 <p><strong>（11）在R1上添加一个loopback1接口，地址自定，然后在RIP中通告，观察R2和R3是否能马上学习到R1上新增的loopback1网段</strong></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTiwcQ.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTi7Ax.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTiwcQ.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTi7Ax.png"></p>
 <blockquote>
 <p>由于rip的路由表的更新时间为30s，故在R2、R3上无法马上学习到在R1上新增的loopback1网段</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTFJKJ.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTFtbR.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTFJKJ.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTFtbR.png"></p>
 <p><strong>（12）将R1上的loopback1接口关闭，观察R2和R3上是否还存在关于R1上的loopback1网段的路由条目</strong></p>
 <blockquote>
 <p>由于触发更新，R1上存在失效路由，则会马上发送更新给相邻的路由器，让他们将失效路由删除</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTA5uQ.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTAoHs.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTA7En.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTA5uQ.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTAoHs.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTA7En.png"></p>
 <p><strong>（13）使用wireshark抓取RIPv2报文，理解RIPv2报文各字段的含义</strong></p>
 <blockquote>
 <p>RIPv2运行在UDP的520端口上，属于应用层协议</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTAHNq.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTAHNq.png"></p>
 ]]></content>
       <categories>
         <category>实验</category>
@@ -725,61 +725,61 @@
     <content><![CDATA[<h4 id="1、实验目的"><a href="#1、实验目的" class="headerlink" title="1、实验目的"></a>1、实验目的</h4><p>1）理解STP的作用<br>2）熟悉STP的工作原理<br>3）掌握STP的查看命令</p>
 <a id="more"></a>
 
-<h4 id="2、拓扑结构"><a href="#2、拓扑结构" class="headerlink" title="2、拓扑结构"></a>2、拓扑结构</h4><p><img src="https://s1.ax1x.com/2020/08/31/djPbAe.png"></p>
+<h4 id="2、拓扑结构"><a href="#2、拓扑结构" class="headerlink" title="2、拓扑结构"></a>2、拓扑结构</h4><p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djPbAe.png"></p>
 <h4 id="3、实验步骤"><a href="#3、实验步骤" class="headerlink" title="3、实验步骤"></a>3、实验步骤</h4><p><strong>（1）在相应的交换机上创建vlan10，并将连接PC1和PC2的交换端口都划分进该vlan中</strong></p>
-<p><img src="https://s1.ax1x.com/2020/08/31/djiiNQ.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/31/djiVcq.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djiiNQ.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djiVcq.png"></p>
 <p><strong>（2）为主机设置合适的IP地址，IP地址自定，完成必要的配置实现主机间的通信</strong></p>
 <ul>
 <li>为两台PC配置IP地址（注意关闭路由功能，因为实验中的PC使用的是路由器的镜像）</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/08/31/djiUHO.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/31/djiDCd.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djiUHO.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djiDCd.png"></p>
 <ul>
 <li>将交换机之间的端口封装802.1Q，并配置成trunk</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/08/31/djFmRA.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/31/djFKMt.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/31/djFYGj.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djFmRA.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djFKMt.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djFYGj.png"></p>
 <ul>
 <li>测试PC的连通性</li>
 </ul>
 <blockquote>
 <p>由于PC1和PC2属于同一vlan，所以通过上述配置即可相互ping通</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/31/djFxw8.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djFxw8.png"></p>
 <p><strong>（3）查看各交换机的STP信息</strong></p>
-<p><img src="https://s1.ax1x.com/2020/08/31/djksnP.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/31/djk678.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/31/djkgAS.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djksnP.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djk678.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djkgAS.png"></p>
 <p><strong>（4）将SW1设置为vlan10的根桥，使用相关命令验证和查看各交换机上根桥的变化</strong></p>
 <ul>
 <li>设置SW1为vlan10的根桥</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/08/31/djAmut.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djAmut.png"></p>
 <ul>
 <li>使用<span style="color:red">show spanning-tree</span>命令查看交换机状态</li>
 </ul>
 <blockquote>
 <p>由于设置SW1为vlan10的根桥，由下图可知，优先级默认降低2*4096，即为24576，加上vlan-id的10，所以优先级为24586</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/31/djZVgJ.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/31/djZQUK.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/31/djZGgH.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djZVgJ.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djZQUK.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djZGgH.png"></p>
 <p><strong>（5）测试正常链路出现故障对主机通信的影响</strong></p>
 <ul>
 <li>将SW2的e0/1接口shutdown</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/08/31/djZcKs.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djZcKs.png"></p>
 <ul>
 <li>PC1仍然可以ping通PC2</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/08/31/djZ2bq.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djZ2bq.png"></p>
 <p><strong>（6）先断开PC1与交换机的连接，然后恢复PC1与交换机的连接，观察主机重新接入交换机要经历多久才能够进行数据转发</strong></p>
 <blockquote>
 <p>由下图可知，PC1重新接入交换机需要经历30s（由于关闭的是SW2上的端口，可以直接进入listening状态（无需经历20s的blocking状态），再经历15s进入learning状态，最后经历15s进入forwarding状态）</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/31/djero6.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djero6.png"></p>
 ]]></content>
       <categories>
         <category>实验</category>
@@ -788,6 +788,254 @@
         <tag>CCNA</tag>
         <tag>交换</tag>
         <tag>STP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>生成树协议</title>
+    <url>/2020/09/15/STP/</url>
+    <content><![CDATA[<h3 id="1、生成树协议概述"><a href="#1、生成树协议概述" class="headerlink" title="1、生成树协议概述"></a>1、生成树协议概述</h3><p>　　冗余的网络拓扑可以消除单点故障所导致的网络障碍。但从另一个角度看，冗余的网络拓扑也会带来其他的问题，如2层环路。使用STP技术可以在冗余的环境中消除潜在的2层环路问题。</p>
+<h4 id="1-1、STP概述"><a href="#1-1、STP概述" class="headerlink" title="1.1、STP概述"></a>1.1、STP概述</h4><p>　　如下图所示的冗余环境中，使用STP可以阻塞环路上的某个特定的端口，保证每个网段上只存在一条活动路径。</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wsRkcV.png"></p>
+<p>　　在冗余的网络拓扑环境中，若未启用STP，则会导致以下问题：</p>
+<ul>
+<li>广播风暴——冗余网络上的每台交换机会不断地泛洪广播帧</li>
+<li>多帧复制——目的站点可能会收到同一单播数据帧的多份拷贝，这可能会导致接收协议的一些问题</li>
+<li>MAC数据库不稳定——当一台交换机的不同端口收到了相同的帧拷贝时，这种现象称为MAC地址漂移。MAC地址表会将帧的源MAC地址和接收到此帧的入站端口对应到一条表项中。若存在环路，同一个MAC地址可能会从多个端口上接收到，这就造成了MAC地址表的不稳定。</li>
+</ul>
+<p>　　STP技术可以在支持物理路径冗余的同时，消除网络环路造成的影响。通过STP的选举机制，将多余链路进行阻塞，只保留一条活跃链路用于对数据流量的处理，被阻塞掉的链路同时也作为备用链路。当去往某个网段的连通性出现了问题，STP会自动启用之前的阻塞路径，并重新建立连通性。STP所使用桥协议数据单元（BPDU）来交换STP信息，并使用BPDU确定网络拓扑信息，以及对拓扑中设备添加、删除或修改的动作做出响应。交换机默认每2s向所有端口发送一次BPDU。</p>
+<h4 id="1-2、STP标准"><a href="#1-2、STP标准" class="headerlink" title="1.2、STP标准"></a>1.2、STP标准</h4><p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wyKfF1.png"></p>
+<h4 id="1-3、STP选举机制"><a href="#1-3、STP选举机制" class="headerlink" title="1.3、STP选举机制"></a>1.3、STP选举机制</h4><ul>
+<li><p>根桥——拥有最小桥ID的交换机被选为根桥</p>
+<ul>
+<li>每台交换机拥有唯一的BID，包含桥优先级（默认为32768）和MAC地址</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wysAr4.png"></p>
+</li>
+<li><p>根端口——非根交换机上去往根桥路径最优的端口，用于接收BPDU</p>
+<ul>
+<li>最小根路径开销</li>
+<li>最小发送者桥ID</li>
+<li>最小发送者的端口ID</li>
+</ul>
+</li>
+<li><p>指定端口——用于发送或转发配置BPDU</p>
+<ul>
+<li>最小根路径开销</li>
+<li>最小发送者桥ID</li>
+<li>最小发送者的端口ID</li>
+</ul>
+</li>
+<li><p>非指定端口——既不转发数据帧，也不会将在该网段接收到的数据包源MAC地址填入MAC地址表中</p>
+<ul>
+<li>上述端口选举完后，剩下的既不是根端口也不是指定端口的端口成为非指定端口</li>
+</ul>
+</li>
+</ul>
+<h4 id="1-4、BPDU"><a href="#1-4、BPDU" class="headerlink" title="1.4、BPDU"></a>1.4、BPDU</h4><p>　　STP使用签协议数据单元（BPDU）来交换STP信息，包括根桥的选举以及环路的识别等。默认情况下，交换机每2秒发送一次BPDU。BPDU一般分为以下两种类型：</p>
+<ul>
+<li>配置BPDU——用于计算STP</li>
+<li>TCN BPDU——用于通告网络拓扑变化</li>
+</ul>
+<p>　　BPDU帧结构以及各字段含义</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wydWRg.png"></p>
+<ul>
+<li>协议ID：标识STP</li>
+<li>版本号：标识当前的协议版本</li>
+<li>消息类型：标识BPDU类型（配置BPDU或TCN BPDU）</li>
+<li>标志：用来响应TCN BPDU</li>
+<li>根桥ID：标识根桥的桥ID（BID）</li>
+<li>根路径开销：标识发送交换机到根桥之间的路径开销</li>
+<li>发送方网桥ID：标识发送交换机的BID</li>
+<li>端口ID：标识发送端口</li>
+<li>消息期限：标识当前BPDU的生存时间</li>
+<li>最大期限：标识BPDU的最大超时时间</li>
+<li>Hello时间：标识根桥生成配置BPDU的间隔时间</li>
+<li>转发延迟：标识交换机端口必须等待侦听（listening）及学习（learning）状态的时间</li>
+</ul>
+<h4 id="1-5、STP端口状态"><a href="#1-5、STP端口状态" class="headerlink" title="1.5、STP端口状态"></a>1.5、STP端口状态</h4><p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wyBfzD.png"></p>
+<p><strong>Blocking（阻塞状态）</strong>：此时，二层端口为非指定端口，也不会参与数据帧的转发。该端口通过接收BPDU来判断根交换机的位置和根ID，以及在STP拓扑收敛结束之后，各交换机端口应该处于什么状态（是根端口、指定端口还是非指定端口）。在默认情况下，端口会在这种状态下停留20秒钟的时间（最大周期）</p>
+<p><strong>Listening（侦听状态）</strong>：生成树此时已经根据交换机所接收到的BPDU而判断出了这个端口应该参与数据帧的转发。于是，交换机端口就不再满足于接收BPDU，而同时也开始发送其自己的BPDU，并以此通告邻接的交换机该端口会在活动拓扑中参与转发数据帧的工作。在默认情况下，端口会在这种状态下停留15秒钟的时间（转发延迟）</p>
+<p><strong>Learning（学习状态）</strong>：这个二层端口准备参与数据帧的转发，并开始填写CAM表。在默认情况下，端口会在这种状态下停留15秒钟的时间（转发延迟）</p>
+<p><strong>Forwarding（转发状态）</strong>：这个二层端口已经成为了活动拓扑的一个组成部分；它会转发数据帧，并同时收发BPDU</p>
+<p><strong>Disabled（禁用状态）</strong>：这个二层端口不会参与生成树，也不会转发数据帧</p>
+<h4 id="1-6、STP拓扑变更"><a href="#1-6、STP拓扑变更" class="headerlink" title="1.6、STP拓扑变更"></a>1.6、STP拓扑变更</h4><p>　　当交换机的某个端口变成了转发状态或阻塞状态时，意味着STP拓扑发生了变更。交换机通过向根端口发送TCN BPDU的方法来通告拓扑变更。这一BPDU不包括实际的变更内容，仅用来通知网络中其他交换机拓扑发生变更这一现象。</p>
+<p>　　拓扑变更处理流程：</p>
+<ul>
+<li>当交换机检测到拓扑发生变更时，会沿着根桥的方向发送TCN</li>
+<li>上游的交换机接收到TCN以后，首先会回复一个TCA，然后继续沿着根桥的方向发送TCN，直到最后根桥收到TCN</li>
+<li>根桥收到TCN后，会回复一个拓扑变更确认（TCA）和一个设置了TC标志位的BPDU给所有的下游交换机，同时将本地的MAC地址表的老化时间从300s缩短至15s——为了实现MAC地址表刷新</li>
+<li>下游的交换机收到TC置位的BPDU的时候，也会将本地的MAC地址表老化时间从300s缩短至15s，同时也会继续转发TC置位的BPDU给下游交换机——将TC置位的信息在整个交换网络中泛洪</li>
+</ul>
+<h4 id="1-7、PVST"><a href="#1-7、PVST" class="headerlink" title="1.7、PVST+"></a>1.7、PVST+</h4><p>　　增强的每个VLAN生成树是Cisco的一种生成树实现技术。PVST+可为网络中配置的每个VLAN提供一个单独的生成树实例。</p>
+<p>　　与CST不同的是，PVST+可以为每个VLAN运行一个生成树实例，这就意味着在配置有不同VLAN的冗余链路上可以基于不同的VLAN来负载分担流量。</p>
+<blockquote>
+<p>拓扑结构如下所示，进行主次根的配置</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wyTFbt.png"></p>
+<ul>
+<li>指定SW1为VLAN 10的根桥，为VLAN 20的次根桥</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">SW1(config)#spanning-tree vlan 10 root primary </span><br><span class="line">SW1(config)#spanning-tree vlan 20 root secondary </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>指定SW2为VLAN 10的次根桥，为VLAN 20的根桥</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">SW2(config)#spanning-tree vlan 10 root secondary </span><br><span class="line">SW2(config)#spanning-tree vlan 20 root primary </span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>桥优先级默认为32768，对于SW1而言：</p>
+<p>设置为root primary后，优先级降低2个4096，加上vlan-id后，优先级变成24586</p>
+<p>设置为root secondary后，优先级降低1个4096，加上vlan-id后，优先级变成28692</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wyb9v4.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wyqUFx.png"></p>
+<blockquote>
+<p>SW2成为VLAN 20的根桥</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wyLB40.png"></p>
+<ul>
+<li>关于收敛时间的验证</li>
+</ul>
+<blockquote>
+<p>将SW3的e0/0接口shutdown，观察e0/1端口过渡到forwarding状态所需时间</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">SW3#debug spanning-tree events </span><br><span class="line">Spanning Tree event debugging is on</span><br><span class="line">SW3(config)#int e0/0</span><br><span class="line">SW3(config-if)#shutdown </span><br><span class="line">SW3#</span><br><span class="line">*Sep <span class="number">15</span> <span class="number">08</span>:<span class="number">37</span>:<span class="number">02.367</span>: STP: VLAN0020 <span class="keyword">new</span> root port Et0/<span class="number">1</span>, cost <span class="number">200</span>  <span class="comment">//e0/0端口被禁用，则e0/1端口成为根端口</span></span><br><span class="line">*Sep <span class="number">15</span> <span class="number">08</span>:<span class="number">37</span>:<span class="number">02.367</span>: STP: VLAN0020 Et0/<span class="number">1</span> -&gt; listening  <span class="comment">//直接进入侦听状态</span></span><br><span class="line">*Sep <span class="number">15</span> <span class="number">08</span>:<span class="number">37</span>:<span class="number">02.367</span>: STP[<span class="number">20</span>]: Generating TC trap <span class="keyword">for</span> port Ethernet0/<span class="number">0</span></span><br><span class="line">*Sep <span class="number">15</span> <span class="number">08</span>:<span class="number">37</span>:<span class="number">04.372</span>: STP: VLAN0020 sent Topology Change Notice on Et0/<span class="number">1</span>  <span class="comment">//通告拓扑变更</span></span><br><span class="line">*Sep <span class="number">15</span> <span class="number">08</span>:<span class="number">37</span>:<span class="number">17.367</span>: STP: VLAN0020 Et0/<span class="number">1</span> -&gt; learning  <span class="comment">//经过15s，进入学习状态</span></span><br><span class="line">*Sep <span class="number">15</span> <span class="number">08</span>:<span class="number">37</span>:<span class="number">32.373</span>: STP[<span class="number">20</span>]: Generating TC trap <span class="keyword">for</span> port Ethernet0/<span class="number">1</span></span><br><span class="line">*Sep <span class="number">15</span> <span class="number">08</span>:<span class="number">37</span>:<span class="number">32.373</span>: STP: VLAN0020 sent Topology Change Notice on Et0/<span class="number">1</span></span><br><span class="line">*Sep <span class="number">15</span> <span class="number">08</span>:<span class="number">37</span>:<span class="number">32.373</span>: STP: VLAN0020 Et0/<span class="number">1</span> -&gt; forwarding  <span class="comment">//经过30s，进入转发状态</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2、快速生成树协议（RSTP）"><a href="#2、快速生成树协议（RSTP）" class="headerlink" title="2、快速生成树协议（RSTP）"></a>2、快速生成树协议（RSTP）</h3><p>　　快速生成树协议（IEEE802.1w，也称为RSTP）在网络拓扑变更时，能够显著地提升生成树重新计算的速度。RSTP会选择一台交换机作为活动生成树拓扑的根，并为交换机上的每个端口分配端口角色，所分配的角色取决于端口是否是STP活动拓扑的一部分。通过在交换机之间使用明确的握手协议，新的根端口和指定端口会立刻过渡到forwarding状态。</p>
+<h4 id="2-1、RSTP端口角色"><a href="#2-1、RSTP端口角色" class="headerlink" title="2.1、RSTP端口角色"></a>2.1、RSTP端口角色</h4><p><strong>根端口（root）</strong>：根端口是每台非根网桥上选择出来与根网桥相连的端口。每台交换机上只能有一个根端口。根端口在稳定工作状态的拓扑中处于转发状态</p>
+<p><strong>指定端口（designated）</strong>：在每个网段中至少会有一个交换机端口作为该网段的指定端口。在拓扑的稳定工作状态下，有指定端口的交换机会在这个网段中接收去往根网桥的数据帧。每个网段只能有一个指定端口。而这个指定端口会处于转发状态。所有与某个特定网段相连的交换机都会侦听所有的BPDU；并判断自己是否要在这个网段中充当指定交换机</p>
+<p><strong>替代端口（alternate）</strong>：替代端口是用来提供去往根网桥替代路径的端口。替代端口在稳定工作状态的拓扑中处于丢弃状态。替代端口出现在非指定交换机上，并且会在当前的指定端口出现故障时过渡为指定端口。（对根端口进行备份）</p>
+<p><strong>备份端口（backup）</strong>：备份端口是指定交换机上的一个额外的交换机端口，它的作用是为指定交换机提供一条备份链路。备份端口的端口ID高于指定交换机指定端口的端口ID。在稳定工作状态的拓扑中，备份端口处于丢弃状态。（存在Hub的时候才会出现，对链路进行备份）</p>
+<p><strong>禁用端口（disabled）</strong>：在生成树工作的过程中，禁用端口不担当任何角色</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/w6Japd.png"></p>
+<h4 id="2-2、RSTP端口状态"><a href="#2-2、RSTP端口状态" class="headerlink" title="2.2、RSTP端口状态"></a>2.2、RSTP端口状态</h4><p>　　RSTP中只存在3种端口状态，它们分别对应于端口可能的3中工作状态：丢弃状态、学习状态和转发状态。RSTP 802.1w丢弃状态代表了802.1D STP的禁用、阻塞和监听状态之和(可以节省20s时间)。</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/w6YOIS.png"></p>
+<h4 id="2-3、拓扑变更"><a href="#2-3、拓扑变更" class="headerlink" title="2.3、拓扑变更"></a>2.3、拓扑变更</h4><p>　　RSTP中的TC（拓扑变更）通告是一步到位的。交换机使用向所有非边缘端口发送带有TC位BPDU的方式宣告拓扑变更，这意味着每台交换机都可以直接重新计算生成树。需要借助提议/同意机制，提议该端口为某个角色，如果没问题就同意。通过这种方式，所有的邻居交换机都会得知拓扑变更，因此会各自更新自己的CAM表，无需等待根桥发送TC BPDU。这种方法会导致更多潜在的临时泛洪，不过，可以很快地将拓扑变更通知扩散到整个网络，从而实现快速收敛。</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/w6wFC8.png"></p>
+<h4 id="2-4、关于RSTP收敛时间的验证"><a href="#2-4、关于RSTP收敛时间的验证" class="headerlink" title="2.4、关于RSTP收敛时间的验证"></a>2.4、关于RSTP收敛时间的验证</h4><ul>
+<li>如下图所示，修改STP的模式为RSTP</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/w6XgIA.png"></p>
+<ul>
+<li>将SW3的e0/0端口shutdown，观察e0/1端口过渡到转发状态所需时间</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">SW3#debug spanning-tree events </span><br><span class="line">Spanning Tree event debugging is on</span><br><span class="line">SW3(config)#int e0/0</span><br><span class="line">SW3(config-if)#shutdown</span><br><span class="line">*Sep <span class="number">15</span> <span class="number">12</span>:<span class="number">09</span>:<span class="number">40.772</span>: RSTP(<span class="number">20</span>): updt roles, root port Et0/<span class="number">0</span> going down</span><br><span class="line">*Sep <span class="number">15</span> <span class="number">12</span>:<span class="number">09</span>:<span class="number">40.772</span>: RSTP(<span class="number">20</span>): Et0/<span class="number">1</span> is now root port  <span class="comment">//成为根端口，时间小于1s</span></span><br><span class="line">*Sep <span class="number">15</span> <span class="number">12</span>:<span class="number">09</span>:<span class="number">40.777</span>: STP[<span class="number">20</span>]: Generating TC trap <span class="keyword">for</span> port Ethernet0/<span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意：</p>
+<p>如果该端口角色确定为RP，则直接过渡到转发状态</p>
+<p>如果该端口角色确定为DP，只能是慢慢过渡</p>
+</blockquote>
+<h3 id="3、多生成树协议（MSTP）"><a href="#3、多生成树协议（MSTP）" class="headerlink" title="3、多生成树协议（MSTP）"></a>3、多生成树协议（MSTP）</h3><p>　　多生成树（MST）将IEEE 802.1w RSTP算法扩展到了多棵生成树中。MST的主要目的是减少网络拓扑中生成树实例的总数量，从而降低交换机的CPU开销。</p>
+<p>　　优势——在实现负载均衡的同时，降低维护生成树实例的个数</p>
+<p>　　实现——将多个vlan加入相同的实例中</p>
+<p>　　MST注意点：</p>
+<ul>
+<li>name 域名，同一个实例区域中域名要保持一致</li>
+<li>revision 修订号，同一个实例区域中修订号要保持一致</li>
+<li>vlan的关联表，将多个vlan关联起来，放入同一个实例中</li>
+</ul>
+<blockquote>
+<p>没有划分的vlan会自动划分进MST0中（CIST）</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/w6zvtJ.png"></p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">SW1(config)#spanning-tree mode mst</span><br><span class="line">SW1(config)#spanning-tree mst configuration </span><br><span class="line">SW1(config-mst)#name jiaohuan  //设置域名称</span><br><span class="line">SW1(config-mst)#revision 10  //设置修订号</span><br><span class="line">SW1(config-mst)#instance 1 vlan 10,20,30  //划分vlan到此关联表</span><br><span class="line">SW1(config-mst)#instance 2 vlan 40,50,60</span><br><span class="line">SW1(config)#spanning-tree mst 1 root primary  //设置SW1为mst1的根桥</span><br><span class="line">SW1(config)#spanning-tree mst 2 root secondary  //设置SW1为mst2的次根桥</span><br><span class="line"></span><br><span class="line">SW2(config)#spanning-tree mode mst</span><br><span class="line">SW2(config)#spanning-tree mst configuration </span><br><span class="line">SW2(config-mst)#name jiaohuan</span><br><span class="line">SW2(config-mst)#revision 10</span><br><span class="line">SW2(config-mst)#instance 1 vlan 10,20,30</span><br><span class="line">SW2(config-mst)#instance 2 vlan 40,50,60</span><br><span class="line">SW2(config)#spanning-tree mst 1 root primary  //设置SW2为mst1的次根桥</span><br><span class="line">SW2(config)#spanning-tree mst 2 root secondary  //设置SW2为mst2的根桥</span><br><span class="line"></span><br><span class="line">SW3(config)#spanning-tree mode mst</span><br><span class="line">SW3(config)#spanning-tree mst configuration </span><br><span class="line">SW3(config-mst)#name jiaohuan</span><br><span class="line">SW3(config-mst)#revision 10</span><br><span class="line">SW3(config-mst)#instance 1 vlan 10,20,30</span><br><span class="line">SW3(config-mst)#instance 2 vlan 40,50,60</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>查看MST配置</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wc9vtg.png"></p>
+<blockquote>
+<p>查看MST摘要信息</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wcCucR.png"></p>
+<blockquote>
+<p>查看MST实例映射消息</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wcCBHf.png"></p>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>STP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SVI回顾</title>
+    <url>/2020/09/11/SVI%E5%9B%9E%E9%A1%BE/</url>
+    <content><![CDATA[<p>　　SVI，即交换虚拟接口，是在多层交换机上配置的一种虚拟接口，如下图所示。管理员可以为任何交换机上配置的VLAN创建SVI接口。每个VLAN只能关联一个SVI接口。SVI并不是真实存在的物理接口，但此接口可以与路由器接口执行同样的VLAN操作功能，为所有出入其VLAN端口的数据包提供3层转发功能。</p>
+<a id="more"></a>
+
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/12/wd1VD1.png"></p>
+<p>　　默认情况下，交换机会为默认VLAN（VLAN 1）创建一个SVI接口，以允许远程管理交换机。除此之外的SVI都需要管理员手动添加。当用户首次进入VLAN接口配置模式时，就会创建一个SVI。值得注意的是，此处使用的VLAN编号应与802.1Q封装Trunk链路上数据帧携带的VLAN标签，或access端口上配置的VLAN ID一致。管理员要为每个VLAN的SVI分配一个IP地址，用于对应VLAN流量的路由选择。创建SVI时，首先应确保VLAN数据库中存在该VLAN，对于数据库中的VLAN，可以通过手动配置或通过VTP进行学习。</p>
+<blockquote>
+<p>关于SVI的配置，应注意以下三点</p>
+<ul>
+<li>存在该VLAN</li>
+<li>有端口放行该VLAN</li>
+<li>SVI端口需要激活（no shutdown）</li>
+</ul>
+</blockquote>
+<p>　　以下进行SVI配置，拓扑图如下所示</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/12/wdtXJP.png"></p>
+<ul>
+<li>为各PC配置IP地址和网关</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">PC_A1(config)#int e0/0</span><br><span class="line">PC_A1(config-if)#ip address 192.168.10.1 255.255.255.0</span><br><span class="line">PC_A1(config-if)#no shutdown</span><br><span class="line">PC_A1(config)#ip default-gateway 192.168.10.254    </span><br><span class="line"></span><br><span class="line">PC_B1(config)#int e0/0</span><br><span class="line">PC_B1(config-if)#ip address 192.168.20.1 255.255.255.0</span><br><span class="line">PC_B1(config-if)#no shutdown </span><br><span class="line">PC_B1(config)#ip default-gateway 192.168.20.254  </span><br><span class="line"></span><br><span class="line">PC_A2(config)#int e0/0</span><br><span class="line">PC_A2(config-if)#ip address 192.168.10.2 255.255.255.0</span><br><span class="line">PC_A2(config-if)#no shutdown </span><br><span class="line">PC_A2(config)#ip default-gateway 192.168.10.254</span><br><span class="line"></span><br><span class="line">PC_B2(config)#int e0/0</span><br><span class="line">PC_B2(config-if)#ip address 192.168.20.2 255.255.255.0</span><br><span class="line">PC_B2(config-if)#no shutdown </span><br><span class="line">PC_B2(config)#ip default-gateway 192.168.20.254</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在DSW1和DSW2上创建VLAN，并将连接PC的端口配置成access，划分到相应的VLAN</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">DSW1(config)#vlan 10</span><br><span class="line">DSW1(config)#vlan 20</span><br><span class="line">DSW1(config)#int e0/0</span><br><span class="line">DSW1(config-if)#switchport mode access </span><br><span class="line">DSW1(config-if)#switchport access vlan 10</span><br><span class="line">DSW1(config)#int e0/1</span><br><span class="line">DSW1(config-if)#switchport mode access </span><br><span class="line">DSW1(config-if)#switchport access vlan 20</span><br><span class="line"></span><br><span class="line">DSW2(config)#vlan 10</span><br><span class="line">DSW2(config)#vlan 20</span><br><span class="line">DSW2(config)#int e0/0</span><br><span class="line">DSW2(config-if)#switchport mode access </span><br><span class="line">DSW2(config-if)#switchport access vlan 10</span><br><span class="line">DSW2(config)#int e0/1</span><br><span class="line">DSW2(config-if)#switchport mode access </span><br><span class="line">DSW2(config-if)#switchport access vlan 20</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在DSW1和DSW2相连的端口上配置trunk</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">DSW1(config)#int e0/2</span><br><span class="line">DSW1(config-if)#switchport trunk encapsulation dot1q </span><br><span class="line">DSW1(config-if)#switchport mode trunk </span><br><span class="line"></span><br><span class="line">DSW2(config)#int e0/2</span><br><span class="line">DSW2(config-if)#switchport trunk encapsulation dot1q </span><br><span class="line">DSW2(config-if)#switchport mode trunk </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在DSW1和DSW2上开启路由功能（思科默认开启）</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">DSW1(config)#ip routing</span><br><span class="line"></span><br><span class="line">DSW2(config)#ip routing</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在DSW1为VLAN 10和VLAN 20的SVI配置IP地址，作为PC的网关</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">DSW1(config)#int vlan 10</span><br><span class="line">DSW1(config-if)#ip address 192.168.10.254 255.255.255.0</span><br><span class="line">DSW1(config-if)#no shutdown </span><br><span class="line">DSW1(config)#int vlan 20</span><br><span class="line">DSW1(config-if)#ip address 192.168.20.254 255.255.255.0</span><br><span class="line">DSW1(config-if)#no shutdown </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>此时PC_A1可以ping通PC_B1</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/12/wdgxq1.png"></p>
+<blockquote>
+<p>PC_A1发起的流量经过DSW1上的VLAN 10的SVI，继而会被路由至VLAN 20的SVI接口，随后发送给PC_B1</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/12/wd2oyd.png"></p>
+<ul>
+<li>PC_A1也可以ping通PC_B2</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/12/wd2WFK.png"></p>
+<hr>　　
+
+<p>使用SVI实现VLAN间路由的优势</p>
+<ul>
+<li>速度远远快于单臂路由器，因为流量的路由和交换处理都是通过硬件完成的</li>
+<li>无需使用交换机到路由器的外部链路进行路由</li>
+<li>没有单条链路的限制。可以在交换机之间使用2层EtherChannel来增加带宽</li>
+<li>因为数据的处理无需离开交换机，因此延迟更低</li>
+</ul>
+<p>使用SVI实现VLAN间路由的劣势</p>
+<ul>
+<li>需要3层交换机来执行VLAN的路由，而使用3层交换机所需成本更高</li>
+</ul>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>交换</tag>
+        <tag>SVI</tag>
       </tags>
   </entry>
   <entry>
@@ -816,11 +1064,170 @@
       </tags>
   </entry>
   <entry>
+    <title>关于交换的基础测试</title>
+    <url>/2020/09/14/%E5%85%B3%E4%BA%8E%E4%BA%A4%E6%8D%A2%E7%9A%84%E5%9F%BA%E7%A1%80%E6%B5%8B%E8%AF%95/</url>
+    <content><![CDATA[<h3 id="1、实验目的"><a href="#1、实验目的" class="headerlink" title="1、实验目的"></a>1、实验目的</h3><p>1）掌握VLAN、TRUNK、VTP的作用和配置<br>2）掌握DTP的作用和配置<br>3）掌握DHCP及DHCP中继的作用和配置<br>4）掌握以太网通道技术的作用和配置</p>
+<a id="more"></a>
+
+<h3 id="2、拓扑结构"><a href="#2、拓扑结构" class="headerlink" title="2、拓扑结构"></a>2、拓扑结构</h3><p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/14/wseseI.png"></p>
+<h3 id="3、实验步骤"><a href="#3、实验步骤" class="headerlink" title="3、实验步骤"></a>3、实验步骤</h3><p><strong>（1）在该园区网络中有4个VLAN，分别为VLAN10、VLAN20、VLAN30和VLAN40，其中DHCP_SRV和PC1在VLAN10中，PC2、PC3分别在VLAN20、VLAN30和VLAN30中，FTP_SRV和PC4在VLAN40中，其中VLAN10的地址段为192.168.10.0/24，VLAN20的地址段为192.168.20.0/24，VLAN30的地址段为192.168.30.0/24，VLAN40的地址段为192.168.40.0/24，各VLAN主机的网关都设置为其网段中可用的最后一个主机地址，并且设置DHCP服务器的IP地址为192.168.10.100/24，其他主机通过DHCP方式获取IP地址、园区网络外部的地址自己规划</strong></p>
+<ul>
+<li>在SW1和SW2上创建VLAN，并将端口划分进相应的VLAN</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">SW1(config)#vlan 10,20</span><br><span class="line">SW1(config)#int range e0/0,e0/2</span><br><span class="line">SW1(config-if-range)#switchport mode access </span><br><span class="line">SW1(config-if-range)#switchport access vlan 10</span><br><span class="line">SW1(config)#int e0/1</span><br><span class="line">SW1(config-if)#switchport mode access </span><br><span class="line">SW1(config-if)#switchport access vlan 20</span><br><span class="line"></span><br><span class="line">SW2(config)#vlan 30,40</span><br><span class="line">SW2(config)#int e0/0      </span><br><span class="line">SW2(config-if)#switchport mode access </span><br><span class="line">SW2(config-if)#switchport access vlan 30</span><br><span class="line">SW2(config)#int range e0/1-2</span><br><span class="line">SW2(config-if-range)#switchport mode access </span><br><span class="line">SW2(config-if-range)#switchport access vlan 40</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>配置IP地址</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">DHCP_SRV(config)#int e0/0</span><br><span class="line">DHCP_SRV(config-if)#ip address 192.168.10.100 255.255.255.0</span><br><span class="line">DHCP_SRV(config-if)#no shutdown </span><br><span class="line"></span><br><span class="line">R1(config)#int e0/0</span><br><span class="line">R1(config-if)#ip address 10.10.10.1 255.255.255.0</span><br><span class="line">R1(config-if)#no shutdown </span><br><span class="line">R1(config)#int s1/0</span><br><span class="line">R1(config-if)#ip address 202.101.100.1 255.255.255.0</span><br><span class="line">R1(config-if)#no shutdown </span><br><span class="line"></span><br><span class="line">ISP(config)#int s1/0</span><br><span class="line">ISP(config-if)#ip address 202.101.100.2 255.255.255.0</span><br><span class="line">ISP(config-if)#no shutdown </span><br><span class="line">ISP(config)#int e0/0</span><br><span class="line">ISP(config-if)#ip address 200.100.100.1 255.255.255.0</span><br><span class="line">ISP(config-if)#no shutdown</span><br><span class="line"></span><br><span class="line">Web_SRV(config)#int e0/0</span><br><span class="line">Web_SRV(config-if)#ip address 200.100.100.2 255.255.255.0</span><br><span class="line">Web_SRV(config-if)#no shutdown </span><br><span class="line"></span><br><span class="line">SW1(config)#int e0/3 </span><br><span class="line">SW1(config-if)#ip address 10.10.10.2 255.255.255.0</span><br><span class="line">SW1(config-if)#no shutdown </span><br><span class="line">SW1(config)#int vlan 10</span><br><span class="line">SW1(config-if)#ip address 192.168.10.254 255.255.255.0 </span><br><span class="line">SW1(config-if)#no shutdown </span><br><span class="line">SW1(config)#int vlan 20</span><br><span class="line">SW1(config-if)#ip address 192.168.20.254 255.255.255.0</span><br><span class="line">SW1(config-if)#no shutdown </span><br><span class="line">SW1(config)#int vlan 30</span><br><span class="line">SW1(config-if)#ip address 192.168.30.254 255.255.255.0</span><br><span class="line">SW1(config-if)#no shutdown</span><br><span class="line">SW1(config)#int vlan 40</span><br><span class="line">SW1(config-if)#ip address 192.168.40.254 255.255.255.0</span><br><span class="line">SW1(config-if)#no shutdown </span><br></pre></td></tr></table></figure>
+
+<p><strong>（2）采用合适的方式完成交换机链路间的TRUNK配置，并采用标准的封装模式</strong></p>
+<blockquote>
+<p>在SW1和SW2之间的链路封装802.1Q，并关闭DTP协商，更改native vlan为999</p>
+</blockquote>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">SW1(config)#int range e1/0-1</span><br><span class="line">SW1(config-if-range)#switchport trunk encapsulation dot1q </span><br><span class="line">SW1(config-if-range)#switchport mode trunk </span><br><span class="line">SW1(config-if-range)#switchport nonegotiate</span><br><span class="line">SW1(config-if-range)#switchport trunk native vlan 999</span><br><span class="line"></span><br><span class="line">SW2(config)#int range e1/0-1</span><br><span class="line">SW2(config-if-range)#switchport trunk encapsulation dot1q </span><br><span class="line">SW2(config-if-range)#switchport mode trunk </span><br><span class="line">SW2(config-if-range)#switchport nonegotiate </span><br><span class="line">SW2(config-if-range)#switchport trunk native vlan 999</span><br></pre></td></tr></table></figure>
+
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/14/ws1dsS.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/14/ws1aM8.png"></p>
+<p><strong>（3）设置SW1的VTP模式为Server，SW2的VTP模式为Client，并且设置VTP域名为shain，密码为CCIEPASS，实现该园区网络的VLAN信息同步</strong></p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">SW1(config)#vtp domain shain</span><br><span class="line">SW1(config)#vtp password CCIEPASS</span><br><span class="line">SW1(config)#vtp mode server </span><br><span class="line"></span><br><span class="line">SW2(config)#vtp password CCIEPASS</span><br><span class="line">SW2(config)#vtp mode client </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在SW1和SW2上查看VTP的状态信息</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/ws1XLD.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/ws1OsO.png"></p>
+<ul>
+<li>此时SW2通过VTP方式学习到SW1上的VLAN</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/ws3iSP.png"></p>
+<p><strong>（4）使用802.3ad标准构建两交换机间的以太通道链路，要求交换机将EtherChannel的负载均衡设置为src-dst-ip</strong></p>
+<ul>
+<li>使用LACP进行交换机之间的链路捆绑</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">SW1(config)#int range e1/0-1</span><br><span class="line">SW1(config-if-range)#channel-group 1 mode active </span><br><span class="line">Creating a port-channel interface Port-channel <span class="number">1</span></span><br><span class="line"></span><br><span class="line">SW2(config)#int range e1/0-1</span><br><span class="line">SW2(config-if-range)#channel-group 1 mode active </span><br><span class="line">Creating a port-channel interface Port-channel <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看EtherChannel摘要信息，捆绑成功</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/ws8974.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/ws8PAJ.png"></p>
+<ul>
+<li>将EtherChannel的负载均衡方式设置为src-dst-ip（默认的负载均衡方式即为src-dst-ip）</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">SW1(config)#port-channel load-balance src-dst-ip</span><br><span class="line">SW2(config)#port-channel load-balance src-dst-ip</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在SW1上查看EtherChannel的负载均衡方式</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wsGZPs.png"></p>
+<p><strong>（5）根据需求在DHCP_SRV上建立相应的地址池，并且在各个地址池中排除范围从10到20之间的IP地址空间，同时要求无论FTP_SRV何时接入交换网络都会获取到192.168.40.100/24的地址，完成必要的配置，实现各主机和FTP_SRV可以获取相应的IP地址</strong></p>
+<ul>
+<li>在DHCP_SRV上创建地址池并按要求排除IP地址空间</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="comment">//创建地址池</span></span><br><span class="line">DHCP_SRV(config)#ip dhcp pool vlan_10</span><br><span class="line">DHCP_SRV(dhcp-config)#network 192.168.10.0 255.255.255.0</span><br><span class="line">DHCP_SRV(dhcp-config)#default-router 192.168.10.254</span><br><span class="line">DHCP_SRV(dhcp-config)#dns-server 8.8.8.8</span><br><span class="line">DHCP_SRV(config)#ip dhcp pool vlan_20</span><br><span class="line">DHCP_SRV(dhcp-config)#network 192.168.20.0 255.255.255.0</span><br><span class="line">DHCP_SRV(dhcp-config)#default-router 192.168.20.254</span><br><span class="line">DHCP_SRV(dhcp-config)#dns-server 8.8.8.8</span><br><span class="line">DHCP_SRV(config)#ip dhcp pool vlan_30</span><br><span class="line">DHCP_SRV(dhcp-config)#network 192.168.30.0 255.255.255.0</span><br><span class="line">DHCP_SRV(dhcp-config)#default-router 192.168.30.254</span><br><span class="line">DHCP_SRV(dhcp-config)#dns-server 8.8.8.8</span><br><span class="line">DHCP_SRV(config)#ip dhcp pool vlan_40</span><br><span class="line">DHCP_SRV(dhcp-config)#network 192.168.40.0 255.255.255.0</span><br><span class="line">DHCP_SRV(dhcp-config)#default-router 192.168.40.254</span><br><span class="line">DHCP_SRV(dhcp-config)#dns-server 8.8.8.8</span><br><span class="line"><span class="comment">//排除要求的IP地址，并将已使用的IP地址也排除掉</span></span><br><span class="line">DHCP_SRV(config)#ip dhcp excluded-address 192.168.10.10 192.168.10.20</span><br><span class="line">DHCP_SRV(config)#ip dhcp excluded-address 192.168.20.10 192.168.20.20</span><br><span class="line">DHCP_SRV(config)#ip dhcp excluded-address 192.168.30.10 192.168.30.20</span><br><span class="line">DHCP_SRV(config)#ip dhcp excluded-address 192.168.40.10 192.168.40.20</span><br><span class="line">DHCP_SRV(config)#ip dhcp excluded-address 192.168.10.100</span><br><span class="line">DHCP_SRV(config)#ip dhcp excluded-address 192.168.10.254             </span><br><span class="line">DHCP_SRV(config)#ip dhcp excluded-address 192.168.20.254</span><br><span class="line">DHCP_SRV(config)#ip dhcp excluded-address 192.168.30.254</span><br><span class="line">DHCP_SRV(config)#ip dhcp excluded-address 192.168.40.254</span><br><span class="line">DHCP_SRV(config)#ip dhcp excluded-address 192.168.40.100</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在DHCP_SRC和SW1上启用OSPF协议</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">DHCP_SRV(config)#router ospf 1</span><br><span class="line">DHCP_SRV(config-router)#router-id 3.3.3.3</span><br><span class="line">DHCP_SRV(config-router)#network 192.168.10.0 0.0.0.255 area 0</span><br><span class="line"></span><br><span class="line">SW1(config)#router ospf 1</span><br><span class="line">SW1(config-router)#router-id 1.1.1.1</span><br><span class="line">SW1(config-router)#network 192.168.10.0 0.0.0.255 area 0</span><br><span class="line">SW1(config-router)#network 192.168.20.0 0.0.0.255 area 0</span><br><span class="line">SW1(config-router)#network 192.168.30.0 0.0.0.255 area 0</span><br><span class="line">SW1(config-router)#network 192.168.40.0 0.0.0.255 area 0</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在SW1的各VLAN的SVI接口中配置中继地址</li>
+</ul>
+<blockquote>
+<p>由于DHCP_SRV在VLAN10中，所以无需在VLAN10的SVI端口配置中继地址</p>
+</blockquote>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">SW1(config)#int vlan 20</span><br><span class="line">SW1(config-if)#ip helper-address 192.168.10.100</span><br><span class="line">SW1(config)#int vlan 30</span><br><span class="line">SW1(config-if)#ip helper-address 192.168.10.100</span><br><span class="line">SW1(config)#int vlan 40</span><br><span class="line">SW1(config-if)#ip helper-address 192.168.10.100</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>各主机自动获取IP地址</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wsJB60.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wsJDXV.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wsJ0lq.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wsJwpn.png"></p>
+<ul>
+<li>让FTP_SRV自动获取地址</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">FTP_SRV(config)#int e0/0</span><br><span class="line">FTP_SRV(config-if)#no shutdown </span><br><span class="line">FTP_SRV(config-if)#ip address dhcp</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>如下图所示，此时通过DHCP方式获取到的IP地址为192.168.40.2，并不符合要求的192.168.40.100</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wsYVcq.png"></p>
+<ul>
+<li>查看DHCP_SRV的DHCP绑定表，可以得到FTP_SRV的电路ID</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wsYdED.png"></p>
+<ul>
+<li>在DHCP_SRV上清空FTP_SRV的地址绑定信息</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">DHCP_SRV#clear ip dhcp binding 192.168.40.2</span><br></pre></td></tr></table></figure>
+
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wsY2b8.png"></p>
+<ul>
+<li>在DHCP_SRV上创建FTP_SRV专用的地址池，与FTP_SRV的电路ID进行绑定</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">DHCP_SRV(config)#ip dhcp pool FTP_SRV</span><br><span class="line">DHCP_SRV(dhcp-config)#host 192.168.40.100 255.255.255.0</span><br><span class="line">DHCP_SRV(dhcp-config)#default-router 192.168.40.254</span><br><span class="line">DHCP_SRV(dhcp-config)#client-identifier 0063.6973.636f.2d61.6162.622e.6363.3030.2e35.3030.302d.4574.302f.30</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在FTP_SRV上使用DHCP方式获取IP地址，此时获取到的IP地址为192.168.40.100，符合要求</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wstZPH.png"></p>
+<p><strong>（6）完成必要配置，实现各主机可以访问ISP上的Web_SRV</strong></p>
+<ul>
+<li>在R1和SW1上运行OSPF协议，实现内网的可达性</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R1(config)#router ospf 1</span><br><span class="line">R1(config-router)#router-id 2.2.2.2</span><br><span class="line">R1(config-router)#network 10.10.10.0 0.0.0.255 area 0</span><br><span class="line"></span><br><span class="line">SW1(config)#router ospf 1</span><br><span class="line">SW1(config-router)#network 10.10.10.0 0.0.0.255 area 0</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>此时PC3可以访问R1</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wstJiQ.png"></p>
+<ul>
+<li>在R1上配置默认路由，指定出接口为s1/0，并在OSPF进程下发默认路由</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R1(config)#ip route 0.0.0.0 0.0.0.0 s1/0</span><br><span class="line">R1(config)#router ospf 1</span><br><span class="line">R1(config-router)#default-information originate </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>指定Web_SRV的网关为ISP的e0/0接口的地址200.100.100.1</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">Web_SRV(config)#ip default-gateway 200.100.100.1</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>此时实现了R1可以访问Web_SRV</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wst4eK.png"></p>
+<ul>
+<li>在R1上配置PAT，实现内网主机可以访问Web_SRV</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R1(config)#access-list 1 permit 192.168.0.0 /16  //ACL用于匹配内网主机</span><br><span class="line">R1(config)#ip nat inside source list 1 interface s1/0 overload </span><br><span class="line">R1(config)#int e0/0</span><br><span class="line">R1(config-if)#ip nat inside </span><br><span class="line">R1(config)#int s1/0</span><br><span class="line">R1(config-if)#ip nat outside </span><br></pre></td></tr></table></figure>
+
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wst7JH.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wstHWd.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wstIoD.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wstTFe.png"></p>
+<ul>
+<li>在R1上查看地址转换表，可知在R1上进行了地址转换</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wstvef.png"></p>
+]]></content>
+      <categories>
+        <category>实验</category>
+      </categories>
+      <tags>
+        <tag>VTP</tag>
+        <tag>DHCP</tag>
+        <tag>EtherChannel</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>单区域OSPF的实现</title>
     <url>/2020/08/29/%E5%8D%95%E5%8C%BA%E5%9F%9FOSPF%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
     <content><![CDATA[<h4 id="1、实验目的"><a href="#1、实验目的" class="headerlink" title="1、实验目的"></a>1、实验目的</h4><p>1）掌握OSPF的基本配置<br>2）掌握OSPF的邻居表、拓扑表及路由表的含义<br>3）掌握OSPF的DR和BDR的作用<br>4）掌握OSPF的DR和BDR的选举<br>5）查看和调试OSPF路由协议的相关信息<br>6）熟悉OSPF中hello报文的作用和格式</p>
 <a id="more"></a>
-<h4 id="2、拓扑结构"><a href="#2、拓扑结构" class="headerlink" title="2、拓扑结构"></a>2、拓扑结构</h4><p><img src="https://s1.ax1x.com/2020/08/29/dHg68e.png" alt="拓扑图"></p>
+<h4 id="2、拓扑结构"><a href="#2、拓扑结构" class="headerlink" title="2、拓扑结构"></a>2、拓扑结构</h4><p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dHg68e.png" alt="拓扑图"></p>
 <h4 id="3、实验步骤"><a href="#3、实验步骤" class="headerlink" title="3、实验步骤"></a>3、实验步骤</h4><p><strong>（1）完成各路由器的基本配置，实现各直连设备之间可以互ping对方，主机和路由器接口的地址自己规划</strong></p>
 <ul>
 <li>各接口地址如拓扑图标记所示进行配置</li>
@@ -832,9 +1239,9 @@
 <p>network表示的是划分一个范围，路由器上属于此范围的对应接口加入OSPF的相应进程的相应区域</p>
 <p>如network 192.168.12.0 0.0.0.255 area 0 表示的是划分一个范围为192.168.12.0，看此路由器上的哪个接口在这个范围内，则这个接口就会被加入OSPF的区域0中</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/29/dH2hQJ.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dH2Tdx.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dH2qJO.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dH2hQJ.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dH2Tdx.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dH2qJO.png"></p>
 <p><strong>（3）观察各路由器的邻居表、拓扑表及路由表，观察哪些链路上有进行DR/BDR的选举，并测试主机之间的连通性</strong></p>
 <blockquote>
 <p>优先级用于选举DR/BDR——以太网链路存在DR/BDR的选举，串行链路则没有</p>
@@ -862,25 +1269,25 @@
 <ul>
 <li>邻居表</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/08/29/dHWXqA.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dHWxat.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dHWzIP.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dHWXqA.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dHWxat.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dHWzIP.png"></p>
 <ul>
 <li>拓扑表</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/08/29/dHfVZn.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dHfeI0.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dHfuGT.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dHfVZn.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dHfeI0.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dHfuGT.png"></p>
 <ul>
 <li>路由表</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/08/29/dHfydI.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dHfgFP.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dHffSS.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dHfydI.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dHfgFP.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dHffSS.png"></p>
 <ul>
 <li>连通性测试</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/08/29/dHhpwR.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dHhpwR.png"></p>
 <p><strong>（4）指定R2的RID为20.20.20.20，R3的RID为30.30.30.30，使用相关命令观察和验证各路由器RID的变化</strong></p>
 <blockquote>
 <p>【RID的选举】</p>
@@ -899,44 +1306,44 @@
 <ul>
 <li>查看当前R2和R3的RID，由于没有手工指定，也没有存在回环口，则选择物理接口中IP地址最大的作为RID</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/08/29/dHhI1O.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dHhTje.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dHhI1O.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dHhTje.png"></p>
 <ul>
 <li>指定R2和R3路由器的RID</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/08/29/dH4PBj.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dH4kEn.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dH4PBj.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dH4kEn.png"></p>
 <ul>
 <li>再次查看R2和R3的RID</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/08/29/dH4ANq.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dH4E40.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dH4ANq.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dH4E40.png"></p>
 <p><strong>（5）实现R2为以太网链路网段上的DR</strong></p>
 <ul>
 <li>由于R1和R2的优先级默认都为1，并且R2的RID为20.20.20.20，而R1的RID为192.168.12.1，此时需要修改R2的e0/0接口的优先级，使之成为以太网链路上的DR。此处指定R2上e0/0接口的优先级为2即可</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/08/29/dH4zI1.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dH4zI1.png"></p>
 <ul>
 <li>由于DR、BDR的选举为非抢占，此时应重置OSPF进程</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/08/29/dHIpwj.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dHIpwj.png"></p>
 <ul>
 <li>查看R1和R2的邻居表，可知此时R2成为以太网链路上的DR</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/08/29/dHIFf0.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dHIApV.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dHIFf0.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dHIApV.png"></p>
 <p><strong>（6）分别在R2和R3的路由器上添加172.16.2.0/24和172.16.3.0/24的网段，添加必要配置实现这两个网络之间的连通性</strong></p>
 <ul>
 <li>由于R3上已存在172.16.3.0/24网段，此时在R2上添加一个回环口（地址为172.16.2.2/24）用作测试</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">R2(config)#interface loopback 1</span><br><span class="line">R2(config-if)#ip address 172.16.2.2 255.255.255.0</span><br><span class="line">R2(config-if)#ip ospf 1 area 0  --把该接口加入到OSPF进程1区域0中</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://s1.ax1x.com/2020/08/30/dHIqHJ.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dHIXNR.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dHIqHJ.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dHIXNR.png"></p>
 <p><strong>（7）开启debug信息，观察OSPF在以太网链路之间信息交互的过程</strong></p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dHIx9x.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dHIx9x.png"></p>
 <p><strong>（8）开启debug信息，观察OSPF在串行链路之间信息交互的过程，比较以太网链路和串行链路上OSPF的debug信息输出的区别</strong></p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dHoPDe.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dHoPDe.png"></p>
 <blockquote>
 <p>最主要区别在于以太网链路会进行DR/BDR的选举；串行链路则没有进行DR/BDR的选举</p>
 <p>以太网链路中，路由信息会先被发送到组播地址224.0.0.6，即被DR/BDR所接收，再由DR将此信息发送到组播地址224.0.0.5</p>
@@ -962,7 +1369,7 @@
 <li>Active Neighbor：活跃的邻居，以RID标识</li>
 </ul>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/30/dHoE4I.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dHoE4I.png"></p>
 ]]></content>
       <categories>
         <category>实验</category>
@@ -978,10 +1385,10 @@
     <url>/2020/08/30/%E5%8D%95%E8%87%82%E8%B7%AF%E7%94%B1%E8%BF%90%E7%94%A8/</url>
     <content><![CDATA[<h4 id="1、实验目的"><a href="#1、实验目的" class="headerlink" title="1、实验目的"></a>1、实验目的</h4><p>1）掌握交换机上VLAN的创建和划分<br>2）掌握trunk的作用<br>3）掌握VTP的作用与配置<br>4）掌握单臂路由原理与配置<br>5）理解trunk链路上的802.1Q标记的作用</p>
 <a id="more"></a>
-<h4 id="2、拓扑结构"><a href="#2、拓扑结构" class="headerlink" title="2、拓扑结构"></a>2、拓扑结构</h4><p><img src="https://s1.ax1x.com/2020/08/30/dqOjXR.png"></p>
+<h4 id="2、拓扑结构"><a href="#2、拓扑结构" class="headerlink" title="2、拓扑结构"></a>2、拓扑结构</h4><p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqOjXR.png"></p>
 <h4 id="3、实验步骤"><a href="#3、实验步骤" class="headerlink" title="3、实验步骤"></a>3、实验步骤</h4><p><strong>（1）在SW1上创建两个vlan，vlan10和vlan20，并将vlan10命名为sales，将vlan20命名为engineers</strong></p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqXEjA.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqXeBt.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqXEjA.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqXeBt.png"></p>
 <p><strong>（2）完成必要的配置，实现两交换机的vlan数据库同步，并使用相关命令验证和查看vlan数据库的信息</strong></p>
 <blockquote>
 <p>要实现两交换机的vlan数据库同步，需要进行vtp的配置</p>
@@ -989,52 +1396,52 @@
 <ul>
 <li>将两交换机相连的端口设置为trunk</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqXJun.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqj8PO.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqXJun.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqj8PO.png"></p>
 <ul>
 <li>指定vtp的域和密码，并指定SW1的vtp模式为server，SW2的vtp模式为client</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqjyRg.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqvFOA.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqjyRg.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqvFOA.png"></p>
 <ul>
 <li>在SW2上查看vlna信息，此前并未在SW2上创建vlan，由此可知两交换机之间实现了vlan数据库的同步</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqv6k6.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqv6k6.png"></p>
 <ul>
 <li>尝试在SW2上创建一个vlan，日志提示在vtp的模式为client的条件下不允许创建vlan</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqvRpD.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqvRpD.png"></p>
 <ul>
 <li>在SW1上查看vtp的状态信息，从下图可知SW1的vtp模式为server（默认），已存在的vlan数量为7，修订版本号为8</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqx9A0.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqx9A0.png"></p>
 <p><strong>（3）将连接PC1和PC3的交换端口划分进vlan10，将连接PC2的交换端口划分进vlan20中，并为各PC配置合适的IP地址和网关</strong></p>
 <ul>
 <li>依题意将交换机上的端口划分进对应的vlan</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqxYDA.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqxUEt.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqxd4f.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqxYDA.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqxUEt.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqxd4f.png"></p>
 <ul>
 <li>由于各PC为使用路由器镜像模拟，需在PC上关闭路由功能。按下图所示为各PC配置IP地址和网关</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqxIv4.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqxHbR.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqxLUx.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqxIv4.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqxHbR.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqxLUx.png"></p>
 <p><strong>（4）使用show vlan brief查看各交换机的vlan信息</strong></p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqzFat.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqzEPf.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqzFat.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqzEPf.png"></p>
 <p><strong>（5）测试各主机之间的连通性</strong></p>
 <blockquote>
 <p>PC1和PC3之间可以相互ping通（两PC属于同一vlan，无需经过三层设备）</p>
 <p>PC1和PC2之间无法通信（两PC属于不同vlan，需要经过三层设备，此时还未在路由器上进行相应的配置）</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqzlaq.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqzlaq.png"></p>
 <p><strong>（6）在交换机和路由器上完成必要的配置，实现各主机间可以互相通信</strong></p>
 <ul>
 <li>将SW1上连路由器的端口配置成trunk</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqzTW8.png">、</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqzTW8.png">、</p>
 <ul>
 <li><p>在R1上进行单臂路由的配置</p>
 <blockquote>
@@ -1044,12 +1451,12 @@
 </blockquote>
 </li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqzHSS.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqzHSS.png"></p>
 <ul>
 <li>测试各主机之间的连通性，如下图所示，三台PC之间可以互相ping通</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqzbQg.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqzLLj.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqzbQg.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqzLLj.png"></p>
 ]]></content>
       <categories>
         <category>实验</category>
@@ -1106,11 +1513,11 @@
 <h3 id="3、EtherChannel配置实例"><a href="#3、EtherChannel配置实例" class="headerlink" title="3、EtherChannel配置实例"></a>3、EtherChannel配置实例</h3><ul>
 <li>LACP验证</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/09/06/wmAPhT.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/06/wmAPhT.png"></p>
 <p>①首先将交换机之间的端口配置成Trunk</p>
 <figure class="highlight"><table><tr><td class="code"><pre><span class="line">SW1(config)#int range e0/0-1</span><br><span class="line">SW1(config-if-range)#switchport trunk encapsulation dot1q </span><br><span class="line">SW1(config-if-range)#switchport mode trunk </span><br><span class="line">SW2(config)#int range e0/0-1</span><br><span class="line">SW2(config-if-range)#switchport trunk encapsulation dot1q </span><br><span class="line">SW2(config-if-range)#switchport mode trunk </span><br></pre></td></tr></table></figure>
 
-<p><img src="https://s1.ax1x.com/2020/09/06/wmVMlD.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/06/wmVMlD.png"></p>
 <p>②在SW1上配置EtherChannel，创建端口组1，模式为Active</p>
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line">SW1(config)#int range e0/0-1</span><br><span class="line">SW1(config-if-range)#channel-group 1 mode active </span><br><span class="line">Creating a port-channel interface Port-channel <span class="number">1</span></span><br></pre></td></tr></table></figure>
 
@@ -1123,22 +1530,22 @@
 <p>④在SW1和SW2上分别进入新建的port-channel的接口配置模式，将其配置成dot1Q的trunk模式</p>
 <figure class="highlight"><table><tr><td class="code"><pre><span class="line">SW1(config)#int port-channel 1</span><br><span class="line">SW1(config-if)#switchport trunk encapsulation dot1q </span><br><span class="line">SW1(config-if)#switchport mode trunk </span><br><span class="line">SW2(config)#int port-channel 1</span><br><span class="line">SW2(config-if)#switchport trunk encapsulation dot1q </span><br><span class="line">SW2(config-if)#switchport mode trunk </span><br></pre></td></tr></table></figure>
 
-<p><img src="https://s1.ax1x.com/2020/09/06/wmDsbQ.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/06/wmDsbQ.png"></p>
 <p>⑤在SW1和SW2上使用show etherchannel summary命令查看EtherChannel的摘要信息</p>
 <blockquote>
 <p>如下图所示，port-channel 1是一个正在使用的2层EtherChannel（SU标志）。协商协议使用的是LACP，捆绑成功的端口包括Ethernet 0/0和Ethernet 0/1（P标志）</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/09/06/wmsEk9.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/06/wmsg10.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/06/wmsEk9.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/06/wmsg10.png"></p>
 <p>⑥在SW1上查看Ethernet 0/0和port-channel 1的信息，可知带宽变为原来的两倍</p>
-<p><img src="https://s1.ax1x.com/2020/09/06/wmyrDO.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/06/wmyYE4.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/06/wmyrDO.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/06/wmyYE4.png"></p>
 <hr>
 
 <ul>
 <li>PAgP验证</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/09/06/wmyn4s.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/06/wmyn4s.png"></p>
 <p>①将交换机之间的端口配置成Trunk</p>
 <figure class="highlight"><table><tr><td class="code"><pre><span class="line">SW1(config)#int range e0/0-1</span><br><span class="line">SW1(config-if-range)#switchport trunk encapsulation dot1q </span><br><span class="line">SW1(config-if-range)#switchport mode trunk </span><br><span class="line">SW2(config)#int range e0/0-1</span><br><span class="line">SW2(config-if-range)#switchport trunk encapsulation dot1q </span><br><span class="line">SW2(config-if-range)#switchport mode trunk </span><br></pre></td></tr></table></figure>
 
@@ -1151,19 +1558,19 @@
 <p>④在SW1和SW2上分别进入新建的port-channel的接口配置模式，将其配置成dot1Q的trunk模式</p>
 <figure class="highlight"><table><tr><td class="code"><pre><span class="line">SW1(config)#int port-channel 1</span><br><span class="line">SW1(config-if)#switchport trunk encapsulation dot1q </span><br><span class="line">SW1(config-if)#switchport mode trunk </span><br><span class="line">SW2(config)#int port-channel 2</span><br><span class="line">SW2(config-if)#switchport trunk encapsulation dot1q </span><br><span class="line">SW2(config-if)#switchport mode trunk </span><br></pre></td></tr></table></figure>
 
-<p><img src="https://s1.ax1x.com/2020/09/06/wmcKXV.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/06/wmcKXV.png"></p>
 <p>⑤在SW1和SW2上使用show etherchannel summary命令查看EtherChannel的摘要信息</p>
-<p><img src="https://s1.ax1x.com/2020/09/06/wmcwnK.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/06/wmcaX6.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/06/wmcwnK.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/06/wmcaX6.png"></p>
 <p>⑥在SW2上查看Ethernet 0/0和port-channel 2的信息，可知带宽变为原来的两倍</p>
-<p><img src="https://s1.ax1x.com/2020/09/06/wmcXuV.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/06/wmcjBT.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/06/wmcXuV.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/06/wmcjBT.png"></p>
 <hr>
 
 <ul>
 <li>On验证</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/09/06/wmg8Df.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/06/wmg8Df.png"></p>
 <p>①将交换机之间的端口配置成Trunk</p>
 <figure class="highlight"><table><tr><td class="code"><pre><span class="line">SW1(config)#int range e0/0-1</span><br><span class="line">SW1(config-if-range)#switchport trunk encapsulation dot1q </span><br><span class="line">SW1(config-if-range)#switchport mode trunk </span><br><span class="line">SW2(config)#int range e0/0-1</span><br><span class="line">SW2(config-if-range)#switchport trunk encapsulation dot1q </span><br><span class="line">SW2(config-if-range)#switchport mode trunk </span><br></pre></td></tr></table></figure>
 
@@ -1174,11 +1581,11 @@
 <figure class="highlight"><table><tr><td class="code"><pre><span class="line">SW1(config)#int range e0/0-1</span><br><span class="line">SW1(config-if-range)#switchport trunk encapsulation dot1q </span><br><span class="line">SW1(config-if-range)#switchport mode trunk </span><br><span class="line">SW2(config)#int range e0/0-1</span><br><span class="line">SW2(config-if-range)#switchport trunk encapsulation dot1q </span><br><span class="line">SW2(config-if-range)#switchport mode trunk </span><br></pre></td></tr></table></figure>
 
 <p>⑤在SW1和SW2上使用show etherchannel summary命令查看EtherChannel的摘要信息</p>
-<p><img src="https://s1.ax1x.com/2020/09/06/wm2Ysx.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/06/wm2JQ1.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/06/wm2Ysx.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/06/wm2JQ1.png"></p>
 <p>⑥在SW2上查看Ethernet 0/0和port-channel 2的信息，可知带宽变为原来的两倍</p>
-<p><img src="https://s1.ax1x.com/2020/09/07/wm2WTS.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/07/wm2Rw8.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/07/wm2WTS.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/07/wm2Rw8.png"></p>
 <h3 id="4、EtherChannel负载均衡方式"><a href="#4、EtherChannel负载均衡方式" class="headerlink" title="4、EtherChannel负载均衡方式"></a>4、EtherChannel负载均衡方式</h3><p>　　EtherChannel中的流量可以分担到捆绑中的每条链路上。不过，流量并不是严格平均分布到每条链路上的。数据帧选择EtherChannel链路上哪条链路转发取决于哈希算法的结果，不同的设备平台使用的哈希计算算法也不尽相同。</p>
 <p>　　在同一个EtherChannel的多个端口成员之间实现负载分担是配置EtherChannel的一个重要因素。管理员可以把负载分担选项当作一个规则，从而极大程度上丰富配置的多样性。举例来说，如果某条通道上的流量只去往单一的MAC地址，那么管理员既可以根据目的MAC地址进行配置，使其总是选择通道中的相同链路;也可以根据源地址进行配置，这样做可以实现更好的负载分担。</p>
 <p>　　负载分担会在全局应用于交换机上的所有EtherChannel，可以使用命令<strong>port-channel load-balance</strong>来实现这项技术。负载分担可以基于以下变量实现：</p>
@@ -1195,14 +1602,14 @@
 </ul>
 <p>　　例如，源MAC地址转发是指当数据包被发送给EtherChannel，设备会根据入站数据包的源MAC地址来判断应该将数据包从通道的哪个端口转发出去。于是，来自不同主机的数据包就会从通道的不同端口中转发出去，而来自同一台主机的数据包会从通道的同一端口中转发出去，这就是实现了负载分担。</p>
 <p>　　SW1和SW2之间使用LACP协商建立EtherChannel链路，如下图所示</p>
-<p><img src="https://s1.ax1x.com/2020/09/09/wlxaVI.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/09/wlxaVI.png"></p>
 <ul>
 <li>输入<span style="color:red">show etherchannel load-balance</span>命令来查看EtherChannel使用的负载均衡信息</li>
 </ul>
 <blockquote>
 <p>此前并未在交换机上配置负载均衡，可见该交换机上默认的负载均衡方式为src-dst-ip，即基于源和目的IP地址进行负载分担</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/09/09/wlxnbR.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/09/wlxnbR.png"></p>
 <ul>
 <li>为了测试上图所示的拓扑中每条链路上分布的流量，在SW1上输入<span style="color:red">clear counters</span>命令清空计数器，即可准确地测试出每条链路分布的流量</li>
 </ul>
@@ -1211,14 +1618,14 @@
 <ul>
 <li>使用扩展ping命令，从PC1上 ping PC3</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/09/09/wlzMLj.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/09/wlzMLj.png"></p>
 <ul>
 <li>在SW1上查看两个端口的计数器</li>
 </ul>
 <blockquote>
 <p>可见大多数流量都分布在了E0/0接口上，通过E0/0端口承载</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/09/09/wlz5TI.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/09/wlz5TI.png"></p>
 <ul>
 <li>将SW1的负载均衡方式修改为dst-ip</li>
 </ul>
@@ -1227,7 +1634,7 @@
 <ul>
 <li>查看修改后的负载均衡方式</li>
 </ul>
-<p><img src="https://s1.ax1x.com/2020/09/09/w1sPPO.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/09/w1sPPO.png"></p>
 ]]></content>
       <categories>
         <category>学习笔记</category>
@@ -1283,7 +1690,7 @@
 </ul>
 <h3 id="4、VTP修剪"><a href="#4、VTP修剪" class="headerlink" title="4、VTP修剪"></a>4、VTP修剪</h3><p>　　VTP修剪（pruning）技术使用VLAN通告消息来判断Trunk连接何时正在泛洪不必要的流量。默认情况下，Trunk连接会承受VTP管理域中所有的VLAN流量，但一般情况下，企业网络中的多数交换机并没有为每个VLAN都配置本地端口。</p>
 <p>　　VTP修剪技术可以将可泛洪的流量限制在合适的范围内，仅允许必要的VLAN流量通过Trunk链路，从而提高链路的可用带宽。如下图所示的交换网络启用了VTP的修剪功能，从Red VLAN中的主机或工作站发出的广播流量不会转发给交换机3、5和6，因为Red VLAN已经在交换机2、4的链路上被修剪掉了。</p>
-<p><img src="https://s1.ax1x.com/2020/09/04/wAKLaq.png" alt="VTP修剪"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/04/wAKLaq.png" alt="VTP修剪"></p>
 <p>　　无论是否使用了VTP修剪功能，Catalyst交换机都会为每个VLAN运行一个STP实例，即使VLAN中没有活动端口，或VTP修剪已经将VLAN从接口上移除了出去。因此，VTP修剪能够防止将流量泛洪传播给没有特定VLAN成员的交换机。不过，VTP修剪不会将已被修剪的VLAN信息从交换机上删除。</p>
 <h3 id="5、VTP认证"><a href="#5、VTP认证" class="headerlink" title="5、VTP认证"></a>5、VTP认证</h3><p>　　管理员可以使用VTP密码特性来增强VTP域的安全性。必须要保证VTP域内的所有交换机使用了相同的密码及域名；否则，交换机无法成为VTP域的成员。Cisco交换机使用MD5算法将密码编码成16字节的密码。这些密码会在VTP汇总通告中进行传播。在VTP中，密码是区分大小写的，长度为8~64个字符。建议在所有VTP域中使用VTP认证特性。</p>
 <h3 id="6、VTP通告"><a href="#6、VTP通告" class="headerlink" title="6、VTP通告"></a>6、VTP通告</h3><p>　　VTP通告会在整个管理域中泛洪。交换机默认每隔5分钟发送过一次VTP通告，当VLAN的配置发生变化时会触发发送VTP通告。VTP通告使用组播帧在native VLAN（默认为VLAN 1）中以不打标签的方式传播。每个VTP通告中都包含了一个配置修订号。配置修订号越高，表示VLAN信息越新。配置修订号（configuration revision number）是VTP中非常重要的参数。每次VTP服务器在对VLAN进行操作（增加、删除、修改VLAN信息）时，都会将配置修订号加1。随后VTP服务器发送的VTP通告将带有新的配置修订号。如果VTP域内的其他交换机收到了带有更高配置修订号的VTP通告，将会使用新收到的VLAN信息更新自身的VLAN配置。由于VTP透明模式的交换机不会与域内的其他交换机同步VLAN的信息，所以其配置修订号或VLAN数据库将不会改变（始终为0）。</p>
@@ -1309,7 +1716,7 @@
 <blockquote>
 <p>在进行VTP配置前，应注意将三台交换机之间的链路配置成Trunk链路，因为VTP消息仅会在Trunk链路上传播</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/09/04/wABjxJ.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/04/wABjxJ.png"></p>
 <ul>
 <li>在所有交换机上配置VTP，SW1配置成服务器模式，SW2配置成客户端模式，SW3配置成透明模式</li>
 </ul>
@@ -1327,7 +1734,7 @@
 <blockquote>
 <p>当前交换机上只有5个默认的VLAN：VLAN1和VLAN1002~1005。VTP配置修订号为0。此值为0以为着这台交换机的VLAN数据库未做任何修改。每次对VLAN进行操作（增加、删除、修改），配置修订号都会加1。</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/09/04/wADxfS.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/04/wADxfS.png"></p>
 <ul>
 <li>在SW1上输入命令show vtp status</li>
 </ul>
@@ -1337,7 +1744,7 @@
 <blockquote>
 <p>与SW2一样，当前设备上只有默认VLAN。VTP配置修订号为0，VTP域名为shain。</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/09/05/wAroNV.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/05/wAroNV.png"></p>
 <ul>
 <li>在SW3输入命令show vtp status</li>
 </ul>
@@ -1347,7 +1754,7 @@
 <blockquote>
 <p>和SW1、SW2一样，当前设备上只有默认VLAN。VTP配置修订号为0，VTP域名为shain</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/09/05/wAsQgg.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/05/wAsQgg.png"></p>
 <ul>
 <li>在SW1上创建VLAN 10</li>
 </ul>
@@ -1364,11 +1771,11 @@
 <p>使用命令show vlan和命令show vtp status</p>
 <p>VLAN 10此时已经出现在了SW1的数据库中</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/09/05/wA6rA1.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/05/wA6rA1.png"></p>
 <blockquote>
 <p>SW1上的配置修订号也增加到了1</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/09/05/wA617n.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/05/wA617n.png"></p>
 <ul>
 <li>检查SW2上的VLAN数据库和VTP状态</li>
 </ul>
@@ -1376,11 +1783,11 @@
 <p>使用命令show vlan和命令show vtp status</p>
 <p>由于SW2为VTP客户端模式，因此从SW1学习到了VLAN 10</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/09/05/wA6wnJ.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/05/wA6wnJ.png"></p>
 <blockquote>
 <p>SW2当前的配置修订号与SW1相同，代表两台交换机拥有相同的VLAN数据库</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/09/05/wA62cD.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/05/wA62cD.png"></p>
 <ul>
 <li>检查SW3上的VLAN数据库和VTP状态</li>
 </ul>
@@ -1392,11 +1799,11 @@
 <blockquote>
 <p>注意此时SW3上并没有VLAN 10</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/09/05/wAcAu4.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/05/wAcAu4.png"></p>
 <blockquote>
 <p>VTP透明模式的交换机配置修订号始终为0</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/09/05/wAcM8K.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/05/wAcM8K.png"></p>
 <ul>
 <li>在SW3上创建VLAN 20</li>
 </ul>
@@ -1409,31 +1816,31 @@
 <p>从以下显示结果中可以看出VTP透明模式的交换机可以创建、删除本地VLAN，但是不会将本地VLAN的信息通告给其他交换机</p>
 <p>VLAN 20仅存在与SW3上</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/09/05/wAcYVA.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/05/wAcN5t.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/05/wActUI.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/05/wAcYVA.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/05/wAcN5t.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/05/wActUI.png"></p>
 <h3 id="9、VTP配置覆盖（VTP常见问题）"><a href="#9、VTP配置覆盖（VTP常见问题）" class="headerlink" title="9、VTP配置覆盖（VTP常见问题）"></a>9、VTP配置覆盖（VTP常见问题）</h3><p>　　VTP的一个常见问题就是由于管理员的粗心大意，错误地将整个网络中的VLAN数据库配置删除。因此，当向网络中添加一台交换机时，一定不能将错误的信息注入到现网中。如下图所示，SW1是一台VTP服务器，SW2和SW3是VTP客户端。所有交换机同步后的配置修订号均为12，并带有VLAN 10、20、30和40。每台交换机上有多个用户连接到不同的VLAN。</p>
-<p><img src="https://s1.ax1x.com/2020/09/05/wAg5fP.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/05/wAg5fP.png"></p>
 <ul>
 <li>查看SW1上的VTP状态和VLAN数据库信息</li>
 </ul>
 <blockquote>
 <p>SW2和SW3有着与SW1同样的配置修订号及VLAN信息，这是因为VTP已经完全同步</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/09/05/wEfxTe.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/05/wEhkOf.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/05/wEfxTe.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/05/wEhkOf.png"></p>
 <ul>
 <li>现在假定SW2发生了故障，从配线间取出了另外一台交换机来替代SW2</li>
 </ul>
 <blockquote>
 <p>backup交换机配置了与其他两台交换机相同的VTP域名，VTP的配置修订号为29，比现网中的VTP修订号要高</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/09/05/wE46K0.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/05/wE46K0.png"></p>
 <blockquote>
 <p>backup交换机的VLAN信息和VTP信息如下图所示</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/09/05/wEIl6I.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/05/wEIsBV.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/05/wEIl6I.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/05/wEIsBV.png"></p>
 <blockquote>
 <p>默认情况下，Cisco IOS VTP服务器和客户端会将VLAN信息保存在flash下的vlan.dat文件中，其中包括了VLAN表以及配置修订号。删除vlan.dat文件并重启交换机可以将VTP和VLAN信息彻底删除，其删除方式根据具体交换机型号而定。</p>
 <p>处于VTP透明模式的交换机可以使用show running-config命令查看VLAN和VTP配置，这是由于配置是存放在配置文本文件中的，而不是vlan.dat。因此在VTP透明模式的交换机上执行erase startup-config命令的话，所有的VLAN信息都会被删除。</p>
@@ -1447,13 +1854,13 @@
 <blockquote>
 <p>查看SW1的VLAN信息和VTP状态</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/09/05/wEbL6J.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/05/wEqtA0.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/05/wEbL6J.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/05/wEqtA0.png"></p>
 <blockquote>
 <p>查看SW3上的VLAN信息和VTP状态</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/09/05/wELA8U.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/05/wELkCT.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/05/wELA8U.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/05/wELkCT.png"></p>
 <blockquote>
 <p>因此，当一台带有更高配置修订号的交换机加入到VTP域中时，很有可能会导致重大的网络故障。当VTP客户端交换机加入到网络时，会发送一个自身数据库的汇总通告。也就是说，带有更高配置修订号的交换机，无论是服务器模式还是客户端模式，都会导致现网交换机的VTP配置覆盖（VLAN重新学习）。</p>
 </blockquote>

@@ -1,0 +1,306 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>生成树协议 | shain</title><meta name="keywords" content="STP"><meta name="author" content="~鑫~"><meta name="copyright" content="~鑫~"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="1、生成树协议概述　　冗余的网络拓扑可以消除单点故障所导致的网络障碍。但从另一个角度看，冗余的网络拓扑也会带来其他的问题，如2层环路。使用STP技术可以在冗余的环境中消除潜在的2层环路问题。 1.1、STP概述　　如下图所示的冗余环境中，使用STP可以阻塞环路上的某个特定的端口，保证每个网段上只存在一条活动路径。  　　在冗余的网络拓扑环境中，若未启用STP，则会导致以下问题：  广播风暴——冗余">
+<meta property="og:type" content="article">
+<meta property="og:title" content="生成树协议">
+<meta property="og:url" content="http://shain.top/2020/09/15/STP/index.html">
+<meta property="og:site_name" content="shain">
+<meta property="og:description" content="1、生成树协议概述　　冗余的网络拓扑可以消除单点故障所导致的网络障碍。但从另一个角度看，冗余的网络拓扑也会带来其他的问题，如2层环路。使用STP技术可以在冗余的环境中消除潜在的2层环路问题。 1.1、STP概述　　如下图所示的冗余环境中，使用STP可以阻塞环路上的某个特定的端口，保证每个网段上只存在一条活动路径。  　　在冗余的网络拓扑环境中，若未启用STP，则会导致以下问题：  广播风暴——冗余">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://shain.top/post_img/lone_tree.jpg">
+<meta property="article:published_time" content="2020-09-15T00:32:33.000Z">
+<meta property="article:modified_time" content="2020-09-15T15:08:50.566Z">
+<meta property="article:author" content="~鑫~">
+<meta property="article:tag" content="STP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://shain.top/post_img/lone_tree.jpg"><link rel="shortcut icon" href="/img/dinosaur.png"><link rel="canonical" href="http://shain.top/2020/09/15/STP/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  hexoversion: '5.1.1',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  baiduPush: false,
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isSidebar: true,
+  postUpdate: '2020-09-15 23:08:50'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>var activateDarkMode = function () {
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+  }
+}
+var activateLightMode = function () {
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+  }
+}
+
+var autoChangeMode = 'false'
+var t = saveToLocal.get('theme')
+if (autoChangeMode === '1') {
+  var isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+  var isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+  var isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+  var hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+  if (t === undefined) {
+    if (isLightMode) activateLightMode()
+    else if (isDarkMode) activateDarkMode()
+    else if (isNotSpecified || hasNoSupport) {
+      var now = new Date()
+      var hour = now.getHours()
+      var isNight = hour <= 6 || hour >= 18
+      isNight ? activateDarkMode() : activateLightMode()
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+      if (saveToLocal.get('theme') === undefined) {
+        e.matches ? activateDarkMode() : activateLightMode()
+      }
+    })
+  } else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else if (autoChangeMode === '2') {
+  now = new Date()
+  hour = now.getHours()
+  isNight = hour <= 6 || hour >= 18
+  if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else {
+  if (t === 'dark') activateDarkMode()
+  else if (t === 'light') activateLightMode()
+}</script><meta name="generator" content="Hexo 5.1.1"><link rel="alternate" href="/atom.xml" title="shain" type="application/atom+xml">
+</head><body><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" data-lazy-src="/img/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">14</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">18</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">3</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div id="body-wrap"><div id="sidebar"><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E7%94%9F%E6%88%90%E6%A0%91%E5%8D%8F%E8%AE%AE%E6%A6%82%E8%BF%B0"><span class="toc-text">1、生成树协议概述</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1%E3%80%81STP%E6%A6%82%E8%BF%B0"><span class="toc-text">1.1、STP概述</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2%E3%80%81STP%E6%A0%87%E5%87%86"><span class="toc-text">1.2、STP标准</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-3%E3%80%81STP%E9%80%89%E4%B8%BE%E6%9C%BA%E5%88%B6"><span class="toc-text">1.3、STP选举机制</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-4%E3%80%81BPDU"><span class="toc-text">1.4、BPDU</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-5%E3%80%81STP%E7%AB%AF%E5%8F%A3%E7%8A%B6%E6%80%81"><span class="toc-text">1.5、STP端口状态</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-6%E3%80%81STP%E6%8B%93%E6%89%91%E5%8F%98%E6%9B%B4"><span class="toc-text">1.6、STP拓扑变更</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-7%E3%80%81PVST"><span class="toc-text">1.7、PVST+</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81%E5%BF%AB%E9%80%9F%E7%94%9F%E6%88%90%E6%A0%91%E5%8D%8F%E8%AE%AE%EF%BC%88RSTP%EF%BC%89"><span class="toc-text">2、快速生成树协议（RSTP）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1%E3%80%81RSTP%E7%AB%AF%E5%8F%A3%E8%A7%92%E8%89%B2"><span class="toc-text">2.1、RSTP端口角色</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2%E3%80%81RSTP%E7%AB%AF%E5%8F%A3%E7%8A%B6%E6%80%81"><span class="toc-text">2.2、RSTP端口状态</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3%E3%80%81%E6%8B%93%E6%89%91%E5%8F%98%E6%9B%B4"><span class="toc-text">2.3、拓扑变更</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-4%E3%80%81%E5%85%B3%E4%BA%8ERSTP%E6%94%B6%E6%95%9B%E6%97%B6%E9%97%B4%E7%9A%84%E9%AA%8C%E8%AF%81"><span class="toc-text">2.4、关于RSTP收敛时间的验证</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81%E5%A4%9A%E7%94%9F%E6%88%90%E6%A0%91%E5%8D%8F%E8%AE%AE%EF%BC%88MSTP%EF%BC%89"><span class="toc-text">3、多生成树协议（MSTP）</span></a></li></ol></div></div></div><header class="post-bg" id="page-header" style="background-image: url(/../post_img/lone_tree.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">shain</a></span><span id="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">生成树协议</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-09-15T00:32:33.000Z" title="发表于 2020-09-15 08:32:33">2020-09-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-09-15T15:08:50.566Z" title="更新于 2020-09-15 23:08:50">2020-09-15</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>12分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><h3 id="1、生成树协议概述"><a href="#1、生成树协议概述" class="headerlink" title="1、生成树协议概述"></a>1、生成树协议概述</h3><p>　　冗余的网络拓扑可以消除单点故障所导致的网络障碍。但从另一个角度看，冗余的网络拓扑也会带来其他的问题，如2层环路。使用STP技术可以在冗余的环境中消除潜在的2层环路问题。</p>
+<h4 id="1-1、STP概述"><a href="#1-1、STP概述" class="headerlink" title="1.1、STP概述"></a>1.1、STP概述</h4><p>　　如下图所示的冗余环境中，使用STP可以阻塞环路上的某个特定的端口，保证每个网段上只存在一条活动路径。</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wsRkcV.png"></p>
+<p>　　在冗余的网络拓扑环境中，若未启用STP，则会导致以下问题：</p>
+<ul>
+<li>广播风暴——冗余网络上的每台交换机会不断地泛洪广播帧</li>
+<li>多帧复制——目的站点可能会收到同一单播数据帧的多份拷贝，这可能会导致接收协议的一些问题</li>
+<li>MAC数据库不稳定——当一台交换机的不同端口收到了相同的帧拷贝时，这种现象称为MAC地址漂移。MAC地址表会将帧的源MAC地址和接收到此帧的入站端口对应到一条表项中。若存在环路，同一个MAC地址可能会从多个端口上接收到，这就造成了MAC地址表的不稳定。</li>
+</ul>
+<p>　　STP技术可以在支持物理路径冗余的同时，消除网络环路造成的影响。通过STP的选举机制，将多余链路进行阻塞，只保留一条活跃链路用于对数据流量的处理，被阻塞掉的链路同时也作为备用链路。当去往某个网段的连通性出现了问题，STP会自动启用之前的阻塞路径，并重新建立连通性。STP所使用桥协议数据单元（BPDU）来交换STP信息，并使用BPDU确定网络拓扑信息，以及对拓扑中设备添加、删除或修改的动作做出响应。交换机默认每2s向所有端口发送一次BPDU。</p>
+<h4 id="1-2、STP标准"><a href="#1-2、STP标准" class="headerlink" title="1.2、STP标准"></a>1.2、STP标准</h4><p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wyKfF1.png"></p>
+<h4 id="1-3、STP选举机制"><a href="#1-3、STP选举机制" class="headerlink" title="1.3、STP选举机制"></a>1.3、STP选举机制</h4><ul>
+<li><p>根桥——拥有最小桥ID的交换机被选为根桥</p>
+<ul>
+<li>每台交换机拥有唯一的BID，包含桥优先级（默认为32768）和MAC地址</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wysAr4.png"></p>
+</li>
+<li><p>根端口——非根交换机上去往根桥路径最优的端口，用于接收BPDU</p>
+<ul>
+<li>最小根路径开销</li>
+<li>最小发送者桥ID</li>
+<li>最小发送者的端口ID</li>
+</ul>
+</li>
+<li><p>指定端口——用于发送或转发配置BPDU</p>
+<ul>
+<li>最小根路径开销</li>
+<li>最小发送者桥ID</li>
+<li>最小发送者的端口ID</li>
+</ul>
+</li>
+<li><p>非指定端口——既不转发数据帧，也不会将在该网段接收到的数据包源MAC地址填入MAC地址表中</p>
+<ul>
+<li>上述端口选举完后，剩下的既不是根端口也不是指定端口的端口成为非指定端口</li>
+</ul>
+</li>
+</ul>
+<h4 id="1-4、BPDU"><a href="#1-4、BPDU" class="headerlink" title="1.4、BPDU"></a>1.4、BPDU</h4><p>　　STP使用签协议数据单元（BPDU）来交换STP信息，包括根桥的选举以及环路的识别等。默认情况下，交换机每2秒发送一次BPDU。BPDU一般分为以下两种类型：</p>
+<ul>
+<li>配置BPDU——用于计算STP</li>
+<li>TCN BPDU——用于通告网络拓扑变化</li>
+</ul>
+<p>　　BPDU帧结构以及各字段含义</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wydWRg.png"></p>
+<ul>
+<li>协议ID：标识STP</li>
+<li>版本号：标识当前的协议版本</li>
+<li>消息类型：标识BPDU类型（配置BPDU或TCN BPDU）</li>
+<li>标志：用来响应TCN BPDU</li>
+<li>根桥ID：标识根桥的桥ID（BID）</li>
+<li>根路径开销：标识发送交换机到根桥之间的路径开销</li>
+<li>发送方网桥ID：标识发送交换机的BID</li>
+<li>端口ID：标识发送端口</li>
+<li>消息期限：标识当前BPDU的生存时间</li>
+<li>最大期限：标识BPDU的最大超时时间</li>
+<li>Hello时间：标识根桥生成配置BPDU的间隔时间</li>
+<li>转发延迟：标识交换机端口必须等待侦听（listening）及学习（learning）状态的时间</li>
+</ul>
+<h4 id="1-5、STP端口状态"><a href="#1-5、STP端口状态" class="headerlink" title="1.5、STP端口状态"></a>1.5、STP端口状态</h4><p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wyBfzD.png"></p>
+<p><strong>Blocking（阻塞状态）</strong>：此时，二层端口为非指定端口，也不会参与数据帧的转发。该端口通过接收BPDU来判断根交换机的位置和根ID，以及在STP拓扑收敛结束之后，各交换机端口应该处于什么状态（是根端口、指定端口还是非指定端口）。在默认情况下，端口会在这种状态下停留20秒钟的时间（最大周期）</p>
+<p><strong>Listening（侦听状态）</strong>：生成树此时已经根据交换机所接收到的BPDU而判断出了这个端口应该参与数据帧的转发。于是，交换机端口就不再满足于接收BPDU，而同时也开始发送其自己的BPDU，并以此通告邻接的交换机该端口会在活动拓扑中参与转发数据帧的工作。在默认情况下，端口会在这种状态下停留15秒钟的时间（转发延迟）</p>
+<p><strong>Learning（学习状态）</strong>：这个二层端口准备参与数据帧的转发，并开始填写CAM表。在默认情况下，端口会在这种状态下停留15秒钟的时间（转发延迟）</p>
+<p><strong>Forwarding（转发状态）</strong>：这个二层端口已经成为了活动拓扑的一个组成部分；它会转发数据帧，并同时收发BPDU</p>
+<p><strong>Disabled（禁用状态）</strong>：这个二层端口不会参与生成树，也不会转发数据帧</p>
+<h4 id="1-6、STP拓扑变更"><a href="#1-6、STP拓扑变更" class="headerlink" title="1.6、STP拓扑变更"></a>1.6、STP拓扑变更</h4><p>　　当交换机的某个端口变成了转发状态或阻塞状态时，意味着STP拓扑发生了变更。交换机通过向根端口发送TCN BPDU的方法来通告拓扑变更。这一BPDU不包括实际的变更内容，仅用来通知网络中其他交换机拓扑发生变更这一现象。</p>
+<p>　　拓扑变更处理流程：</p>
+<ul>
+<li>当交换机检测到拓扑发生变更时，会沿着根桥的方向发送TCN</li>
+<li>上游的交换机接收到TCN以后，首先会回复一个TCA，然后继续沿着根桥的方向发送TCN，直到最后根桥收到TCN</li>
+<li>根桥收到TCN后，会回复一个拓扑变更确认（TCA）和一个设置了TC标志位的BPDU给所有的下游交换机，同时将本地的MAC地址表的老化时间从300s缩短至15s——为了实现MAC地址表刷新</li>
+<li>下游的交换机收到TC置位的BPDU的时候，也会将本地的MAC地址表老化时间从300s缩短至15s，同时也会继续转发TC置位的BPDU给下游交换机——将TC置位的信息在整个交换网络中泛洪</li>
+</ul>
+<h4 id="1-7、PVST"><a href="#1-7、PVST" class="headerlink" title="1.7、PVST+"></a>1.7、PVST+</h4><p>　　增强的每个VLAN生成树是Cisco的一种生成树实现技术。PVST+可为网络中配置的每个VLAN提供一个单独的生成树实例。</p>
+<p>　　与CST不同的是，PVST+可以为每个VLAN运行一个生成树实例，这就意味着在配置有不同VLAN的冗余链路上可以基于不同的VLAN来负载分担流量。</p>
+<blockquote>
+<p>拓扑结构如下所示，进行主次根的配置</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wyTFbt.png"></p>
+<ul>
+<li>指定SW1为VLAN 10的根桥，为VLAN 20的次根桥</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SW1(config)#spanning-tree vlan 10 root primary </span><br><span class="line">SW1(config)#spanning-tree vlan 20 root secondary </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>指定SW2为VLAN 10的次根桥，为VLAN 20的根桥</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SW2(config)#spanning-tree vlan 10 root secondary </span><br><span class="line">SW2(config)#spanning-tree vlan 20 root primary </span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>桥优先级默认为32768，对于SW1而言：</p>
+<p>设置为root primary后，优先级降低2个4096，加上vlan-id后，优先级变成24586</p>
+<p>设置为root secondary后，优先级降低1个4096，加上vlan-id后，优先级变成28692</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wyb9v4.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wyqUFx.png"></p>
+<blockquote>
+<p>SW2成为VLAN 20的根桥</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wyLB40.png"></p>
+<ul>
+<li>关于收敛时间的验证</li>
+</ul>
+<blockquote>
+<p>将SW3的e0/0接口shutdown，观察e0/1端口过渡到forwarding状态所需时间</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">SW3#debug spanning-tree events </span><br><span class="line">Spanning Tree event debugging is on</span><br><span class="line">SW3(config)#int e0/0</span><br><span class="line">SW3(config-if)#shutdown </span><br><span class="line">SW3#</span><br><span class="line">*Sep <span class="number">15</span> <span class="number">08</span>:<span class="number">37</span>:<span class="number">02.367</span>: STP: VLAN0020 <span class="keyword">new</span> root port Et0/<span class="number">1</span>, cost <span class="number">200</span>  <span class="comment">//e0/0端口被禁用，则e0/1端口成为根端口</span></span><br><span class="line">*Sep <span class="number">15</span> <span class="number">08</span>:<span class="number">37</span>:<span class="number">02.367</span>: STP: VLAN0020 Et0/<span class="number">1</span> -&gt; listening  <span class="comment">//直接进入侦听状态</span></span><br><span class="line">*Sep <span class="number">15</span> <span class="number">08</span>:<span class="number">37</span>:<span class="number">02.367</span>: STP[<span class="number">20</span>]: Generating TC trap <span class="keyword">for</span> port Ethernet0/<span class="number">0</span></span><br><span class="line">*Sep <span class="number">15</span> <span class="number">08</span>:<span class="number">37</span>:<span class="number">04.372</span>: STP: VLAN0020 sent Topology Change Notice on Et0/<span class="number">1</span>  <span class="comment">//通告拓扑变更</span></span><br><span class="line">*Sep <span class="number">15</span> <span class="number">08</span>:<span class="number">37</span>:<span class="number">17.367</span>: STP: VLAN0020 Et0/<span class="number">1</span> -&gt; learning  <span class="comment">//经过15s，进入学习状态</span></span><br><span class="line">*Sep <span class="number">15</span> <span class="number">08</span>:<span class="number">37</span>:<span class="number">32.373</span>: STP[<span class="number">20</span>]: Generating TC trap <span class="keyword">for</span> port Ethernet0/<span class="number">1</span></span><br><span class="line">*Sep <span class="number">15</span> <span class="number">08</span>:<span class="number">37</span>:<span class="number">32.373</span>: STP: VLAN0020 sent Topology Change Notice on Et0/<span class="number">1</span></span><br><span class="line">*Sep <span class="number">15</span> <span class="number">08</span>:<span class="number">37</span>:<span class="number">32.373</span>: STP: VLAN0020 Et0/<span class="number">1</span> -&gt; forwarding  <span class="comment">//经过30s，进入转发状态</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2、快速生成树协议（RSTP）"><a href="#2、快速生成树协议（RSTP）" class="headerlink" title="2、快速生成树协议（RSTP）"></a>2、快速生成树协议（RSTP）</h3><p>　　快速生成树协议（IEEE802.1w，也称为RSTP）在网络拓扑变更时，能够显著地提升生成树重新计算的速度。RSTP会选择一台交换机作为活动生成树拓扑的根，并为交换机上的每个端口分配端口角色，所分配的角色取决于端口是否是STP活动拓扑的一部分。通过在交换机之间使用明确的握手协议，新的根端口和指定端口会立刻过渡到forwarding状态。</p>
+<h4 id="2-1、RSTP端口角色"><a href="#2-1、RSTP端口角色" class="headerlink" title="2.1、RSTP端口角色"></a>2.1、RSTP端口角色</h4><p><strong>根端口（root）</strong>：根端口是每台非根网桥上选择出来与根网桥相连的端口。每台交换机上只能有一个根端口。根端口在稳定工作状态的拓扑中处于转发状态</p>
+<p><strong>指定端口（designated）</strong>：在每个网段中至少会有一个交换机端口作为该网段的指定端口。在拓扑的稳定工作状态下，有指定端口的交换机会在这个网段中接收去往根网桥的数据帧。每个网段只能有一个指定端口。而这个指定端口会处于转发状态。所有与某个特定网段相连的交换机都会侦听所有的BPDU；并判断自己是否要在这个网段中充当指定交换机</p>
+<p><strong>替代端口（alternate）</strong>：替代端口是用来提供去往根网桥替代路径的端口。替代端口在稳定工作状态的拓扑中处于丢弃状态。替代端口出现在非指定交换机上，并且会在当前的指定端口出现故障时过渡为指定端口。（对根端口进行备份）</p>
+<p><strong>备份端口（backup）</strong>：备份端口是指定交换机上的一个额外的交换机端口，它的作用是为指定交换机提供一条备份链路。备份端口的端口ID高于指定交换机指定端口的端口ID。在稳定工作状态的拓扑中，备份端口处于丢弃状态。（存在Hub的时候才会出现，对链路进行备份）</p>
+<p><strong>禁用端口（disabled）</strong>：在生成树工作的过程中，禁用端口不担当任何角色</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/w6Japd.png"></p>
+<h4 id="2-2、RSTP端口状态"><a href="#2-2、RSTP端口状态" class="headerlink" title="2.2、RSTP端口状态"></a>2.2、RSTP端口状态</h4><p>　　RSTP中只存在3种端口状态，它们分别对应于端口可能的3中工作状态：丢弃状态、学习状态和转发状态。RSTP 802.1w丢弃状态代表了802.1D STP的禁用、阻塞和监听状态之和(可以节省20s时间)。</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/w6YOIS.png"></p>
+<h4 id="2-3、拓扑变更"><a href="#2-3、拓扑变更" class="headerlink" title="2.3、拓扑变更"></a>2.3、拓扑变更</h4><p>　　RSTP中的TC（拓扑变更）通告是一步到位的。交换机使用向所有非边缘端口发送带有TC位BPDU的方式宣告拓扑变更，这意味着每台交换机都可以直接重新计算生成树。需要借助提议/同意机制，提议该端口为某个角色，如果没问题就同意。通过这种方式，所有的邻居交换机都会得知拓扑变更，因此会各自更新自己的CAM表，无需等待根桥发送TC BPDU。这种方法会导致更多潜在的临时泛洪，不过，可以很快地将拓扑变更通知扩散到整个网络，从而实现快速收敛。</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/w6wFC8.png"></p>
+<h4 id="2-4、关于RSTP收敛时间的验证"><a href="#2-4、关于RSTP收敛时间的验证" class="headerlink" title="2.4、关于RSTP收敛时间的验证"></a>2.4、关于RSTP收敛时间的验证</h4><ul>
+<li>如下图所示，修改STP的模式为RSTP</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/w6XgIA.png"></p>
+<ul>
+<li>将SW3的e0/0端口shutdown，观察e0/1端口过渡到转发状态所需时间</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">SW3#debug spanning-tree events </span><br><span class="line">Spanning Tree event debugging is on</span><br><span class="line">SW3(config)#int e0/0</span><br><span class="line">SW3(config-if)#shutdown</span><br><span class="line">*Sep <span class="number">15</span> <span class="number">12</span>:<span class="number">09</span>:<span class="number">40.772</span>: RSTP(<span class="number">20</span>): updt roles, root port Et0/<span class="number">0</span> going down</span><br><span class="line">*Sep <span class="number">15</span> <span class="number">12</span>:<span class="number">09</span>:<span class="number">40.772</span>: RSTP(<span class="number">20</span>): Et0/<span class="number">1</span> is now root port  <span class="comment">//成为根端口，时间小于1s</span></span><br><span class="line">*Sep <span class="number">15</span> <span class="number">12</span>:<span class="number">09</span>:<span class="number">40.777</span>: STP[<span class="number">20</span>]: Generating TC trap <span class="keyword">for</span> port Ethernet0/<span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意：</p>
+<p>如果该端口角色确定为RP，则直接过渡到转发状态</p>
+<p>如果该端口角色确定为DP，只能是慢慢过渡</p>
+</blockquote>
+<h3 id="3、多生成树协议（MSTP）"><a href="#3、多生成树协议（MSTP）" class="headerlink" title="3、多生成树协议（MSTP）"></a>3、多生成树协议（MSTP）</h3><p>　　多生成树（MST）将IEEE 802.1w RSTP算法扩展到了多棵生成树中。MST的主要目的是减少网络拓扑中生成树实例的总数量，从而降低交换机的CPU开销。</p>
+<p>　　优势——在实现负载均衡的同时，降低维护生成树实例的个数</p>
+<p>　　实现——将多个vlan加入相同的实例中</p>
+<p>　　MST注意点：</p>
+<ul>
+<li>name 域名，同一个实例区域中域名要保持一致</li>
+<li>revision 修订号，同一个实例区域中修订号要保持一致</li>
+<li>vlan的关联表，将多个vlan关联起来，放入同一个实例中</li>
+</ul>
+<blockquote>
+<p>没有划分的vlan会自动划分进MST0中（CIST）</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/w6zvtJ.png"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">SW1(config)#spanning-tree mode mst</span><br><span class="line">SW1(config)#spanning-tree mst configuration </span><br><span class="line">SW1(config-mst)#name jiaohuan  //设置域名称</span><br><span class="line">SW1(config-mst)#revision 10  //设置修订号</span><br><span class="line">SW1(config-mst)#instance 1 vlan 10,20,30  //划分vlan到此关联表</span><br><span class="line">SW1(config-mst)#instance 2 vlan 40,50,60</span><br><span class="line">SW1(config)#spanning-tree mst 1 root primary  //设置SW1为mst1的根桥</span><br><span class="line">SW1(config)#spanning-tree mst 2 root secondary  //设置SW1为mst2的次根桥</span><br><span class="line"></span><br><span class="line">SW2(config)#spanning-tree mode mst</span><br><span class="line">SW2(config)#spanning-tree mst configuration </span><br><span class="line">SW2(config-mst)#name jiaohuan</span><br><span class="line">SW2(config-mst)#revision 10</span><br><span class="line">SW2(config-mst)#instance 1 vlan 10,20,30</span><br><span class="line">SW2(config-mst)#instance 2 vlan 40,50,60</span><br><span class="line">SW2(config)#spanning-tree mst 1 root primary  //设置SW2为mst1的次根桥</span><br><span class="line">SW2(config)#spanning-tree mst 2 root secondary  //设置SW2为mst2的根桥</span><br><span class="line"></span><br><span class="line">SW3(config)#spanning-tree mode mst</span><br><span class="line">SW3(config)#spanning-tree mst configuration </span><br><span class="line">SW3(config-mst)#name jiaohuan</span><br><span class="line">SW3(config-mst)#revision 10</span><br><span class="line">SW3(config-mst)#instance 1 vlan 10,20,30</span><br><span class="line">SW3(config-mst)#instance 2 vlan 40,50,60</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>查看MST配置</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wc9vtg.png"></p>
+<blockquote>
+<p>查看MST摘要信息</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wcCucR.png"></p>
+<blockquote>
+<p>查看MST实例映射消息</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wcCBHf.png"></p>
+</div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">~鑫~</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://shain.top/2020/09/15/STP/">http://shain.top/2020/09/15/STP/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://shain.top" target="_blank">shain</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/STP/">STP</a></div><div class="post_share"></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" data-lazy-src="/img/alipay.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2020/09/14/%E5%85%B3%E4%BA%8E%E4%BA%A4%E6%8D%A2%E7%9A%84%E5%9F%BA%E7%A1%80%E6%B5%8B%E8%AF%95/"><img class="next-cover" data-lazy-src="/../post_img/element.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">关于交换的基础测试</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2020/08/31/STP的运用/" title="STP的运用"><img class="cover" data-lazy-src="/null"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-08-31</div><div class="title">STP的运用</div></div></a></div></div></div></article></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By ~鑫~</div><!--if theme.footer.copyright--><!--  .framework-info--><!--    span= _p('footer.framework') + ' '--><!--    a(href='https://hexo.io')= 'Hexo'--><!--    span.footer-separator |--><!--    span= _p('footer.theme') + ' '--><!--    a(href='https://github.com/jerryc127/hexo-theme-butterfly')= 'Butterfly'--></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-heart.min.js" async="async" mobile="false"></script></div></body></html>
