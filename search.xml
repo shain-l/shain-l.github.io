@@ -344,6 +344,147 @@
       </tags>
   </entry>
   <entry>
+    <title>NAT和PPP的应用</title>
+    <url>/2020/09/02/NAT%E5%92%8CPPP%E7%9A%84%E5%BA%94%E7%94%A8/</url>
+    <content><![CDATA[<h3 id="1、实验目的"><a href="#1、实验目的" class="headerlink" title="1、实验目的"></a>1、实验目的</h3><p>1）理解NAT的作用<br>2）理解不同NAT的特点及配置<br>3）理解不同NAT的使用场合<br>4）掌握PPP的PAP和CHAP验证<br>5）理解辅助地址的作用<br>6）掌握NAT的验证和查看命令</p>
+<a id="more"></a>
+<h3 id="2、拓扑结构"><a href="#2、拓扑结构" class="headerlink" title="2、拓扑结构"></a>2、拓扑结构</h3><p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/02/w9dK7d.png"></p>
+<h3 id="3、实验步骤"><a href="#3、实验步骤" class="headerlink" title="3、实验步骤"></a>3、实验步骤</h3><p><strong>（1）公司COM1和COM2内部网段都为192.168.1.0/24，其中COM1的SRV地址为192.168.1.100/24，COM2的user地址为192.168.1.10/24，COM1内部的其他主机地址自己规划；ISP上的Web_Server地址为211.1.1.1/24，ISP与COM2之间的地址段为202.101.12.0/24，ISP与COM1之间的地址段为202.101.23.0/24，其中COM2连接ISP的接口地址为202.101.12.1/24，COM1连接ISP的接口地址为202.101.23.3/24</strong></p>
+<blockquote>
+<p>IP地址规划如拓扑图所示</p>
+</blockquote>
+<p><strong>（2）要求COM1与ISP之间的PPP链路采用CHAP验证，用户名为20164120，密码为123456</strong></p>
+<ul>
+<li>在ISP的s2/0封装PPP，并指定PPP的认证方式为CHAP，指定对方的IP地址为202.101.23.3</li>
+<li>在全局下设置用户名和密码，用于chap验证</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/02/w9wMKU.png"></p>
+<ul>
+<li>在COM1上s2/0接口封装PPP，指定IP地址为通过协商获取，填写用户名和密码，并让ISP下发默认路由</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/02/w9wuvT.png"></p>
+<ul>
+<li>查看COM1上的IP地址，可知s2/0接口的IP地址为通过IPCP方式获得</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/02/w9wm80.png"></p>
+<ul>
+<li>查看COM1的路由表中的静态路由条目，可知存在一条默认路由</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/02/w9wn2V.png"></p>
+<p><strong>（3）在COM1上使用静态NAT实现SRV可以访问ISP上的Web_Server，分别使用ping和debug ip nat进行验证和测试</strong></p>
+<ul>
+<li>在COM1上启用一个loopback接口，用于静态nat的一对一映射</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/02/w90HTH.png"></p>
+<ul>
+<li>配置静态nat，将SRV的IP地址192.168.1.100映射到COM1上的loopback接口的地址</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/02/w90qkd.png"></p>
+<ul>
+<li>在ISP上配置静态路由，实现ISP可以访问COM1上的loopback接口</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/02/w90jpt.png"></p>
+<ul>
+<li>在COM1上配置内部接口和外部接口</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/02/w90LtA.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/02/w90OfI.png"></p>
+<ul>
+<li>此时SRV可以访问ISP上的Web_Server</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/02/w90v1P.png"></p>
+<ul>
+<li>在COM1上查看nat转换表，可知将192.168.1.100转换成200.100.1.1</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/02/w90x6f.png"></p>
+<ul>
+<li>由于采用静态NAT，所以此时Web_Server也可以通过200.100.1.1访问SRV</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/02/w90zX8.png"></p>
+<ul>
+<li>在Web_Server上使用telnet命令远程登录到200.100.1.1，由下图可知此时登录到的设备为SRV</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/02/w9BpnS.png"></p>
+<p><strong>（4）在COM1上使用复用地址池的方式实现COM1内的所有用户可以访问ISP上的Web_Server，分别使用ping和debug ip nat进行验证和测试</strong></p>
+<ul>
+<li>在COM1上配置地址池，范围为202.101.23.10~202.101.23.12，掩码为/24</li>
+<li>配置ACL，匹配192.168.1.0/24网段的流量</li>
+<li>配置复用地址池NAT</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w9siAe.png"></p>
+<ul>
+<li>此时各PC可以访问Web_Server</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w9s90O.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w9sC7D.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w9spnK.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w9rzX6.png"></p>
+<ul>
+<li>在COM1上查看nat转换表，地址在COM1上执行了地址转换</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w9sFtH.png"></p>
+<ul>
+<li>使用debug ip nat命令查看地址转换信息</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w9skhd.png"></p>
+<p><strong>（5）在COM1和COM2上使用PAT方式实现COM1和COM2内部的用户都可以访问ISP上的Web_Server</strong></p>
+<ul>
+<li>由于COM1上已存在ACL 1匹配192.168.1.0/24网段的流量，所以此时可以直接在COM1上配置端口复用NAT</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w96EOP.png"></p>
+<ul>
+<li>测试COM1内部的用户与Web_Server的连通性</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w96Ayt.png"></p>
+<ul>
+<li>查看地址转换表</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w96Zef.png"></p>
+<ul>
+<li>在COM2上配置默认路由，下一跳指向ISP的e0/0接口的地址202.101.12.2，确保COM2可以访问Web_Server</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w96ew8.png"></p>
+<ul>
+<li>在COM2上使用命名的标准ACL匹配192.168.1.0/24网段的流量</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w96kQI.png"></p>
+<ul>
+<li>配置PAT</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w96mTS.png"></p>
+<ul>
+<li>指定内外部接口</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w960p9.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w96aY4.png"></p>
+<ul>
+<li>测试COM2内部用户与Web_Server的连通性</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w96dfJ.png"></p>
+<ul>
+<li>在COM2上查看nat转换表，可知内部用户192.168.1.10在访问外部网络时将地址转换成了202.101.12.1</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w96UkF.png"></p>
+<p><strong>（6）实现COM2内部的COM2_USER可以远程登录到SRV</strong></p>
+<ul>
+<li>在COM1上配置静态nat，将SRV的地址192.168.1.100的tcp23号端口静态映射成200.100.1.1的5656号端口</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/wC9w6J.png"></p>
+<ul>
+<li>在COM2_USER上使用telnet命令远程登录到SRV，此时应注意加上端口号</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/wC9dl4.png"></p>
+]]></content>
+      <categories>
+        <category>实验</category>
+      </categories>
+      <tags>
+        <tag>CCNA</tag>
+        <tag>NAT</tag>
+        <tag>PPP</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>EIGRP的简单应用</title>
     <url>/2020/08/28/EIGRP%E7%9A%84%E7%AE%80%E5%8D%95%E5%BA%94%E7%94%A8/</url>
     <content><![CDATA[<h4 id="1、实验目的"><a href="#1、实验目的" class="headerlink" title="1、实验目的"></a>1、实验目的</h4><p>1）掌握EIGRP的基本配置<br>2）理解EIGRP的邻居表、拓扑表以及路由表的含义<br>3）掌握查看EIGRP路由协议的相关信息<br>4）掌握FD、AD、S、FS以及FC的含义<br>5）理解EIGRP的hello报文作用<br>6）理解路由快速收敛的含义<br>7）理解EIGRP的不等价负载均衡</p>
@@ -485,144 +626,168 @@
       </tags>
   </entry>
   <entry>
-    <title>NAT和PPP的应用</title>
-    <url>/2020/09/02/NAT%E5%92%8CPPP%E7%9A%84%E5%BA%94%E7%94%A8/</url>
-    <content><![CDATA[<h3 id="1、实验目的"><a href="#1、实验目的" class="headerlink" title="1、实验目的"></a>1、实验目的</h3><p>1）理解NAT的作用<br>2）理解不同NAT的特点及配置<br>3）理解不同NAT的使用场合<br>4）掌握PPP的PAP和CHAP验证<br>5）理解辅助地址的作用<br>6）掌握NAT的验证和查看命令</p>
-<a id="more"></a>
-<h3 id="2、拓扑结构"><a href="#2、拓扑结构" class="headerlink" title="2、拓扑结构"></a>2、拓扑结构</h3><p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/02/w9dK7d.png"></p>
-<h3 id="3、实验步骤"><a href="#3、实验步骤" class="headerlink" title="3、实验步骤"></a>3、实验步骤</h3><p><strong>（1）公司COM1和COM2内部网段都为192.168.1.0/24，其中COM1的SRV地址为192.168.1.100/24，COM2的user地址为192.168.1.10/24，COM1内部的其他主机地址自己规划；ISP上的Web_Server地址为211.1.1.1/24，ISP与COM2之间的地址段为202.101.12.0/24，ISP与COM1之间的地址段为202.101.23.0/24，其中COM2连接ISP的接口地址为202.101.12.1/24，COM1连接ISP的接口地址为202.101.23.3/24</strong></p>
+    <title>RIP的应用</title>
+    <url>/2020/08/27/RIP%E7%9A%84%E5%BA%94%E7%94%A8/</url>
+    <content><![CDATA[<h4 id="1、-实验目的"><a href="#1、-实验目的" class="headerlink" title="1、 实验目的"></a>1、 实验目的</h4><ol>
+<li>掌握RIPv2的基本配置<br></li>
+<li>理解RIPv2路由条目的结构含义<br></li>
+<li>理解自动汇总的含义<br></li>
+<li>理解和观察周期性更新<br></li>
+<li>理解debug ip rip 命令 的作用<a id="more"></a>
+
+</li>
+</ol>
+<h4 id="2、-拓扑结构"><a href="#2、-拓扑结构" class="headerlink" title="2、 拓扑结构"></a>2、 拓扑结构</h4><p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doIIiV.png"></p>
+<h4 id="3、-实验步骤"><a href="#3、-实验步骤" class="headerlink" title="3、 实验步骤"></a>3、 实验步骤</h4><p><strong>（1）完成各路由器的基本配置，实现各直连设备之间可以互 ping 对方， 要求 PC1 的 IP 地址设置为 172.16.1.1/24，网关设置为172.16.1.254， PC2 的 IP 地址设置为172.16.3.1/24，网关设置为172.16.3.254，各路由器接口间的地址自己规划。</strong></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/27/d5mDb9.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/27/d5uw79.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/27/d5NpXn.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/27/d5NkkT.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/27/d5Ne1J.png"></p>
+<p><strong>（2）在三台路由器上都启用RIPv2协议，通告各自的直连网络路由，并开启自动汇总</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">默认开启自动汇总，会在边界处把一个网段汇总成主类</span><br></pre></td></tr></table></figure>
+
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/do543D.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/do5HHI.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/do5v8S.png"></p>
+<p><strong>（3）在R1上使用show ip protocols命令，观察并理解该命令的输出信息</strong></p>
 <blockquote>
-<p>IP地址规划如拓扑图所示</p>
+<p>路由更新计时器：30s（默认）<br>路由无效时间：180s（默认）<br>抑制计时器：180s（默认）<br>路由刷新计时器：240s（默认）</p>
 </blockquote>
-<p><strong>（2）要求COM1与ISP之间的PPP链路采用CHAP验证，用户名为20164120，密码为123456</strong></p>
-<ul>
-<li>在ISP的s2/0封装PPP，并指定PPP的认证方式为CHAP，指定对方的IP地址为202.101.23.3</li>
-<li>在全局下设置用户名和密码，用于chap验证</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/02/w9wMKU.png"></p>
-<ul>
-<li>在COM1上s2/0接口封装PPP，指定IP地址为通过协商获取，填写用户名和密码，并让ISP下发默认路由</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/02/w9wuvT.png"></p>
-<ul>
-<li>查看COM1上的IP地址，可知s2/0接口的IP地址为通过IPCP方式获得</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/02/w9wm80.png"></p>
-<ul>
-<li>查看COM1的路由表中的静态路由条目，可知存在一条默认路由</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/02/w9wn2V.png"></p>
-<p><strong>（3）在COM1上使用静态NAT实现SRV可以访问ISP上的Web_Server，分别使用ping和debug ip nat进行验证和测试</strong></p>
-<ul>
-<li>在COM1上启用一个loopback接口，用于静态nat的一对一映射</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/02/w90HTH.png"></p>
-<ul>
-<li>配置静态nat，将SRV的IP地址192.168.1.100映射到COM1上的loopback接口的地址</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/02/w90qkd.png"></p>
-<ul>
-<li>在ISP上配置静态路由，实现ISP可以访问COM1上的loopback接口</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/02/w90jpt.png"></p>
-<ul>
-<li>在COM1上配置内部接口和外部接口</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/02/w90LtA.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/02/w90OfI.png"></p>
-<ul>
-<li>此时SRV可以访问ISP上的Web_Server</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/02/w90v1P.png"></p>
-<ul>
-<li>在COM1上查看nat转换表，可知将192.168.1.100转换成200.100.1.1</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/02/w90x6f.png"></p>
-<ul>
-<li>由于采用静态NAT，所以此时Web_Server也可以通过200.100.1.1访问SRV</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/02/w90zX8.png"></p>
-<ul>
-<li>在Web_Server上使用telnet命令远程登录到200.100.1.1，由下图可知此时登录到的设备为SRV</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/02/w9BpnS.png"></p>
-<p><strong>（4）在COM1上使用复用地址池的方式实现COM1内的所有用户可以访问ISP上的Web_Server，分别使用ping和debug ip nat进行验证和测试</strong></p>
-<ul>
-<li>在COM1上配置地址池，范围为202.101.23.10~202.101.23.12，掩码为/24</li>
-<li>配置ACL，匹配192.168.1.0/24网段的流量</li>
-<li>配置复用地址池NAT</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w9siAe.png"></p>
-<ul>
-<li>此时各PC可以访问Web_Server</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w9s90O.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w9sC7D.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w9spnK.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w9rzX6.png"></p>
-<ul>
-<li>在COM1上查看nat转换表，地址在COM1上执行了地址转换</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w9sFtH.png"></p>
-<ul>
-<li>使用debug ip nat命令查看地址转换信息</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w9skhd.png"></p>
-<p><strong>（5）在COM1和COM2上使用PAT方式实现COM1和COM2内部的用户都可以访问ISP上的Web_Server</strong></p>
-<ul>
-<li>由于COM1上已存在ACL 1匹配192.168.1.0/24网段的流量，所以此时可以直接在COM1上配置端口复用NAT</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w96EOP.png"></p>
-<ul>
-<li>测试COM1内部的用户与Web_Server的连通性</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w96Ayt.png"></p>
-<ul>
-<li>查看地址转换表</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w96Zef.png"></p>
-<ul>
-<li>在COM2上配置默认路由，下一跳指向ISP的e0/0接口的地址202.101.12.2，确保COM2可以访问Web_Server</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w96ew8.png"></p>
-<ul>
-<li>在COM2上使用命名的标准ACL匹配192.168.1.0/24网段的流量</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w96kQI.png"></p>
-<ul>
-<li>配置PAT</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w96mTS.png"></p>
-<ul>
-<li>指定内外部接口</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w960p9.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w96aY4.png"></p>
-<ul>
-<li>测试COM2内部用户与Web_Server的连通性</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w96dfJ.png"></p>
-<ul>
-<li>在COM2上查看nat转换表，可知内部用户192.168.1.10在访问外部网络时将地址转换成了202.101.12.1</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/w96UkF.png"></p>
-<p><strong>（6）实现COM2内部的COM2_USER可以远程登录到SRV</strong></p>
-<ul>
-<li>在COM1上配置静态nat，将SRV的地址192.168.1.100的tcp23号端口静态映射成200.100.1.1的5656号端口</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/wC9w6J.png"></p>
-<ul>
-<li>在COM2_USER上使用telnet命令远程登录到SRV，此时应注意加上端口号</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/03/wC9dl4.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dooEdI.png"></p>
+<p><strong>（4）查看各路由器的路由表，观察RIP路由条目的特征</strong></p>
+<blockquote>
+<p>由于没有关闭自动汇总，R1上存在172.16.0.0网段的路由，则不会再学习R2上的172.16.0.0的路由</p>
+<p>同理，R2上存在172.16.0.0网段的路由，则不会学习R1上的172.16.0.0的路由</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doowy4.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dooRSO.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doo7kt.png"></p>
+<p><strong>（5）分别在R2和PC2上测试R2与PC1以及PC2与PC1之间的连通性</strong></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doTJnH.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doTtHA.png"></p>
+<p><strong>（6）在R2上使用debug ip rip观察路由的发送情况</strong></p>
+<blockquote>
+<p>RIPv2组播地址：224.0.0.9</p>
+<p>由于没有关闭自动汇总，此时发送的报文都为主类路由</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doT09f.png"></p>
+<p><strong>（7）在三台路由器上都关闭自动汇总，观察各路由表的变化，并再次测试R2与PC1以及PC2与PC1之间的连通性</strong></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doTrjg.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doT43T.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doTLU1.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/do7Z28.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/do7urQ.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/do7QVs.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/do70aR.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/do7yRK.png"></p>
+<p><strong>（8）再次在R2上使用debug ip rip观察路由的发送情况，比较关闭自动汇总与开启自动汇总debug输出信息的不同</strong></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/do7von.png"></p>
+<p><strong>（9）在R2上添加一个loopback1接口，地址自定</strong></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doHAeJ.png"></p>
+<p><strong>（10）添加必要配置，实现PC1和PC2都能够正常访问在R2上的loopback1</strong></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTPgQH.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTPhwt.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTPTfS.png"></p>
+<p><strong>（11）在R1上添加一个loopback1接口，地址自定，然后在RIP中通告，观察R2和R3是否能马上学习到R1上新增的loopback1网段</strong></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTiwcQ.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTi7Ax.png"></p>
+<blockquote>
+<p>由于rip的路由表的更新时间为30s，故在R2、R3上无法马上学习到在R1上新增的loopback1网段</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTFJKJ.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTFtbR.png"></p>
+<p><strong>（12）将R1上的loopback1接口关闭，观察R2和R3上是否还存在关于R1上的loopback1网段的路由条目</strong></p>
+<blockquote>
+<p>由于触发更新，R1上存在失效路由，则会马上发送更新给相邻的路由器，让他们将失效路由删除</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTA5uQ.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTAoHs.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTA7En.png"></p>
+<p><strong>（13）使用wireshark抓取RIPv2报文，理解RIPv2报文各字段的含义</strong></p>
+<blockquote>
+<p>RIPv2运行在UDP的520端口上，属于应用层协议</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTAHNq.png"></p>
 ]]></content>
       <categories>
         <category>实验</category>
       </categories>
       <tags>
         <tag>CCNA</tag>
-        <tag>NAT</tag>
-        <tag>PPP</tag>
+        <tag>路由协议</tag>
+        <tag>RIP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>STP的运用</title>
+    <url>/2020/08/31/STP%E7%9A%84%E8%BF%90%E7%94%A8/</url>
+    <content><![CDATA[<h4 id="1、实验目的"><a href="#1、实验目的" class="headerlink" title="1、实验目的"></a>1、实验目的</h4><p>1）理解STP的作用<br>2）熟悉STP的工作原理<br>3）掌握STP的查看命令</p>
+<a id="more"></a>
+
+<h4 id="2、拓扑结构"><a href="#2、拓扑结构" class="headerlink" title="2、拓扑结构"></a>2、拓扑结构</h4><p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djPbAe.png"></p>
+<h4 id="3、实验步骤"><a href="#3、实验步骤" class="headerlink" title="3、实验步骤"></a>3、实验步骤</h4><p><strong>（1）在相应的交换机上创建vlan10，并将连接PC1和PC2的交换端口都划分进该vlan中</strong></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djiiNQ.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djiVcq.png"></p>
+<p><strong>（2）为主机设置合适的IP地址，IP地址自定，完成必要的配置实现主机间的通信</strong></p>
+<ul>
+<li>为两台PC配置IP地址（注意关闭路由功能，因为实验中的PC使用的是路由器的镜像）</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djiUHO.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djiDCd.png"></p>
+<ul>
+<li>将交换机之间的端口封装802.1Q，并配置成trunk</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djFmRA.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djFKMt.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djFYGj.png"></p>
+<ul>
+<li>测试PC的连通性</li>
+</ul>
+<blockquote>
+<p>由于PC1和PC2属于同一vlan，所以通过上述配置即可相互ping通</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djFxw8.png"></p>
+<p><strong>（3）查看各交换机的STP信息</strong></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djksnP.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djk678.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djkgAS.png"></p>
+<p><strong>（4）将SW1设置为vlan10的根桥，使用相关命令验证和查看各交换机上根桥的变化</strong></p>
+<ul>
+<li>设置SW1为vlan10的根桥</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djAmut.png"></p>
+<ul>
+<li>使用<span style="color:red">show spanning-tree</span>命令查看交换机状态</li>
+</ul>
+<blockquote>
+<p>由于设置SW1为vlan10的根桥，由下图可知，优先级默认降低2*4096，即为24576，加上vlan-id的10，所以优先级为24586</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djZVgJ.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djZQUK.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djZGgH.png"></p>
+<p><strong>（5）测试正常链路出现故障对主机通信的影响</strong></p>
+<ul>
+<li>将SW2的e0/1接口shutdown</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djZcKs.png"></p>
+<ul>
+<li>PC1仍然可以ping通PC2</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djZ2bq.png"></p>
+<p><strong>（6）先断开PC1与交换机的连接，然后恢复PC1与交换机的连接，观察主机重新接入交换机要经历多久才能够进行数据转发</strong></p>
+<blockquote>
+<p>由下图可知，PC1重新接入交换机需要经历30s（由于关闭的是SW2上的端口，可以直接进入listening状态（无需经历20s的blocking状态），再经历15s进入learning状态，最后经历15s进入forwarding状态）</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djero6.png"></p>
+]]></content>
+      <categories>
+        <category>实验</category>
+      </categories>
+      <tags>
+        <tag>CCNA</tag>
+        <tag>交换</tag>
+        <tag>STP</tag>
       </tags>
   </entry>
   <entry>
@@ -797,171 +962,6 @@
       </tags>
   </entry>
   <entry>
-    <title>RIP的应用</title>
-    <url>/2020/08/27/RIP%E7%9A%84%E5%BA%94%E7%94%A8/</url>
-    <content><![CDATA[<h4 id="1、-实验目的"><a href="#1、-实验目的" class="headerlink" title="1、 实验目的"></a>1、 实验目的</h4><ol>
-<li>掌握RIPv2的基本配置<br></li>
-<li>理解RIPv2路由条目的结构含义<br></li>
-<li>理解自动汇总的含义<br></li>
-<li>理解和观察周期性更新<br></li>
-<li>理解debug ip rip 命令 的作用<a id="more"></a>
-
-</li>
-</ol>
-<h4 id="2、-拓扑结构"><a href="#2、-拓扑结构" class="headerlink" title="2、 拓扑结构"></a>2、 拓扑结构</h4><p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doIIiV.png"></p>
-<h4 id="3、-实验步骤"><a href="#3、-实验步骤" class="headerlink" title="3、 实验步骤"></a>3、 实验步骤</h4><p><strong>（1）完成各路由器的基本配置，实现各直连设备之间可以互 ping 对方， 要求 PC1 的 IP 地址设置为 172.16.1.1/24，网关设置为172.16.1.254， PC2 的 IP 地址设置为172.16.3.1/24，网关设置为172.16.3.254，各路由器接口间的地址自己规划。</strong></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/27/d5mDb9.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/27/d5uw79.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/27/d5NpXn.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/27/d5NkkT.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/27/d5Ne1J.png"></p>
-<p><strong>（2）在三台路由器上都启用RIPv2协议，通告各自的直连网络路由，并开启自动汇总</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">默认开启自动汇总，会在边界处把一个网段汇总成主类</span><br></pre></td></tr></table></figure>
-
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/do543D.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/do5HHI.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/do5v8S.png"></p>
-<p><strong>（3）在R1上使用show ip protocols命令，观察并理解该命令的输出信息</strong></p>
-<blockquote>
-<p>路由更新计时器：30s（默认）<br>路由无效时间：180s（默认）<br>抑制计时器：180s（默认）<br>路由刷新计时器：240s（默认）</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dooEdI.png"></p>
-<p><strong>（4）查看各路由器的路由表，观察RIP路由条目的特征</strong></p>
-<blockquote>
-<p>由于没有关闭自动汇总，R1上存在172.16.0.0网段的路由，则不会再学习R2上的172.16.0.0的路由</p>
-<p>同理，R2上存在172.16.0.0网段的路由，则不会学习R1上的172.16.0.0的路由</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doowy4.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dooRSO.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doo7kt.png"></p>
-<p><strong>（5）分别在R2和PC2上测试R2与PC1以及PC2与PC1之间的连通性</strong></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doTJnH.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doTtHA.png"></p>
-<p><strong>（6）在R2上使用debug ip rip观察路由的发送情况</strong></p>
-<blockquote>
-<p>RIPv2组播地址：224.0.0.9</p>
-<p>由于没有关闭自动汇总，此时发送的报文都为主类路由</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doT09f.png"></p>
-<p><strong>（7）在三台路由器上都关闭自动汇总，观察各路由表的变化，并再次测试R2与PC1以及PC2与PC1之间的连通性</strong></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doTrjg.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doT43T.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doTLU1.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/do7Z28.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/do7urQ.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/do7QVs.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/do70aR.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/do7yRK.png"></p>
-<p><strong>（8）再次在R2上使用debug ip rip观察路由的发送情况，比较关闭自动汇总与开启自动汇总debug输出信息的不同</strong></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/do7von.png"></p>
-<p><strong>（9）在R2上添加一个loopback1接口，地址自定</strong></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doHAeJ.png"></p>
-<p><strong>（10）添加必要配置，实现PC1和PC2都能够正常访问在R2上的loopback1</strong></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTPgQH.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTPhwt.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTPTfS.png"></p>
-<p><strong>（11）在R1上添加一个loopback1接口，地址自定，然后在RIP中通告，观察R2和R3是否能马上学习到R1上新增的loopback1网段</strong></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTiwcQ.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTi7Ax.png"></p>
-<blockquote>
-<p>由于rip的路由表的更新时间为30s，故在R2、R3上无法马上学习到在R1上新增的loopback1网段</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTFJKJ.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTFtbR.png"></p>
-<p><strong>（12）将R1上的loopback1接口关闭，观察R2和R3上是否还存在关于R1上的loopback1网段的路由条目</strong></p>
-<blockquote>
-<p>由于触发更新，R1上存在失效路由，则会马上发送更新给相邻的路由器，让他们将失效路由删除</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTA5uQ.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTAoHs.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTA7En.png"></p>
-<p><strong>（13）使用wireshark抓取RIPv2报文，理解RIPv2报文各字段的含义</strong></p>
-<blockquote>
-<p>RIPv2运行在UDP的520端口上，属于应用层协议</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTAHNq.png"></p>
-]]></content>
-      <categories>
-        <category>实验</category>
-      </categories>
-      <tags>
-        <tag>CCNA</tag>
-        <tag>路由协议</tag>
-        <tag>RIP</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>STP的运用</title>
-    <url>/2020/08/31/STP%E7%9A%84%E8%BF%90%E7%94%A8/</url>
-    <content><![CDATA[<h4 id="1、实验目的"><a href="#1、实验目的" class="headerlink" title="1、实验目的"></a>1、实验目的</h4><p>1）理解STP的作用<br>2）熟悉STP的工作原理<br>3）掌握STP的查看命令</p>
-<a id="more"></a>
-
-<h4 id="2、拓扑结构"><a href="#2、拓扑结构" class="headerlink" title="2、拓扑结构"></a>2、拓扑结构</h4><p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djPbAe.png"></p>
-<h4 id="3、实验步骤"><a href="#3、实验步骤" class="headerlink" title="3、实验步骤"></a>3、实验步骤</h4><p><strong>（1）在相应的交换机上创建vlan10，并将连接PC1和PC2的交换端口都划分进该vlan中</strong></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djiiNQ.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djiVcq.png"></p>
-<p><strong>（2）为主机设置合适的IP地址，IP地址自定，完成必要的配置实现主机间的通信</strong></p>
-<ul>
-<li>为两台PC配置IP地址（注意关闭路由功能，因为实验中的PC使用的是路由器的镜像）</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djiUHO.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djiDCd.png"></p>
-<ul>
-<li>将交换机之间的端口封装802.1Q，并配置成trunk</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djFmRA.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djFKMt.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djFYGj.png"></p>
-<ul>
-<li>测试PC的连通性</li>
-</ul>
-<blockquote>
-<p>由于PC1和PC2属于同一vlan，所以通过上述配置即可相互ping通</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djFxw8.png"></p>
-<p><strong>（3）查看各交换机的STP信息</strong></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djksnP.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djk678.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djkgAS.png"></p>
-<p><strong>（4）将SW1设置为vlan10的根桥，使用相关命令验证和查看各交换机上根桥的变化</strong></p>
-<ul>
-<li>设置SW1为vlan10的根桥</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djAmut.png"></p>
-<ul>
-<li>使用<span style="color:red">show spanning-tree</span>命令查看交换机状态</li>
-</ul>
-<blockquote>
-<p>由于设置SW1为vlan10的根桥，由下图可知，优先级默认降低2*4096，即为24576，加上vlan-id的10，所以优先级为24586</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djZVgJ.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djZQUK.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djZGgH.png"></p>
-<p><strong>（5）测试正常链路出现故障对主机通信的影响</strong></p>
-<ul>
-<li>将SW2的e0/1接口shutdown</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djZcKs.png"></p>
-<ul>
-<li>PC1仍然可以ping通PC2</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djZ2bq.png"></p>
-<p><strong>（6）先断开PC1与交换机的连接，然后恢复PC1与交换机的连接，观察主机重新接入交换机要经历多久才能够进行数据转发</strong></p>
-<blockquote>
-<p>由下图可知，PC1重新接入交换机需要经历30s（由于关闭的是SW2上的端口，可以直接进入listening状态（无需经历20s的blocking状态），再经历15s进入learning状态，最后经历15s进入forwarding状态）</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djero6.png"></p>
-]]></content>
-      <categories>
-        <category>实验</category>
-      </categories>
-      <tags>
-        <tag>CCNA</tag>
-        <tag>STP</tag>
-        <tag>交换</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>SVI回顾</title>
     <url>/2020/09/11/SVI%E5%9B%9E%E9%A1%BE/</url>
     <content><![CDATA[<p>　　SVI，即交换虚拟接口，是在多层交换机上配置的一种虚拟接口，如下图所示。管理员可以为任何交换机上配置的VLAN创建SVI接口。每个VLAN只能关联一个SVI接口。SVI并不是真实存在的物理接口，但此接口可以与路由器接口执行同样的VLAN操作功能，为所有出入其VLAN端口的数据包提供3层转发功能。</p>
@@ -1036,6 +1036,31 @@
       <tags>
         <tag>交换</tag>
         <tag>SVI</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2020/08/26/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<a id="more"></a>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+      <categories>
+        <category>Hello World</category>
+      </categories>
+      <tags>
+        <tag>hello world</tag>
       </tags>
   </entry>
   <entry>
@@ -1195,31 +1220,6 @@
         <tag>VTP</tag>
         <tag>DHCP</tag>
         <tag>EtherChannel</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2020/08/26/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<a id="more"></a>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
-      <categories>
-        <category>Hello World</category>
-      </categories>
-      <tags>
-        <tag>hello world</tag>
       </tags>
   </entry>
   <entry>
