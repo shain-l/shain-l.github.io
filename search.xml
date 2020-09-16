@@ -626,100 +626,6 @@
       </tags>
   </entry>
   <entry>
-    <title>RIP的应用</title>
-    <url>/2020/08/27/RIP%E7%9A%84%E5%BA%94%E7%94%A8/</url>
-    <content><![CDATA[<h4 id="1、-实验目的"><a href="#1、-实验目的" class="headerlink" title="1、 实验目的"></a>1、 实验目的</h4><ol>
-<li>掌握RIPv2的基本配置<br></li>
-<li>理解RIPv2路由条目的结构含义<br></li>
-<li>理解自动汇总的含义<br></li>
-<li>理解和观察周期性更新<br></li>
-<li>理解debug ip rip 命令 的作用<a id="more"></a>
-
-</li>
-</ol>
-<h4 id="2、-拓扑结构"><a href="#2、-拓扑结构" class="headerlink" title="2、 拓扑结构"></a>2、 拓扑结构</h4><p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doIIiV.png"></p>
-<h4 id="3、-实验步骤"><a href="#3、-实验步骤" class="headerlink" title="3、 实验步骤"></a>3、 实验步骤</h4><p><strong>（1）完成各路由器的基本配置，实现各直连设备之间可以互 ping 对方， 要求 PC1 的 IP 地址设置为 172.16.1.1/24，网关设置为172.16.1.254， PC2 的 IP 地址设置为172.16.3.1/24，网关设置为172.16.3.254，各路由器接口间的地址自己规划。</strong></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/27/d5mDb9.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/27/d5uw79.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/27/d5NpXn.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/27/d5NkkT.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/27/d5Ne1J.png"></p>
-<p><strong>（2）在三台路由器上都启用RIPv2协议，通告各自的直连网络路由，并开启自动汇总</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">默认开启自动汇总，会在边界处把一个网段汇总成主类</span><br></pre></td></tr></table></figure>
-
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/do543D.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/do5HHI.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/do5v8S.png"></p>
-<p><strong>（3）在R1上使用show ip protocols命令，观察并理解该命令的输出信息</strong></p>
-<blockquote>
-<p>路由更新计时器：30s（默认）<br>路由无效时间：180s（默认）<br>抑制计时器：180s（默认）<br>路由刷新计时器：240s（默认）</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dooEdI.png"></p>
-<p><strong>（4）查看各路由器的路由表，观察RIP路由条目的特征</strong></p>
-<blockquote>
-<p>由于没有关闭自动汇总，R1上存在172.16.0.0网段的路由，则不会再学习R2上的172.16.0.0的路由</p>
-<p>同理，R2上存在172.16.0.0网段的路由，则不会学习R1上的172.16.0.0的路由</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doowy4.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dooRSO.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doo7kt.png"></p>
-<p><strong>（5）分别在R2和PC2上测试R2与PC1以及PC2与PC1之间的连通性</strong></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doTJnH.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doTtHA.png"></p>
-<p><strong>（6）在R2上使用debug ip rip观察路由的发送情况</strong></p>
-<blockquote>
-<p>RIPv2组播地址：224.0.0.9</p>
-<p>由于没有关闭自动汇总，此时发送的报文都为主类路由</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doT09f.png"></p>
-<p><strong>（7）在三台路由器上都关闭自动汇总，观察各路由表的变化，并再次测试R2与PC1以及PC2与PC1之间的连通性</strong></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doTrjg.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doT43T.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doTLU1.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/do7Z28.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/do7urQ.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/do7QVs.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/do70aR.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/do7yRK.png"></p>
-<p><strong>（8）再次在R2上使用debug ip rip观察路由的发送情况，比较关闭自动汇总与开启自动汇总debug输出信息的不同</strong></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/do7von.png"></p>
-<p><strong>（9）在R2上添加一个loopback1接口，地址自定</strong></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doHAeJ.png"></p>
-<p><strong>（10）添加必要配置，实现PC1和PC2都能够正常访问在R2上的loopback1</strong></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTPgQH.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTPhwt.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTPTfS.png"></p>
-<p><strong>（11）在R1上添加一个loopback1接口，地址自定，然后在RIP中通告，观察R2和R3是否能马上学习到R1上新增的loopback1网段</strong></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTiwcQ.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTi7Ax.png"></p>
-<blockquote>
-<p>由于rip的路由表的更新时间为30s，故在R2、R3上无法马上学习到在R1上新增的loopback1网段</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTFJKJ.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTFtbR.png"></p>
-<p><strong>（12）将R1上的loopback1接口关闭，观察R2和R3上是否还存在关于R1上的loopback1网段的路由条目</strong></p>
-<blockquote>
-<p>由于触发更新，R1上存在失效路由，则会马上发送更新给相邻的路由器，让他们将失效路由删除</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTA5uQ.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTAoHs.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTA7En.png"></p>
-<p><strong>（13）使用wireshark抓取RIPv2报文，理解RIPv2报文各字段的含义</strong></p>
-<blockquote>
-<p>RIPv2运行在UDP的520端口上，属于应用层协议</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTAHNq.png"></p>
-]]></content>
-      <categories>
-        <category>实验</category>
-      </categories>
-      <tags>
-        <tag>CCNA</tag>
-        <tag>路由协议</tag>
-        <tag>RIP</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>生成树协议</title>
     <url>/2020/09/15/STP/</url>
     <content><![CDATA[<h3 id="1、生成树协议概述"><a href="#1、生成树协议概述" class="headerlink" title="1、生成树协议概述"></a>1、生成树协议概述</h3><p>　　冗余的网络拓扑可以消除单点故障所导致的网络障碍。但从另一个角度看，冗余的网络拓扑也会带来其他的问题，如2层环路。使用STP技术可以在冗余的环境中消除潜在的2层环路问题。</p>
@@ -891,6 +797,100 @@
       </tags>
   </entry>
   <entry>
+    <title>RIP的应用</title>
+    <url>/2020/08/27/RIP%E7%9A%84%E5%BA%94%E7%94%A8/</url>
+    <content><![CDATA[<h4 id="1、-实验目的"><a href="#1、-实验目的" class="headerlink" title="1、 实验目的"></a>1、 实验目的</h4><ol>
+<li>掌握RIPv2的基本配置<br></li>
+<li>理解RIPv2路由条目的结构含义<br></li>
+<li>理解自动汇总的含义<br></li>
+<li>理解和观察周期性更新<br></li>
+<li>理解debug ip rip 命令 的作用<a id="more"></a>
+
+</li>
+</ol>
+<h4 id="2、-拓扑结构"><a href="#2、-拓扑结构" class="headerlink" title="2、 拓扑结构"></a>2、 拓扑结构</h4><p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doIIiV.png"></p>
+<h4 id="3、-实验步骤"><a href="#3、-实验步骤" class="headerlink" title="3、 实验步骤"></a>3、 实验步骤</h4><p><strong>（1）完成各路由器的基本配置，实现各直连设备之间可以互 ping 对方， 要求 PC1 的 IP 地址设置为 172.16.1.1/24，网关设置为172.16.1.254， PC2 的 IP 地址设置为172.16.3.1/24，网关设置为172.16.3.254，各路由器接口间的地址自己规划。</strong></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/27/d5mDb9.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/27/d5uw79.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/27/d5NpXn.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/27/d5NkkT.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/27/d5Ne1J.png"></p>
+<p><strong>（2）在三台路由器上都启用RIPv2协议，通告各自的直连网络路由，并开启自动汇总</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">默认开启自动汇总，会在边界处把一个网段汇总成主类</span><br></pre></td></tr></table></figure>
+
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/do543D.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/do5HHI.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/do5v8S.png"></p>
+<p><strong>（3）在R1上使用show ip protocols命令，观察并理解该命令的输出信息</strong></p>
+<blockquote>
+<p>路由更新计时器：30s（默认）<br>路由无效时间：180s（默认）<br>抑制计时器：180s（默认）<br>路由刷新计时器：240s（默认）</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dooEdI.png"></p>
+<p><strong>（4）查看各路由器的路由表，观察RIP路由条目的特征</strong></p>
+<blockquote>
+<p>由于没有关闭自动汇总，R1上存在172.16.0.0网段的路由，则不会再学习R2上的172.16.0.0的路由</p>
+<p>同理，R2上存在172.16.0.0网段的路由，则不会学习R1上的172.16.0.0的路由</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doowy4.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dooRSO.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doo7kt.png"></p>
+<p><strong>（5）分别在R2和PC2上测试R2与PC1以及PC2与PC1之间的连通性</strong></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doTJnH.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doTtHA.png"></p>
+<p><strong>（6）在R2上使用debug ip rip观察路由的发送情况</strong></p>
+<blockquote>
+<p>RIPv2组播地址：224.0.0.9</p>
+<p>由于没有关闭自动汇总，此时发送的报文都为主类路由</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doT09f.png"></p>
+<p><strong>（7）在三台路由器上都关闭自动汇总，观察各路由表的变化，并再次测试R2与PC1以及PC2与PC1之间的连通性</strong></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doTrjg.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doT43T.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doTLU1.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/do7Z28.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/do7urQ.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/do7QVs.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/do70aR.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/do7yRK.png"></p>
+<p><strong>（8）再次在R2上使用debug ip rip观察路由的发送情况，比较关闭自动汇总与开启自动汇总debug输出信息的不同</strong></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/do7von.png"></p>
+<p><strong>（9）在R2上添加一个loopback1接口，地址自定</strong></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/doHAeJ.png"></p>
+<p><strong>（10）添加必要配置，实现PC1和PC2都能够正常访问在R2上的loopback1</strong></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTPgQH.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTPhwt.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTPTfS.png"></p>
+<p><strong>（11）在R1上添加一个loopback1接口，地址自定，然后在RIP中通告，观察R2和R3是否能马上学习到R1上新增的loopback1网段</strong></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTiwcQ.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTi7Ax.png"></p>
+<blockquote>
+<p>由于rip的路由表的更新时间为30s，故在R2、R3上无法马上学习到在R1上新增的loopback1网段</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTFJKJ.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTFtbR.png"></p>
+<p><strong>（12）将R1上的loopback1接口关闭，观察R2和R3上是否还存在关于R1上的loopback1网段的路由条目</strong></p>
+<blockquote>
+<p>由于触发更新，R1上存在失效路由，则会马上发送更新给相邻的路由器，让他们将失效路由删除</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTA5uQ.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTAoHs.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTA7En.png"></p>
+<p><strong>（13）使用wireshark抓取RIPv2报文，理解RIPv2报文各字段的含义</strong></p>
+<blockquote>
+<p>RIPv2运行在UDP的520端口上，属于应用层协议</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/28/dTAHNq.png"></p>
+]]></content>
+      <categories>
+        <category>实验</category>
+      </categories>
+      <tags>
+        <tag>CCNA</tag>
+        <tag>路由协议</tag>
+        <tag>RIP</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>STP的运用</title>
     <url>/2020/08/31/STP%E7%9A%84%E8%BF%90%E7%94%A8/</url>
     <content><![CDATA[<h4 id="1、实验目的"><a href="#1、实验目的" class="headerlink" title="1、实验目的"></a>1、实验目的</h4><p>1）理解STP的作用<br>2）熟悉STP的工作原理<br>3）掌握STP的查看命令</p>
@@ -1036,31 +1036,6 @@
       <tags>
         <tag>交换</tag>
         <tag>SVI</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2020/08/26/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<a id="more"></a>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
-      <categories>
-        <category>Hello World</category>
-      </categories>
-      <tags>
-        <tag>hello world</tag>
       </tags>
   </entry>
   <entry>
@@ -1220,6 +1195,31 @@
         <tag>VTP</tag>
         <tag>DHCP</tag>
         <tag>EtherChannel</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2020/08/26/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<a id="more"></a>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+      <categories>
+        <category>Hello World</category>
+      </categories>
+      <tags>
+        <tag>hello world</tag>
       </tags>
   </entry>
   <entry>
@@ -1872,6 +1872,147 @@
       <tags>
         <tag>交换</tag>
         <tag>VTP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>生成树特性</title>
+    <url>/2020/09/16/%E7%94%9F%E6%88%90%E6%A0%91%E7%89%B9%E6%80%A7/</url>
+    <content><![CDATA[<p>　　为了能够帮助STP实现更快的收敛，也能让协议的操作能够更好地利用现有的网络架构，这时就需要应用一些特性来过滤一些条件下BPDU的发送或接收，并改变网络拓扑变化时网络的响应方式。本文将介绍8种特性，用于优化管理STP。</p>
+<a id="more"></a>
+
+<blockquote>
+<p>注：无特别说明，本文使用的STP的模式为PVST</p>
+</blockquote>
+<h3 id="1、PortFast"><a href="#1、PortFast" class="headerlink" title="1、PortFast"></a>1、PortFast</h3><blockquote>
+<p>针对pvst、rstp、mst都有效</p>
+</blockquote>
+<p>（1）对象：连接终端设备的端口</p>
+<p>（2）功能：可以使得接入端口（access）直接过渡到转发状态；当交换机PortFast端口up或down时，不会发送TCN BPDU</p>
+<p>（3）配置</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="comment">//不同镜像命令可能不同</span></span><br><span class="line">接口下:</span><br><span class="line">SW3(config-if)#spanning-tree portfast</span><br><span class="line">全局下:    <span class="comment">//(针对access端口才生效)</span></span><br><span class="line">SW3(config)#spanning-tree portfast default   </span><br><span class="line"><span class="comment">//查看portfast当前状态</span></span><br><span class="line">SW3#show spanning-tree interface e0/2 portfast </span><br></pre></td></tr></table></figure>
+
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/16/wg1ddU.png"></p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//未开启PortFast，则Et0/2需经历30s时间才过渡到转发状态</span></span><br><span class="line">SW3#debug spanning-tree events </span><br><span class="line">Spanning Tree event debugging is on</span><br><span class="line">SW3(config)#int e0/2</span><br><span class="line">SW3(config-if)#no shutdown</span><br><span class="line">*Aug  <span class="number">6</span> <span class="number">13</span>:<span class="number">41</span>:<span class="number">02.355</span>: set portid: VLAN0001 Et0/<span class="number">2</span>: <span class="keyword">new</span> port id <span class="number">8003</span>    <span class="comment">//80表示端口优先级为128，03表示端口号为0/2</span></span><br><span class="line">*Aug  <span class="number">6</span> <span class="number">13</span>:<span class="number">41</span>:<span class="number">02.355</span>: STP: VLAN0001 Et0/<span class="number">2</span> -&gt; listening</span><br><span class="line">*Aug  <span class="number">6</span> <span class="number">13</span>:<span class="number">41</span>:<span class="number">17.362</span>: STP: VLAN0001 Et0/<span class="number">2</span> -&gt; learning</span><br><span class="line">*Aug  <span class="number">6</span> <span class="number">13</span>:<span class="number">41</span>:<span class="number">32.369</span>: STP[<span class="number">1</span>]: Generating TC trap <span class="keyword">for</span> port Ethernet0/<span class="number">2</span></span><br><span class="line">*Aug  <span class="number">6</span> <span class="number">13</span>:<span class="number">41</span>:<span class="number">32.369</span>: STP: VLAN0001 sent Topology Change Notice on Et0/<span class="number">0</span></span><br><span class="line">*Aug  <span class="number">6</span> <span class="number">13</span>:<span class="number">41</span>:<span class="number">32.369</span>: STP: VLAN0001 Et0/<span class="number">2</span> -&gt; forwarding</span><br><span class="line"></span><br><span class="line"><span class="comment">//在接口下开启PortFast特性</span></span><br><span class="line">SW3(config)#int e0/2</span><br><span class="line">SW3(config-if)#spanning-tree portfast edge</span><br><span class="line"><span class="comment">//开启debug，观察收敛情况，可知此时过渡到转发状态所需时间&lt;1s</span></span><br><span class="line">SW3#debug spanning-tree events </span><br><span class="line">Spanning Tree event debugging is on</span><br><span class="line">SW3(config)#int e0/2</span><br><span class="line">SW3(config-if)#no shutdown</span><br><span class="line">*Aug  <span class="number">6</span> <span class="number">13</span>:<span class="number">48</span>:<span class="number">52.275</span>: set portid: VLAN0001 Et0/<span class="number">2</span>: <span class="keyword">new</span> port id <span class="number">8003</span></span><br><span class="line">*Aug  <span class="number">6</span> <span class="number">13</span>:<span class="number">48</span>:<span class="number">52.275</span>: STP: VLAN0001 Et0/<span class="number">2</span> -&gt;jump to forwarding <span class="keyword">from</span> blocking</span><br></pre></td></tr></table></figure>
+
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/16/wgG6Qs.png"></p>
+<blockquote>
+<p>再次强调，只能在连接终端设备（PC或服务器）的端口上配置PortFast特性。否则，可能会产生环路并导致网络瘫痪。</p>
+</blockquote>
+<p>　　RSTP中配置PortFast特性的方法与STP相同。在RSTP中，连接单个主机的端口称作边缘端口（edge port）。在RSTP中启用PortFast，可以减少STP重计算的数量，因为在网络中若终端设备数量过多，且同时up或down的话，会导致过多的STP重计算。</p>
+<h3 id="2、BPDU-Guard"><a href="#2、BPDU-Guard" class="headerlink" title="2、BPDU Guard"></a>2、BPDU Guard</h3><p>（1）对象：针对开启PortFast的端口</p>
+<p>（2）功能：用于保护PortFast端口的完整性。为了防止接入端口存在错误性连接，把交换机接到开启PortFast的端口可能导致环路，所以提出BPDU Guard，负责监听BPDU，如果发现有监听到BPDU，可以认为当前存在误接，则直接把端口shutdown，状态置为err-disabled。</p>
+<blockquote>
+<p>建议在所有启用PortFast特性的端口上使用BPDU保护技术！</p>
+</blockquote>
+<p>（3）配置</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="comment">//前提：配置BPDU保护的端口启用了PortFast特性</span></span><br><span class="line">接口下：</span><br><span class="line">SW3(config-if)#spanning-tree bpduguard enable</span><br><span class="line">全局下：</span><br><span class="line">SW3(config)#spanning-tree portfast bpduguard default    //在交换机的所有PortFast端口上配置BPDU保护</span><br><span class="line"></span><br><span class="line">SW3#show spanning-tree suammary totals    //查看BPDU保护配置</span><br><span class="line"></span><br><span class="line"><span class="comment">//恢复被置为err-diabled的端口：</span></span><br><span class="line">（<span class="number">1</span>）端口下操作</span><br><span class="line">SW3(config)#int e0/2</span><br><span class="line">SW3(config-if)#shutdown</span><br><span class="line">SW3(config-if)#no shutdown</span><br><span class="line">（<span class="number">2</span>）设定自动恢复的时间</span><br><span class="line">SW3(config)#errdisable recovery cause bpduguard   //原因；开启倒计时的开关</span><br><span class="line">SW3(config)#errdisable recovery interval 30   //设定倒计时的时间；默认为300s</span><br></pre></td></tr></table></figure>
+
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/16/wgdg9f.png"></p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//由于在e0/2端口开启了BPDU Guard，但是该端口连接了交换机，从该端口收到了BPDU，则会将此端口的状态置为err-disable，并shutdown</span></span><br><span class="line">SW3#debug spanning-tree events </span><br><span class="line">Spanning Tree event debugging is on</span><br><span class="line">*Aug  <span class="number">6</span> <span class="number">14</span>:<span class="number">30</span>:<span class="number">38.295</span>: set portid: VLAN0001 Et0/<span class="number">2</span>: <span class="keyword">new</span> port id <span class="number">8003</span></span><br><span class="line">*Aug  <span class="number">6</span> <span class="number">14</span>:<span class="number">30</span>:<span class="number">38.295</span>: STP: VLAN0001 Et0/<span class="number">2</span> -&gt;jump to forwarding <span class="keyword">from</span> blocking</span><br><span class="line">*Aug  <span class="number">6</span> <span class="number">14</span>:<span class="number">30</span>:<span class="number">38.402</span>: %SPANTREE<span class="number">-2</span>-BLOCK_BPDUGUARD: Received BPDU on port Et0/<span class="number">2</span> <span class="keyword">with</span> BPDU Guard enabled. Disabling port.</span><br><span class="line">*Aug  <span class="number">6</span> <span class="number">14</span>:<span class="number">30</span>:<span class="number">38.402</span>: %PM<span class="number">-4</span>-ERR_DISABLE: bpduguard error detected on Et0/<span class="number">2</span>, putting Et0/<span class="number">2</span> <span class="keyword">in</span> err-disable state</span><br><span class="line">*Aug  <span class="number">6</span> <span class="number">14</span>:<span class="number">30</span>:<span class="number">40.297</span>: %LINK<span class="number">-3</span>-UPDOWN: Interface Ethernet0/<span class="number">2</span>, changed state to down</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看端口信息可知状态为err-disabled</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/16/wgwl28.png"></p>
+<ul>
+<li>以下进行端口恢复（应先将误接的设备&lt;SW4&gt;移除）</li>
+</ul>
+<p><span style=color:red>方法一：</span>将该接口关闭再打开</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">SW3(config)#int e0/2</span><br><span class="line">SW3(config-if)#shutdown </span><br><span class="line">SW3(config-if)#no shutdown </span><br></pre></td></tr></table></figure>
+
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/16/wgrAJI.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/16/wgrkFA.png"></p>
+<p><span style=color:red>方法二：</span>设定自动恢复的时间</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">SW3(config)#errdisable recovery cause bpduguard</span><br><span class="line">SW3(config)#errdisable recovery interval 30</span><br></pre></td></tr></table></figure>
+
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/16/wgrW0e.png"></p>
+<p>　　需要注意的是，BPDU保护技术并不能预防所有环路的产生。例如集线器（hub）和傻瓜交换机是不会发送BPDU的；因此，BPDU保护也就无法检测到这些设备。如果hub或非网管交换机同时连接到了网络中的两个位置，那么就有可能导致网络环路的产生。</p>
+<h3 id="3、BPDU-Filter——慎用"><a href="#3、BPDU-Filter——慎用" class="headerlink" title="3、BPDU Filter——慎用"></a>3、BPDU Filter——<span style="color:red">慎用</span></h3><p>（1）对象：针对接入端口配置</p>
+<p>（2）背景：如果连接的是接入端口，则不必要向对方发送BPDU，就提出BPDU Filter，过滤BPDU</p>
+<p>（3）功能：如果在端口上启用，则代表禁用掉该端口的STP 功能；如果是在全局上启用，则代表仅仅过滤掉发出的BPDU</p>
+<p>（4）配置</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="comment">//在特定端口上启用BPDU过滤</span></span><br><span class="line">SW3(config-if)#spanning-tree bpdufilter enable</span><br><span class="line"><span class="comment">//在交换机的所有PortFast端口上启用BPDU过滤</span></span><br><span class="line">SW3(config)#spanning-tree portfast bpdufilter default </span><br><span class="line"><span class="comment">//查看特定端口上的BPDU过滤配置</span></span><br><span class="line">SW3#show spanning-tree interface e0/2 detail </span><br><span class="line"><span class="comment">//验证全局的BPDU过滤配置</span></span><br><span class="line">SW3#show spanning-tree summary totals </span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意：如果一台交换机同时配置了BPDU保护和BPDU过滤特性，只有BPDU过滤能够生效。因此，不要在同一端口上同时部署BPDU保护和BPDU过滤这两种机制。</p>
+</blockquote>
+<h3 id="4、UplinkFast——只对PVST生效"><a href="#4、UplinkFast——只对PVST生效" class="headerlink" title="4、UplinkFast——只对PVST生效"></a>4、UplinkFast——<span style="color:red">只对PVST生效</span></h3><p>（1）对象：在有阻塞端口的设备上配置才有效果</p>
+<p>（2）功能：如果发现活跃端口失效，则可以立即启用阻塞端口，直接过渡到转发状态，节省30s</p>
+<p>（3）配置</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="comment">//UplinkFast只能基于整台交换机开启或关闭，无法为单个VLAN启用UplinkFast</span></span><br><span class="line"><span class="comment">//启用UplinkFast特性</span></span><br><span class="line">SW3(config)#spanning-tree uplinkfast</span><br><span class="line"><span class="comment">//检查UplinkFast配置</span></span><br><span class="line">SW3#show spanning-tree uplinkfast </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在SW3上开启UplinkFast后，将e0/0端口shutdown，则e0/1端口立刻变为转发状态</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/16/wggfJJ.png"></p>
+<blockquote>
+<p>注：RSTP协议中内置了UplinkFast机制，无需手动开启</p>
+</blockquote>
+<h3 id="5、BackboneFast——只对PVST生效"><a href="#5、BackboneFast——只对PVST生效" class="headerlink" title="5、BackboneFast——只对PVST生效"></a>5、BackboneFast——<span style="color:red">只对PVST生效</span></h3><p>（1）对象：监听上行链路的备份</p>
+<p>（2）功能：如果有设备链路出现故障，则认为自己是根桥，会发送次级BPDU给所有直连交换机。这时候有开启BackboneFast的设备会直接去询问根是否还存活，根回复还活着，则会为发送次级BPDU的设备提供新的链路，阻塞端口直接跳过20s进入到监听状态，差不多30s完成收敛，节省20ｓ。</p>
+<p>（3）配置</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="comment">//必须在每一台设备上都开启</span></span><br><span class="line">SW3(config)#spanning-tree backbonefast</span><br><span class="line"><span class="comment">//检查STP BackboneFast的当前状态</span></span><br><span class="line">SW3#show spanning-tree backbonefast </span><br></pre></td></tr></table></figure>
+
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/16/wgOanO.png"></p>
+<ul>
+<li>将SW2的e0/0端口shutdown，观察SW3的e0/2端口过渡到转发状态所需的时间</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//未开启backbonefast特性</span></span><br><span class="line">当SW2的e0/<span class="number">0</span>端口被关闭后，SW2无法接收到根桥发送的BPDU，会认为自己就是根桥，从e0/<span class="number">1</span>端口发送BPDU，</span><br><span class="line">SW3接收到SW2发送的次级BPDU（因为会从e0/<span class="number">0</span>端口接收到根桥发送的更优的BPDU）不会进行受理，</span><br><span class="line"><span class="number">20</span>s之后SW3从端口e0/<span class="number">1</span>仍未收到根桥发送的BPDU，则会从端口e0/<span class="number">0</span>发送RLQ(根链路查询)，询问根是否还存活着，</span><br><span class="line">收到根桥的回复后，SW3受理从e0/<span class="number">1</span>端口收到的次级BPDU，告知SW2它不是根桥，进入listen、learning、forwarding，需要大约<span class="number">50</span>s时间</span><br><span class="line"></span><br><span class="line">SW3#debug spanning-tree events </span><br><span class="line">Spanning Tree event debugging is on</span><br><span class="line">*Aug  <span class="number">7</span> <span class="number">05</span>:<span class="number">58</span>:<span class="number">51.042</span>: STP: VLAN0001 heard root <span class="number">32769</span>-aabb.cc00<span class="number">.2000</span> on Et0/<span class="number">1</span></span><br><span class="line">*Aug  <span class="number">7</span> <span class="number">05</span>:<span class="number">58</span>:<span class="number">52.887</span>: STP: VLAN0001 heard root <span class="number">32769</span>-aabb.cc00<span class="number">.2000</span> on Et0/<span class="number">1</span></span><br><span class="line">*Aug  <span class="number">7</span> <span class="number">05</span>:<span class="number">58</span>:<span class="number">54.890</span>: STP: VLAN0001 heard root <span class="number">32769</span>-aabb.cc00<span class="number">.2000</span> on Et0/<span class="number">1</span></span><br><span class="line">*Aug  <span class="number">7</span> <span class="number">05</span>:<span class="number">58</span>:<span class="number">56.889</span>: STP: VLAN0001 heard root <span class="number">32769</span>-aabb.cc00<span class="number">.2000</span> on Et0/<span class="number">1</span></span><br><span class="line">*Aug  <span class="number">7</span> <span class="number">05</span>:<span class="number">58</span>:<span class="number">58.890</span>: STP: VLAN0001 heard root <span class="number">32769</span>-aabb.cc00<span class="number">.2000</span> on Et0/<span class="number">1</span></span><br><span class="line">*Aug  <span class="number">7</span> <span class="number">05</span>:<span class="number">59</span>:<span class="number">00.899</span>: STP: VLAN0001 heard root <span class="number">32769</span>-aabb.cc00<span class="number">.2000</span> on Et0/<span class="number">1</span></span><br><span class="line">*Aug  <span class="number">7</span> <span class="number">05</span>:<span class="number">59</span>:<span class="number">02.904</span>: STP: VLAN0001 heard root <span class="number">32769</span>-aabb.cc00<span class="number">.2000</span> on Et0/<span class="number">1</span></span><br><span class="line">*Aug  <span class="number">7</span> <span class="number">05</span>:<span class="number">59</span>:<span class="number">04.913</span>: STP: VLAN0001 heard root <span class="number">32769</span>-aabb.cc00<span class="number">.2000</span> on Et0/<span class="number">1</span></span><br><span class="line">*Aug  <span class="number">7</span> <span class="number">05</span>:<span class="number">59</span>:<span class="number">06.919</span>: STP: VLAN0001 heard root <span class="number">32769</span>-aabb.cc00<span class="number">.2000</span> on Et0/<span class="number">1</span></span><br><span class="line">*Aug  <span class="number">7</span> <span class="number">05</span>:<span class="number">59</span>:<span class="number">08.927</span>: STP: VLAN0001 heard root <span class="number">32769</span>-aabb.cc00<span class="number">.2000</span> on Et0/<span class="number">1</span></span><br><span class="line">*Aug  <span class="number">7</span> <span class="number">05</span>:<span class="number">59</span>:<span class="number">09.047</span>: STP: VLAN0001 Et0/<span class="number">1</span> -&gt; listening</span><br><span class="line">*Aug  <span class="number">7</span> <span class="number">05</span>:<span class="number">59</span>:<span class="number">10.103</span>: STP: VLAN0001 Topology Change rcvd on Et0/<span class="number">1</span></span><br><span class="line">*Aug  <span class="number">7</span> <span class="number">05</span>:<span class="number">59</span>:<span class="number">10.103</span>: STP: VLAN0001 sent Topology Change Notice on Et0/<span class="number">0</span></span><br><span class="line">*Aug  <span class="number">7</span> <span class="number">05</span>:<span class="number">59</span>:<span class="number">24.051</span>: STP: VLAN0001 Et0/<span class="number">1</span> -&gt; learning</span><br><span class="line">*Aug  <span class="number">7</span> <span class="number">05</span>:<span class="number">59</span>:<span class="number">39.057</span>: STP[<span class="number">1</span>]: Generating TC trap <span class="keyword">for</span> port Ethernet0/<span class="number">1</span></span><br><span class="line">*Aug  <span class="number">7</span> <span class="number">05</span>:<span class="number">59</span>:<span class="number">39.057</span>: STP: VLAN0001 sent Topology Change Notice on Et0/<span class="number">0</span></span><br><span class="line">*Aug  <span class="number">7</span> <span class="number">05</span>:<span class="number">59</span>:<span class="number">39.057</span>: STP: VLAN0001 Et0/<span class="number">1</span> -&gt; forwarding</span><br><span class="line"></span><br><span class="line"><span class="comment">//开启backbonefast</span></span><br><span class="line">当监听到次级BPDU后，直接询问根桥，根桥仍然存活着，则受理BPDU，直接进入listening状态，节省<span class="number">20</span>s时间</span><br><span class="line"></span><br><span class="line">SW3#debug spanning-tree events </span><br><span class="line">Spanning Tree event debugging is on</span><br><span class="line">*Aug  <span class="number">7</span> <span class="number">06</span>:<span class="number">16</span>:<span class="number">15.879</span>: STP: VLAN0001 heard root <span class="number">32769</span>-aabb.cc00<span class="number">.2000</span> on Et0/<span class="number">1</span></span><br><span class="line">*Aug  <span class="number">7</span> <span class="number">06</span>:<span class="number">16</span>:<span class="number">15.880</span>: STP: VLAN0001 Et0/<span class="number">1</span> -&gt; listening</span><br><span class="line">*Aug  <span class="number">7</span> <span class="number">06</span>:<span class="number">16</span>:<span class="number">16.781</span>: STP: VLAN0001 Topology Change rcvd on Et0/<span class="number">1</span></span><br><span class="line">*Aug  <span class="number">7</span> <span class="number">06</span>:<span class="number">16</span>:<span class="number">16.781</span>: STP: VLAN0001 sent Topology Change Notice on Et0/<span class="number">0</span></span><br><span class="line">*Aug  <span class="number">7</span> <span class="number">06</span>:<span class="number">16</span>:<span class="number">30.887</span>: STP: VLAN0001 Et0/<span class="number">1</span> -&gt; learning</span><br><span class="line">*Aug  <span class="number">7</span> <span class="number">06</span>:<span class="number">16</span>:<span class="number">45.895</span>: STP[<span class="number">1</span>]: Generating TC trap <span class="keyword">for</span> port Ethernet0/<span class="number">1</span></span><br><span class="line">*Aug  <span class="number">7</span> <span class="number">06</span>:<span class="number">16</span>:<span class="number">45.895</span>: STP: VLAN0001 sent Topology Change Notice on Et0/<span class="number">0</span></span><br><span class="line">*Aug  <span class="number">7</span> <span class="number">06</span>:<span class="number">16</span>:<span class="number">45.895</span>: STP: VLAN0001 Et0/<span class="number">1</span> -&gt; forwarding</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注：当前，RSTP协议内置了BackboneFast机制。不过RSTP与BackboneFast的实现方式略有不同。BackboneFast依赖RLQ信息来检测根桥是否可用，而RSTP则依赖缓存信息来实现。</p>
+</blockquote>
+<h3 id="6、Root-Guard"><a href="#6、Root-Guard" class="headerlink" title="6、Root Guard"></a>6、Root Guard</h3><p>（1）作用：巩固根桥的地位</p>
+<p>（2）功能：开启根保护特性可以强制将某个端口变成指定端口，来防止周围的交换机选举为根交换机。如果交换机在根保护端口上收到了更优的BPDU，那么端口将会进入”不一致根”（root-inconsistent）的STP状态（等同于listening状态），并且交换机也不会从该端口转发流量。当不再监听到更优的BPDU，则自行修复。</p>
+<p>（3）配置</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//接口下开启跟保护特性</span></span><br><span class="line">sw1(config-<span class="keyword">if</span>)spanning-tree guard root</span><br></pre></td></tr></table></figure>
+
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/16/w2plMn.png"></p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//在SW1的e0/0和e0/1端口开启Root Gard</span></span><br><span class="line">sw1(config)#int range e0/0-1</span><br><span class="line">sw1(config-if-range)#spanning-tree guard root</span><br><span class="line">sw1(config-if-range)#</span><br><span class="line">*Aug  <span class="number">7</span> <span class="number">06</span>:<span class="number">36</span>:<span class="number">01.091</span>: %SPANTREE<span class="number">-2</span>-ROOTGUARD_CONFIG_CHANGE: Root guard enabled on port Ethernet0/<span class="number">0.</span></span><br><span class="line">*Aug  <span class="number">7</span> <span class="number">06</span>:<span class="number">36</span>:<span class="number">01.091</span>: STP: VLAN0001 we are the spanning tree root</span><br><span class="line">*Aug  <span class="number">7</span> <span class="number">06</span>:<span class="number">36</span>:<span class="number">01.091</span>: %SPANTREE<span class="number">-2</span>-ROOTGUARD_CONFIG_CHANGE: Root guard enabled on port Ethernet0/<span class="number">1.</span></span><br><span class="line">*Aug  <span class="number">7</span> <span class="number">06</span>:<span class="number">36</span>:<span class="number">01.091</span>: STP: VLAN0001 we are the spanning tree root</span><br><span class="line"></span><br><span class="line"><span class="comment">//将SW3的优先级更改为4096</span></span><br><span class="line">SW3(config)#spanning-tree vlan 1 priority 4096</span><br><span class="line"></span><br><span class="line">sw1#debug spanning-tree events </span><br><span class="line">Spanning Tree event debugging is on</span><br><span class="line">*Aug  <span class="number">7</span> <span class="number">06</span>:<span class="number">39</span>:<span class="number">33.050</span>: STP: VLAN0001 heard root  <span class="number">4097</span>-aabb.cc00<span class="number">.3000</span> on Et0/<span class="number">1</span></span><br><span class="line">*Aug  <span class="number">7</span> <span class="number">06</span>:<span class="number">39</span>:<span class="number">33.050</span>:     supersedes <span class="number">32769</span>-aabb.cc00<span class="number">.1000</span></span><br><span class="line">*Aug  <span class="number">7</span> <span class="number">06</span>:<span class="number">39</span>:<span class="number">33.050</span>: %SPANTREE<span class="number">-2</span>-ROOTGUARD_BLOCK: Root guard blocking port Ethernet0/<span class="number">1</span> on VLAN0001.</span><br><span class="line">*Aug  <span class="number">7</span> <span class="number">06</span>:<span class="number">39</span>:<span class="number">33.050</span>: STP[<span class="number">1</span>]: Generating TC trap <span class="keyword">for</span> port Ethernet0/<span class="number">1</span></span><br><span class="line">*Aug  <span class="number">7</span> <span class="number">06</span>:<span class="number">39</span>:<span class="number">33.050</span>: STP: VLAN0001 Et0/<span class="number">1</span> -&gt; blocking</span><br><span class="line">*Aug  <span class="number">7</span> <span class="number">06</span>:<span class="number">39</span>:<span class="number">33.050</span>: STP: VLAN0001 heard root  <span class="number">4097</span>-aabb.cc00<span class="number">.3000</span> on Et0/<span class="number">0</span></span><br><span class="line">*Aug  <span class="number">7</span> <span class="number">06</span>:<span class="number">39</span>:<span class="number">33.050</span>:     supersedes <span class="number">32769</span>-aabb.cc00<span class="number">.1000</span></span><br><span class="line">*Aug  <span class="number">7</span> <span class="number">06</span>:<span class="number">39</span>:<span class="number">33.050</span>: STP[<span class="number">1</span>]: Generating TC trap <span class="keyword">for</span> port Ethernet0/<span class="number">0</span></span><br><span class="line">*Aug  <span class="number">7</span> <span class="number">06</span>:<span class="number">39</span>:<span class="number">33.050</span>: STP: VLAN0001 Et0/<span class="number">0</span> -&gt; blocking</span><br><span class="line">*Aug  <span class="number">7</span> <span class="number">06</span>:<span class="number">39</span>:<span class="number">35.054</span>: STP: VLAN0001 heard root  <span class="number">4097</span>-aabb.cc00<span class="number">.3000</span> on Et0/<span class="number">0</span></span><br><span class="line">*Aug  <span class="number">7</span> <span class="number">06</span>:<span class="number">39</span>:<span class="number">35.054</span>:     supersedes <span class="number">32769</span>-aabb.cc00<span class="number">.1000</span></span><br><span class="line">*Aug  <span class="number">7</span> <span class="number">06</span>:<span class="number">39</span>:<span class="number">35.055</span>: STP: VLAN0001 heard root  <span class="number">4097</span>-aabb.cc00<span class="number">.3000</span> on Et0/<span class="number">1</span></span><br><span class="line">*Aug  <span class="number">7</span> <span class="number">06</span>:<span class="number">39</span>:<span class="number">35.055</span>:     supersedes <span class="number">32769</span>-aabb.cc00<span class="number">.1000</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>根不一致状态</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/16/w29Se0.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/16/w29pwV.png"></p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//将SW3的优先级更改为原来的优先级，则SW1自动恢复为根桥</span></span><br><span class="line">SW3(config)#spanning-tree vlan 1 priority 32768</span><br><span class="line"></span><br><span class="line"><span class="comment">//SW1上提示RootGuard不再阻塞</span></span><br><span class="line">*Aug  <span class="number">7</span> <span class="number">06</span>:<span class="number">52</span>:<span class="number">51.986</span>: %SPANTREE<span class="number">-2</span>-ROOTGUARD_UNBLOCK: Root guard unblocking port Ethernet0/<span class="number">1</span> on VLAN0001.</span><br></pre></td></tr></table></figure>
+
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/16/w2CAN8.png"></p>
+<h3 id="7、Loop-Guard"><a href="#7、Loop-Guard" class="headerlink" title="7、Loop Guard"></a>7、Loop Guard</h3><p>（1）对象：针对单向链路故障配置；存在端口不能正常发送或接收BPDU的情况</p>
+<p>（2）功能：开启Loop Guard的端口，监听BPDU，如果没有监听到，则会进入到环路不一致状态，相当于阻塞端口（不会是转发状态）；只有当重新监听到BPDU，该端口会自动恢复</p>
+<p>（3）配置</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="comment">//在接口下启用环路保护特性</span></span><br><span class="line">SW3(config-if)#spanning-tree guard loop</span><br></pre></td></tr></table></figure>
+
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/16/w2iocQ.png"></p>
+<blockquote>
+<p>如上图所示，SW1为根桥。由于SW2和SW3之间的单向链路故障，导致SW3接收不到SW2转发的BPDU。在未启用环路保护特性时，SW3上的Blocking端口会在最大超时时间（20s）到期后过渡到STP Listening状态，并且会在两倍转发延迟（30s）之后进入Forwarding状态并产生环路。若启用了环路保护特性，SW3上的Blocking端口会在接收不到BPDU的20s后过渡到STP loop-inconsistent状态。处于loop-inconsistent状态的端口则不会发送流量，阻止了环路的产生。</p>
+</blockquote>
+<ul>
+<li>进行必要配置使上图所示的交换机的所有端口都处于转发状态，则会产生环路。在SW3的e0/1端口开启环路防护</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">SW3(config)#int e0/1</span><br><span class="line">SW3(config-if)#spanning-tree guard loop</span><br><span class="line"></span><br><span class="line">*Aug  <span class="number">7</span> <span class="number">07</span>:<span class="number">17</span>:<span class="number">15.156</span>: %SPANTREE<span class="number">-2</span>-LOOPGUARD_BLOCK: Loop guard blocking port Ethernet0/<span class="number">1</span> on VLAN0001.</span><br></pre></td></tr></table></figure>
+
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/16/w2FyCT.png"></p>
+<ul>
+<li>端口状态为环路不一致状态</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/16/w2F5Ux.png"></p>
+<h3 id="8、UDLD"><a href="#8、UDLD" class="headerlink" title="8、UDLD"></a>8、UDLD</h3><p>　　在双向链路中，流量可以同时在两个方向上传输。如果链路发生故障，导致流量只能单向传递时，这种链路叫做单向链路。单向链路将导致邻居之间的链路上只有一侧流量传输，这种情况有可能导致生成树拓扑成环。单向链路故障检测（UDLD）可帮助设备检测出自身的单向链路，并将问题端口关闭。</p>
+<p>　　在启用了UDLD的情况下，交换机会周期性地向邻居发送UDLD包，若收到了对端回应的echo包，则判定链路工作正常（双向）；若在指定时间内邻居并未回应echo包，链路则被认为是单向链路，端口将进入err-disabled状态。链路两端的设备必须同时支持UDLD协议，才能正确地识别和关闭单向链路。</p>
+<p>　　在UDLD检测到了单向链路之后，根据配置的以下两种模式，可执行两种不同的操作。</p>
+<ul>
+<li><p>普通模式（Normal mode）：端口保持原有状态继续工作。UDLD仅会将此端口标记为”不确定”状态，并生成一条syslog消息</p>
+</li>
+<li><p>激进模式（Aggressive mode）：交换机会每秒发送一次UDLD包尝试重新建立连接，8s过后，如果仍未收到echo包，会将端口置于err-disabled状态</p>
+<p>配置</p>
+</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="comment">//在全局启用UDLD，对于普通模式，使用enable关键字，而激进模式则使用aggressive关键字</span></span><br><span class="line">SW3(config)#udld &#123; enable | aggressive &#125; </span><br><span class="line"><span class="comment">//基于端口启用UDLD</span></span><br><span class="line">SW3(config-if)#udld port [ aggressive ]</span><br><span class="line"><span class="comment">//查看端口的UDLD状态</span></span><br><span class="line">SW3#show udld </span><br><span class="line"><span class="comment">//重置所有UDLD关闭的顿口苦</span></span><br><span class="line">SW3#udld reset </span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>-STP</tag>
       </tags>
   </entry>
 </search>
