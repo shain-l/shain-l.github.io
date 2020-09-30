@@ -973,102 +973,6 @@
       </tags>
   </entry>
   <entry>
-    <title>STP的运用</title>
-    <url>/2020/08/31/STP%E7%9A%84%E8%BF%90%E7%94%A8/</url>
-    <content><![CDATA[<h4 id="1、实验目的"><a href="#1、实验目的" class="headerlink" title="1、实验目的"></a>1、实验目的</h4><p>1）理解STP的作用<br>2）熟悉STP的工作原理<br>3）掌握STP的查看命令</p>
-<a id="more"></a>
-
-<h4 id="2、拓扑结构"><a href="#2、拓扑结构" class="headerlink" title="2、拓扑结构"></a>2、拓扑结构</h4><p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djPbAe.png"></p>
-<h4 id="3、实验步骤"><a href="#3、实验步骤" class="headerlink" title="3、实验步骤"></a>3、实验步骤</h4><p><strong>（1）在相应的交换机上创建vlan10，并将连接PC1和PC2的交换端口都划分进该vlan中</strong></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djiiNQ.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djiVcq.png"></p>
-<p><strong>（2）为主机设置合适的IP地址，IP地址自定，完成必要的配置实现主机间的通信</strong></p>
-<ul>
-<li>为两台PC配置IP地址（注意关闭路由功能，因为实验中的PC使用的是路由器的镜像）</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djiUHO.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djiDCd.png"></p>
-<ul>
-<li>将交换机之间的端口封装802.1Q，并配置成trunk</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djFmRA.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djFKMt.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djFYGj.png"></p>
-<ul>
-<li>测试PC的连通性</li>
-</ul>
-<blockquote>
-<p>由于PC1和PC2属于同一vlan，所以通过上述配置即可相互ping通</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djFxw8.png"></p>
-<p><strong>（3）查看各交换机的STP信息</strong></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djksnP.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djk678.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djkgAS.png"></p>
-<p><strong>（4）将SW1设置为vlan10的根桥，使用相关命令验证和查看各交换机上根桥的变化</strong></p>
-<ul>
-<li>设置SW1为vlan10的根桥</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djAmut.png"></p>
-<ul>
-<li>使用<span style="color:red">show spanning-tree</span>命令查看交换机状态</li>
-</ul>
-<blockquote>
-<p>由于设置SW1为vlan10的根桥，由下图可知，优先级默认降低2*4096，即为24576，加上vlan-id的10，所以优先级为24586</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djZVgJ.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djZQUK.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djZGgH.png"></p>
-<p><strong>（5）测试正常链路出现故障对主机通信的影响</strong></p>
-<ul>
-<li>将SW2的e0/1接口shutdown</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djZcKs.png"></p>
-<ul>
-<li>PC1仍然可以ping通PC2</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djZ2bq.png"></p>
-<p><strong>（6）先断开PC1与交换机的连接，然后恢复PC1与交换机的连接，观察主机重新接入交换机要经历多久才能够进行数据转发</strong></p>
-<blockquote>
-<p>由下图可知，PC1重新接入交换机需要经历30s（由于关闭的是SW2上的端口，可以直接进入listening状态（无需经历20s的blocking状态），再经历15s进入learning状态，最后经历15s进入forwarding状态）</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djero6.png"></p>
-]]></content>
-      <categories>
-        <category>实验</category>
-      </categories>
-      <tags>
-        <tag>CCNA</tag>
-        <tag>STP</tag>
-        <tag>交换</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2020/08/26/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<a id="more"></a>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
-      <categories>
-        <category>Hello World</category>
-      </categories>
-      <tags>
-        <tag>hello world</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>TCP/IP回顾</title>
     <url>/2020/09/19/TCP-IP%E5%9B%9E%E9%A1%BE/</url>
     <content><![CDATA[<p><strong>1、TCP/IP协议簇的5个层次是什么？每一层的目的是什么？</strong></p>
@@ -1148,6 +1052,77 @@
       </tags>
   </entry>
   <entry>
+    <title>STP的运用</title>
+    <url>/2020/08/31/STP%E7%9A%84%E8%BF%90%E7%94%A8/</url>
+    <content><![CDATA[<h4 id="1、实验目的"><a href="#1、实验目的" class="headerlink" title="1、实验目的"></a>1、实验目的</h4><p>1）理解STP的作用<br>2）熟悉STP的工作原理<br>3）掌握STP的查看命令</p>
+<a id="more"></a>
+
+<h4 id="2、拓扑结构"><a href="#2、拓扑结构" class="headerlink" title="2、拓扑结构"></a>2、拓扑结构</h4><p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djPbAe.png"></p>
+<h4 id="3、实验步骤"><a href="#3、实验步骤" class="headerlink" title="3、实验步骤"></a>3、实验步骤</h4><p><strong>（1）在相应的交换机上创建vlan10，并将连接PC1和PC2的交换端口都划分进该vlan中</strong></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djiiNQ.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djiVcq.png"></p>
+<p><strong>（2）为主机设置合适的IP地址，IP地址自定，完成必要的配置实现主机间的通信</strong></p>
+<ul>
+<li>为两台PC配置IP地址（注意关闭路由功能，因为实验中的PC使用的是路由器的镜像）</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djiUHO.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djiDCd.png"></p>
+<ul>
+<li>将交换机之间的端口封装802.1Q，并配置成trunk</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djFmRA.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djFKMt.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djFYGj.png"></p>
+<ul>
+<li>测试PC的连通性</li>
+</ul>
+<blockquote>
+<p>由于PC1和PC2属于同一vlan，所以通过上述配置即可相互ping通</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djFxw8.png"></p>
+<p><strong>（3）查看各交换机的STP信息</strong></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djksnP.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djk678.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djkgAS.png"></p>
+<p><strong>（4）将SW1设置为vlan10的根桥，使用相关命令验证和查看各交换机上根桥的变化</strong></p>
+<ul>
+<li>设置SW1为vlan10的根桥</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djAmut.png"></p>
+<ul>
+<li>使用<span style="color:red">show spanning-tree</span>命令查看交换机状态</li>
+</ul>
+<blockquote>
+<p>由于设置SW1为vlan10的根桥，由下图可知，优先级默认降低2*4096，即为24576，加上vlan-id的10，所以优先级为24586</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djZVgJ.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djZQUK.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djZGgH.png"></p>
+<p><strong>（5）测试正常链路出现故障对主机通信的影响</strong></p>
+<ul>
+<li>将SW2的e0/1接口shutdown</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djZcKs.png"></p>
+<ul>
+<li>PC1仍然可以ping通PC2</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djZ2bq.png"></p>
+<p><strong>（6）先断开PC1与交换机的连接，然后恢复PC1与交换机的连接，观察主机重新接入交换机要经历多久才能够进行数据转发</strong></p>
+<blockquote>
+<p>由下图可知，PC1重新接入交换机需要经历30s（由于关闭的是SW2上的端口，可以直接进入listening状态（无需经历20s的blocking状态），再经历15s进入learning状态，最后经历15s进入forwarding状态）</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djero6.png"></p>
+]]></content>
+      <categories>
+        <category>实验</category>
+      </categories>
+      <tags>
+        <tag>CCNA</tag>
+        <tag>STP</tag>
+        <tag>交换</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>SVI回顾</title>
     <url>/2020/09/11/SVI%E5%9B%9E%E9%A1%BE/</url>
     <content><![CDATA[<p>　　SVI，即交换虚拟接口，是在多层交换机上配置的一种虚拟接口，如下图所示。管理员可以为任何交换机上配置的VLAN创建SVI接口。每个VLAN只能关联一个SVI接口。SVI并不是真实存在的物理接口，但此接口可以与路由器接口执行同样的VLAN操作功能，为所有出入其VLAN端口的数据包提供3层转发功能。</p>
@@ -1222,6 +1197,31 @@
       <tags>
         <tag>交换</tag>
         <tag>SVI</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2020/08/26/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<a id="more"></a>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+      <categories>
+        <category>Hello World</category>
+      </categories>
+      <tags>
+        <tag>hello world</tag>
       </tags>
   </entry>
   <entry>
@@ -1380,416 +1380,6 @@
       <tags>
         <tag>VTP</tag>
         <tag>DHCP</tag>
-        <tag>EtherChannel</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>生成树综合测试</title>
-    <url>/2020/09/26/%E7%94%9F%E6%88%90%E6%A0%91%E7%BB%BC%E5%90%88%E6%B5%8B%E8%AF%95/</url>
-    <content><![CDATA[<h3 id="1、实验目的"><a href="#1、实验目的" class="headerlink" title="1、实验目的"></a>1、实验目的</h3><p>1）掌握RSTP的配置与检验<br>2）掌握MST的配置与检验<br>3）掌握生成树特性的应用<br>4）实现VLAN间的通信</p>
-<h3 id="2、拓扑结构"><a href="#2、拓扑结构" class="headerlink" title="2、拓扑结构"></a>2、拓扑结构</h3><p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/26/0iszqO.png"></p>
-<h3 id="3、实验步骤"><a href="#3、实验步骤" class="headerlink" title="3、实验步骤"></a>3、实验步骤</h3><p><strong>1、在该园区网络中有4个VLAN，VLAN 10、VLAN 20、VLAN 30、VLAN 40，要求在DSW1上创建这些VLAN，其他交换机同步DSW1上的VLAN信息，并且设置VTP域名为shain.top，VTP密码为shain，所有TRUNK链路全部采用标准的封装模式</strong></p>
-<ul>
-<li>在DSW1上创建4个vlan</li>
-</ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">DSW1(config)#vlan 10,20,30,40</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>将交换机之间的端口配置成trunk，采用标准的封装模式</li>
-</ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">DSW1(config)#int range e0/0-3</span><br><span class="line">DSW1(config-if-range)#switchport trunk encapsulation dot1q </span><br><span class="line">DSW1(config-if-range)#switchport mode trunk </span><br><span class="line">DSW1(config-if-range)#switchport nonegotiate </span><br><span class="line"></span><br><span class="line">DSW2(config)#int range e0/0-3</span><br><span class="line">DSW2(config-if-range)#switchport trunk encapsulation dot1q </span><br><span class="line">DSW2(config-if-range)#switchport mode trunk </span><br><span class="line">DSW2(config-if-range)#switchport nonegotiate </span><br><span class="line"></span><br><span class="line">ASW1(config)#int range e0/2-3</span><br><span class="line">ASW1(config-if-range)#switchport trunk encapsulation dot1q </span><br><span class="line">ASW1(config-if-range)#switchport mode trunk </span><br><span class="line">ASW1(config-if-range)#switchport nonegotiate </span><br><span class="line"></span><br><span class="line">ASW2(config)#int range e0/2-3</span><br><span class="line">ASW2(config-if-range)#switchport trunk encapsulation dot1q </span><br><span class="line">ASW2(config-if-range)#switchport mode trunk </span><br><span class="line">ASW2(config-if-range)#switchport nonegotiate </span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>在DSW1上设置VTP域名为shain.top，密码为shain，模式为server</li>
-</ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">DSW1(config)#vtp domain shain.top</span><br><span class="line">DSW1(config)#vtp password shain</span><br><span class="line">DSW1(config)#vtp mode server </span><br><span class="line"></span><br><span class="line">DSW2(config)#vtp password shain</span><br><span class="line">DSW2(config)#vtp mode client </span><br><span class="line"></span><br><span class="line">ASW1(config)#vtp password shain</span><br><span class="line">ASW1(config)#vtp mode client </span><br><span class="line"></span><br><span class="line">ASW2(config)#vtp password shain</span><br><span class="line">ASW2(config)#vtp mode client </span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>查看DSW2的VTP状态和VLAN信息，可知已和DSW1进行同步</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/26/0icTZ8.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/26/0igCoF.png"></p>
-<p><strong>2、DSW1与DSW2之间的链路不足以传递园区内部流量，使用合适的方式建立DSW1与DSW2之间的以太通道链路</strong></p>
-<ul>
-<li>在DSW1和DSW2之间配置EtherChannel</li>
-</ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">DSW1(config)#int range e0/2-3</span><br><span class="line">DSW1(config-if-range)#channel-group 1 mode active </span><br><span class="line"></span><br><span class="line">DSW2(config)#int range e0/2-3</span><br><span class="line">DSW2(config-if-range)#channel-group 1 mode active </span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>查看EtherChannel的摘要信息</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/26/0igXkD.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/26/0i2S1A.png"></p>
-<p><strong>3、要求全网启用基于802.1w标准的生成树，并且实现DSW1为VLAN 10和VLAN 20的主根，为VLAN 30和VLAN 40的次根，实现DSW2为VLAN 10和VLAN 20的次根，为VLAN 30和VLAN 40的主根，并且哪怕将来在接入层中有新的交换机添加进园区网络，也要确保这两台交换机的地位</strong></p>
-<ul>
-<li>配置生成树的模式为rapid-pvst</li>
-</ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">DSW1(config)#spanning-tree mode rapid-pvst </span><br><span class="line">DSW2(config)#spanning-tree mode rapid-pvst </span><br><span class="line">ASW1(config)#spanning-tree mode rapid-pvst </span><br><span class="line">ASW2(config)#spanning-tree mode rapid-pvst </span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>指定DSW1为vlan10,20的主根，为vlan30,40的次根；指定DSW2为vlan30,40的主根，为vlan10,20的次根</li>
-</ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">DSW1(config)#spanning-tree vlan 10,20 root primary </span><br><span class="line">DSW1(config)#spanning-tree vlan 30,40 root secondary </span><br><span class="line"></span><br><span class="line">DSW2(config)#spanning-tree vlan 10,20 root secondary </span><br><span class="line">DSW2(config)#spanning-tree vlan 30,40 root primary </span><br></pre></td></tr></table></figure>
-
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/26/0iRtIS.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/26/0iRUPg.png"></p>
-<ul>
-<li>在DSW1和DSW2上开启Root Guard特性，保证根桥的地位</li>
-</ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">DSW1(config)#int range e0/0-3,e1/0-3</span><br><span class="line">DSW1(config-if-range)#spanning-tree guard root </span><br><span class="line"></span><br><span class="line">DSW2(config)#int range e0/0-3</span><br><span class="line">DSW2(config-if-range)#spanning-tree guard root </span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>以下进行验证测试</li>
-</ul>
-<blockquote>
-<p>将ASW1的VLAN 10的生成树优先级设置为4096</p>
-</blockquote>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">ASW1(config)#spanning-tree vlan 10 priority 4096</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>此时DSW1和DSW2上提示将e0/0端口阻塞</p>
-</blockquote>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">DSW1#</span><br><span class="line">*Sep <span class="number">26</span> <span class="number">12</span>:<span class="number">45</span>:<span class="number">29.545</span>: %SPANTREE<span class="number">-2</span>-ROOTGUARD_BLOCK: Root guard blocking port Ethernet0/<span class="number">0</span> on VLAN0010.</span><br><span class="line"></span><br><span class="line">DSW2#</span><br><span class="line">*Sep <span class="number">26</span> <span class="number">12</span>:<span class="number">45</span>:<span class="number">29.545</span>: %SPANTREE<span class="number">-2</span>-ROOTGUARD_BLOCK: Root guard blocking port Ethernet0/<span class="number">0</span> on VLAN0010.</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>DSW1仍然认为自己是VLAN 10的根桥，e0/0端口的状态为根不一致</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/26/0iWjtU.png"></p>
-<blockquote>
-<p>DSW2仍然认为DSW1为VLAN 10的根桥，并且e0/0端口的状态也为根不一致</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/26/0ifH8e.png"></p>
-<blockquote>
-<p>将ASW1的VLAN 10的生成树优先级恢复，则日志提示不再阻塞e0/0端口</p>
-<p>DSW1由于不再监听到比自己更优的BPDU，自动恢复成根桥</p>
-</blockquote>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">ASW1(config)#spanning-tree vlan 10 priority 32768</span><br><span class="line"></span><br><span class="line">DSW1#</span><br><span class="line">*Sep <span class="number">26</span> <span class="number">12</span>:<span class="number">57</span>:<span class="number">16.983</span>: %SPANTREE<span class="number">-2</span>-ROOTGUARD_UNBLOCK: Root guard unblocking port Ethernet0/<span class="number">0</span> on VLAN0010.</span><br><span class="line"></span><br><span class="line">DSW2#</span><br><span class="line">*Sep <span class="number">26</span> <span class="number">12</span>:<span class="number">57</span>:<span class="number">16.976</span>: %SPANTREE<span class="number">-2</span>-ROOTGUARD_UNBLOCK: Root guard unblocking port Ethernet0/<span class="number">0</span> on VLAN0010.</span><br></pre></td></tr></table></figure>
-
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/26/0ih2i8.png"></p>
-<p><strong>4、按如下表所示为各PC配置IP地址和网关，并在交换机上将PC划分到相应的VLAN中</strong></p>
-<table>
-<thead>
-<tr>
-<th align="center">设备</th>
-<th align="center">VLAN</th>
-<th align="center">IP地址</th>
-<th align="center">默认网关</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">PC1</td>
-<td align="center">10</td>
-<td align="center">192.168.10.100</td>
-<td align="center">192.168.10.254</td>
-</tr>
-<tr>
-<td align="center">PC2</td>
-<td align="center">20</td>
-<td align="center">192.168.20.100</td>
-<td align="center">192.168.20.254</td>
-</tr>
-<tr>
-<td align="center">PC3</td>
-<td align="center">30</td>
-<td align="center">192.168.30.100</td>
-<td align="center">192.168.30.254</td>
-</tr>
-<tr>
-<td align="center">PC4</td>
-<td align="center">40</td>
-<td align="center">192.168.40.100</td>
-<td align="center">192.168.40.254</td>
-</tr>
-</tbody></table>
-<ul>
-<li>为各PC设置IP地址和网关</li>
-</ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">PC1(config)#int e0/0</span><br><span class="line">PC1(config-if)#ip address 192.168.10.100 255.255.255.0</span><br><span class="line">PC1(config-if)#no shutdown</span><br><span class="line"></span><br><span class="line">PC2(config)#int e0/0</span><br><span class="line">PC2(config-if)#ip address 192.168.20.100 255.255.255.0</span><br><span class="line">PC2(config-if)#no shutdown</span><br><span class="line"></span><br><span class="line">PC3(config)#int e0/0</span><br><span class="line">PC3(config-if)#ip address 192.168.30.100 255.255.255.0</span><br><span class="line">PC3(config-if)#no shutdown</span><br><span class="line"></span><br><span class="line">PC4(config)#int e0/0</span><br><span class="line">PC4(config-if)#ip address 192.168.40.100 255.255.255.0</span><br><span class="line">PC4(config-if)#no shutdown</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>在ASW1和ASW2上将端口划分到对应的VLAN中</li>
-</ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">ASW1(config)#int e0/0</span><br><span class="line">ASW1(config-if)#switchport mode access</span><br><span class="line">ASW1(config-if)#switchport access vlan 10</span><br><span class="line">ASW1(config)#int e0/1</span><br><span class="line">ASW1(config-if)#switchport mode access </span><br><span class="line">ASW1(config-if)#switchport access vlan 20</span><br><span class="line"></span><br><span class="line">ASW2(config)#int e0/0</span><br><span class="line">ASW2(config-if)#switchport mode access </span><br><span class="line">ASW2(config-if)#switchport access vlan 30</span><br><span class="line">ASW2(config)#int e0/1</span><br><span class="line">ASW2(config-if)#switchport mode access </span><br><span class="line">ASW2(config-if)#switchport access vlan 40</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>在DSW1上创建相应的SVI接口，成为各PC的网关</li>
-</ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">DSW1(config)#int vlan 10</span><br><span class="line">DSW1(config-if)#ip address 192.168.10.254 255.255.255.0</span><br><span class="line">DSW1(config-if)#no shutdown </span><br><span class="line">DSW1(config)#int vlan 20</span><br><span class="line">DSW1(config-if)#ip address 192.168.20.254 255.255.255.0</span><br><span class="line">DSW1(config-if)#no shutdown </span><br><span class="line">DSW1(config)#int vlan 30</span><br><span class="line">DSW1(config-if)#ip address 192.168.30.254 255.255.255.0</span><br><span class="line">DSW1(config-if)#no shutdown </span><br><span class="line">DSW1(config)#int vlan 40</span><br><span class="line">DSW1(config-if)#ip address 192.168.40.254 255.255.255.0</span><br><span class="line">DSW1(config-if)#no shutdown </span><br></pre></td></tr></table></figure>
-
-<p><strong>5、要求连接这些主机的交换端口忽视生成树过程，能够直接进入到转发状态，并且这些端口在接收到配置BPDU时就进入err-disabled状态</strong></p>
-<ul>
-<li>在接入层交换机连接PC的端口上开启PortFast和BPUD Guard特性</li>
-</ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="comment">//在全局下开启PortFast特性，只针对access端口生效</span></span><br><span class="line">ASW1(config)#spanning-tree portfast edge default </span><br><span class="line">ASW2(config)#spanning-tree portfast edge default </span><br></pre></td></tr></table></figure>
-
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/26/0iIaGT.png"></p>
-<ul>
-<li>在连接PC的接口下开启BPDU Guard特性，则当监听到BPDU时，会把端口shutdown，状态置为err-disabled</li>
-</ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">ASW1(config)#int range e0/0-1</span><br><span class="line">ASW1(config-if-range)#spanning-tree bpduguard enable </span><br><span class="line"></span><br><span class="line">ASW2(config)#int range e0/0-1</span><br><span class="line">ASW2(config-if-range)#spanning-tree bpduguard enable </span><br><span class="line"></span><br><span class="line"><span class="comment">//设定自动恢复的时间</span></span><br><span class="line">ASW1(config)#errdisable recovery cause bpduguard </span><br><span class="line">ASW1(config)#errdisable recovery interval 30</span><br><span class="line"></span><br><span class="line">ASW2(config)#errdisable recovery cause bpduguard </span><br><span class="line">ASW2(config)#errdisable recovery interval 30</span><br></pre></td></tr></table></figure>
-
-<p><strong>6、完成必要的配置，实现各PC间可以互相访问且都能访问R1</strong></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/26/0iTs4x.png"></p>
-<ul>
-<li>将DSW1连接R1的端口设置成三层端口，配置IP地址</li>
-</ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">DSW1(config)#int e1/0</span><br><span class="line">DSW1(config-if)#no switchport </span><br><span class="line">DSW1(config-if)#ip address 10.10.10.1 255.255.255.0</span><br><span class="line"></span><br><span class="line">R1(config)#int e0/0</span><br><span class="line">R1(config-if)#ip address 10.10.10.2 255.255.255.0</span><br><span class="line">R1(config-if)#no shutdown </span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>在DSW1和R1上启用OSPF</li>
-</ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">DSW1(config)#router ospf 1</span><br><span class="line">DSW1(config-router)#router-id 1.1.1.1</span><br><span class="line">DSW1(config-router)#network 192.168.10.0 0.0.0.255 a 0</span><br><span class="line">DSW1(config-router)#network 192.168.20.0 0.0.0.255 a 0</span><br><span class="line">DSW1(config-router)#network 192.168.30.0 0.0.0.255 a 0</span><br><span class="line">DSW1(config-router)#network 192.168.40.0 0.0.0.255 a 0</span><br><span class="line">DSW1(config-router)#network 10.10.10.0 0.0.0.255 a 0</span><br><span class="line"></span><br><span class="line">R1(config)#router ospf 1</span><br><span class="line">R1(config-router)#router-id 2.2.2.2</span><br><span class="line">R1(config-router)#network 10.10.10.0 0.0.0.255 a 0</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>此时PC能够访问R1</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/26/0i7ZZ9.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/26/0i73se.png"></p>
-<p><strong>7、随着网络规模的扩大，该园区网将来可能需要配置更多的VLAN，大量的VLAN实例会影响交换机的性能，要求将该客户网络迁移到MST中，具体MST需求如下：</strong></p>
-<ul>
-<li><p><strong>创建两个MST实例，MST1和MST2，其中MST1用于VLAN 10到VLAN 25，MST2用于VLAN 26到VLAN 50，其他VLAN属于CIST</strong></p>
-</li>
-<li><p><strong>使用MST区域名”SWITCH”，修订号”1”</strong></p>
-</li>
-<li><p><strong>将DSW1配置为MST1及CIST的主根，为MST2的次根</strong></p>
-</li>
-<li><p><strong>将DSW2配置为MST2的主根，为MST1及CIST的次根</strong></p>
-</li>
-<li><p>指定生成树类型为MST，将相应的VLAN加入到实例中，并指定主次根</p>
-</li>
-</ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">DSW1(config)#spanning-tree mode mst</span><br><span class="line">DSW1(config)#spanning-tree mst configuration </span><br><span class="line">DSW1(config-mst)#name SWITCH</span><br><span class="line">DSW1(config-mst)#revision 1</span><br><span class="line">DSW1(config-mst)#instance 1 vlan 10-25</span><br><span class="line">DSW1(config-mst)#instance 2 vlan 26-50</span><br><span class="line">DSW1(config)#spanning-tree mst 0-1 root primary </span><br><span class="line">DSW1(config)#spanning-tree mst 2 root secondary </span><br><span class="line"></span><br><span class="line">DSW2(config)#spanning-tree mode mst </span><br><span class="line">DSW2(config)#spanning-tree mst configuration </span><br><span class="line">DSW2(config-mst)#name SWITCH  </span><br><span class="line">DSW2(config-mst)#revision 1</span><br><span class="line">DSW2(config-mst)#instance 1 vlan 10-25</span><br><span class="line">DSW2(config-mst)#instance 2 vlan 26-50</span><br><span class="line">DSW2(config)#spanning-tree mst 0-1 root secondary </span><br><span class="line">DSW2(config)#spanning-tree mst 2 root primary </span><br><span class="line"></span><br><span class="line">ASW1(config)#spanning-tree mode mst </span><br><span class="line">ASW1(config)#spanning-tree mst configuration </span><br><span class="line">ASW1(config-mst)#name SWITCH</span><br><span class="line">ASW1(config-mst)#revision 1</span><br><span class="line">ASW1(config-mst)#instance 1 vlan 10-25</span><br><span class="line">ASW1(config-mst)#instance 2 vlan 26-50</span><br><span class="line"></span><br><span class="line">ASW2(config)#spanning-tree mode mst </span><br><span class="line">ASW2(config)#spanning-tree mst configuration </span><br><span class="line">ASW2(config-mst)#name SWITCH</span><br><span class="line">ASW2(config-mst)#revision 1</span><br><span class="line">ASW2(config-mst)#instance 1 vlan 10-25</span><br><span class="line">ASW2(config-mst)#instance 2 vlan 26-50</span><br></pre></td></tr></table></figure>
-
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/26/0izjUS.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/26/0FSeC4.png"></p>
-<p><strong>8、该客户网络进行了升级，购买了两台新的多层交换机，升级之后的网络拓扑如下，其中客户所属的VLAN角色及地址段信息保持不变，要求完成如下网络配置</strong></p>
-<ul>
-<li><input disabled="" type="checkbox"> 配置DSW1和DSW2以执行VLAN间路由。将DSW1用作与交换机ASW1连接的PC1和PC2的默认网关。连接DSW2的客户端使用DSW2作为默认网关，所有PC都保留网络升级改造之前的IP地址和默认网关</li>
-<li><input disabled="" type="checkbox"> R1与两多层交换机链路的IP地址，以及园区外部的ISP和Web_SRV地址自行规划</li>
-<li><input disabled="" type="checkbox"> 在园区网络内启用OSPF，并且将园区网络划分到区域0中</li>
-<li><input disabled="" type="checkbox"> 将ASW1和DSW1之间的链路捆绑到一个基于标准的EtherChannel中</li>
-<li><input disabled="" type="checkbox"> 完成其他必要配置，实现各VLAN间的用户可以互相通信，并且实现园区网络内的用户可以访问ISP上的Web_SRV</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/26/0FSYPe.png"></p>
-<ul>
-<li>配置DSW1作为PC1、PC2的网关；DSW2作为PC3、PC4的网关</li>
-</ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">DSW1(config)#vlan 10,20,30</span><br><span class="line">DSW1(config)#int vlan 10</span><br><span class="line">DSW1(config-if)#no shutdown</span><br><span class="line">DSW1(config-if)#ip address 192.168.10.254 255.255.255.0</span><br><span class="line">DSW1(config)#int vlan 20</span><br><span class="line">DSW1(config-if)#no shutdown</span><br><span class="line">DSW1(config-if)#ip address 192.168.20.254 255.255.255.0</span><br><span class="line">DSW1(config)#int vlan 30</span><br><span class="line">DSW1(config-if)#ip address 192.168.30.253 255.255.255.0</span><br><span class="line">DSW1(config-if)#no shutdown </span><br><span class="line"></span><br><span class="line">DSW2(config)#vlan 30,40</span><br><span class="line">DSW2(config)#int vlan 30</span><br><span class="line">DSW2(config-if)#ip address 192.168.30.254 255.255.255.0</span><br><span class="line">DSW2(config-if)#no shutdown</span><br><span class="line">DSW2(config)#int vlan 40</span><br><span class="line">DSW2(config-if)#ip address 192.168.40.254 255.255.255.0</span><br><span class="line">DSW2(config-if)#no shutdown</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>IP地址规划如下</li>
-</ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R1(config)#int e0/0</span><br><span class="line">R1(config-if)#ip address 172.16.10.1 255.255.255.0</span><br><span class="line">R1(config-if)#no shutdown </span><br><span class="line">R1(config)#int e0/1</span><br><span class="line">R1(config-if)#ip address 172.16.20.1 255.255.255.0</span><br><span class="line">R1(config-if)#no shutdown </span><br><span class="line">R1(config)#int s1/0</span><br><span class="line">R1(config-if)#ip address 12.12.12.1 255.255.255.0</span><br><span class="line">R1(config-if)#no shutdown </span><br><span class="line"></span><br><span class="line">ISP(config)#int s1/0</span><br><span class="line">ISP(config-if)#ip address 12.12.12.2 255.255.255.0</span><br><span class="line">ISP(config-if)#no shutdown </span><br><span class="line">ISP(config)#int e0/0</span><br><span class="line">ISP(config-if)#ip address 23.23.23.2 255.255.255.0</span><br><span class="line">ISP(config-if)#no shutdown </span><br><span class="line"></span><br><span class="line">Web_SRV(config)#int e0/0</span><br><span class="line">Web_SRV(config-if)#ip address 23.23.23.3 255.255.255.0</span><br><span class="line">Web_SRV(config-if)#no shutdown </span><br><span class="line">Web_SRV(config)#ip default-gateway 23.23.23.2</span><br><span class="line"></span><br><span class="line">DSW1(config)#int e0/1</span><br><span class="line">DSW1(config-if)#no switchport </span><br><span class="line">DSW1(config-if)#ip address 172.16.10.2 255.255.255.0</span><br><span class="line"></span><br><span class="line">DSW2(config)#int e0/1</span><br><span class="line">DSW2(config-if)#no switchport </span><br><span class="line">DSW2(config-if)#ip address 172.16.20.2 255.255.255.0</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>启用OSPF</li>
-</ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">DSW1(config)#router ospf 1</span><br><span class="line">DSW1(config-router)#router-id 1.1.1.1  </span><br><span class="line">DSW1(config-router)#network 192.168.10.0 0.0.0.255 a 0</span><br><span class="line">DSW1(config-router)#network 192.168.20.0 0.0.0.255 a 0</span><br><span class="line">DSW1(config-router)#network 192.168.30.0 0.0.0.255 a 0</span><br><span class="line">DSW1(config-router)#network 172.16.10.0 0.0.0.255 a 0</span><br><span class="line"></span><br><span class="line">DSW2(config)#router ospf 1</span><br><span class="line">DSW2(config-router)#router-id 2.2.2.2</span><br><span class="line">DSW2(config-router)#network 192.168.30.0 0.0.0.255 a 0</span><br><span class="line">DSW2(config-router)#network 192.168.40.0 0.0.0.255 a 0</span><br><span class="line">DSW2(config-router)#network 172.16.20.0 0.0.0.255 a 0</span><br><span class="line"></span><br><span class="line">R1(config)#router ospf 1</span><br><span class="line">R1(config-router)#router-id 3.3.3.3</span><br><span class="line">R1(config-router)#network 172.16.10.0 0.0.0.255 a 0</span><br><span class="line">R1(config-router)#network 172.16.20.0 0.0.0.255 a 0</span><br></pre></td></tr></table></figure>
-
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/26/0FiB4K.png"></p>
-<ul>
-<li>在ASW1和DSW1上配置EtherChannel</li>
-</ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">DSW1(config)#int range e0/2-3</span><br><span class="line">DSW1(config-if-range)#channel-group 1 mode active </span><br><span class="line"></span><br><span class="line">ASW1(config)#int range e0/2-3</span><br><span class="line">ASW1(config-if-range)#channel-group 1 mode active </span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>在R1上配置PAT</li>
-</ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="comment">//在R1配置默认路由，使得R1可以访问Web_SRV</span></span><br><span class="line">R1(config)#ip route 0.0.0.0 0.0.0.0 s1/0</span><br><span class="line"><span class="comment">//在OSPF进程下发默认路由</span></span><br><span class="line">R1(config)#router ospf 1</span><br><span class="line">R1(config-router)#default-information originate </span><br><span class="line"><span class="comment">//ACL匹配PC所在网段</span></span><br><span class="line">R1(config)#access-list 1 permit 192.168.0.0 /16</span><br><span class="line"><span class="comment">//PAT</span></span><br><span class="line">R1(config)#ip nat inside source list 1 interface s1/0 overload </span><br><span class="line"><span class="comment">//指定内外部接口</span></span><br><span class="line">R1(config)#int range e0/0-1</span><br><span class="line">R1(config-if-range)#ip nat inside </span><br><span class="line">R1(config)#int s1/0</span><br><span class="line">R1(config-if)#ip nat outside </span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>此时PC可以访问Web_SRV</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0FAo8K.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0FAIC6.png"></p>
-<blockquote>
-<p>查看地址转换表</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0FEp28.png"></p>
-]]></content>
-      <categories>
-        <category>实验</category>
-      </categories>
-      <tags>
-        <tag>STP</tag>
-        <tag>RSTP</tag>
-        <tag>MST</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>在交换网络中部署EtherChannel技术</title>
-    <url>/2020/09/05/%E5%9C%A8%E4%BA%A4%E6%8D%A2%E7%BD%91%E7%BB%9C%E4%B8%AD%E9%83%A8%E7%BD%B2EtherChannel%E6%8A%80%E6%9C%AF/</url>
-    <content><![CDATA[<p>　　在有些网络环境中，用户与资源之间的距离也许非常远，交换机与交换机之间或交换机与服务器之间的链路可能会变得非常阻塞。虽然通过线路改造可以增加这些链路的带宽，但并不是所有的链路都具备带宽升级的条件。因此，在以最大化节省现有投资为目的的前提下，EtherChannel技术应运而生。EtherChannel技术可以将多条物理链路捆绑成一条逻辑链路来解决流量拥塞的问题，在提升带宽的同时，也实现了冗余性。</p>
-<a id="more"></a>
-
-<h3 id="1、EtherChannel技术背景"><a href="#1、EtherChannel技术背景" class="headerlink" title="1、EtherChannel技术背景"></a>1、EtherChannel技术背景</h3><p>　　EtherChannel技术最初是由Cisco开发的一种LAN交换机之间的链路技术，用来将多个百兆或千兆以太网端口放入一个逻辑的通道中。EtherChannel拥有以下多种优势：</p>
-<ul>
-<li>利用已有交换机端口。无需升级交换机互联链路，从而节省投资成本。</li>
-<li>大多数的配置都可以在EtherChannel接口下完成，而不需要分别在每个端口进行配置，这可以保证交换机之间端口配置的一致性。</li>
-<li>EtherChannel技术支持多条链路的负载均衡。根据硬件平台的不同，可以在多条物理链路之间部署多种方式的负载均衡，如基于源MAC和目的MAC，或是基于源IP和目的IP。</li>
-</ul>
-<p>　　除了交换机，其他网络设备也广泛地支持EtherChannel技术。在任何情况下，EtherChannel创建的都是一对一的逻辑链路。EtherChannel链路可以部署在两台交换机之间，也可以部署在启用了EtherChannel服务的服务器和交换机之间，但是，同一条EtherChannel不能向两台不同的交换机发送流量。一条EtherChannel链路的两端始终只连接着两台设备，而且这两台设备上EtherChannel组成员的端口配置也必须相同。</p>
-<p>　　EtherChannel创建的汇聚链路会被看做是一条逻辑链路。当两台交换机之间存在多条EtherChannel链路时，生成树可能会阻塞其中的一条来防止出现环路。当生成树阻断了某条冗余链路时，也就阻断了一条EtherChannel链路，这条EtherChannel链路中的所有端口也都会被阻塞。如果仅有一条EtherChannel链路，捆绑中所有物理端口都会处于Active状态。因为对于生成树算法来说，多条物理链路捆绑后的EtherChannel链路是一条逻辑链路。如果EtherChannel中的某条物理链路出现了故障，EtherChannel会自动更新其捆绑带宽，对应的STP开销也会重新计算。</p>
-<blockquote>
-<p>注：在三层交换机上，可以将设备的交换端口转化成路由端口。转换后的三层端口同样可以配置EtherChannel链路。在使用了例如VSS（虚拟交换系统）或vPC（虚拟端口通道）技术后，可以在一台接入层交换机和两台不同的汇聚层交换机之间创建EtherChannel链路。</p>
-</blockquote>
-<h3 id="2、EtherChannel协商协议"><a href="#2、EtherChannel协商协议" class="headerlink" title="2、EtherChannel协商协议"></a>2、EtherChannel协商协议</h3><p>　　可以使用以下三种机制之一来创建EtherChannel</p>
-<blockquote>
-<p>LACP： IEEE标准协商协议</p>
-<p>PAgP： Cisco私有协商协议</p>
-<p>静态配置： 无协商协议</p>
-</blockquote>
-<ul>
-<li><strong>LACP</strong></li>
-</ul>
-<p>　　链路汇聚控制协议（LACP）是一种由IEEE定义的标准（802.3ad），允许将多个 物理端口捆绑到一起形成一个逻辑通道。LACP允许交换机发送LACP数据包来与对端自动协商捆绑通道。由于LACP属于IEEE制定的业界标准，因此可以在不同厂商设备的环境中协商EtherChannel链路。LACP会检查两台交换机的配置一致性以及链路状态，用来确保EtherChannel创建时，所有端口配置有相同的端口速率、双工模式、VLAN信息等。在通道建立之后，任一端口的配置修改都会影响通道另一端的端口状态。</p>
-<p>　　LACP数据包会在启用了EtherChannel功能的端口上进行交换。接收方会将对端的端口属性与自身的端口属性进行比较。LACP会为EtherChannel端口分配角色。带有最低的系统优先级的交换机将决定哪些活动端口可以加入EtherChannel。端口根据其优先级选举出Active端口。<span style="color:red">数值越低表示越优先。</span>一般来说，一个EtherChannel最大支持16条链路。同一时间只能有8条处于Active（活动）状态。其余8条非Active端口将处于Standby（备用）状态。如果某条Active链路发生故障，Standby端口将接管成为Active端口。</p>
-<blockquote>
-<p>两台交换机之间建立EtherChannel的最大Active链路数量是可变的</p>
-</blockquote>
-<p>　　LACP操作模式如下</p>
-<p>　　　　①Active：使端口进入主动协商状态，发送LACP数据包主动与其他接口进行协商</p>
-<p>　　　　②Passive：使端口进入被动协商状态，对LACP数据包做出响应</p>
-<p>　　　　③On：强制端口形成EtherChannel，不需要使用LACP或PAgP进行协商</p>
-<ul>
-<li><strong>PAgP</strong></li>
-</ul>
-<p>　　端口聚合协议（PAgP）提供了与LACP类似的协商优点。PAgP是Cisco私有协议，因此只能运行在Cisco设备上。PAgP数据包会在启用了EtherChannel功能的端口上进行交换，每30s发送过一次。接收方会将对端的端口属性与自身的端口属性进行比较，具有相同属性的端口将被捆绑进同一个EtherChannel中。PAgP只能在配置有相同VLAN或Trunk属性的端口上形成EtherChannel。如果捆绑中的端口修改了配置，那么PAgP也会重新协商EtherChannel的参数。例如，捆绑中的某个端口的速率、双工模式或VLAN信息做了配置修改，PAgP将会重新考虑捆绑中其他端口的参数。<span style="color:red">PAgP与LACP协议之间不能兼容。</span></p>
-<p>　　PAgP操作模式如下：</p>
-<p>　　　　①Desirable：使端口进入主动协商的状态，发送PAgP数据包</p>
-<p>　　　　②Auto：使端口进入被动协商的状态，对PAgP数据包做出响应</p>
-<p>　　　　③On：强制端口不使用PAgP而形成EtherChannel，不会交换PAgP数据包</p>
-<h3 id="3、EtherChannel配置实例"><a href="#3、EtherChannel配置实例" class="headerlink" title="3、EtherChannel配置实例"></a>3、EtherChannel配置实例</h3><ul>
-<li>LACP验证</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/06/wmAPhT.png"></p>
-<p>①首先将交换机之间的端口配置成Trunk</p>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">SW1(config)#int range e0/0-1</span><br><span class="line">SW1(config-if-range)#switchport trunk encapsulation dot1q </span><br><span class="line">SW1(config-if-range)#switchport mode trunk </span><br><span class="line">SW2(config)#int range e0/0-1</span><br><span class="line">SW2(config-if-range)#switchport trunk encapsulation dot1q </span><br><span class="line">SW2(config-if-range)#switchport mode trunk </span><br></pre></td></tr></table></figure>
-
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/06/wmVMlD.png"></p>
-<p>②在SW1上配置EtherChannel，创建端口组1，模式为Active</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">SW1(config)#int range e0/0-1</span><br><span class="line">SW1(config-if-range)#channel-group 1 mode active </span><br><span class="line">Creating a port-channel interface Port-channel <span class="number">1</span></span><br></pre></td></tr></table></figure>
-
-<p>③在SW2上配置EtherChannel，创建端口组1，模式为Passive</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">SW2(config)#int range e0/0-1</span><br><span class="line">SW2(config-if-range)#channel-group 1 mode passive </span><br><span class="line">Creating a port-channel interface Port-channel <span class="number">1</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>配置后，两个端口将被捆绑到channel-group 1中。由于使用了active关键字，因此将使用LACP协议进行协商。SW1配置了LACP的active模式，SW2配置了LACP的passive模式，因此EtherChannel可以协商成功。</p>
-</blockquote>
-<p>④在SW1和SW2上分别进入新建的port-channel的接口配置模式，将其配置成dot1Q的trunk模式</p>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">SW1(config)#int port-channel 1</span><br><span class="line">SW1(config-if)#switchport trunk encapsulation dot1q </span><br><span class="line">SW1(config-if)#switchport mode trunk </span><br><span class="line">SW2(config)#int port-channel 1</span><br><span class="line">SW2(config-if)#switchport trunk encapsulation dot1q </span><br><span class="line">SW2(config-if)#switchport mode trunk </span><br></pre></td></tr></table></figure>
-
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/06/wmDsbQ.png"></p>
-<p>⑤在SW1和SW2上使用show etherchannel summary命令查看EtherChannel的摘要信息</p>
-<blockquote>
-<p>如下图所示，port-channel 1是一个正在使用的2层EtherChannel（SU标志）。协商协议使用的是LACP，捆绑成功的端口包括Ethernet 0/0和Ethernet 0/1（P标志）</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/06/wmsEk9.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/06/wmsg10.png"></p>
-<p>⑥在SW1上查看Ethernet 0/0和port-channel 1的信息，可知带宽变为原来的两倍</p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/06/wmyrDO.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/06/wmyYE4.png"></p>
-<hr>
-
-<ul>
-<li>PAgP验证</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/06/wmyn4s.png"></p>
-<p>①将交换机之间的端口配置成Trunk</p>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">SW1(config)#int range e0/0-1</span><br><span class="line">SW1(config-if-range)#switchport trunk encapsulation dot1q </span><br><span class="line">SW1(config-if-range)#switchport mode trunk </span><br><span class="line">SW2(config)#int range e0/0-1</span><br><span class="line">SW2(config-if-range)#switchport trunk encapsulation dot1q </span><br><span class="line">SW2(config-if-range)#switchport mode trunk </span><br></pre></td></tr></table></figure>
-
-<p>②在SW1上配置EtherChannel，创建端口组1，模式为Desirable</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">SW1(config)#int range e0/0-1</span><br><span class="line">SW1(config-if-range)#channel-group 1 mode desirable </span><br><span class="line">Creating a port-channel interface Port-channel <span class="number">1</span></span><br></pre></td></tr></table></figure>
-
-<p>③在SW2上配置EtherChannel，创建端口组2，模式为auto</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">SW2(config)#int range e0/0-1</span><br><span class="line">SW2(config-if-range)#channel-group 2 mode auto </span><br><span class="line">Creating a port-channel interface Port-channel <span class="number">2</span></span><br></pre></td></tr></table></figure>
-
-<p>④在SW1和SW2上分别进入新建的port-channel的接口配置模式，将其配置成dot1Q的trunk模式</p>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">SW1(config)#int port-channel 1</span><br><span class="line">SW1(config-if)#switchport trunk encapsulation dot1q </span><br><span class="line">SW1(config-if)#switchport mode trunk </span><br><span class="line">SW2(config)#int port-channel 2</span><br><span class="line">SW2(config-if)#switchport trunk encapsulation dot1q </span><br><span class="line">SW2(config-if)#switchport mode trunk </span><br></pre></td></tr></table></figure>
-
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/06/wmcKXV.png"></p>
-<p>⑤在SW1和SW2上使用show etherchannel summary命令查看EtherChannel的摘要信息</p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/06/wmcwnK.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/06/wmcaX6.png"></p>
-<p>⑥在SW2上查看Ethernet 0/0和port-channel 2的信息，可知带宽变为原来的两倍</p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/06/wmcXuV.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/06/wmcjBT.png"></p>
-<hr>
-
-<ul>
-<li>On验证</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/06/wmg8Df.png"></p>
-<p>①将交换机之间的端口配置成Trunk</p>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">SW1(config)#int range e0/0-1</span><br><span class="line">SW1(config-if-range)#switchport trunk encapsulation dot1q </span><br><span class="line">SW1(config-if-range)#switchport mode trunk </span><br><span class="line">SW2(config)#int range e0/0-1</span><br><span class="line">SW2(config-if-range)#switchport trunk encapsulation dot1q </span><br><span class="line">SW2(config-if-range)#switchport mode trunk </span><br></pre></td></tr></table></figure>
-
-<p>②在SW1和SW2上配置EtherChannel，创建端口组1，模式为On</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">SW1(config)#int range e0/0-1</span><br><span class="line">SW1(config-if-range)#channel-group 1 mode on</span><br><span class="line">SW2(config)#int range e0/0-1</span><br><span class="line">SW2(config-if-range)#channel-group 1 mode on </span><br><span class="line">Creating a port-channel interface Port-channel <span class="number">1</span></span><br></pre></td></tr></table></figure>
-
-<p>④在SW1和SW2上分别进入新建的port-channel的接口配置模式，将其配置成dot1Q的trunk模式</p>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">SW1(config)#int range e0/0-1</span><br><span class="line">SW1(config-if-range)#switchport trunk encapsulation dot1q </span><br><span class="line">SW1(config-if-range)#switchport mode trunk </span><br><span class="line">SW2(config)#int range e0/0-1</span><br><span class="line">SW2(config-if-range)#switchport trunk encapsulation dot1q </span><br><span class="line">SW2(config-if-range)#switchport mode trunk </span><br></pre></td></tr></table></figure>
-
-<p>⑤在SW1和SW2上使用show etherchannel summary命令查看EtherChannel的摘要信息</p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/06/wm2Ysx.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/06/wm2JQ1.png"></p>
-<p>⑥在SW2上查看Ethernet 0/0和port-channel 2的信息，可知带宽变为原来的两倍</p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/07/wm2WTS.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/07/wm2Rw8.png"></p>
-<h3 id="4、EtherChannel负载均衡方式"><a href="#4、EtherChannel负载均衡方式" class="headerlink" title="4、EtherChannel负载均衡方式"></a>4、EtherChannel负载均衡方式</h3><p>　　EtherChannel中的流量可以分担到捆绑中的每条链路上。不过，流量并不是严格平均分布到每条链路上的。数据帧选择EtherChannel链路上哪条链路转发取决于哈希算法的结果，不同的设备平台使用的哈希计算算法也不尽相同。</p>
-<p>　　在同一个EtherChannel的多个端口成员之间实现负载分担是配置EtherChannel的一个重要因素。管理员可以把负载分担选项当作一个规则，从而极大程度上丰富配置的多样性。举例来说，如果某条通道上的流量只去往单一的MAC地址，那么管理员既可以根据目的MAC地址进行配置，使其总是选择通道中的相同链路;也可以根据源地址进行配置，这样做可以实现更好的负载分担。</p>
-<p>　　负载分担会在全局应用于交换机上的所有EtherChannel，可以使用命令<strong>port-channel load-balance</strong>来实现这项技术。负载分担可以基于以下变量实现：</p>
-<ul>
-<li>src-mac：源MAC地址</li>
-<li>dst-mac：目的MAC地址</li>
-<li>src-dst-mac：源和目的MAC地址</li>
-<li>src-ip：源IP地址</li>
-<li>dst-ip：目的IP地址</li>
-<li>src-dst-ip：源和目的IP地址（默认）</li>
-<li>src-port：源TCP/UDP（用户数据报协议）端口</li>
-<li>dst-port：目的TCP/UDP端口</li>
-<li>src-dst-port：源和目的TCP/UDP端口</li>
-</ul>
-<p>　　例如，源MAC地址转发是指当数据包被发送给EtherChannel，设备会根据入站数据包的源MAC地址来判断应该将数据包从通道的哪个端口转发出去。于是，来自不同主机的数据包就会从通道的不同端口中转发出去，而来自同一台主机的数据包会从通道的同一端口中转发出去，这就是实现了负载分担。</p>
-<p>　　SW1和SW2之间使用LACP协商建立EtherChannel链路，如下图所示</p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/09/wlxaVI.png"></p>
-<ul>
-<li>输入<span style="color:red">show etherchannel load-balance</span>命令来查看EtherChannel使用的负载均衡信息</li>
-</ul>
-<blockquote>
-<p>此前并未在交换机上配置负载均衡，可见该交换机上默认的负载均衡方式为src-dst-ip，即基于源和目的IP地址进行负载分担</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/09/wlxnbR.png"></p>
-<ul>
-<li>为了测试上图所示的拓扑中每条链路上分布的流量，在SW1上输入<span style="color:red">clear counters</span>命令清空计数器，即可准确地测试出每条链路分布的流量</li>
-</ul>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">SW1#clear counters </span><br><span class="line">Clear <span class="string">&quot;show interface&quot;</span> counters on all interfaces [confirm]</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>使用扩展ping命令，从PC1上 ping PC3</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/09/wlzMLj.png"></p>
-<ul>
-<li>在SW1上查看两个端口的计数器</li>
-</ul>
-<blockquote>
-<p>可见大多数流量都分布在了E0/0接口上，通过E0/0端口承载</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/09/wlz5TI.png"></p>
-<ul>
-<li>将SW1的负载均衡方式修改为dst-ip</li>
-</ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">SW1(config)#port-channel load-balance dst-ip</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>查看修改后的负载均衡方式</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/09/w1sPPO.png"></p>
-]]></content>
-      <categories>
-        <category>学习笔记</category>
-      </categories>
-      <tags>
-        <tag>交换</tag>
         <tag>EtherChannel</tag>
       </tags>
   </entry>
@@ -2036,6 +1626,416 @@
         <tag>CCNA</tag>
         <tag>路由协议</tag>
         <tag>OSPF</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>在交换网络中部署EtherChannel技术</title>
+    <url>/2020/09/05/%E5%9C%A8%E4%BA%A4%E6%8D%A2%E7%BD%91%E7%BB%9C%E4%B8%AD%E9%83%A8%E7%BD%B2EtherChannel%E6%8A%80%E6%9C%AF/</url>
+    <content><![CDATA[<p>　　在有些网络环境中，用户与资源之间的距离也许非常远，交换机与交换机之间或交换机与服务器之间的链路可能会变得非常阻塞。虽然通过线路改造可以增加这些链路的带宽，但并不是所有的链路都具备带宽升级的条件。因此，在以最大化节省现有投资为目的的前提下，EtherChannel技术应运而生。EtherChannel技术可以将多条物理链路捆绑成一条逻辑链路来解决流量拥塞的问题，在提升带宽的同时，也实现了冗余性。</p>
+<a id="more"></a>
+
+<h3 id="1、EtherChannel技术背景"><a href="#1、EtherChannel技术背景" class="headerlink" title="1、EtherChannel技术背景"></a>1、EtherChannel技术背景</h3><p>　　EtherChannel技术最初是由Cisco开发的一种LAN交换机之间的链路技术，用来将多个百兆或千兆以太网端口放入一个逻辑的通道中。EtherChannel拥有以下多种优势：</p>
+<ul>
+<li>利用已有交换机端口。无需升级交换机互联链路，从而节省投资成本。</li>
+<li>大多数的配置都可以在EtherChannel接口下完成，而不需要分别在每个端口进行配置，这可以保证交换机之间端口配置的一致性。</li>
+<li>EtherChannel技术支持多条链路的负载均衡。根据硬件平台的不同，可以在多条物理链路之间部署多种方式的负载均衡，如基于源MAC和目的MAC，或是基于源IP和目的IP。</li>
+</ul>
+<p>　　除了交换机，其他网络设备也广泛地支持EtherChannel技术。在任何情况下，EtherChannel创建的都是一对一的逻辑链路。EtherChannel链路可以部署在两台交换机之间，也可以部署在启用了EtherChannel服务的服务器和交换机之间，但是，同一条EtherChannel不能向两台不同的交换机发送流量。一条EtherChannel链路的两端始终只连接着两台设备，而且这两台设备上EtherChannel组成员的端口配置也必须相同。</p>
+<p>　　EtherChannel创建的汇聚链路会被看做是一条逻辑链路。当两台交换机之间存在多条EtherChannel链路时，生成树可能会阻塞其中的一条来防止出现环路。当生成树阻断了某条冗余链路时，也就阻断了一条EtherChannel链路，这条EtherChannel链路中的所有端口也都会被阻塞。如果仅有一条EtherChannel链路，捆绑中所有物理端口都会处于Active状态。因为对于生成树算法来说，多条物理链路捆绑后的EtherChannel链路是一条逻辑链路。如果EtherChannel中的某条物理链路出现了故障，EtherChannel会自动更新其捆绑带宽，对应的STP开销也会重新计算。</p>
+<blockquote>
+<p>注：在三层交换机上，可以将设备的交换端口转化成路由端口。转换后的三层端口同样可以配置EtherChannel链路。在使用了例如VSS（虚拟交换系统）或vPC（虚拟端口通道）技术后，可以在一台接入层交换机和两台不同的汇聚层交换机之间创建EtherChannel链路。</p>
+</blockquote>
+<h3 id="2、EtherChannel协商协议"><a href="#2、EtherChannel协商协议" class="headerlink" title="2、EtherChannel协商协议"></a>2、EtherChannel协商协议</h3><p>　　可以使用以下三种机制之一来创建EtherChannel</p>
+<blockquote>
+<p>LACP： IEEE标准协商协议</p>
+<p>PAgP： Cisco私有协商协议</p>
+<p>静态配置： 无协商协议</p>
+</blockquote>
+<ul>
+<li><strong>LACP</strong></li>
+</ul>
+<p>　　链路汇聚控制协议（LACP）是一种由IEEE定义的标准（802.3ad），允许将多个 物理端口捆绑到一起形成一个逻辑通道。LACP允许交换机发送LACP数据包来与对端自动协商捆绑通道。由于LACP属于IEEE制定的业界标准，因此可以在不同厂商设备的环境中协商EtherChannel链路。LACP会检查两台交换机的配置一致性以及链路状态，用来确保EtherChannel创建时，所有端口配置有相同的端口速率、双工模式、VLAN信息等。在通道建立之后，任一端口的配置修改都会影响通道另一端的端口状态。</p>
+<p>　　LACP数据包会在启用了EtherChannel功能的端口上进行交换。接收方会将对端的端口属性与自身的端口属性进行比较。LACP会为EtherChannel端口分配角色。带有最低的系统优先级的交换机将决定哪些活动端口可以加入EtherChannel。端口根据其优先级选举出Active端口。<span style="color:red">数值越低表示越优先。</span>一般来说，一个EtherChannel最大支持16条链路。同一时间只能有8条处于Active（活动）状态。其余8条非Active端口将处于Standby（备用）状态。如果某条Active链路发生故障，Standby端口将接管成为Active端口。</p>
+<blockquote>
+<p>两台交换机之间建立EtherChannel的最大Active链路数量是可变的</p>
+</blockquote>
+<p>　　LACP操作模式如下</p>
+<p>　　　　①Active：使端口进入主动协商状态，发送LACP数据包主动与其他接口进行协商</p>
+<p>　　　　②Passive：使端口进入被动协商状态，对LACP数据包做出响应</p>
+<p>　　　　③On：强制端口形成EtherChannel，不需要使用LACP或PAgP进行协商</p>
+<ul>
+<li><strong>PAgP</strong></li>
+</ul>
+<p>　　端口聚合协议（PAgP）提供了与LACP类似的协商优点。PAgP是Cisco私有协议，因此只能运行在Cisco设备上。PAgP数据包会在启用了EtherChannel功能的端口上进行交换，每30s发送过一次。接收方会将对端的端口属性与自身的端口属性进行比较，具有相同属性的端口将被捆绑进同一个EtherChannel中。PAgP只能在配置有相同VLAN或Trunk属性的端口上形成EtherChannel。如果捆绑中的端口修改了配置，那么PAgP也会重新协商EtherChannel的参数。例如，捆绑中的某个端口的速率、双工模式或VLAN信息做了配置修改，PAgP将会重新考虑捆绑中其他端口的参数。<span style="color:red">PAgP与LACP协议之间不能兼容。</span></p>
+<p>　　PAgP操作模式如下：</p>
+<p>　　　　①Desirable：使端口进入主动协商的状态，发送PAgP数据包</p>
+<p>　　　　②Auto：使端口进入被动协商的状态，对PAgP数据包做出响应</p>
+<p>　　　　③On：强制端口不使用PAgP而形成EtherChannel，不会交换PAgP数据包</p>
+<h3 id="3、EtherChannel配置实例"><a href="#3、EtherChannel配置实例" class="headerlink" title="3、EtherChannel配置实例"></a>3、EtherChannel配置实例</h3><ul>
+<li>LACP验证</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/06/wmAPhT.png"></p>
+<p>①首先将交换机之间的端口配置成Trunk</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">SW1(config)#int range e0/0-1</span><br><span class="line">SW1(config-if-range)#switchport trunk encapsulation dot1q </span><br><span class="line">SW1(config-if-range)#switchport mode trunk </span><br><span class="line">SW2(config)#int range e0/0-1</span><br><span class="line">SW2(config-if-range)#switchport trunk encapsulation dot1q </span><br><span class="line">SW2(config-if-range)#switchport mode trunk </span><br></pre></td></tr></table></figure>
+
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/06/wmVMlD.png"></p>
+<p>②在SW1上配置EtherChannel，创建端口组1，模式为Active</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">SW1(config)#int range e0/0-1</span><br><span class="line">SW1(config-if-range)#channel-group 1 mode active </span><br><span class="line">Creating a port-channel interface Port-channel <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>③在SW2上配置EtherChannel，创建端口组1，模式为Passive</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">SW2(config)#int range e0/0-1</span><br><span class="line">SW2(config-if-range)#channel-group 1 mode passive </span><br><span class="line">Creating a port-channel interface Port-channel <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>配置后，两个端口将被捆绑到channel-group 1中。由于使用了active关键字，因此将使用LACP协议进行协商。SW1配置了LACP的active模式，SW2配置了LACP的passive模式，因此EtherChannel可以协商成功。</p>
+</blockquote>
+<p>④在SW1和SW2上分别进入新建的port-channel的接口配置模式，将其配置成dot1Q的trunk模式</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">SW1(config)#int port-channel 1</span><br><span class="line">SW1(config-if)#switchport trunk encapsulation dot1q </span><br><span class="line">SW1(config-if)#switchport mode trunk </span><br><span class="line">SW2(config)#int port-channel 1</span><br><span class="line">SW2(config-if)#switchport trunk encapsulation dot1q </span><br><span class="line">SW2(config-if)#switchport mode trunk </span><br></pre></td></tr></table></figure>
+
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/06/wmDsbQ.png"></p>
+<p>⑤在SW1和SW2上使用show etherchannel summary命令查看EtherChannel的摘要信息</p>
+<blockquote>
+<p>如下图所示，port-channel 1是一个正在使用的2层EtherChannel（SU标志）。协商协议使用的是LACP，捆绑成功的端口包括Ethernet 0/0和Ethernet 0/1（P标志）</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/06/wmsEk9.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/06/wmsg10.png"></p>
+<p>⑥在SW1上查看Ethernet 0/0和port-channel 1的信息，可知带宽变为原来的两倍</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/06/wmyrDO.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/06/wmyYE4.png"></p>
+<hr>
+
+<ul>
+<li>PAgP验证</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/06/wmyn4s.png"></p>
+<p>①将交换机之间的端口配置成Trunk</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">SW1(config)#int range e0/0-1</span><br><span class="line">SW1(config-if-range)#switchport trunk encapsulation dot1q </span><br><span class="line">SW1(config-if-range)#switchport mode trunk </span><br><span class="line">SW2(config)#int range e0/0-1</span><br><span class="line">SW2(config-if-range)#switchport trunk encapsulation dot1q </span><br><span class="line">SW2(config-if-range)#switchport mode trunk </span><br></pre></td></tr></table></figure>
+
+<p>②在SW1上配置EtherChannel，创建端口组1，模式为Desirable</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">SW1(config)#int range e0/0-1</span><br><span class="line">SW1(config-if-range)#channel-group 1 mode desirable </span><br><span class="line">Creating a port-channel interface Port-channel <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>③在SW2上配置EtherChannel，创建端口组2，模式为auto</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">SW2(config)#int range e0/0-1</span><br><span class="line">SW2(config-if-range)#channel-group 2 mode auto </span><br><span class="line">Creating a port-channel interface Port-channel <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<p>④在SW1和SW2上分别进入新建的port-channel的接口配置模式，将其配置成dot1Q的trunk模式</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">SW1(config)#int port-channel 1</span><br><span class="line">SW1(config-if)#switchport trunk encapsulation dot1q </span><br><span class="line">SW1(config-if)#switchport mode trunk </span><br><span class="line">SW2(config)#int port-channel 2</span><br><span class="line">SW2(config-if)#switchport trunk encapsulation dot1q </span><br><span class="line">SW2(config-if)#switchport mode trunk </span><br></pre></td></tr></table></figure>
+
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/06/wmcKXV.png"></p>
+<p>⑤在SW1和SW2上使用show etherchannel summary命令查看EtherChannel的摘要信息</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/06/wmcwnK.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/06/wmcaX6.png"></p>
+<p>⑥在SW2上查看Ethernet 0/0和port-channel 2的信息，可知带宽变为原来的两倍</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/06/wmcXuV.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/06/wmcjBT.png"></p>
+<hr>
+
+<ul>
+<li>On验证</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/06/wmg8Df.png"></p>
+<p>①将交换机之间的端口配置成Trunk</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">SW1(config)#int range e0/0-1</span><br><span class="line">SW1(config-if-range)#switchport trunk encapsulation dot1q </span><br><span class="line">SW1(config-if-range)#switchport mode trunk </span><br><span class="line">SW2(config)#int range e0/0-1</span><br><span class="line">SW2(config-if-range)#switchport trunk encapsulation dot1q </span><br><span class="line">SW2(config-if-range)#switchport mode trunk </span><br></pre></td></tr></table></figure>
+
+<p>②在SW1和SW2上配置EtherChannel，创建端口组1，模式为On</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">SW1(config)#int range e0/0-1</span><br><span class="line">SW1(config-if-range)#channel-group 1 mode on</span><br><span class="line">SW2(config)#int range e0/0-1</span><br><span class="line">SW2(config-if-range)#channel-group 1 mode on </span><br><span class="line">Creating a port-channel interface Port-channel <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>④在SW1和SW2上分别进入新建的port-channel的接口配置模式，将其配置成dot1Q的trunk模式</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">SW1(config)#int range e0/0-1</span><br><span class="line">SW1(config-if-range)#switchport trunk encapsulation dot1q </span><br><span class="line">SW1(config-if-range)#switchport mode trunk </span><br><span class="line">SW2(config)#int range e0/0-1</span><br><span class="line">SW2(config-if-range)#switchport trunk encapsulation dot1q </span><br><span class="line">SW2(config-if-range)#switchport mode trunk </span><br></pre></td></tr></table></figure>
+
+<p>⑤在SW1和SW2上使用show etherchannel summary命令查看EtherChannel的摘要信息</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/06/wm2Ysx.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/06/wm2JQ1.png"></p>
+<p>⑥在SW2上查看Ethernet 0/0和port-channel 2的信息，可知带宽变为原来的两倍</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/07/wm2WTS.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/07/wm2Rw8.png"></p>
+<h3 id="4、EtherChannel负载均衡方式"><a href="#4、EtherChannel负载均衡方式" class="headerlink" title="4、EtherChannel负载均衡方式"></a>4、EtherChannel负载均衡方式</h3><p>　　EtherChannel中的流量可以分担到捆绑中的每条链路上。不过，流量并不是严格平均分布到每条链路上的。数据帧选择EtherChannel链路上哪条链路转发取决于哈希算法的结果，不同的设备平台使用的哈希计算算法也不尽相同。</p>
+<p>　　在同一个EtherChannel的多个端口成员之间实现负载分担是配置EtherChannel的一个重要因素。管理员可以把负载分担选项当作一个规则，从而极大程度上丰富配置的多样性。举例来说，如果某条通道上的流量只去往单一的MAC地址，那么管理员既可以根据目的MAC地址进行配置，使其总是选择通道中的相同链路;也可以根据源地址进行配置，这样做可以实现更好的负载分担。</p>
+<p>　　负载分担会在全局应用于交换机上的所有EtherChannel，可以使用命令<strong>port-channel load-balance</strong>来实现这项技术。负载分担可以基于以下变量实现：</p>
+<ul>
+<li>src-mac：源MAC地址</li>
+<li>dst-mac：目的MAC地址</li>
+<li>src-dst-mac：源和目的MAC地址</li>
+<li>src-ip：源IP地址</li>
+<li>dst-ip：目的IP地址</li>
+<li>src-dst-ip：源和目的IP地址（默认）</li>
+<li>src-port：源TCP/UDP（用户数据报协议）端口</li>
+<li>dst-port：目的TCP/UDP端口</li>
+<li>src-dst-port：源和目的TCP/UDP端口</li>
+</ul>
+<p>　　例如，源MAC地址转发是指当数据包被发送给EtherChannel，设备会根据入站数据包的源MAC地址来判断应该将数据包从通道的哪个端口转发出去。于是，来自不同主机的数据包就会从通道的不同端口中转发出去，而来自同一台主机的数据包会从通道的同一端口中转发出去，这就是实现了负载分担。</p>
+<p>　　SW1和SW2之间使用LACP协商建立EtherChannel链路，如下图所示</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/09/wlxaVI.png"></p>
+<ul>
+<li>输入<span style="color:red">show etherchannel load-balance</span>命令来查看EtherChannel使用的负载均衡信息</li>
+</ul>
+<blockquote>
+<p>此前并未在交换机上配置负载均衡，可见该交换机上默认的负载均衡方式为src-dst-ip，即基于源和目的IP地址进行负载分担</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/09/wlxnbR.png"></p>
+<ul>
+<li>为了测试上图所示的拓扑中每条链路上分布的流量，在SW1上输入<span style="color:red">clear counters</span>命令清空计数器，即可准确地测试出每条链路分布的流量</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">SW1#clear counters </span><br><span class="line">Clear <span class="string">&quot;show interface&quot;</span> counters on all interfaces [confirm]</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>使用扩展ping命令，从PC1上 ping PC3</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/09/wlzMLj.png"></p>
+<ul>
+<li>在SW1上查看两个端口的计数器</li>
+</ul>
+<blockquote>
+<p>可见大多数流量都分布在了E0/0接口上，通过E0/0端口承载</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/09/wlz5TI.png"></p>
+<ul>
+<li>将SW1的负载均衡方式修改为dst-ip</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">SW1(config)#port-channel load-balance dst-ip</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看修改后的负载均衡方式</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/09/w1sPPO.png"></p>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>交换</tag>
+        <tag>EtherChannel</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>生成树综合测试</title>
+    <url>/2020/09/26/%E7%94%9F%E6%88%90%E6%A0%91%E7%BB%BC%E5%90%88%E6%B5%8B%E8%AF%95/</url>
+    <content><![CDATA[<h3 id="1、实验目的"><a href="#1、实验目的" class="headerlink" title="1、实验目的"></a>1、实验目的</h3><p>1）掌握RSTP的配置与检验<br>2）掌握MST的配置与检验<br>3）掌握生成树特性的应用<br>4）实现VLAN间的通信</p>
+<h3 id="2、拓扑结构"><a href="#2、拓扑结构" class="headerlink" title="2、拓扑结构"></a>2、拓扑结构</h3><p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/26/0iszqO.png"></p>
+<h3 id="3、实验步骤"><a href="#3、实验步骤" class="headerlink" title="3、实验步骤"></a>3、实验步骤</h3><p><strong>1、在该园区网络中有4个VLAN，VLAN 10、VLAN 20、VLAN 30、VLAN 40，要求在DSW1上创建这些VLAN，其他交换机同步DSW1上的VLAN信息，并且设置VTP域名为shain.top，VTP密码为shain，所有TRUNK链路全部采用标准的封装模式</strong></p>
+<ul>
+<li>在DSW1上创建4个vlan</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">DSW1(config)#vlan 10,20,30,40</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>将交换机之间的端口配置成trunk，采用标准的封装模式</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">DSW1(config)#int range e0/0-3</span><br><span class="line">DSW1(config-if-range)#switchport trunk encapsulation dot1q </span><br><span class="line">DSW1(config-if-range)#switchport mode trunk </span><br><span class="line">DSW1(config-if-range)#switchport nonegotiate </span><br><span class="line"></span><br><span class="line">DSW2(config)#int range e0/0-3</span><br><span class="line">DSW2(config-if-range)#switchport trunk encapsulation dot1q </span><br><span class="line">DSW2(config-if-range)#switchport mode trunk </span><br><span class="line">DSW2(config-if-range)#switchport nonegotiate </span><br><span class="line"></span><br><span class="line">ASW1(config)#int range e0/2-3</span><br><span class="line">ASW1(config-if-range)#switchport trunk encapsulation dot1q </span><br><span class="line">ASW1(config-if-range)#switchport mode trunk </span><br><span class="line">ASW1(config-if-range)#switchport nonegotiate </span><br><span class="line"></span><br><span class="line">ASW2(config)#int range e0/2-3</span><br><span class="line">ASW2(config-if-range)#switchport trunk encapsulation dot1q </span><br><span class="line">ASW2(config-if-range)#switchport mode trunk </span><br><span class="line">ASW2(config-if-range)#switchport nonegotiate </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在DSW1上设置VTP域名为shain.top，密码为shain，模式为server</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">DSW1(config)#vtp domain shain.top</span><br><span class="line">DSW1(config)#vtp password shain</span><br><span class="line">DSW1(config)#vtp mode server </span><br><span class="line"></span><br><span class="line">DSW2(config)#vtp password shain</span><br><span class="line">DSW2(config)#vtp mode client </span><br><span class="line"></span><br><span class="line">ASW1(config)#vtp password shain</span><br><span class="line">ASW1(config)#vtp mode client </span><br><span class="line"></span><br><span class="line">ASW2(config)#vtp password shain</span><br><span class="line">ASW2(config)#vtp mode client </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看DSW2的VTP状态和VLAN信息，可知已和DSW1进行同步</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/26/0icTZ8.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/26/0igCoF.png"></p>
+<p><strong>2、DSW1与DSW2之间的链路不足以传递园区内部流量，使用合适的方式建立DSW1与DSW2之间的以太通道链路</strong></p>
+<ul>
+<li>在DSW1和DSW2之间配置EtherChannel</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">DSW1(config)#int range e0/2-3</span><br><span class="line">DSW1(config-if-range)#channel-group 1 mode active </span><br><span class="line"></span><br><span class="line">DSW2(config)#int range e0/2-3</span><br><span class="line">DSW2(config-if-range)#channel-group 1 mode active </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看EtherChannel的摘要信息</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/26/0igXkD.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/26/0i2S1A.png"></p>
+<p><strong>3、要求全网启用基于802.1w标准的生成树，并且实现DSW1为VLAN 10和VLAN 20的主根，为VLAN 30和VLAN 40的次根，实现DSW2为VLAN 10和VLAN 20的次根，为VLAN 30和VLAN 40的主根，并且哪怕将来在接入层中有新的交换机添加进园区网络，也要确保这两台交换机的地位</strong></p>
+<ul>
+<li>配置生成树的模式为rapid-pvst</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">DSW1(config)#spanning-tree mode rapid-pvst </span><br><span class="line">DSW2(config)#spanning-tree mode rapid-pvst </span><br><span class="line">ASW1(config)#spanning-tree mode rapid-pvst </span><br><span class="line">ASW2(config)#spanning-tree mode rapid-pvst </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>指定DSW1为vlan10,20的主根，为vlan30,40的次根；指定DSW2为vlan30,40的主根，为vlan10,20的次根</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">DSW1(config)#spanning-tree vlan 10,20 root primary </span><br><span class="line">DSW1(config)#spanning-tree vlan 30,40 root secondary </span><br><span class="line"></span><br><span class="line">DSW2(config)#spanning-tree vlan 10,20 root secondary </span><br><span class="line">DSW2(config)#spanning-tree vlan 30,40 root primary </span><br></pre></td></tr></table></figure>
+
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/26/0iRtIS.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/26/0iRUPg.png"></p>
+<ul>
+<li>在DSW1和DSW2上开启Root Guard特性，保证根桥的地位</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">DSW1(config)#int range e0/0-3,e1/0-3</span><br><span class="line">DSW1(config-if-range)#spanning-tree guard root </span><br><span class="line"></span><br><span class="line">DSW2(config)#int range e0/0-3</span><br><span class="line">DSW2(config-if-range)#spanning-tree guard root </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>以下进行验证测试</li>
+</ul>
+<blockquote>
+<p>将ASW1的VLAN 10的生成树优先级设置为4096</p>
+</blockquote>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">ASW1(config)#spanning-tree vlan 10 priority 4096</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>此时DSW1和DSW2上提示将e0/0端口阻塞</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">DSW1#</span><br><span class="line">*Sep <span class="number">26</span> <span class="number">12</span>:<span class="number">45</span>:<span class="number">29.545</span>: %SPANTREE<span class="number">-2</span>-ROOTGUARD_BLOCK: Root guard blocking port Ethernet0/<span class="number">0</span> on VLAN0010.</span><br><span class="line"></span><br><span class="line">DSW2#</span><br><span class="line">*Sep <span class="number">26</span> <span class="number">12</span>:<span class="number">45</span>:<span class="number">29.545</span>: %SPANTREE<span class="number">-2</span>-ROOTGUARD_BLOCK: Root guard blocking port Ethernet0/<span class="number">0</span> on VLAN0010.</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>DSW1仍然认为自己是VLAN 10的根桥，e0/0端口的状态为根不一致</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/26/0iWjtU.png"></p>
+<blockquote>
+<p>DSW2仍然认为DSW1为VLAN 10的根桥，并且e0/0端口的状态也为根不一致</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/26/0ifH8e.png"></p>
+<blockquote>
+<p>将ASW1的VLAN 10的生成树优先级恢复，则日志提示不再阻塞e0/0端口</p>
+<p>DSW1由于不再监听到比自己更优的BPDU，自动恢复成根桥</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">ASW1(config)#spanning-tree vlan 10 priority 32768</span><br><span class="line"></span><br><span class="line">DSW1#</span><br><span class="line">*Sep <span class="number">26</span> <span class="number">12</span>:<span class="number">57</span>:<span class="number">16.983</span>: %SPANTREE<span class="number">-2</span>-ROOTGUARD_UNBLOCK: Root guard unblocking port Ethernet0/<span class="number">0</span> on VLAN0010.</span><br><span class="line"></span><br><span class="line">DSW2#</span><br><span class="line">*Sep <span class="number">26</span> <span class="number">12</span>:<span class="number">57</span>:<span class="number">16.976</span>: %SPANTREE<span class="number">-2</span>-ROOTGUARD_UNBLOCK: Root guard unblocking port Ethernet0/<span class="number">0</span> on VLAN0010.</span><br></pre></td></tr></table></figure>
+
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/26/0ih2i8.png"></p>
+<p><strong>4、按如下表所示为各PC配置IP地址和网关，并在交换机上将PC划分到相应的VLAN中</strong></p>
+<table>
+<thead>
+<tr>
+<th align="center">设备</th>
+<th align="center">VLAN</th>
+<th align="center">IP地址</th>
+<th align="center">默认网关</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">PC1</td>
+<td align="center">10</td>
+<td align="center">192.168.10.100</td>
+<td align="center">192.168.10.254</td>
+</tr>
+<tr>
+<td align="center">PC2</td>
+<td align="center">20</td>
+<td align="center">192.168.20.100</td>
+<td align="center">192.168.20.254</td>
+</tr>
+<tr>
+<td align="center">PC3</td>
+<td align="center">30</td>
+<td align="center">192.168.30.100</td>
+<td align="center">192.168.30.254</td>
+</tr>
+<tr>
+<td align="center">PC4</td>
+<td align="center">40</td>
+<td align="center">192.168.40.100</td>
+<td align="center">192.168.40.254</td>
+</tr>
+</tbody></table>
+<ul>
+<li>为各PC设置IP地址和网关</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">PC1(config)#int e0/0</span><br><span class="line">PC1(config-if)#ip address 192.168.10.100 255.255.255.0</span><br><span class="line">PC1(config-if)#no shutdown</span><br><span class="line"></span><br><span class="line">PC2(config)#int e0/0</span><br><span class="line">PC2(config-if)#ip address 192.168.20.100 255.255.255.0</span><br><span class="line">PC2(config-if)#no shutdown</span><br><span class="line"></span><br><span class="line">PC3(config)#int e0/0</span><br><span class="line">PC3(config-if)#ip address 192.168.30.100 255.255.255.0</span><br><span class="line">PC3(config-if)#no shutdown</span><br><span class="line"></span><br><span class="line">PC4(config)#int e0/0</span><br><span class="line">PC4(config-if)#ip address 192.168.40.100 255.255.255.0</span><br><span class="line">PC4(config-if)#no shutdown</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在ASW1和ASW2上将端口划分到对应的VLAN中</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">ASW1(config)#int e0/0</span><br><span class="line">ASW1(config-if)#switchport mode access</span><br><span class="line">ASW1(config-if)#switchport access vlan 10</span><br><span class="line">ASW1(config)#int e0/1</span><br><span class="line">ASW1(config-if)#switchport mode access </span><br><span class="line">ASW1(config-if)#switchport access vlan 20</span><br><span class="line"></span><br><span class="line">ASW2(config)#int e0/0</span><br><span class="line">ASW2(config-if)#switchport mode access </span><br><span class="line">ASW2(config-if)#switchport access vlan 30</span><br><span class="line">ASW2(config)#int e0/1</span><br><span class="line">ASW2(config-if)#switchport mode access </span><br><span class="line">ASW2(config-if)#switchport access vlan 40</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在DSW1上创建相应的SVI接口，成为各PC的网关</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">DSW1(config)#int vlan 10</span><br><span class="line">DSW1(config-if)#ip address 192.168.10.254 255.255.255.0</span><br><span class="line">DSW1(config-if)#no shutdown </span><br><span class="line">DSW1(config)#int vlan 20</span><br><span class="line">DSW1(config-if)#ip address 192.168.20.254 255.255.255.0</span><br><span class="line">DSW1(config-if)#no shutdown </span><br><span class="line">DSW1(config)#int vlan 30</span><br><span class="line">DSW1(config-if)#ip address 192.168.30.254 255.255.255.0</span><br><span class="line">DSW1(config-if)#no shutdown </span><br><span class="line">DSW1(config)#int vlan 40</span><br><span class="line">DSW1(config-if)#ip address 192.168.40.254 255.255.255.0</span><br><span class="line">DSW1(config-if)#no shutdown </span><br></pre></td></tr></table></figure>
+
+<p><strong>5、要求连接这些主机的交换端口忽视生成树过程，能够直接进入到转发状态，并且这些端口在接收到配置BPDU时就进入err-disabled状态</strong></p>
+<ul>
+<li>在接入层交换机连接PC的端口上开启PortFast和BPUD Guard特性</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="comment">//在全局下开启PortFast特性，只针对access端口生效</span></span><br><span class="line">ASW1(config)#spanning-tree portfast edge default </span><br><span class="line">ASW2(config)#spanning-tree portfast edge default </span><br></pre></td></tr></table></figure>
+
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/26/0iIaGT.png"></p>
+<ul>
+<li>在连接PC的接口下开启BPDU Guard特性，则当监听到BPDU时，会把端口shutdown，状态置为err-disabled</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">ASW1(config)#int range e0/0-1</span><br><span class="line">ASW1(config-if-range)#spanning-tree bpduguard enable </span><br><span class="line"></span><br><span class="line">ASW2(config)#int range e0/0-1</span><br><span class="line">ASW2(config-if-range)#spanning-tree bpduguard enable </span><br><span class="line"></span><br><span class="line"><span class="comment">//设定自动恢复的时间</span></span><br><span class="line">ASW1(config)#errdisable recovery cause bpduguard </span><br><span class="line">ASW1(config)#errdisable recovery interval 30</span><br><span class="line"></span><br><span class="line">ASW2(config)#errdisable recovery cause bpduguard </span><br><span class="line">ASW2(config)#errdisable recovery interval 30</span><br></pre></td></tr></table></figure>
+
+<p><strong>6、完成必要的配置，实现各PC间可以互相访问且都能访问R1</strong></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/26/0iTs4x.png"></p>
+<ul>
+<li>将DSW1连接R1的端口设置成三层端口，配置IP地址</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">DSW1(config)#int e1/0</span><br><span class="line">DSW1(config-if)#no switchport </span><br><span class="line">DSW1(config-if)#ip address 10.10.10.1 255.255.255.0</span><br><span class="line"></span><br><span class="line">R1(config)#int e0/0</span><br><span class="line">R1(config-if)#ip address 10.10.10.2 255.255.255.0</span><br><span class="line">R1(config-if)#no shutdown </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在DSW1和R1上启用OSPF</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">DSW1(config)#router ospf 1</span><br><span class="line">DSW1(config-router)#router-id 1.1.1.1</span><br><span class="line">DSW1(config-router)#network 192.168.10.0 0.0.0.255 a 0</span><br><span class="line">DSW1(config-router)#network 192.168.20.0 0.0.0.255 a 0</span><br><span class="line">DSW1(config-router)#network 192.168.30.0 0.0.0.255 a 0</span><br><span class="line">DSW1(config-router)#network 192.168.40.0 0.0.0.255 a 0</span><br><span class="line">DSW1(config-router)#network 10.10.10.0 0.0.0.255 a 0</span><br><span class="line"></span><br><span class="line">R1(config)#router ospf 1</span><br><span class="line">R1(config-router)#router-id 2.2.2.2</span><br><span class="line">R1(config-router)#network 10.10.10.0 0.0.0.255 a 0</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>此时PC能够访问R1</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/26/0i7ZZ9.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/26/0i73se.png"></p>
+<p><strong>7、随着网络规模的扩大，该园区网将来可能需要配置更多的VLAN，大量的VLAN实例会影响交换机的性能，要求将该客户网络迁移到MST中，具体MST需求如下：</strong></p>
+<ul>
+<li><p><strong>创建两个MST实例，MST1和MST2，其中MST1用于VLAN 10到VLAN 25，MST2用于VLAN 26到VLAN 50，其他VLAN属于CIST</strong></p>
+</li>
+<li><p><strong>使用MST区域名”SWITCH”，修订号”1”</strong></p>
+</li>
+<li><p><strong>将DSW1配置为MST1及CIST的主根，为MST2的次根</strong></p>
+</li>
+<li><p><strong>将DSW2配置为MST2的主根，为MST1及CIST的次根</strong></p>
+</li>
+<li><p>指定生成树类型为MST，将相应的VLAN加入到实例中，并指定主次根</p>
+</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">DSW1(config)#spanning-tree mode mst</span><br><span class="line">DSW1(config)#spanning-tree mst configuration </span><br><span class="line">DSW1(config-mst)#name SWITCH</span><br><span class="line">DSW1(config-mst)#revision 1</span><br><span class="line">DSW1(config-mst)#instance 1 vlan 10-25</span><br><span class="line">DSW1(config-mst)#instance 2 vlan 26-50</span><br><span class="line">DSW1(config)#spanning-tree mst 0-1 root primary </span><br><span class="line">DSW1(config)#spanning-tree mst 2 root secondary </span><br><span class="line"></span><br><span class="line">DSW2(config)#spanning-tree mode mst </span><br><span class="line">DSW2(config)#spanning-tree mst configuration </span><br><span class="line">DSW2(config-mst)#name SWITCH  </span><br><span class="line">DSW2(config-mst)#revision 1</span><br><span class="line">DSW2(config-mst)#instance 1 vlan 10-25</span><br><span class="line">DSW2(config-mst)#instance 2 vlan 26-50</span><br><span class="line">DSW2(config)#spanning-tree mst 0-1 root secondary </span><br><span class="line">DSW2(config)#spanning-tree mst 2 root primary </span><br><span class="line"></span><br><span class="line">ASW1(config)#spanning-tree mode mst </span><br><span class="line">ASW1(config)#spanning-tree mst configuration </span><br><span class="line">ASW1(config-mst)#name SWITCH</span><br><span class="line">ASW1(config-mst)#revision 1</span><br><span class="line">ASW1(config-mst)#instance 1 vlan 10-25</span><br><span class="line">ASW1(config-mst)#instance 2 vlan 26-50</span><br><span class="line"></span><br><span class="line">ASW2(config)#spanning-tree mode mst </span><br><span class="line">ASW2(config)#spanning-tree mst configuration </span><br><span class="line">ASW2(config-mst)#name SWITCH</span><br><span class="line">ASW2(config-mst)#revision 1</span><br><span class="line">ASW2(config-mst)#instance 1 vlan 10-25</span><br><span class="line">ASW2(config-mst)#instance 2 vlan 26-50</span><br></pre></td></tr></table></figure>
+
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/26/0izjUS.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/26/0FSeC4.png"></p>
+<p><strong>8、该客户网络进行了升级，购买了两台新的多层交换机，升级之后的网络拓扑如下，其中客户所属的VLAN角色及地址段信息保持不变，要求完成如下网络配置</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> 配置DSW1和DSW2以执行VLAN间路由。将DSW1用作与交换机ASW1连接的PC1和PC2的默认网关。连接DSW2的客户端使用DSW2作为默认网关，所有PC都保留网络升级改造之前的IP地址和默认网关</li>
+<li><input disabled="" type="checkbox"> R1与两多层交换机链路的IP地址，以及园区外部的ISP和Web_SRV地址自行规划</li>
+<li><input disabled="" type="checkbox"> 在园区网络内启用OSPF，并且将园区网络划分到区域0中</li>
+<li><input disabled="" type="checkbox"> 将ASW1和DSW1之间的链路捆绑到一个基于标准的EtherChannel中</li>
+<li><input disabled="" type="checkbox"> 完成其他必要配置，实现各VLAN间的用户可以互相通信，并且实现园区网络内的用户可以访问ISP上的Web_SRV</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/26/0FSYPe.png"></p>
+<ul>
+<li>配置DSW1作为PC1、PC2的网关；DSW2作为PC3、PC4的网关</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">DSW1(config)#vlan 10,20,30</span><br><span class="line">DSW1(config)#int vlan 10</span><br><span class="line">DSW1(config-if)#no shutdown</span><br><span class="line">DSW1(config-if)#ip address 192.168.10.254 255.255.255.0</span><br><span class="line">DSW1(config)#int vlan 20</span><br><span class="line">DSW1(config-if)#no shutdown</span><br><span class="line">DSW1(config-if)#ip address 192.168.20.254 255.255.255.0</span><br><span class="line">DSW1(config)#int vlan 30</span><br><span class="line">DSW1(config-if)#ip address 192.168.30.253 255.255.255.0</span><br><span class="line">DSW1(config-if)#no shutdown </span><br><span class="line"></span><br><span class="line">DSW2(config)#vlan 30,40</span><br><span class="line">DSW2(config)#int vlan 30</span><br><span class="line">DSW2(config-if)#ip address 192.168.30.254 255.255.255.0</span><br><span class="line">DSW2(config-if)#no shutdown</span><br><span class="line">DSW2(config)#int vlan 40</span><br><span class="line">DSW2(config-if)#ip address 192.168.40.254 255.255.255.0</span><br><span class="line">DSW2(config-if)#no shutdown</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>IP地址规划如下</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R1(config)#int e0/0</span><br><span class="line">R1(config-if)#ip address 172.16.10.1 255.255.255.0</span><br><span class="line">R1(config-if)#no shutdown </span><br><span class="line">R1(config)#int e0/1</span><br><span class="line">R1(config-if)#ip address 172.16.20.1 255.255.255.0</span><br><span class="line">R1(config-if)#no shutdown </span><br><span class="line">R1(config)#int s1/0</span><br><span class="line">R1(config-if)#ip address 12.12.12.1 255.255.255.0</span><br><span class="line">R1(config-if)#no shutdown </span><br><span class="line"></span><br><span class="line">ISP(config)#int s1/0</span><br><span class="line">ISP(config-if)#ip address 12.12.12.2 255.255.255.0</span><br><span class="line">ISP(config-if)#no shutdown </span><br><span class="line">ISP(config)#int e0/0</span><br><span class="line">ISP(config-if)#ip address 23.23.23.2 255.255.255.0</span><br><span class="line">ISP(config-if)#no shutdown </span><br><span class="line"></span><br><span class="line">Web_SRV(config)#int e0/0</span><br><span class="line">Web_SRV(config-if)#ip address 23.23.23.3 255.255.255.0</span><br><span class="line">Web_SRV(config-if)#no shutdown </span><br><span class="line">Web_SRV(config)#ip default-gateway 23.23.23.2</span><br><span class="line"></span><br><span class="line">DSW1(config)#int e0/1</span><br><span class="line">DSW1(config-if)#no switchport </span><br><span class="line">DSW1(config-if)#ip address 172.16.10.2 255.255.255.0</span><br><span class="line"></span><br><span class="line">DSW2(config)#int e0/1</span><br><span class="line">DSW2(config-if)#no switchport </span><br><span class="line">DSW2(config-if)#ip address 172.16.20.2 255.255.255.0</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>启用OSPF</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">DSW1(config)#router ospf 1</span><br><span class="line">DSW1(config-router)#router-id 1.1.1.1  </span><br><span class="line">DSW1(config-router)#network 192.168.10.0 0.0.0.255 a 0</span><br><span class="line">DSW1(config-router)#network 192.168.20.0 0.0.0.255 a 0</span><br><span class="line">DSW1(config-router)#network 192.168.30.0 0.0.0.255 a 0</span><br><span class="line">DSW1(config-router)#network 172.16.10.0 0.0.0.255 a 0</span><br><span class="line"></span><br><span class="line">DSW2(config)#router ospf 1</span><br><span class="line">DSW2(config-router)#router-id 2.2.2.2</span><br><span class="line">DSW2(config-router)#network 192.168.30.0 0.0.0.255 a 0</span><br><span class="line">DSW2(config-router)#network 192.168.40.0 0.0.0.255 a 0</span><br><span class="line">DSW2(config-router)#network 172.16.20.0 0.0.0.255 a 0</span><br><span class="line"></span><br><span class="line">R1(config)#router ospf 1</span><br><span class="line">R1(config-router)#router-id 3.3.3.3</span><br><span class="line">R1(config-router)#network 172.16.10.0 0.0.0.255 a 0</span><br><span class="line">R1(config-router)#network 172.16.20.0 0.0.0.255 a 0</span><br></pre></td></tr></table></figure>
+
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/26/0FiB4K.png"></p>
+<ul>
+<li>在ASW1和DSW1上配置EtherChannel</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">DSW1(config)#int range e0/2-3</span><br><span class="line">DSW1(config-if-range)#channel-group 1 mode active </span><br><span class="line"></span><br><span class="line">ASW1(config)#int range e0/2-3</span><br><span class="line">ASW1(config-if-range)#channel-group 1 mode active </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在R1上配置PAT</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="comment">//在R1配置默认路由，使得R1可以访问Web_SRV</span></span><br><span class="line">R1(config)#ip route 0.0.0.0 0.0.0.0 s1/0</span><br><span class="line"><span class="comment">//在OSPF进程下发默认路由</span></span><br><span class="line">R1(config)#router ospf 1</span><br><span class="line">R1(config-router)#default-information originate </span><br><span class="line"><span class="comment">//ACL匹配PC所在网段</span></span><br><span class="line">R1(config)#access-list 1 permit 192.168.0.0 /16</span><br><span class="line"><span class="comment">//PAT</span></span><br><span class="line">R1(config)#ip nat inside source list 1 interface s1/0 overload </span><br><span class="line"><span class="comment">//指定内外部接口</span></span><br><span class="line">R1(config)#int range e0/0-1</span><br><span class="line">R1(config-if-range)#ip nat inside </span><br><span class="line">R1(config)#int s1/0</span><br><span class="line">R1(config-if)#ip nat outside </span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>此时PC可以访问Web_SRV</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0FAo8K.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0FAIC6.png"></p>
+<blockquote>
+<p>查看地址转换表</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0FEp28.png"></p>
+]]></content>
+      <categories>
+        <category>实验</category>
+      </categories>
+      <tags>
+        <tag>STP</tag>
+        <tag>RSTP</tag>
+        <tag>MST</tag>
       </tags>
   </entry>
   <entry>
