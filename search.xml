@@ -936,6 +936,269 @@
       </tags>
   </entry>
   <entry>
+    <title>OSPF综合实验一</title>
+    <url>/2020/11/15/OSPF%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80/</url>
+    <content><![CDATA[<h3 id="一、实验目的"><a href="#一、实验目的" class="headerlink" title="一、实验目的"></a>一、实验目的</h3><p>（1）熟悉OSPF的基本配置</p>
+<p>（2）熟悉OSPF网络类型的应用</p>
+<p>（3）理解不连续区域的网络环境及不连续区域对OSPF路由选择的影响</p>
+<p>（4）掌握OSPF不连续区域的几种解决方案</p>
+<p>（5）掌握OSPF区域间和外部路由的汇总</p>
+<p>（6）掌握OSPF默认路由的配置及控制</p>
+<h3 id="二、实验拓扑"><a href="#二、实验拓扑" class="headerlink" title="二、实验拓扑"></a>二、实验拓扑</h3><p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DFhr80.png"></p>
+<h3 id="三、实验步骤"><a href="#三、实验步骤" class="headerlink" title="三、实验步骤"></a>三、实验步骤</h3><p><strong>1、完成各路由器的基本配置，除图示地址标识外，设备间的地址自己规划，并分别在路由器R1、R2、R3、R5和R6上各起一个loopback接口，地址为各路由器的编号，如R1的loopback地址为1.1.1.1，其他以此类推</strong></p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="comment">//参照R1的配置，在各路由器接口配置相应的IP地址</span></span><br><span class="line">R1(config)#int e0/0</span><br><span class="line">R1(config-if)#ip address 12.12.12.1 255.255.255.0</span><br><span class="line">R1(config-if)#no shutdown </span><br><span class="line">R1(config-if)#int e0/1</span><br><span class="line">R1(config-if)#ip address 16.16.16.1 255.255.255.0</span><br><span class="line">R1(config-if)#no shutdown</span><br><span class="line">R1(config-if)#int s1/0</span><br><span class="line">R1(config-if)#ip address 200.100.100.1 255.255.255.0</span><br><span class="line">R1(config-if)#no shutdown</span><br><span class="line"><span class="comment">//在R1、R2、R3、R5和R6上各起一个loopback接口</span></span><br><span class="line">R1(config)#int lo1</span><br><span class="line">R1(config-if)#ip address 1.1.1.1 255.255.255.0</span><br><span class="line">R2(config)#int lo1</span><br><span class="line">R2(config-if)#ip address 2.2.2.2 255.255.255.0</span><br><span class="line">R3(config)#int lo1</span><br><span class="line">R3(config-if)#ip address 3.3.3.3 255.255.255.0</span><br><span class="line">R5(config)#int lo1</span><br><span class="line">R5(config-if)#ip add 5.5.5.5 255.255.255.0</span><br><span class="line">R6(config)#int lo1</span><br><span class="line">R6(config-if)#ip address 6.6.6.6 255.255.255.0</span><br></pre></td></tr></table></figure>
+
+<p><strong>2、除ISP区域外，全网启用OSPF，并设置各路由器的RID为各路由器的编号，根据图示将各网段划分进相应的OSPF区域中，要求在R5上采用接口级命令将R5相应的接口加入到OSPF区域中，在其他路由器上采用合适的方式启用OSPF，并在R2上进行EIGRP和OSPF的双向重分布</strong></p>
+<ul>
+<li>全网启用OSPF</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="comment">//R1上进行OSPF配置</span></span><br><span class="line">R1(config)#router ospf 1</span><br><span class="line">R1(config-router)#router-id 1.1.1.1</span><br><span class="line">R1(config-router)#network 12.12.12.0 0.0.0.255 area 0</span><br><span class="line">R1(config-router)#network 16.16.16.0 0.0.0.255 area 0</span><br><span class="line">R1(config-router)#network 1.1.1.0 0.0.0.255 area 0</span><br><span class="line"><span class="comment">//R2上进行OSPF配置</span></span><br><span class="line">R2(config)#router ospf 1</span><br><span class="line">R2(config-router)#router-id 2.2.2.2</span><br><span class="line">R2(config-router)#network 12.12.12.0 0.0.0.255 area 0</span><br><span class="line">R2(config-router)#network 23.23.23.0 0.0.0.255 area 0</span><br><span class="line">R2(config-router)#network 2.2.2.0 0.0.0.255 area 0</span><br><span class="line"><span class="comment">//R3上进行OSPF配置</span></span><br><span class="line">R3(config)#router ospf 1</span><br><span class="line">R3(config-router)#router-id 3.3.3.3</span><br><span class="line">R3(config-router)#network 23.23.23.0 0.0.0.255 area 0</span><br><span class="line">R3(config-router)#network 34.34.34.0 0.0.0.255 area 345</span><br><span class="line">R3(config-router)#network 3.3.3.0 0.0.0.255 area 0</span><br><span class="line"><span class="comment">//R4上进行OSPF配置</span></span><br><span class="line">R4(config)#router ospf 1</span><br><span class="line">R4(config-router)#router-id 4.4.4.4</span><br><span class="line">R4(config-router)#network 34.34.34.0 0.0.0.255 area 345</span><br><span class="line">R4(config-router)#network 45.45.45.0 0.0.0.255 area 345</span><br><span class="line">R4(config-router)#network 192.168.1.0 0.0.0.255 area 345</span><br><span class="line">R4(config-router)#network 192.168.2.0 0.0.0.255 area 345</span><br><span class="line">R4(config-router)#network 192.168.3.0 0.0.0.255 area 345</span><br><span class="line">R4(config-router)#network 192.168.4.0 0.0.0.255 area 345</span><br><span class="line"><span class="comment">//R5上进行OSPF配置</span></span><br><span class="line">R5(config)#router ospf 1</span><br><span class="line">R5(config-router)#router-id 5.5.5.5</span><br><span class="line">R5(config)#int e0/1  </span><br><span class="line">R5(config-if)#ip ospf 1 area 0</span><br><span class="line">R5(config-if)#int e0/0</span><br><span class="line">R5(config-if)#ip ospf 1 area 345</span><br><span class="line">R5(config-if)#int e0/2</span><br><span class="line">R5(config-if)#ip ospf 1 area 578</span><br><span class="line">R5(config-if)#int lo1</span><br><span class="line">R5(config-if)#ip ospf 1 area 0</span><br><span class="line"><span class="comment">//R6上进行OSPF配置</span></span><br><span class="line">R6(config)#router ospf 1</span><br><span class="line">R6(config-router)#router-id 6.6.6.6</span><br><span class="line">R6(config-router)#network 16.16.16.0 0.0.0.255 area 0</span><br><span class="line">R6(config-router)#network 56.56.56.0 0.0.0.255 area 0</span><br><span class="line">R6(config-router)#network 6.6.6.0 0.0.0.255 area 0</span><br><span class="line"><span class="comment">//R7上进行OSPF配置</span></span><br><span class="line">R7(config)#router ospf 1</span><br><span class="line">R7(config-router)#router-id 7.7.7.7</span><br><span class="line">R7(config)#int range e0/0,lo1-4</span><br><span class="line">R7(config-if-range)#ip ospf 1 area 578</span><br><span class="line"><span class="comment">//R8上进行OSPF配置</span></span><br><span class="line">R8(config)#router ospf 1</span><br><span class="line">R8(config-router)#router-id 8.8.8.8</span><br><span class="line">R8(config)#int range e0/0,lo1-4</span><br><span class="line">R8(config-if-range)#ip ospf 1 area 578</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在R9和R2上进行EIGRP的配置，并在R2上进行重分布</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R9(config)#router eigrp 110</span><br><span class="line">R9(config-router)#no auto-summary </span><br><span class="line">R9(config-router)#network 29.29.29.0 0.0.0.255</span><br><span class="line">R9(config-router)#network 172.16.1.0 0.0.0.255</span><br><span class="line">R9(config-router)#network 172.16.2.0 0.0.0.255</span><br><span class="line">R9(config-router)#network 172.16.3.0 0.0.0.255</span><br><span class="line">R9(config-router)#network 172.16.4.0 0.0.0.255</span><br><span class="line"></span><br><span class="line">R2(config)#router eigrp 110</span><br><span class="line">R2(config-router)#no auto-summary </span><br><span class="line">R2(config-router)#network 29.29.29.0 0.0.0.255</span><br><span class="line">R2(config-router)#redistribute ospf 1 metric 10000 1 1 1 1</span><br><span class="line">R2(config)#router ospf 1</span><br><span class="line">R2(config-router)#redistribute eigrp 110 subnets </span><br></pre></td></tr></table></figure>
+
+<p><strong>3、采用合适的命令观察OSPF的邻居表、拓扑表和路由表，仔细观察路由表的各路由类型，并测试图示标注的loopback接口网段间的联通性</strong></p>
+<ul>
+<li>查看R1的邻居表</li>
+</ul>
+<blockquote>
+<p>R1与R2、R6建立邻居邻接关系</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DFhfa9.png"></p>
+<ul>
+<li>查看R1的拓扑表</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">R1#show ip ospf database </span><br><span class="line"></span><br><span class="line">            OSPF Router <span class="keyword">with</span> ID (<span class="number">1.1</span><span class="number">.1</span><span class="number">.1</span>) (Process ID <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">                Router Link States (Area <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">Link ID         ADV Router      Age         Seq#       Checksum Link count</span><br><span class="line"><span class="number">1.1</span><span class="number">.1</span><span class="number">.1</span>         <span class="number">1.1</span><span class="number">.1</span><span class="number">.1</span>         <span class="number">193</span>         <span class="number">0x80000008</span> <span class="number">0x003704</span> <span class="number">3</span></span><br><span class="line"><span class="number">2.2</span><span class="number">.2</span><span class="number">.2</span>         <span class="number">2.2</span><span class="number">.2</span><span class="number">.2</span>         <span class="number">194</span>         <span class="number">0x80000008</span> <span class="number">0x009075</span> <span class="number">3</span></span><br><span class="line"><span class="number">3.3</span><span class="number">.3</span><span class="number">.3</span>         <span class="number">3.3</span><span class="number">.3</span><span class="number">.3</span>         <span class="number">208</span>         <span class="number">0x80000005</span> <span class="number">0x003D26</span> <span class="number">2</span></span><br><span class="line"><span class="number">5.5</span><span class="number">.5</span><span class="number">.5</span>         <span class="number">5.5</span><span class="number">.5</span><span class="number">.5</span>         <span class="number">930</span>         <span class="number">0x80000004</span> <span class="number">0x006220</span> <span class="number">2</span></span><br><span class="line"><span class="number">6.6</span><span class="number">.6</span><span class="number">.6</span>         <span class="number">6.6</span><span class="number">.6</span><span class="number">.6</span>         <span class="number">194</span>         <span class="number">0x80000005</span> <span class="number">0x00D31D</span> <span class="number">3</span></span><br><span class="line"></span><br><span class="line">                Net Link States (Area <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">Link ID         ADV Router      Age         Seq#       Checksum</span><br><span class="line"><span class="number">12.12</span><span class="number">.12</span><span class="number">.2</span>      <span class="number">2.2</span><span class="number">.2</span><span class="number">.2</span>         <span class="number">194</span>         <span class="number">0x80000001</span> <span class="number">0x0014EB</span></span><br><span class="line"><span class="number">16.16</span><span class="number">.16</span><span class="number">.6</span>      <span class="number">6.6</span><span class="number">.6</span><span class="number">.6</span>         <span class="number">194</span>         <span class="number">0x80000001</span> <span class="number">0x006B64</span></span><br><span class="line"><span class="number">23.23</span><span class="number">.23</span><span class="number">.2</span>      <span class="number">2.2</span><span class="number">.2</span><span class="number">.2</span>         <span class="number">344</span>         <span class="number">0x80000002</span> <span class="number">0x00E8EC</span></span><br><span class="line"><span class="number">56.56</span><span class="number">.56</span><span class="number">.5</span>      <span class="number">5.5</span><span class="number">.5</span><span class="number">.5</span>         <span class="number">931</span>         <span class="number">0x80000001</span> <span class="number">0x00C685</span></span><br><span class="line"></span><br><span class="line">                Summary Net Link States (Area <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">Link ID         ADV Router      Age         Seq#       Checksum</span><br><span class="line"><span class="number">10.7</span><span class="number">.1</span><span class="number">.0</span>        <span class="number">5.5</span><span class="number">.5</span><span class="number">.5</span>         <span class="number">298</span>         <span class="number">0x80000001</span> <span class="number">0x007F8C</span></span><br><span class="line"><span class="number">10.7</span><span class="number">.2</span><span class="number">.0</span>        <span class="number">5.5</span><span class="number">.5</span><span class="number">.5</span>         <span class="number">298</span>         <span class="number">0x80000001</span> <span class="number">0x007496</span></span><br><span class="line"><span class="number">10.7</span><span class="number">.3</span><span class="number">.0</span>        <span class="number">5.5</span><span class="number">.5</span><span class="number">.5</span>         <span class="number">299</span>         <span class="number">0x80000001</span> <span class="number">0x0069A0</span></span><br><span class="line"><span class="number">10.7</span><span class="number">.4</span><span class="number">.0</span>        <span class="number">5.5</span><span class="number">.5</span><span class="number">.5</span>         <span class="number">299</span>         <span class="number">0x80000001</span> <span class="number">0x005EAA</span></span><br><span class="line"><span class="number">10.8</span><span class="number">.1</span><span class="number">.0</span>        <span class="number">5.5</span><span class="number">.5</span><span class="number">.5</span>         <span class="number">285</span>         <span class="number">0x80000001</span> <span class="number">0x007397</span></span><br><span class="line"><span class="number">10.8</span><span class="number">.2</span><span class="number">.0</span>        <span class="number">5.5</span><span class="number">.5</span><span class="number">.5</span>         <span class="number">286</span>         <span class="number">0x80000001</span> <span class="number">0x0068A1</span></span><br><span class="line"><span class="number">10.8</span><span class="number">.3</span><span class="number">.0</span>        <span class="number">5.5</span><span class="number">.5</span><span class="number">.5</span>         <span class="number">286</span>         <span class="number">0x80000001</span> <span class="number">0x005DAB</span></span><br><span class="line"><span class="number">10.8</span><span class="number">.4</span><span class="number">.0</span>        <span class="number">5.5</span><span class="number">.5</span><span class="number">.5</span>         <span class="number">286</span>         <span class="number">0x80000001</span> <span class="number">0x0052B5</span></span><br><span class="line"><span class="number">34.34</span><span class="number">.34</span><span class="number">.0</span>      <span class="number">3.3</span><span class="number">.3</span><span class="number">.3</span>         <span class="number">208</span>         <span class="number">0x80000002</span> <span class="number">0x00E2A6</span></span><br><span class="line"><span class="number">34.34</span><span class="number">.34</span><span class="number">.0</span>      <span class="number">5.5</span><span class="number">.5</span><span class="number">.5</span>         <span class="number">1020</span>        <span class="number">0x80000001</span> <span class="number">0x000D6B</span></span><br><span class="line"><span class="number">45.45</span><span class="number">.45</span><span class="number">.0</span>      <span class="number">3.3</span><span class="number">.3</span><span class="number">.3</span>         <span class="number">1295</span>        <span class="number">0x80000001</span> <span class="number">0x00BBA3</span></span><br><span class="line"><span class="number">45.45</span><span class="number">.45</span><span class="number">.0</span>      <span class="number">5.5</span><span class="number">.5</span><span class="number">.5</span>         <span class="number">1020</span>        <span class="number">0x80000001</span> <span class="number">0x00FC9A</span></span><br><span class="line"><span class="number">57.57</span><span class="number">.57</span><span class="number">.0</span>      <span class="number">5.5</span><span class="number">.5</span><span class="number">.5</span>         <span class="number">1010</span>        <span class="number">0x80000001</span> <span class="number">0x004B28</span></span><br><span class="line"><span class="number">192.168</span><span class="number">.1</span><span class="number">.0</span>     <span class="number">3.3</span><span class="number">.3</span><span class="number">.3</span>         <span class="number">316</span>         <span class="number">0x80000001</span> <span class="number">0x00FE86</span></span><br><span class="line"><span class="number">192.168</span><span class="number">.1</span><span class="number">.0</span>     <span class="number">5.5</span><span class="number">.5</span><span class="number">.5</span>         <span class="number">318</span>         <span class="number">0x80000001</span> <span class="number">0x00A40F</span></span><br><span class="line"><span class="number">192.168</span><span class="number">.2</span><span class="number">.0</span>     <span class="number">3.3</span><span class="number">.3</span><span class="number">.3</span>         <span class="number">316</span>         <span class="number">0x80000001</span> <span class="number">0x00F390</span></span><br><span class="line"><span class="number">192.168</span><span class="number">.2</span><span class="number">.0</span>     <span class="number">5.5</span><span class="number">.5</span><span class="number">.5</span>         <span class="number">318</span>         <span class="number">0x80000001</span> <span class="number">0x009919</span></span><br><span class="line"><span class="number">192.168</span><span class="number">.3</span><span class="number">.0</span>     <span class="number">3.3</span><span class="number">.3</span><span class="number">.3</span>         <span class="number">316</span>         <span class="number">0x80000001</span> <span class="number">0x00E89A</span></span><br><span class="line"><span class="number">192.168</span><span class="number">.3</span><span class="number">.0</span>     <span class="number">5.5</span><span class="number">.5</span><span class="number">.5</span>         <span class="number">318</span>         <span class="number">0x80000001</span> <span class="number">0x008E23</span></span><br><span class="line"><span class="number">192.168</span><span class="number">.4</span><span class="number">.0</span>     <span class="number">3.3</span><span class="number">.3</span><span class="number">.3</span>         <span class="number">317</span>         <span class="number">0x80000001</span> <span class="number">0x00DDA4</span></span><br><span class="line"><span class="number">192.168</span><span class="number">.4</span><span class="number">.0</span>     <span class="number">5.5</span><span class="number">.5</span><span class="number">.5</span>         <span class="number">319</span>         <span class="number">0x80000001</span> <span class="number">0x00832D</span></span><br><span class="line"></span><br><span class="line">                Type<span class="number">-5</span> AS External Link States</span><br><span class="line">          </span><br><span class="line">Link ID         ADV Router      Age         Seq#       Checksum Tag</span><br><span class="line"><span class="number">29.29</span><span class="number">.29</span><span class="number">.0</span>      <span class="number">2.2</span><span class="number">.2</span><span class="number">.2</span>         <span class="number">425</span>         <span class="number">0x80000001</span> <span class="number">0x0093AD</span> <span class="number">0</span></span><br><span class="line"><span class="number">172.16</span><span class="number">.1</span><span class="number">.0</span>      <span class="number">2.2</span><span class="number">.2</span><span class="number">.2</span>         <span class="number">425</span>         <span class="number">0x80000001</span> <span class="number">0x001BBF</span> <span class="number">0</span></span><br><span class="line"><span class="number">172.16</span><span class="number">.2</span><span class="number">.0</span>      <span class="number">2.2</span><span class="number">.2</span><span class="number">.2</span>         <span class="number">425</span>         <span class="number">0x80000001</span> <span class="number">0x0010C9</span> <span class="number">0</span></span><br><span class="line"><span class="number">172.16</span><span class="number">.3</span><span class="number">.0</span>      <span class="number">2.2</span><span class="number">.2</span><span class="number">.2</span>         <span class="number">425</span>         <span class="number">0x80000001</span> <span class="number">0x0005D3</span> <span class="number">0</span></span><br><span class="line"><span class="number">172.16</span><span class="number">.4</span><span class="number">.0</span>      <span class="number">2.2</span><span class="number">.2</span><span class="number">.2</span>         <span class="number">425</span>         <span class="number">0x80000001</span> <span class="number">0x00F9DD</span> <span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看R1的路由表中的OSPF路由</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">R1#show ip route ospf</span><br><span class="line">&lt;省略部分输出&gt;</span><br><span class="line"></span><br><span class="line">      <span class="number">2.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">24</span> is subnetted, <span class="number">1</span> subnets</span><br><span class="line">O        <span class="number">2.2</span><span class="number">.2</span><span class="number">.0</span> [<span class="number">110</span>/<span class="number">11</span>] via <span class="number">12.12</span><span class="number">.12</span><span class="number">.2</span>, <span class="number">00</span>:<span class="number">06</span>:<span class="number">39</span>, Ethernet0/<span class="number">0</span></span><br><span class="line">      <span class="number">3.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">24</span> is subnetted, <span class="number">1</span> subnets</span><br><span class="line">O        <span class="number">3.3</span><span class="number">.3</span><span class="number">.0</span> [<span class="number">110</span>/<span class="number">21</span>] via <span class="number">12.12</span><span class="number">.12</span><span class="number">.2</span>, <span class="number">00</span>:<span class="number">06</span>:<span class="number">39</span>, Ethernet0/<span class="number">0</span></span><br><span class="line">      <span class="number">5.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">24</span> is subnetted, <span class="number">1</span> subnets</span><br><span class="line">O        <span class="number">5.5</span><span class="number">.5</span><span class="number">.0</span> [<span class="number">110</span>/<span class="number">21</span>] via <span class="number">16.16</span><span class="number">.16</span><span class="number">.6</span>, <span class="number">00</span>:<span class="number">06</span>:<span class="number">39</span>, Ethernet0/<span class="number">1</span></span><br><span class="line">      <span class="number">6.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">24</span> is subnetted, <span class="number">1</span> subnets</span><br><span class="line">O        <span class="number">6.6</span><span class="number">.6</span><span class="number">.0</span> [<span class="number">110</span>/<span class="number">11</span>] via <span class="number">16.16</span><span class="number">.16</span><span class="number">.6</span>, <span class="number">00</span>:<span class="number">06</span>:<span class="number">39</span>, Ethernet0/<span class="number">1</span></span><br><span class="line">      <span class="number">10.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">24</span> is subnetted, <span class="number">8</span> subnets</span><br><span class="line">O IA     <span class="number">10.7</span><span class="number">.1</span><span class="number">.0</span> [<span class="number">110</span>/<span class="number">31</span>] via <span class="number">16.16</span><span class="number">.16</span><span class="number">.6</span>, <span class="number">00</span>:<span class="number">06</span>:<span class="number">39</span>, Ethernet0/<span class="number">1</span></span><br><span class="line">O IA     <span class="number">10.7</span><span class="number">.2</span><span class="number">.0</span> [<span class="number">110</span>/<span class="number">31</span>] via <span class="number">16.16</span><span class="number">.16</span><span class="number">.6</span>, <span class="number">00</span>:<span class="number">06</span>:<span class="number">39</span>, Ethernet0/<span class="number">1</span></span><br><span class="line">O IA     <span class="number">10.7</span><span class="number">.3</span><span class="number">.0</span> [<span class="number">110</span>/<span class="number">31</span>] via <span class="number">16.16</span><span class="number">.16</span><span class="number">.6</span>, <span class="number">00</span>:<span class="number">06</span>:<span class="number">39</span>, Ethernet0/<span class="number">1</span></span><br><span class="line">O IA     <span class="number">10.7</span><span class="number">.4</span><span class="number">.0</span> [<span class="number">110</span>/<span class="number">31</span>] via <span class="number">16.16</span><span class="number">.16</span><span class="number">.6</span>, <span class="number">00</span>:<span class="number">06</span>:<span class="number">39</span>, Ethernet0/<span class="number">1</span></span><br><span class="line">O IA     <span class="number">10.8</span><span class="number">.1</span><span class="number">.0</span> [<span class="number">110</span>/<span class="number">31</span>] via <span class="number">16.16</span><span class="number">.16</span><span class="number">.6</span>, <span class="number">00</span>:<span class="number">06</span>:<span class="number">39</span>, Ethernet0/<span class="number">1</span></span><br><span class="line">O IA     <span class="number">10.8</span><span class="number">.2</span><span class="number">.0</span> [<span class="number">110</span>/<span class="number">31</span>] via <span class="number">16.16</span><span class="number">.16</span><span class="number">.6</span>, <span class="number">00</span>:<span class="number">06</span>:<span class="number">39</span>, Ethernet0/<span class="number">1</span></span><br><span class="line">O IA     <span class="number">10.8</span><span class="number">.3</span><span class="number">.0</span> [<span class="number">110</span>/<span class="number">31</span>] via <span class="number">16.16</span><span class="number">.16</span><span class="number">.6</span>, <span class="number">00</span>:<span class="number">06</span>:<span class="number">39</span>, Ethernet0/<span class="number">1</span></span><br><span class="line">O IA     <span class="number">10.8</span><span class="number">.4</span><span class="number">.0</span> [<span class="number">110</span>/<span class="number">31</span>] via <span class="number">16.16</span><span class="number">.16</span><span class="number">.6</span>, <span class="number">00</span>:<span class="number">06</span>:<span class="number">39</span>, Ethernet0/<span class="number">1</span></span><br><span class="line">      <span class="number">23.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">24</span> is subnetted, <span class="number">1</span> subnets</span><br><span class="line">O        <span class="number">23.23</span><span class="number">.23</span><span class="number">.0</span> [<span class="number">110</span>/<span class="number">20</span>] via <span class="number">12.12</span><span class="number">.12</span><span class="number">.2</span>, <span class="number">00</span>:<span class="number">06</span>:<span class="number">39</span>, Ethernet0/<span class="number">0</span></span><br><span class="line">      <span class="number">29.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">24</span> is subnetted, <span class="number">1</span> subnets</span><br><span class="line">O E2     <span class="number">29.29</span><span class="number">.29</span><span class="number">.0</span> [<span class="number">110</span>/<span class="number">20</span>] via <span class="number">12.12</span><span class="number">.12</span><span class="number">.2</span>, <span class="number">00</span>:<span class="number">06</span>:<span class="number">39</span>, Ethernet0/<span class="number">0</span></span><br><span class="line">      <span class="number">34.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">24</span> is subnetted, <span class="number">1</span> subnets</span><br><span class="line">O IA     <span class="number">34.34</span><span class="number">.34</span><span class="number">.0</span> [<span class="number">110</span>/<span class="number">84</span>] via <span class="number">12.12</span><span class="number">.12</span><span class="number">.2</span>, <span class="number">00</span>:<span class="number">06</span>:<span class="number">39</span>, Ethernet0/<span class="number">0</span></span><br><span class="line">      <span class="number">45.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">24</span> is subnetted, <span class="number">1</span> subnets</span><br><span class="line">O IA     <span class="number">45.45</span><span class="number">.45</span><span class="number">.0</span> [<span class="number">110</span>/<span class="number">30</span>] via <span class="number">16.16</span><span class="number">.16</span><span class="number">.6</span>, <span class="number">00</span>:<span class="number">06</span>:<span class="number">39</span>, Ethernet0/<span class="number">1</span></span><br><span class="line">      <span class="number">56.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">24</span> is subnetted, <span class="number">1</span> subnets</span><br><span class="line">O        <span class="number">56.56</span><span class="number">.56</span><span class="number">.0</span> [<span class="number">110</span>/<span class="number">20</span>] via <span class="number">16.16</span><span class="number">.16</span><span class="number">.6</span>, <span class="number">00</span>:<span class="number">06</span>:<span class="number">39</span>, Ethernet0/<span class="number">1</span></span><br><span class="line">      <span class="number">57.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">24</span> is subnetted, <span class="number">1</span> subnets</span><br><span class="line">O IA     <span class="number">57.57</span><span class="number">.57</span><span class="number">.0</span> [<span class="number">110</span>/<span class="number">30</span>] via <span class="number">16.16</span><span class="number">.16</span><span class="number">.6</span>, <span class="number">00</span>:<span class="number">06</span>:<span class="number">39</span>, Ethernet0/<span class="number">1</span></span><br><span class="line">      <span class="number">172.16</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">24</span> is subnetted, <span class="number">4</span> subnets</span><br><span class="line">O E2     <span class="number">172.16</span><span class="number">.1</span><span class="number">.0</span> [<span class="number">110</span>/<span class="number">20</span>] via <span class="number">12.12</span><span class="number">.12</span><span class="number">.2</span>, <span class="number">00</span>:<span class="number">06</span>:<span class="number">39</span>, Ethernet0/<span class="number">0</span></span><br><span class="line">O E2     <span class="number">172.16</span><span class="number">.2</span><span class="number">.0</span> [<span class="number">110</span>/<span class="number">20</span>] via <span class="number">12.12</span><span class="number">.12</span><span class="number">.2</span>, <span class="number">00</span>:<span class="number">06</span>:<span class="number">39</span>, Ethernet0/<span class="number">0</span></span><br><span class="line">O E2     <span class="number">172.16</span><span class="number">.3</span><span class="number">.0</span> [<span class="number">110</span>/<span class="number">20</span>] via <span class="number">12.12</span><span class="number">.12</span><span class="number">.2</span>, <span class="number">00</span>:<span class="number">06</span>:<span class="number">39</span>, Ethernet0/<span class="number">0</span></span><br><span class="line">O E2     <span class="number">172.16</span><span class="number">.4</span><span class="number">.0</span> [<span class="number">110</span>/<span class="number">20</span>] via <span class="number">12.12</span><span class="number">.12</span><span class="number">.2</span>, <span class="number">00</span>:<span class="number">06</span>:<span class="number">39</span>, Ethernet0/<span class="number">0</span></span><br><span class="line">O IA  <span class="number">192.168</span><span class="number">.1</span><span class="number">.0</span>/<span class="number">24</span> [<span class="number">110</span>/<span class="number">31</span>] via <span class="number">16.16</span><span class="number">.16</span><span class="number">.6</span>, <span class="number">00</span>:<span class="number">06</span>:<span class="number">39</span>, Ethernet0/<span class="number">1</span></span><br><span class="line">O IA  <span class="number">192.168</span><span class="number">.2</span><span class="number">.0</span>/<span class="number">24</span> [<span class="number">110</span>/<span class="number">31</span>] via <span class="number">16.16</span><span class="number">.16</span><span class="number">.6</span>, <span class="number">00</span>:<span class="number">06</span>:<span class="number">39</span>, Ethernet0/<span class="number">1</span></span><br><span class="line">O IA  <span class="number">192.168</span><span class="number">.3</span><span class="number">.0</span>/<span class="number">24</span> [<span class="number">110</span>/<span class="number">31</span>] via <span class="number">16.16</span><span class="number">.16</span><span class="number">.6</span>, <span class="number">00</span>:<span class="number">06</span>:<span class="number">39</span>, Ethernet0/<span class="number">1</span></span><br><span class="line">O IA  <span class="number">192.168</span><span class="number">.4</span><span class="number">.0</span>/<span class="number">24</span> [<span class="number">110</span>/<span class="number">31</span>] via <span class="number">16.16</span><span class="number">.16</span><span class="number">.6</span>, <span class="number">00</span>:<span class="number">06</span>:<span class="number">39</span>, Ethernet0/<span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>连通性测试</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DF4KMT.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DF4nzV.png"></p>
+<p><strong>4、要求骨干区域能够快速收敛，并让R5成为区域578中的DR</strong></p>
+<ul>
+<li>要使骨干区域能够快速收敛，只需将链路的网络类型改为点到点，则不会进行DR/BDR的选举</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R1(config)#int range e0/0-1</span><br><span class="line">R1(config-if-range)#ip ospf network point-to-point </span><br><span class="line">R2(config)#int range e0/0-1</span><br><span class="line">R2(config-if-range)#ip ospf network point-to-point </span><br><span class="line">R3(config)#int e0/0</span><br><span class="line">R3(config-if)#ip ospf network point-to-point </span><br><span class="line">R5(config)#int e0/1      </span><br><span class="line">R5(config-if)#ip ospf network point-to-point </span><br><span class="line">R6(config)#int range e0/0-1</span><br><span class="line">R6(config-if-range)#ip ospf network point-to-point </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>要使R5成为区域578中的DR，则修改R5上的e0/2接口的OSPF优先级</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R5(config)#int e0/2</span><br><span class="line">R5(config-if)#ip ospf priority 10</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>查看R5的OSPF邻居表，此时R7为DROTHER，R8为BDR</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DF4wLD.png"></p>
+<p><strong>5、采用合适的方案确保当骨干网络的任意链路中断的时候不会影响骨干网的连通性</strong></p>
+<ul>
+<li>在R3和R5上创建虚链路</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">R3(config)#router ospf 1</span><br><span class="line">R3(config-router)#area 345 virtual-link 5.5.5.5</span><br><span class="line">R5(config)#router ospf 1</span><br><span class="line">R5(config-router)#area 345 virtual-link 3.3.3.3</span><br><span class="line">*Nov <span class="number">15</span> <span class="number">10</span>:<span class="number">41</span>:<span class="number">41.581</span>: %OSPF<span class="number">-5</span>-ADJCHG: Process <span class="number">1</span>, Nbr <span class="number">3.3</span><span class="number">.3</span><span class="number">.3</span> on OSPF_VL0 <span class="keyword">from</span> LOADING to FULL, Loading Done</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看R3的邻居表</li>
+</ul>
+<blockquote>
+<p>可知此时R3与R5之间通过虚链路建立邻居邻接关系</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DF42SP.png"></p>
+<ul>
+<li>尝试将R1的e0/0接口shutdown，测试连通性</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R1(config)#int e0/0</span><br><span class="line">R1(config-if)#shutdown </span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>在R9上使用loopback接口 ping R8上的loopback接口</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DF47Yn.png"></p>
+<p><strong>6、观察各路由器上的路由表信息，然后在合适的路由器上进行必要的路由汇总，对比汇总之后各路由器路由表的变化，并观察和测试明细路由与汇总路由之间的关系</strong></p>
+<ul>
+<li>三类的路由在ABR上进行汇总</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="comment">//在R3和R5上对三类路由进行汇总</span></span><br><span class="line">R3(config)#router ospf 1</span><br><span class="line">R3(config-router)#area 345 range 192.168.0.0 255.255.248.0</span><br><span class="line">R5(config)#router ospf 1</span><br><span class="line">R5(config-router)#area 345 range 192.168.0.0 255.255.248.0</span><br><span class="line">R5(config-router)#area 578 range 10.0.0.0 255.0.0.0</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>五类的路由在ASBR上汇总</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="comment">//在R2上对五类路由进行汇总</span></span><br><span class="line">R2(config)#router ospf 1</span><br><span class="line">R2(config-router)#summary-address 172.16.0.0 255.255.248.0</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在执行汇总的路由器上都会产生指向NULL 0的路由条目</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DF4zTJ.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DF4vmF.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DF4xw4.png"></p>
+<ul>
+<li>查看R1的路由表</li>
+</ul>
+<blockquote>
+<p>此时只存在汇总后的路由</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DF5AOO.png"></p>
+<p><strong>7、采用合适的方案，实现图示标注的loopback网段可以访问ISP上的主机100.100.100.100</strong></p>
+<ul>
+<li>首先实现R1和R6可以访问ISP上的100.100.100.100</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="comment">//在R1和R6上配置默认路由</span></span><br><span class="line">R1(config)#ip route 0.0.0.0 0.0.0.0 s1/0</span><br><span class="line">R6(config)#ip route 0.0.0.0 0.0.0.0 s1/0</span><br></pre></td></tr></table></figure>
+
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DF5wpq.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DF5ahn.png"></p>
+<ul>
+<li>在R1和R6上分别进行NAT的配置</li>
+</ul>
+<blockquote>
+<p>R1上进行NAT配置</p>
+</blockquote>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="comment">//使用ACL匹配允许访问的网段</span></span><br><span class="line">R1(config)#access-list 1 permit 172.16.0.0 0.0.255.255 </span><br><span class="line">R1(config)#access-list 1 permit 192.168.0.0 0.0.255.255</span><br><span class="line">R1(config)#access-list 1 permit 10.0.0.0 0.255.255.255</span><br><span class="line"><span class="comment">//使用端口复用NAT进行地址转换</span></span><br><span class="line">R1(config)#ip nat inside source list 1 interface s1/0 overload</span><br><span class="line"><span class="comment">//指定内外部接口</span></span><br><span class="line">R1(config)#int s1/0</span><br><span class="line">R1(config-if)#ip nat outside</span><br><span class="line">R1(config)#int range e0/0-1</span><br><span class="line">R1(config-if-range)#ip nat inside</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>R6上进行NAT配置</p>
+</blockquote>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R6(config)#access-list 1 permit 172.16.0.0 0.0.255.255</span><br><span class="line">R6(config)#access-list 1 permit 192.168.0.0 0.0.255.255</span><br><span class="line">R6(config)#access-list 1 permit 10.0.0.0 0.255.255.255</span><br><span class="line">R6(config)#ip nat inside source list 1 interface s1/0 overload </span><br><span class="line">R6(config)#int s1/0</span><br><span class="line">R6(config-if)#ip nat outside</span><br><span class="line">R6(config)#int range e0/0-1</span><br><span class="line">R6(config-if-range)#ip nat inside</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在R1和R6上进行OSPF默认路由的下发</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R1(config)#router ospf 1</span><br><span class="line">R1(config-router)#default-information originate </span><br><span class="line"></span><br><span class="line">R6(config)#router ospf 1</span><br><span class="line">R6(config-router)#default-information originate </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看R9、R4、R7、R8上的路由表，都存在一条默认路由</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DF5L4A.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DF5qNd.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DF5bAH.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DF57He.png"></p>
+<ul>
+<li>测试——在R9上 ping loopback接口地址，并在R1上查看地址转换表</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DFIF4s.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DFIiNj.png"></p>
+<ul>
+<li>测试——在R4上 ping loopback接口地址，并在R6上查看地址转换表</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DFImuT.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DFIZvV.png"></p>
+<p><strong>8、要求各链路正常情况下，内网优选ISP1的链路对外部网络进行访问，当与ISP1相连的链路出现故障的时候，自动切换到ISP2的链路对外部网络进行访问，使用tracert观察验证该现象</strong></p>
+<blockquote>
+<p>默认情况下，各链路的带宽如下图所示。其中，以太网链路的默认带宽为10，串行链路的默认带宽为64。则R4、R7和R8会优选ISP2访问外部网络，R9优选ISP1访问外部网络</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DFI881.png"></p>
+<blockquote>
+<p>将链路的带宽进行修改后如下图所示。此时可以实现内网优选ISP1的链路对外部进行访问</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DFIGgx.png"></p>
+<ul>
+<li>修改各链路的带宽</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R2(config)#int e0/0</span><br><span class="line">R2(config-if)#ip ospf cost 1</span><br><span class="line">R3(config)#int e0/0</span><br><span class="line">R3(config-if)#ip ospf cost 1</span><br><span class="line">R4(config)#int s1/0</span><br><span class="line">R4(config-if)#ip ospf cost 1</span><br><span class="line">R5(config)#int e0/0</span><br><span class="line">R5(config-if)#ip ospf cost 1</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>跟踪R7访问外网所经过的路径</li>
+</ul>
+<blockquote>
+<p>由下图可知，此时R7通过ISP1的链路对外部网络进行访问</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DFI3CR.png"></p>
+<ul>
+<li>此时将ISP1上的S1/0接口shutdown</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">ISP1(config)#int s1/0</span><br><span class="line">ISP1(config-if)#shutdown </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>再次跟踪R7访问外网所经过的路径</li>
+</ul>
+<blockquote>
+<p>此时，R7通过ISP2的链路对外部网络进行访问</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DFoMsf.png"></p>
+]]></content>
+      <categories>
+        <category>实验</category>
+      </categories>
+      <tags>
+        <tag>OSPF</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>STP的运用</title>
+    <url>/2020/08/31/STP%E7%9A%84%E8%BF%90%E7%94%A8/</url>
+    <content><![CDATA[<h4 id="1、实验目的"><a href="#1、实验目的" class="headerlink" title="1、实验目的"></a>1、实验目的</h4><p>1）理解STP的作用<br>2）熟悉STP的工作原理<br>3）掌握STP的查看命令</p>
+<a id="more"></a>
+
+<h4 id="2、拓扑结构"><a href="#2、拓扑结构" class="headerlink" title="2、拓扑结构"></a>2、拓扑结构</h4><p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djPbAe.png"></p>
+<h4 id="3、实验步骤"><a href="#3、实验步骤" class="headerlink" title="3、实验步骤"></a>3、实验步骤</h4><p><strong>（1）在相应的交换机上创建vlan10，并将连接PC1和PC2的交换端口都划分进该vlan中</strong></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djiiNQ.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djiVcq.png"></p>
+<p><strong>（2）为主机设置合适的IP地址，IP地址自定，完成必要的配置实现主机间的通信</strong></p>
+<ul>
+<li>为两台PC配置IP地址（注意关闭路由功能，因为实验中的PC使用的是路由器的镜像）</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djiUHO.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djiDCd.png"></p>
+<ul>
+<li>将交换机之间的端口封装802.1Q，并配置成trunk</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djFmRA.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djFKMt.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djFYGj.png"></p>
+<ul>
+<li>测试PC的连通性</li>
+</ul>
+<blockquote>
+<p>由于PC1和PC2属于同一vlan，所以通过上述配置即可相互ping通</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djFxw8.png"></p>
+<p><strong>（3）查看各交换机的STP信息</strong></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djksnP.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djk678.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djkgAS.png"></p>
+<p><strong>（4）将SW1设置为vlan10的根桥，使用相关命令验证和查看各交换机上根桥的变化</strong></p>
+<ul>
+<li>设置SW1为vlan10的根桥</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djAmut.png"></p>
+<ul>
+<li>使用<span style="color:red">show spanning-tree</span>命令查看交换机状态</li>
+</ul>
+<blockquote>
+<p>由于设置SW1为vlan10的根桥，由下图可知，优先级默认降低2*4096，即为24576，加上vlan-id的10，所以优先级为24586</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djZVgJ.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djZQUK.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djZGgH.png"></p>
+<p><strong>（5）测试正常链路出现故障对主机通信的影响</strong></p>
+<ul>
+<li>将SW2的e0/1接口shutdown</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djZcKs.png"></p>
+<ul>
+<li>PC1仍然可以ping通PC2</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djZ2bq.png"></p>
+<p><strong>（6）先断开PC1与交换机的连接，然后恢复PC1与交换机的连接，观察主机重新接入交换机要经历多久才能够进行数据转发</strong></p>
+<blockquote>
+<p>由下图可知，PC1重新接入交换机需要经历30s（由于关闭的是SW2上的端口，可以直接进入listening状态（无需经历20s的blocking状态），再经历15s进入learning状态，最后经历15s进入forwarding状态）</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djero6.png"></p>
+]]></content>
+      <categories>
+        <category>实验</category>
+      </categories>
+      <tags>
+        <tag>CCNA</tag>
+        <tag>交换</tag>
+        <tag>STP</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>生成树协议</title>
     <url>/2020/09/15/STP/</url>
     <content><![CDATA[<h3 id="1、生成树协议概述"><a href="#1、生成树协议概述" class="headerlink" title="1、生成树协议概述"></a>1、生成树协议概述</h3><p>　　冗余的网络拓扑可以消除单点故障所导致的网络障碍。但从另一个角度看，冗余的网络拓扑也会带来其他的问题，如2层环路。使用STP技术可以在冗余的环境中消除潜在的2层环路问题。</p>
@@ -1107,74 +1370,82 @@
       </tags>
   </entry>
   <entry>
-    <title>STP的运用</title>
-    <url>/2020/08/31/STP%E7%9A%84%E8%BF%90%E7%94%A8/</url>
-    <content><![CDATA[<h4 id="1、实验目的"><a href="#1、实验目的" class="headerlink" title="1、实验目的"></a>1、实验目的</h4><p>1）理解STP的作用<br>2）熟悉STP的工作原理<br>3）掌握STP的查看命令</p>
-<a id="more"></a>
-
-<h4 id="2、拓扑结构"><a href="#2、拓扑结构" class="headerlink" title="2、拓扑结构"></a>2、拓扑结构</h4><p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djPbAe.png"></p>
-<h4 id="3、实验步骤"><a href="#3、实验步骤" class="headerlink" title="3、实验步骤"></a>3、实验步骤</h4><p><strong>（1）在相应的交换机上创建vlan10，并将连接PC1和PC2的交换端口都划分进该vlan中</strong></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djiiNQ.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djiVcq.png"></p>
-<p><strong>（2）为主机设置合适的IP地址，IP地址自定，完成必要的配置实现主机间的通信</strong></p>
+    <title>TCP/IP回顾</title>
+    <url>/2020/09/19/TCP-IP%E5%9B%9E%E9%A1%BE/</url>
+    <content><![CDATA[<p><strong>1、TCP/IP协议簇的5个层次是什么？每一层的目的是什么？</strong></p>
 <ul>
-<li>为两台PC配置IP地址（注意关闭路由功能，因为实验中的PC使用的是路由器的镜像）</li>
+<li>物理层——包含关于物理介质的协议</li>
+<li>数据链路层——包含了如何控制物理层的一些协议：介质是怎样存取和共享的，介质上的设备是怎样标识的，数据在介质上传播之前是怎样成帧的</li>
+<li>IP层——包含一些将数据链路逻辑分组到一个网络以及跨网络进行通信的协议</li>
+<li>主机到主机层——包含一些定义并控制中逻辑的、端到端的路径的协议</li>
+<li>应用层——对应于OSI中的会话层、表示层和应用层</li>
 </ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djiUHO.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djiDCd.png"></p>
+<p><strong>2、目前最常用的IP版本是什么？</strong></p>
+<p>　　现在使用最普遍的IP版本为版本4</p>
+<p><strong>3、什么是分段？IP报头的什么字段用于分段？</strong></p>
+<p>　　当数据包的长度超过它所要去的那个数据链路的MTU时，路由器要将它分段。数据包中的数据将被分成小段，每一段被封装在独立的数据包中。接收端使用标识符、标记域中的MF位以及片偏移来进行重组。</p>
+<p><strong>4、IP报头中的TTL字段的用途是什么？TTL过程是如何工作的？</strong></p>
+<p>　　TTL用于防止数据包在IP网络中无休止地传播。该字段包含一个8位整数，这个数字由产生数据包的主机设定。数据包每经过一台路由器，TTL值将被减1。如果一台路由器将TTL减至0，它将丢弃该数据包并发送一个ICMP超时消息给数据包的源地址。</p>
+<p><strong>5、什么是首个八位组字节规则？</strong></p>
 <ul>
-<li>将交换机之间的端口封装802.1Q，并配置成trunk</li>
+<li>A类：第一个八位组字节的第1位是0</li>
+<li>B类：第一个八位组字节的前2位是10</li>
+<li>C类：第一个八位组字节的前3位是110</li>
+<li>D类：第一个八位组字节的前4位是1110</li>
+<li>E类：第一个八位组字节的前4位是1111</li>
 </ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djFmRA.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djFKMt.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djFYGj.png"></p>
-<ul>
-<li>测试PC的连通性</li>
-</ul>
-<blockquote>
-<p>由于PC1和PC2属于同一vlan，所以通过上述配置即可相互ping通</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djFxw8.png"></p>
-<p><strong>（3）查看各交换机的STP信息</strong></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djksnP.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djk678.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djkgAS.png"></p>
-<p><strong>（4）将SW1设置为vlan10的根桥，使用相关命令验证和查看各交换机上根桥的变化</strong></p>
-<ul>
-<li>设置SW1为vlan10的根桥</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djAmut.png"></p>
-<ul>
-<li>使用<span style="color:red">show spanning-tree</span>命令查看交换机状态</li>
-</ul>
-<blockquote>
-<p>由于设置SW1为vlan10的根桥，由下图可知，优先级默认降低2*4096，即为24576，加上vlan-id的10，所以优先级为24586</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djZVgJ.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djZQUK.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djZGgH.png"></p>
-<p><strong>（5）测试正常链路出现故障对主机通信的影响</strong></p>
-<ul>
-<li>将SW2的e0/1接口shutdown</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djZcKs.png"></p>
-<ul>
-<li>PC1仍然可以ping通PC2</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djZ2bq.png"></p>
-<p><strong>（6）先断开PC1与交换机的连接，然后恢复PC1与交换机的连接，观察主机重新接入交换机要经历多久才能够进行数据转发</strong></p>
-<blockquote>
-<p>由下图可知，PC1重新接入交换机需要经历30s（由于关闭的是SW2上的端口，可以直接进入listening状态（无需经历20s的blocking状态），再经历15s进入learning状态，最后经历15s进入forwarding状态）</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djero6.png"></p>
+<p><strong>６、怎样识别点分十进制表示的Ａ类、Ｂ类和Ｃ类地址？怎样识别二进制表示的地址？</strong></p>
+<table>
+<thead>
+<tr>
+<th align="center">类</th>
+<th align="center">第一个八位组字节 二进制范围</th>
+<th align="center">第一个八位组字节 十进制范围</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">A</td>
+<td align="center">0000 0001~0111 1110</td>
+<td align="center">1~126</td>
+</tr>
+<tr>
+<td align="center">B</td>
+<td align="center">1000 0000~1011 1111</td>
+<td align="center">128~191</td>
+</tr>
+<tr>
+<td align="center">C</td>
+<td align="center">1100 0000~1101 1111</td>
+<td align="center">192~223</td>
+</tr>
+</tbody></table>
+<p><strong>7、什么是地址掩码？它是如何工作的？</strong></p>
+<p>　　IP地址掩码标识了IP地址的网络部分。32位掩码中的1标识了IP地址中相应的网络位，0标识了主机位。将IP地址和掩码进行布尔与运算，结果是，IP地址中对应于掩码网络部分的那一段不变，而对应于主机部分的全变成0。</p>
+<p><strong>8、什么是子网？在IP环境中为什么使用子网？</strong></p>
+<p>　　子网化是对A、B、C类地址进行子分组。如果没有子网化，A、B、C类的主IP地址的网络部分将只能标识一个数据链路。子网化使用主IP地址中的一些主机位作为网络位，允许一个单独的主地址被划分为多个网络地址。</p>
+<p><strong>9、为什么在有类别路由选择环境中子网位不能全部为0或1？</strong></p>
+<p>　　有类别路由选择协议不能区分全0子网和主IP地址，也不能区分全1子网和主IP地址的全主机、全子网广播地址</p>
+<p><strong>10、什么是ARP？</strong></p>
+<p>　　ARP（地址解析协议）的作用是将数据链路上接口的IP地址映射到相应的MAC地址</p>
+<p><strong>11、什么是代理ARP？</strong></p>
+<p>　　代理ARP是IP路由器的功能之一。如果路由器收到一个ARP请求，并且：目标网络或子网在路由器的路由表中；路由表指出目标可以通过某一个接口可达，该接口不同于接受到ARP请求的那个接口，则路由器将用自己的MAC地址对该ARP请求进行回应。</p>
+<p><strong>12、什么是重定向？</strong></p>
+<p>　　重定向是IP路由器的功能之一。如果一台设备发送一个数据包给路由器，该路由器必须将数据包转发至同一数据链路上的下一跳路由器，那么该路由器将向原设备发送一条其可以直接到达下一跳路由器的重定向消息。</p>
+<p><strong>13、TCP和UDP的本质区别是什么？</strong></p>
+<p>　　TCP在无连接的IP层之上提供了面向连接的服务。UDP则提供了无连接的服务。</p>
+<p><strong>14、TCP提供面向连接服务的机制是什么？</strong></p>
+<p>　　序列号确保了准确的排序；校验、确认、计时器以及重传机制确保了可靠性；滑动窗口机制确保了流量控制</p>
+<p><strong>15、为了替代ARP，Novell NetWare用设备的MAC地址作为网络地址中的主机部分。为什么IP不能这样做？</strong></p>
+<p>　　MAC地址是固定长度的二进制整数。如果用MAC地址作为IP地址的主机部分，那么子网化将不能实现。因为不可能灵活地使用一些主机位作为网络位</p>
+<p><strong>16、UDP通过在无连接服务之上提供无连接服务的目的是什么？</strong></p>
+<p>　　UDP报头的唯一目的是增加源端口及目的端口号</p>
 ]]></content>
       <categories>
-        <category>实验</category>
+        <category>复习题</category>
       </categories>
       <tags>
-        <tag>CCNA</tag>
-        <tag>STP</tag>
-        <tag>交换</tag>
+        <tag>TCP</tag>
+        <tag>IP</tag>
       </tags>
   </entry>
   <entry>
@@ -1277,244 +1548,6 @@
       </categories>
       <tags>
         <tag>hello world</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>TCP/IP回顾</title>
-    <url>/2020/09/19/TCP-IP%E5%9B%9E%E9%A1%BE/</url>
-    <content><![CDATA[<p><strong>1、TCP/IP协议簇的5个层次是什么？每一层的目的是什么？</strong></p>
-<ul>
-<li>物理层——包含关于物理介质的协议</li>
-<li>数据链路层——包含了如何控制物理层的一些协议：介质是怎样存取和共享的，介质上的设备是怎样标识的，数据在介质上传播之前是怎样成帧的</li>
-<li>IP层——包含一些将数据链路逻辑分组到一个网络以及跨网络进行通信的协议</li>
-<li>主机到主机层——包含一些定义并控制中逻辑的、端到端的路径的协议</li>
-<li>应用层——对应于OSI中的会话层、表示层和应用层</li>
-</ul>
-<p><strong>2、目前最常用的IP版本是什么？</strong></p>
-<p>　　现在使用最普遍的IP版本为版本4</p>
-<p><strong>3、什么是分段？IP报头的什么字段用于分段？</strong></p>
-<p>　　当数据包的长度超过它所要去的那个数据链路的MTU时，路由器要将它分段。数据包中的数据将被分成小段，每一段被封装在独立的数据包中。接收端使用标识符、标记域中的MF位以及片偏移来进行重组。</p>
-<p><strong>4、IP报头中的TTL字段的用途是什么？TTL过程是如何工作的？</strong></p>
-<p>　　TTL用于防止数据包在IP网络中无休止地传播。该字段包含一个8位整数，这个数字由产生数据包的主机设定。数据包每经过一台路由器，TTL值将被减1。如果一台路由器将TTL减至0，它将丢弃该数据包并发送一个ICMP超时消息给数据包的源地址。</p>
-<p><strong>5、什么是首个八位组字节规则？</strong></p>
-<ul>
-<li>A类：第一个八位组字节的第1位是0</li>
-<li>B类：第一个八位组字节的前2位是10</li>
-<li>C类：第一个八位组字节的前3位是110</li>
-<li>D类：第一个八位组字节的前4位是1110</li>
-<li>E类：第一个八位组字节的前4位是1111</li>
-</ul>
-<p><strong>６、怎样识别点分十进制表示的Ａ类、Ｂ类和Ｃ类地址？怎样识别二进制表示的地址？</strong></p>
-<table>
-<thead>
-<tr>
-<th align="center">类</th>
-<th align="center">第一个八位组字节 二进制范围</th>
-<th align="center">第一个八位组字节 十进制范围</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">A</td>
-<td align="center">0000 0001~0111 1110</td>
-<td align="center">1~126</td>
-</tr>
-<tr>
-<td align="center">B</td>
-<td align="center">1000 0000~1011 1111</td>
-<td align="center">128~191</td>
-</tr>
-<tr>
-<td align="center">C</td>
-<td align="center">1100 0000~1101 1111</td>
-<td align="center">192~223</td>
-</tr>
-</tbody></table>
-<p><strong>7、什么是地址掩码？它是如何工作的？</strong></p>
-<p>　　IP地址掩码标识了IP地址的网络部分。32位掩码中的1标识了IP地址中相应的网络位，0标识了主机位。将IP地址和掩码进行布尔与运算，结果是，IP地址中对应于掩码网络部分的那一段不变，而对应于主机部分的全变成0。</p>
-<p><strong>8、什么是子网？在IP环境中为什么使用子网？</strong></p>
-<p>　　子网化是对A、B、C类地址进行子分组。如果没有子网化，A、B、C类的主IP地址的网络部分将只能标识一个数据链路。子网化使用主IP地址中的一些主机位作为网络位，允许一个单独的主地址被划分为多个网络地址。</p>
-<p><strong>9、为什么在有类别路由选择环境中子网位不能全部为0或1？</strong></p>
-<p>　　有类别路由选择协议不能区分全0子网和主IP地址，也不能区分全1子网和主IP地址的全主机、全子网广播地址</p>
-<p><strong>10、什么是ARP？</strong></p>
-<p>　　ARP（地址解析协议）的作用是将数据链路上接口的IP地址映射到相应的MAC地址</p>
-<p><strong>11、什么是代理ARP？</strong></p>
-<p>　　代理ARP是IP路由器的功能之一。如果路由器收到一个ARP请求，并且：目标网络或子网在路由器的路由表中；路由表指出目标可以通过某一个接口可达，该接口不同于接受到ARP请求的那个接口，则路由器将用自己的MAC地址对该ARP请求进行回应。</p>
-<p><strong>12、什么是重定向？</strong></p>
-<p>　　重定向是IP路由器的功能之一。如果一台设备发送一个数据包给路由器，该路由器必须将数据包转发至同一数据链路上的下一跳路由器，那么该路由器将向原设备发送一条其可以直接到达下一跳路由器的重定向消息。</p>
-<p><strong>13、TCP和UDP的本质区别是什么？</strong></p>
-<p>　　TCP在无连接的IP层之上提供了面向连接的服务。UDP则提供了无连接的服务。</p>
-<p><strong>14、TCP提供面向连接服务的机制是什么？</strong></p>
-<p>　　序列号确保了准确的排序；校验、确认、计时器以及重传机制确保了可靠性；滑动窗口机制确保了流量控制</p>
-<p><strong>15、为了替代ARP，Novell NetWare用设备的MAC地址作为网络地址中的主机部分。为什么IP不能这样做？</strong></p>
-<p>　　MAC地址是固定长度的二进制整数。如果用MAC地址作为IP地址的主机部分，那么子网化将不能实现。因为不可能灵活地使用一些主机位作为网络位</p>
-<p><strong>16、UDP通过在无连接服务之上提供无连接服务的目的是什么？</strong></p>
-<p>　　UDP报头的唯一目的是增加源端口及目的端口号</p>
-]]></content>
-      <categories>
-        <category>复习题</category>
-      </categories>
-      <tags>
-        <tag>TCP</tag>
-        <tag>IP</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>关于交换的基础测试</title>
-    <url>/2020/09/14/%E5%85%B3%E4%BA%8E%E4%BA%A4%E6%8D%A2%E7%9A%84%E5%9F%BA%E7%A1%80%E6%B5%8B%E8%AF%95/</url>
-    <content><![CDATA[<h3 id="1、实验目的"><a href="#1、实验目的" class="headerlink" title="1、实验目的"></a>1、实验目的</h3><p>1）掌握VLAN、TRUNK、VTP的作用和配置<br>2）掌握DTP的作用和配置<br>3）掌握DHCP及DHCP中继的作用和配置<br>4）掌握以太网通道技术的作用和配置</p>
-<a id="more"></a>
-
-<h3 id="2、拓扑结构"><a href="#2、拓扑结构" class="headerlink" title="2、拓扑结构"></a>2、拓扑结构</h3><p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/14/wseseI.png"></p>
-<h3 id="3、实验步骤"><a href="#3、实验步骤" class="headerlink" title="3、实验步骤"></a>3、实验步骤</h3><p><strong>（1）在该园区网络中有4个VLAN，分别为VLAN10、VLAN20、VLAN30和VLAN40，其中DHCP_SRV和PC1在VLAN10中，PC2、PC3分别在VLAN20、VLAN30和VLAN30中，FTP_SRV和PC4在VLAN40中，其中VLAN10的地址段为192.168.10.0/24，VLAN20的地址段为192.168.20.0/24，VLAN30的地址段为192.168.30.0/24，VLAN40的地址段为192.168.40.0/24，各VLAN主机的网关都设置为其网段中可用的最后一个主机地址，并且设置DHCP服务器的IP地址为192.168.10.100/24，其他主机通过DHCP方式获取IP地址、园区网络外部的地址自己规划</strong></p>
-<ul>
-<li>在SW1和SW2上创建VLAN，并将端口划分进相应的VLAN</li>
-</ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">SW1(config)#vlan 10,20</span><br><span class="line">SW1(config)#int range e0/0,e0/2</span><br><span class="line">SW1(config-if-range)#switchport mode access </span><br><span class="line">SW1(config-if-range)#switchport access vlan 10</span><br><span class="line">SW1(config)#int e0/1</span><br><span class="line">SW1(config-if)#switchport mode access </span><br><span class="line">SW1(config-if)#switchport access vlan 20</span><br><span class="line"></span><br><span class="line">SW2(config)#vlan 30,40</span><br><span class="line">SW2(config)#int e0/0      </span><br><span class="line">SW2(config-if)#switchport mode access </span><br><span class="line">SW2(config-if)#switchport access vlan 30</span><br><span class="line">SW2(config)#int range e0/1-2</span><br><span class="line">SW2(config-if-range)#switchport mode access </span><br><span class="line">SW2(config-if-range)#switchport access vlan 40</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>配置IP地址</li>
-</ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">DHCP_SRV(config)#int e0/0</span><br><span class="line">DHCP_SRV(config-if)#ip address 192.168.10.100 255.255.255.0</span><br><span class="line">DHCP_SRV(config-if)#no shutdown </span><br><span class="line"></span><br><span class="line">R1(config)#int e0/0</span><br><span class="line">R1(config-if)#ip address 10.10.10.1 255.255.255.0</span><br><span class="line">R1(config-if)#no shutdown </span><br><span class="line">R1(config)#int s1/0</span><br><span class="line">R1(config-if)#ip address 202.101.100.1 255.255.255.0</span><br><span class="line">R1(config-if)#no shutdown </span><br><span class="line"></span><br><span class="line">ISP(config)#int s1/0</span><br><span class="line">ISP(config-if)#ip address 202.101.100.2 255.255.255.0</span><br><span class="line">ISP(config-if)#no shutdown </span><br><span class="line">ISP(config)#int e0/0</span><br><span class="line">ISP(config-if)#ip address 200.100.100.1 255.255.255.0</span><br><span class="line">ISP(config-if)#no shutdown</span><br><span class="line"></span><br><span class="line">Web_SRV(config)#int e0/0</span><br><span class="line">Web_SRV(config-if)#ip address 200.100.100.2 255.255.255.0</span><br><span class="line">Web_SRV(config-if)#no shutdown </span><br><span class="line"></span><br><span class="line">SW1(config)#int e0/3 </span><br><span class="line">SW1(config-if)#ip address 10.10.10.2 255.255.255.0</span><br><span class="line">SW1(config-if)#no shutdown </span><br><span class="line">SW1(config)#int vlan 10</span><br><span class="line">SW1(config-if)#ip address 192.168.10.254 255.255.255.0 </span><br><span class="line">SW1(config-if)#no shutdown </span><br><span class="line">SW1(config)#int vlan 20</span><br><span class="line">SW1(config-if)#ip address 192.168.20.254 255.255.255.0</span><br><span class="line">SW1(config-if)#no shutdown </span><br><span class="line">SW1(config)#int vlan 30</span><br><span class="line">SW1(config-if)#ip address 192.168.30.254 255.255.255.0</span><br><span class="line">SW1(config-if)#no shutdown</span><br><span class="line">SW1(config)#int vlan 40</span><br><span class="line">SW1(config-if)#ip address 192.168.40.254 255.255.255.0</span><br><span class="line">SW1(config-if)#no shutdown </span><br></pre></td></tr></table></figure>
-
-<p><strong>（2）采用合适的方式完成交换机链路间的TRUNK配置，并采用标准的封装模式</strong></p>
-<blockquote>
-<p>在SW1和SW2之间的链路封装802.1Q，并关闭DTP协商，更改native vlan为999</p>
-</blockquote>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">SW1(config)#int range e1/0-1</span><br><span class="line">SW1(config-if-range)#switchport trunk encapsulation dot1q </span><br><span class="line">SW1(config-if-range)#switchport mode trunk </span><br><span class="line">SW1(config-if-range)#switchport nonegotiate</span><br><span class="line">SW1(config-if-range)#switchport trunk native vlan 999</span><br><span class="line"></span><br><span class="line">SW2(config)#int range e1/0-1</span><br><span class="line">SW2(config-if-range)#switchport trunk encapsulation dot1q </span><br><span class="line">SW2(config-if-range)#switchport mode trunk </span><br><span class="line">SW2(config-if-range)#switchport nonegotiate </span><br><span class="line">SW2(config-if-range)#switchport trunk native vlan 999</span><br></pre></td></tr></table></figure>
-
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/14/ws1dsS.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/14/ws1aM8.png"></p>
-<p><strong>（3）设置SW1的VTP模式为Server，SW2的VTP模式为Client，并且设置VTP域名为shain，密码为CCIEPASS，实现该园区网络的VLAN信息同步</strong></p>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">SW1(config)#vtp domain shain</span><br><span class="line">SW1(config)#vtp password CCIEPASS</span><br><span class="line">SW1(config)#vtp mode server </span><br><span class="line"></span><br><span class="line">SW2(config)#vtp password CCIEPASS</span><br><span class="line">SW2(config)#vtp mode client </span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>在SW1和SW2上查看VTP的状态信息</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/ws1XLD.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/ws1OsO.png"></p>
-<ul>
-<li>此时SW2通过VTP方式学习到SW1上的VLAN</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/ws3iSP.png"></p>
-<p><strong>（4）使用802.3ad标准构建两交换机间的以太通道链路，要求交换机将EtherChannel的负载均衡设置为src-dst-ip</strong></p>
-<ul>
-<li>使用LACP进行交换机之间的链路捆绑</li>
-</ul>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">SW1(config)#int range e1/0-1</span><br><span class="line">SW1(config-if-range)#channel-group 1 mode active </span><br><span class="line">Creating a port-channel interface Port-channel <span class="number">1</span></span><br><span class="line"></span><br><span class="line">SW2(config)#int range e1/0-1</span><br><span class="line">SW2(config-if-range)#channel-group 1 mode active </span><br><span class="line">Creating a port-channel interface Port-channel <span class="number">1</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>查看EtherChannel摘要信息，捆绑成功</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/ws8974.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/ws8PAJ.png"></p>
-<ul>
-<li>将EtherChannel的负载均衡方式设置为src-dst-ip（默认的负载均衡方式即为src-dst-ip）</li>
-</ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">SW1(config)#port-channel load-balance src-dst-ip</span><br><span class="line">SW2(config)#port-channel load-balance src-dst-ip</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>在SW1上查看EtherChannel的负载均衡方式</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wsGZPs.png"></p>
-<p><strong>（5）根据需求在DHCP_SRV上建立相应的地址池，并且在各个地址池中排除范围从10到20之间的IP地址空间，同时要求无论FTP_SRV何时接入交换网络都会获取到192.168.40.100/24的地址，完成必要的配置，实现各主机和FTP_SRV可以获取相应的IP地址</strong></p>
-<ul>
-<li>在DHCP_SRV上创建地址池并按要求排除IP地址空间</li>
-</ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="comment">//创建地址池</span></span><br><span class="line">DHCP_SRV(config)#ip dhcp pool vlan_10</span><br><span class="line">DHCP_SRV(dhcp-config)#network 192.168.10.0 255.255.255.0</span><br><span class="line">DHCP_SRV(dhcp-config)#default-router 192.168.10.254</span><br><span class="line">DHCP_SRV(dhcp-config)#dns-server 8.8.8.8</span><br><span class="line">DHCP_SRV(config)#ip dhcp pool vlan_20</span><br><span class="line">DHCP_SRV(dhcp-config)#network 192.168.20.0 255.255.255.0</span><br><span class="line">DHCP_SRV(dhcp-config)#default-router 192.168.20.254</span><br><span class="line">DHCP_SRV(dhcp-config)#dns-server 8.8.8.8</span><br><span class="line">DHCP_SRV(config)#ip dhcp pool vlan_30</span><br><span class="line">DHCP_SRV(dhcp-config)#network 192.168.30.0 255.255.255.0</span><br><span class="line">DHCP_SRV(dhcp-config)#default-router 192.168.30.254</span><br><span class="line">DHCP_SRV(dhcp-config)#dns-server 8.8.8.8</span><br><span class="line">DHCP_SRV(config)#ip dhcp pool vlan_40</span><br><span class="line">DHCP_SRV(dhcp-config)#network 192.168.40.0 255.255.255.0</span><br><span class="line">DHCP_SRV(dhcp-config)#default-router 192.168.40.254</span><br><span class="line">DHCP_SRV(dhcp-config)#dns-server 8.8.8.8</span><br><span class="line"><span class="comment">//排除要求的IP地址，并将已使用的IP地址也排除掉</span></span><br><span class="line">DHCP_SRV(config)#ip dhcp excluded-address 192.168.10.10 192.168.10.20</span><br><span class="line">DHCP_SRV(config)#ip dhcp excluded-address 192.168.20.10 192.168.20.20</span><br><span class="line">DHCP_SRV(config)#ip dhcp excluded-address 192.168.30.10 192.168.30.20</span><br><span class="line">DHCP_SRV(config)#ip dhcp excluded-address 192.168.40.10 192.168.40.20</span><br><span class="line">DHCP_SRV(config)#ip dhcp excluded-address 192.168.10.100</span><br><span class="line">DHCP_SRV(config)#ip dhcp excluded-address 192.168.10.254             </span><br><span class="line">DHCP_SRV(config)#ip dhcp excluded-address 192.168.20.254</span><br><span class="line">DHCP_SRV(config)#ip dhcp excluded-address 192.168.30.254</span><br><span class="line">DHCP_SRV(config)#ip dhcp excluded-address 192.168.40.254</span><br><span class="line">DHCP_SRV(config)#ip dhcp excluded-address 192.168.40.100</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>在DHCP_SRC和SW1上启用OSPF协议</li>
-</ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">DHCP_SRV(config)#router ospf 1</span><br><span class="line">DHCP_SRV(config-router)#router-id 3.3.3.3</span><br><span class="line">DHCP_SRV(config-router)#network 192.168.10.0 0.0.0.255 area 0</span><br><span class="line"></span><br><span class="line">SW1(config)#router ospf 1</span><br><span class="line">SW1(config-router)#router-id 1.1.1.1</span><br><span class="line">SW1(config-router)#network 192.168.10.0 0.0.0.255 area 0</span><br><span class="line">SW1(config-router)#network 192.168.20.0 0.0.0.255 area 0</span><br><span class="line">SW1(config-router)#network 192.168.30.0 0.0.0.255 area 0</span><br><span class="line">SW1(config-router)#network 192.168.40.0 0.0.0.255 area 0</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>在SW1的各VLAN的SVI接口中配置中继地址</li>
-</ul>
-<blockquote>
-<p>由于DHCP_SRV在VLAN10中，所以无需在VLAN10的SVI端口配置中继地址</p>
-</blockquote>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">SW1(config)#int vlan 20</span><br><span class="line">SW1(config-if)#ip helper-address 192.168.10.100</span><br><span class="line">SW1(config)#int vlan 30</span><br><span class="line">SW1(config-if)#ip helper-address 192.168.10.100</span><br><span class="line">SW1(config)#int vlan 40</span><br><span class="line">SW1(config-if)#ip helper-address 192.168.10.100</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>各主机自动获取IP地址</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wsJB60.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wsJDXV.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wsJ0lq.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wsJwpn.png"></p>
-<ul>
-<li>让FTP_SRV自动获取地址</li>
-</ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">FTP_SRV(config)#int e0/0</span><br><span class="line">FTP_SRV(config-if)#no shutdown </span><br><span class="line">FTP_SRV(config-if)#ip address dhcp</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>如下图所示，此时通过DHCP方式获取到的IP地址为192.168.40.2，并不符合要求的192.168.40.100</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wsYVcq.png"></p>
-<ul>
-<li>查看DHCP_SRV的DHCP绑定表，可以得到FTP_SRV的电路ID</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wsYdED.png"></p>
-<ul>
-<li>在DHCP_SRV上清空FTP_SRV的地址绑定信息</li>
-</ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">DHCP_SRV#clear ip dhcp binding 192.168.40.2</span><br></pre></td></tr></table></figure>
-
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wsY2b8.png"></p>
-<ul>
-<li>在DHCP_SRV上创建FTP_SRV专用的地址池，与FTP_SRV的电路ID进行绑定</li>
-</ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">DHCP_SRV(config)#ip dhcp pool FTP_SRV</span><br><span class="line">DHCP_SRV(dhcp-config)#host 192.168.40.100 255.255.255.0</span><br><span class="line">DHCP_SRV(dhcp-config)#default-router 192.168.40.254</span><br><span class="line">DHCP_SRV(dhcp-config)#client-identifier 0063.6973.636f.2d61.6162.622e.6363.3030.2e35.3030.302d.4574.302f.30</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>在FTP_SRV上使用DHCP方式获取IP地址，此时获取到的IP地址为192.168.40.100，符合要求</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wstZPH.png"></p>
-<p><strong>（6）完成必要配置，实现各主机可以访问ISP上的Web_SRV</strong></p>
-<ul>
-<li>在R1和SW1上运行OSPF协议，实现内网的可达性</li>
-</ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R1(config)#router ospf 1</span><br><span class="line">R1(config-router)#router-id 2.2.2.2</span><br><span class="line">R1(config-router)#network 10.10.10.0 0.0.0.255 area 0</span><br><span class="line"></span><br><span class="line">SW1(config)#router ospf 1</span><br><span class="line">SW1(config-router)#network 10.10.10.0 0.0.0.255 area 0</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>此时PC3可以访问R1</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wstJiQ.png"></p>
-<ul>
-<li>在R1上配置默认路由，指定出接口为s1/0，并在OSPF进程下发默认路由</li>
-</ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R1(config)#ip route 0.0.0.0 0.0.0.0 s1/0</span><br><span class="line">R1(config)#router ospf 1</span><br><span class="line">R1(config-router)#default-information originate </span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>指定Web_SRV的网关为ISP的e0/0接口的地址200.100.100.1</li>
-</ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">Web_SRV(config)#ip default-gateway 200.100.100.1</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>此时实现了R1可以访问Web_SRV</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wst4eK.png"></p>
-<ul>
-<li>在R1上配置PAT，实现内网主机可以访问Web_SRV</li>
-</ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R1(config)#access-list 1 permit 192.168.0.0 /16  //ACL用于匹配内网主机</span><br><span class="line">R1(config)#ip nat inside source list 1 interface s1/0 overload </span><br><span class="line">R1(config)#int e0/0</span><br><span class="line">R1(config-if)#ip nat inside </span><br><span class="line">R1(config)#int s1/0</span><br><span class="line">R1(config-if)#ip nat outside </span><br></pre></td></tr></table></figure>
-
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wst7JH.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wstHWd.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wstIoD.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wstTFe.png"></p>
-<ul>
-<li>在R1上查看地址转换表，可知在R1上进行了地址转换</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wstvef.png"></p>
-]]></content>
-      <categories>
-        <category>实验</category>
-      </categories>
-      <tags>
-        <tag>DHCP</tag>
-        <tag>VTP</tag>
-        <tag>EtherChannel</tag>
       </tags>
   </entry>
   <entry>
@@ -1673,93 +1706,6 @@
         <tag>CCNA</tag>
         <tag>路由协议</tag>
         <tag>OSPF</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>单臂路由运用</title>
-    <url>/2020/08/30/%E5%8D%95%E8%87%82%E8%B7%AF%E7%94%B1%E8%BF%90%E7%94%A8/</url>
-    <content><![CDATA[<h4 id="1、实验目的"><a href="#1、实验目的" class="headerlink" title="1、实验目的"></a>1、实验目的</h4><p>1）掌握交换机上VLAN的创建和划分<br>2）掌握trunk的作用<br>3）掌握VTP的作用与配置<br>4）掌握单臂路由原理与配置<br>5）理解trunk链路上的802.1Q标记的作用</p>
-<a id="more"></a>
-<h4 id="2、拓扑结构"><a href="#2、拓扑结构" class="headerlink" title="2、拓扑结构"></a>2、拓扑结构</h4><p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqOjXR.png"></p>
-<h4 id="3、实验步骤"><a href="#3、实验步骤" class="headerlink" title="3、实验步骤"></a>3、实验步骤</h4><p><strong>（1）在SW1上创建两个vlan，vlan10和vlan20，并将vlan10命名为sales，将vlan20命名为engineers</strong></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqXEjA.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqXeBt.png"></p>
-<p><strong>（2）完成必要的配置，实现两交换机的vlan数据库同步，并使用相关命令验证和查看vlan数据库的信息</strong></p>
-<blockquote>
-<p>要实现两交换机的vlan数据库同步，需要进行vtp的配置</p>
-</blockquote>
-<ul>
-<li>将两交换机相连的端口设置为trunk</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqXJun.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqj8PO.png"></p>
-<ul>
-<li>指定vtp的域和密码，并指定SW1的vtp模式为server，SW2的vtp模式为client</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqjyRg.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqvFOA.png"></p>
-<ul>
-<li>在SW2上查看vlna信息，此前并未在SW2上创建vlan，由此可知两交换机之间实现了vlan数据库的同步</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqv6k6.png"></p>
-<ul>
-<li>尝试在SW2上创建一个vlan，日志提示在vtp的模式为client的条件下不允许创建vlan</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqvRpD.png"></p>
-<ul>
-<li>在SW1上查看vtp的状态信息，从下图可知SW1的vtp模式为server（默认），已存在的vlan数量为7，修订版本号为8</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqx9A0.png"></p>
-<p><strong>（3）将连接PC1和PC3的交换端口划分进vlan10，将连接PC2的交换端口划分进vlan20中，并为各PC配置合适的IP地址和网关</strong></p>
-<ul>
-<li>依题意将交换机上的端口划分进对应的vlan</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqxYDA.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqxUEt.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqxd4f.png"></p>
-<ul>
-<li>由于各PC为使用路由器镜像模拟，需在PC上关闭路由功能。按下图所示为各PC配置IP地址和网关</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqxIv4.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqxHbR.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqxLUx.png"></p>
-<p><strong>（4）使用show vlan brief查看各交换机的vlan信息</strong></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqzFat.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqzEPf.png"></p>
-<p><strong>（5）测试各主机之间的连通性</strong></p>
-<blockquote>
-<p>PC1和PC3之间可以相互ping通（两PC属于同一vlan，无需经过三层设备）</p>
-<p>PC1和PC2之间无法通信（两PC属于不同vlan，需要经过三层设备，此时还未在路由器上进行相应的配置）</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqzlaq.png"></p>
-<p><strong>（6）在交换机和路由器上完成必要的配置，实现各主机间可以互相通信</strong></p>
-<ul>
-<li>将SW1上连路由器的端口配置成trunk</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqzTW8.png">、</p>
-<ul>
-<li><p>在R1上进行单臂路由的配置</p>
-<blockquote>
-<p>单臂路由是指在路由器的一个接口上通过配置子接口(或”逻辑接口”，并不真实存在)的方式，实现原来相互隔离的不同vlan之间的互联互通</p>
-<p>值得注意的是这些逻辑子接口不能被单独的开启或关闭，即当物理接口被开启或关闭时，所有的该物理接口的子接口也将对应的被开启或关闭</p>
-<p>由于单臂路由存在瓶颈和单点故障的问题，因此必须限制主机/vlan的数量。此时可以通过SVI实现不同vlan间的通信（后续会进行介绍）</p>
-</blockquote>
-</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqzHSS.png"></p>
-<ul>
-<li>测试各主机之间的连通性，如下图所示，三台PC之间可以互相ping通</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqzbQg.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqzLLj.png"></p>
-]]></content>
-      <categories>
-        <category>实验</category>
-      </categories>
-      <tags>
-        <tag>CCNA</tag>
-        <tag>单臂路由</tag>
-        <tag>vtp</tag>
       </tags>
   </entry>
   <entry>
@@ -1940,156 +1886,249 @@
       </tags>
   </entry>
   <entry>
-    <title>重分布引起的路由环路问题</title>
-    <url>/2020/09/27/%E9%87%8D%E5%88%86%E5%B8%83%E5%BC%95%E8%B5%B7%E7%9A%84%E8%B7%AF%E7%94%B1%E7%8E%AF%E8%B7%AF%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<h3 id="1、环境介绍"><a href="#1、环境介绍" class="headerlink" title="1、环境介绍"></a>1、环境介绍</h3><blockquote>
-<p>如下图所示，左边部分运行OSPF，右边部分运行RIP，在R5上启用一个回环口并将其通告进RIP中，在R2和R6上进行重分布</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0FxaCQ.png"></p>
+    <title>关于交换的基础测试</title>
+    <url>/2020/09/14/%E5%85%B3%E4%BA%8E%E4%BA%A4%E6%8D%A2%E7%9A%84%E5%9F%BA%E7%A1%80%E6%B5%8B%E8%AF%95/</url>
+    <content><![CDATA[<h3 id="1、实验目的"><a href="#1、实验目的" class="headerlink" title="1、实验目的"></a>1、实验目的</h3><p>1）掌握VLAN、TRUNK、VTP的作用和配置<br>2）掌握DTP的作用和配置<br>3）掌握DHCP及DHCP中继的作用和配置<br>4）掌握以太网通道技术的作用和配置</p>
+<a id="more"></a>
+
+<h3 id="2、拓扑结构"><a href="#2、拓扑结构" class="headerlink" title="2、拓扑结构"></a>2、拓扑结构</h3><p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/14/wseseI.png"></p>
+<h3 id="3、实验步骤"><a href="#3、实验步骤" class="headerlink" title="3、实验步骤"></a>3、实验步骤</h3><p><strong>（1）在该园区网络中有4个VLAN，分别为VLAN10、VLAN20、VLAN30和VLAN40，其中DHCP_SRV和PC1在VLAN10中，PC2、PC3分别在VLAN20、VLAN30和VLAN30中，FTP_SRV和PC4在VLAN40中，其中VLAN10的地址段为192.168.10.0/24，VLAN20的地址段为192.168.20.0/24，VLAN30的地址段为192.168.30.0/24，VLAN40的地址段为192.168.40.0/24，各VLAN主机的网关都设置为其网段中可用的最后一个主机地址，并且设置DHCP服务器的IP地址为192.168.10.100/24，其他主机通过DHCP方式获取IP地址、园区网络外部的地址自己规划</strong></p>
 <ul>
-<li>在R2上将RIP重分布进OSPF，在R6上将OSPF重分布进RIP</li>
+<li>在SW1和SW2上创建VLAN，并将端口划分进相应的VLAN</li>
 </ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R2(config)#router ospf 1</span><br><span class="line">R2(config-router)#redistribute rip subnets</span><br><span class="line"></span><br><span class="line">R6(config)#router rip</span><br><span class="line">R6(config-router)#redistribute ospf 1 metric 1    //指定跳数为1</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>将R5上的回环口通告进RIP</li>
-</ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R5(config)#router rip</span><br><span class="line">R5(config-router)#network 5.5.5.0       </span><br></pre></td></tr></table></figure>
-
-<h3 id="2、产生环路"><a href="#2、产生环路" class="headerlink" title="2、产生环路"></a>2、产生环路</h3><ul>
-<li>在R1上跟踪到达R5所经过的路径，产生了环路（R1→R2→R3→R6→R1……）</li>
-</ul>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">R1#traceroute 5.5.5.5 numeric </span><br><span class="line">Type <span class="built_in">escape</span> sequence to abort.</span><br><span class="line">Tracing the route to <span class="number">5.5</span><span class="number">.5</span><span class="number">.5</span></span><br><span class="line">VRF info: (vrf <span class="keyword">in</span> name/id, vrf out name/id)</span><br><span class="line">  <span class="number">1</span> <span class="number">12.12</span><span class="number">.12</span><span class="number">.2</span> <span class="number">0</span> msec <span class="number">0</span> msec <span class="number">0</span> msec</span><br><span class="line">  <span class="number">2</span> <span class="number">23.23</span><span class="number">.23</span><span class="number">.3</span> <span class="number">0</span> msec <span class="number">1</span> msec <span class="number">0</span> msec</span><br><span class="line">  <span class="number">3</span> <span class="number">36.36</span><span class="number">.36</span><span class="number">.6</span> <span class="number">1</span> msec <span class="number">0</span> msec <span class="number">1</span> msec</span><br><span class="line">  <span class="number">4</span> <span class="number">16.16</span><span class="number">.16</span><span class="number">.1</span> <span class="number">0</span> msec <span class="number">1</span> msec <span class="number">0</span> msec</span><br><span class="line">  <span class="number">5</span> <span class="number">12.12</span><span class="number">.12</span><span class="number">.2</span> <span class="number">1</span> msec <span class="number">0</span> msec <span class="number">0</span> msec</span><br><span class="line">  <span class="number">6</span> <span class="number">23.23</span><span class="number">.23</span><span class="number">.3</span> <span class="number">1</span> msec <span class="number">1</span> msec <span class="number">3</span> msec</span><br><span class="line">  <span class="number">7</span> <span class="number">36.36</span><span class="number">.36</span><span class="number">.6</span> <span class="number">1</span> msec <span class="number">1</span> msec <span class="number">0</span> msec</span><br><span class="line">  <span class="number">8</span> <span class="number">16.16</span><span class="number">.16</span><span class="number">.1</span> <span class="number">1</span> msec <span class="number">1</span> msec <span class="number">1</span> msec</span><br><span class="line">  <span class="number">9</span> <span class="number">12.12</span><span class="number">.12</span><span class="number">.2</span> <span class="number">0</span> msec <span class="number">1</span> msec <span class="number">1</span> msec</span><br><span class="line">  ……</span><br><span class="line">  ……</span><br><span class="line">  ……</span><br></pre></td></tr></table></figure>
-
-<h3 id="3、分析"><a href="#3、分析" class="headerlink" title="3、分析"></a>3、分析</h3><ul>
-<li>查看R4的路由表</li>
-</ul>
-<blockquote>
-<p>R4从R5上学习到5.5.5.0/24的路由条目，AD值为120，cost值为1，下一跳为45.45.45.5</p>
-</blockquote>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">R4#show ip route </span><br><span class="line"><span class="comment">//省略部分输出</span></span><br><span class="line">      <span class="number">5.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">24</span> is subnetted, <span class="number">1</span> subnets</span><br><span class="line">R        <span class="number">5.5</span><span class="number">.5</span><span class="number">.0</span> [<span class="number">120</span>/<span class="number">1</span>] via <span class="number">45.45</span><span class="number">.45</span><span class="number">.5</span>, <span class="number">00</span>:<span class="number">00</span>:<span class="number">11</span>, Ethernet0/<span class="number">1</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">SW1(config)#vlan 10,20</span><br><span class="line">SW1(config)#int range e0/0,e0/2</span><br><span class="line">SW1(config-if-range)#switchport mode access </span><br><span class="line">SW1(config-if-range)#switchport access vlan 10</span><br><span class="line">SW1(config)#int e0/1</span><br><span class="line">SW1(config-if)#switchport mode access </span><br><span class="line">SW1(config-if)#switchport access vlan 20</span><br><span class="line"></span><br><span class="line">SW2(config)#vlan 30,40</span><br><span class="line">SW2(config)#int e0/0      </span><br><span class="line">SW2(config-if)#switchport mode access </span><br><span class="line">SW2(config-if)#switchport access vlan 30</span><br><span class="line">SW2(config)#int range e0/1-2</span><br><span class="line">SW2(config-if-range)#switchport mode access </span><br><span class="line">SW2(config-if-range)#switchport access vlan 40</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>查看R3的路由表</li>
+<li>配置IP地址</li>
 </ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">DHCP_SRV(config)#int e0/0</span><br><span class="line">DHCP_SRV(config-if)#ip address 192.168.10.100 255.255.255.0</span><br><span class="line">DHCP_SRV(config-if)#no shutdown </span><br><span class="line"></span><br><span class="line">R1(config)#int e0/0</span><br><span class="line">R1(config-if)#ip address 10.10.10.1 255.255.255.0</span><br><span class="line">R1(config-if)#no shutdown </span><br><span class="line">R1(config)#int s1/0</span><br><span class="line">R1(config-if)#ip address 202.101.100.1 255.255.255.0</span><br><span class="line">R1(config-if)#no shutdown </span><br><span class="line"></span><br><span class="line">ISP(config)#int s1/0</span><br><span class="line">ISP(config-if)#ip address 202.101.100.2 255.255.255.0</span><br><span class="line">ISP(config-if)#no shutdown </span><br><span class="line">ISP(config)#int e0/0</span><br><span class="line">ISP(config-if)#ip address 200.100.100.1 255.255.255.0</span><br><span class="line">ISP(config-if)#no shutdown</span><br><span class="line"></span><br><span class="line">Web_SRV(config)#int e0/0</span><br><span class="line">Web_SRV(config-if)#ip address 200.100.100.2 255.255.255.0</span><br><span class="line">Web_SRV(config-if)#no shutdown </span><br><span class="line"></span><br><span class="line">SW1(config)#int e0/3 </span><br><span class="line">SW1(config-if)#ip address 10.10.10.2 255.255.255.0</span><br><span class="line">SW1(config-if)#no shutdown </span><br><span class="line">SW1(config)#int vlan 10</span><br><span class="line">SW1(config-if)#ip address 192.168.10.254 255.255.255.0 </span><br><span class="line">SW1(config-if)#no shutdown </span><br><span class="line">SW1(config)#int vlan 20</span><br><span class="line">SW1(config-if)#ip address 192.168.20.254 255.255.255.0</span><br><span class="line">SW1(config-if)#no shutdown </span><br><span class="line">SW1(config)#int vlan 30</span><br><span class="line">SW1(config-if)#ip address 192.168.30.254 255.255.255.0</span><br><span class="line">SW1(config-if)#no shutdown</span><br><span class="line">SW1(config)#int vlan 40</span><br><span class="line">SW1(config-if)#ip address 192.168.40.254 255.255.255.0</span><br><span class="line">SW1(config-if)#no shutdown </span><br></pre></td></tr></table></figure>
+
+<p><strong>（2）采用合适的方式完成交换机链路间的TRUNK配置，并采用标准的封装模式</strong></p>
 <blockquote>
-<p>R3本应从R4上学习到5.5.5.0/24的路由条目，此时的下一跳却为R6。</p>
-<p>分析：若R3从R4上学习5.5.5.0/24的路由，则跳数为2。由于在R6上进行了重分布，将OSPF重分布进RIP时指定了跳数为1，所以在相同协议条件下，优先选择cost值小的，因此R3会选择R6去往5.5.5.0/24网段</p>
+<p>在SW1和SW2之间的链路封装802.1Q，并关闭DTP协商，更改native vlan为999</p>
 </blockquote>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">R3#show ip route </span><br><span class="line"><span class="comment">//省略部分输出</span></span><br><span class="line">      <span class="number">5.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">24</span> is subnetted, <span class="number">1</span> subnets</span><br><span class="line">R        <span class="number">5.5</span><span class="number">.5</span><span class="number">.0</span> [<span class="number">120</span>/<span class="number">1</span>] via <span class="number">36.36</span><span class="number">.36</span><span class="number">.6</span>, <span class="number">00</span>:<span class="number">00</span>:<span class="number">03</span>, Ethernet0/<span class="number">2</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">SW1(config)#int range e1/0-1</span><br><span class="line">SW1(config-if-range)#switchport trunk encapsulation dot1q </span><br><span class="line">SW1(config-if-range)#switchport mode trunk </span><br><span class="line">SW1(config-if-range)#switchport nonegotiate</span><br><span class="line">SW1(config-if-range)#switchport trunk native vlan 999</span><br><span class="line"></span><br><span class="line">SW2(config)#int range e1/0-1</span><br><span class="line">SW2(config-if-range)#switchport trunk encapsulation dot1q </span><br><span class="line">SW2(config-if-range)#switchport mode trunk </span><br><span class="line">SW2(config-if-range)#switchport nonegotiate </span><br><span class="line">SW2(config-if-range)#switchport trunk native vlan 999</span><br></pre></td></tr></table></figure>
+
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/14/ws1dsS.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/14/ws1aM8.png"></p>
+<p><strong>（3）设置SW1的VTP模式为Server，SW2的VTP模式为Client，并且设置VTP域名为shain，密码为CCIEPASS，实现该园区网络的VLAN信息同步</strong></p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">SW1(config)#vtp domain shain</span><br><span class="line">SW1(config)#vtp password CCIEPASS</span><br><span class="line">SW1(config)#vtp mode server </span><br><span class="line"></span><br><span class="line">SW2(config)#vtp password CCIEPASS</span><br><span class="line">SW2(config)#vtp mode client </span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>查看R2的路由表</li>
+<li>在SW1和SW2上查看VTP的状态信息</li>
 </ul>
-<blockquote>
-<p>显示下一跳为R3，cost值为2</p>
-</blockquote>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">R2#show ip route</span><br><span class="line"><span class="comment">//省略部分输出</span></span><br><span class="line">      <span class="number">5.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">24</span> is subnetted, <span class="number">1</span> subnets</span><br><span class="line">R        <span class="number">5.5</span><span class="number">.5</span><span class="number">.0</span> [<span class="number">120</span>/<span class="number">2</span>] via <span class="number">23.23</span><span class="number">.23</span><span class="number">.3</span>, <span class="number">00</span>:<span class="number">00</span>:<span class="number">12</span>, Ethernet0/<span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/ws1XLD.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/ws1OsO.png"></p>
+<ul>
+<li>此时SW2通过VTP方式学习到SW1上的VLAN</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/ws3iSP.png"></p>
+<p><strong>（4）使用802.3ad标准构建两交换机间的以太通道链路，要求交换机将EtherChannel的负载均衡设置为src-dst-ip</strong></p>
+<ul>
+<li>使用LACP进行交换机之间的链路捆绑</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">SW1(config)#int range e1/0-1</span><br><span class="line">SW1(config-if-range)#channel-group 1 mode active </span><br><span class="line">Creating a port-channel interface Port-channel <span class="number">1</span></span><br><span class="line"></span><br><span class="line">SW2(config)#int range e1/0-1</span><br><span class="line">SW2(config-if-range)#channel-group 1 mode active </span><br><span class="line">Creating a port-channel interface Port-channel <span class="number">1</span></span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>查看R1的路由表</li>
+<li>查看EtherChannel摘要信息，捆绑成功</li>
 </ul>
-<blockquote>
-<p>显示下一跳为R2：R2将RIP重分布进了OSPF中，未指定类型，则默认为O E2，传递过程中保持cost值为20</p>
-</blockquote>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">R1#show ip route </span><br><span class="line"><span class="comment">///省略部分输出///</span></span><br><span class="line">      <span class="number">5.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">24</span> is subnetted, <span class="number">1</span> subnets</span><br><span class="line">O E2     <span class="number">5.5</span><span class="number">.5</span><span class="number">.0</span> [<span class="number">110</span>/<span class="number">20</span>] via <span class="number">12.12</span><span class="number">.12</span><span class="number">.2</span>, <span class="number">00</span>:<span class="number">32</span>:<span class="number">42</span>, Ethernet0/<span class="number">0</span></span><br></pre></td></tr></table></figure>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/ws8974.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/ws8PAJ.png"></p>
+<ul>
+<li>将EtherChannel的负载均衡方式设置为src-dst-ip（默认的负载均衡方式即为src-dst-ip）</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">SW1(config)#port-channel load-balance src-dst-ip</span><br><span class="line">SW2(config)#port-channel load-balance src-dst-ip</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>查看R6路由表</li>
+<li>在SW1上查看EtherChannel的负载均衡方式</li>
 </ul>
-<blockquote>
-<p>R6从R1上学习到5.5.5.0/24的路由条目</p>
-</blockquote>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">R6#show ip route </span><br><span class="line"><span class="comment">//省略部分输出</span></span><br><span class="line">      <span class="number">5.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">24</span> is subnetted, <span class="number">1</span> subnets</span><br><span class="line">O E2     <span class="number">5.5</span><span class="number">.5</span><span class="number">.0</span> [<span class="number">110</span>/<span class="number">20</span>] via <span class="number">16.16</span><span class="number">.16</span><span class="number">.1</span>, <span class="number">00</span>:<span class="number">32</span>:<span class="number">57</span>, Ethernet0/<span class="number">0</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p><strong>分析总结</strong>：R4从R5上学习到了5.5.5.0/24的路由条目，并将其通告给R3，R3此时若通过R4访问5.5.5.5/24，则开销值为2。R3再将自身的路由信息通告给R2和R6，则此时R2和R6到达5.5.5.5/24的开销值都为3，并且管理距离都为120。在R2上将RIP重分布进OSPF，此时R1通过R2学习到的去往5.5.5.0/24的路由的管理距离为110，开销为20。R6与R1建立了OSPF邻居关系，则R6将会从R1上再次学习到5.5.5.0/24的路由条目，此时R6通过两种路由协议学习到了到达同一目的的路由，则会比较管理距离，最后R6选择通过R1去往5.5.5.0/24网段，因为OSPF的管理距离为110，小于RIP的120，所以在R6的路由表上显示的到达5.5.5.0的路由类型为O E2。R6上又将OSPF重分布进了RIP中，并且指定了开销值为1，此时R3通过同种路由协议学习到了到达同一目的地址的路由，会比较开销，最终选择通过R6去往5.5.5.0/24，因为R6告诉R3去往该网段的开销为1。最终，导致了环路的形成。</p>
-</blockquote>
-<h3 id="4、问题解决"><a href="#4、问题解决" class="headerlink" title="4、问题解决"></a>4、问题解决</h3><ul>
-<li>【解决措施1】修改跳数——在R6上将OSPF重分布进RIP时将跳数设置为大于2</li>
-</ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R6(config)#router rip</span><br><span class="line">R6(config-router)#redistribute ospf 1 metric 3</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>查看R3的路由表，可知此时通过R4去往5.5.5.0/24网段</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0kVFv8.png"></p>
-<blockquote>
-<p>在R1上跟踪路由，问题解决</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0kV0xK.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wsGZPs.png"></p>
+<p><strong>（5）根据需求在DHCP_SRV上建立相应的地址池，并且在各个地址池中排除范围从10到20之间的IP地址空间，同时要求无论FTP_SRV何时接入交换网络都会获取到192.168.40.100/24的地址，完成必要的配置，实现各主机和FTP_SRV可以获取相应的IP地址</strong></p>
 <ul>
-<li>【解决措施2】使用分发列表过滤，在R3上将R6传过来的5.5.5.0/24的路由进行过滤</li>
+<li>在DHCP_SRV上创建地址池并按要求排除IP地址空间</li>
 </ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R3(config)#access-list 1 deny 5.5.5.0 /24</span><br><span class="line">R3(config)#access-list 1 permit any </span><br><span class="line">R3(config)#router rip</span><br><span class="line">R3(config-router)#distribute-list 1 in e0/2</span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="comment">//创建地址池</span></span><br><span class="line">DHCP_SRV(config)#ip dhcp pool vlan_10</span><br><span class="line">DHCP_SRV(dhcp-config)#network 192.168.10.0 255.255.255.0</span><br><span class="line">DHCP_SRV(dhcp-config)#default-router 192.168.10.254</span><br><span class="line">DHCP_SRV(dhcp-config)#dns-server 8.8.8.8</span><br><span class="line">DHCP_SRV(config)#ip dhcp pool vlan_20</span><br><span class="line">DHCP_SRV(dhcp-config)#network 192.168.20.0 255.255.255.0</span><br><span class="line">DHCP_SRV(dhcp-config)#default-router 192.168.20.254</span><br><span class="line">DHCP_SRV(dhcp-config)#dns-server 8.8.8.8</span><br><span class="line">DHCP_SRV(config)#ip dhcp pool vlan_30</span><br><span class="line">DHCP_SRV(dhcp-config)#network 192.168.30.0 255.255.255.0</span><br><span class="line">DHCP_SRV(dhcp-config)#default-router 192.168.30.254</span><br><span class="line">DHCP_SRV(dhcp-config)#dns-server 8.8.8.8</span><br><span class="line">DHCP_SRV(config)#ip dhcp pool vlan_40</span><br><span class="line">DHCP_SRV(dhcp-config)#network 192.168.40.0 255.255.255.0</span><br><span class="line">DHCP_SRV(dhcp-config)#default-router 192.168.40.254</span><br><span class="line">DHCP_SRV(dhcp-config)#dns-server 8.8.8.8</span><br><span class="line"><span class="comment">//排除要求的IP地址，并将已使用的IP地址也排除掉</span></span><br><span class="line">DHCP_SRV(config)#ip dhcp excluded-address 192.168.10.10 192.168.10.20</span><br><span class="line">DHCP_SRV(config)#ip dhcp excluded-address 192.168.20.10 192.168.20.20</span><br><span class="line">DHCP_SRV(config)#ip dhcp excluded-address 192.168.30.10 192.168.30.20</span><br><span class="line">DHCP_SRV(config)#ip dhcp excluded-address 192.168.40.10 192.168.40.20</span><br><span class="line">DHCP_SRV(config)#ip dhcp excluded-address 192.168.10.100</span><br><span class="line">DHCP_SRV(config)#ip dhcp excluded-address 192.168.10.254             </span><br><span class="line">DHCP_SRV(config)#ip dhcp excluded-address 192.168.20.254</span><br><span class="line">DHCP_SRV(config)#ip dhcp excluded-address 192.168.30.254</span><br><span class="line">DHCP_SRV(config)#ip dhcp excluded-address 192.168.40.254</span><br><span class="line">DHCP_SRV(config)#ip dhcp excluded-address 192.168.40.100</span><br></pre></td></tr></table></figure>
 
-<blockquote>
-<p>查看R3的路由表，可知此时通过R4去往5.5.5.0/24网段</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0ke8AJ.png"></p>
-<blockquote>
-<p>在R1上跟踪路由，问题解决</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0kerAH.png"></p>
 <ul>
-<li>【解决措施3】针对特定的通告者修改管理距离——把从R6学习到的5.5.5.0/24的路由的AD值改为大于120</li>
+<li>在DHCP_SRC和SW1上启用OSPF协议</li>
 </ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R3(config)#access-list 1 permit 5.5.5.0 /24</span><br><span class="line">R3(config)#router rip</span><br><span class="line"><span class="comment">//针对R6通告的并被ACL 1匹配到的路由，将其管理距离更改为130</span></span><br><span class="line">R3(config-router)#distance 130 36.36.36.6 0.0.0.0 1</span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">DHCP_SRV(config)#router ospf 1</span><br><span class="line">DHCP_SRV(config-router)#router-id 3.3.3.3</span><br><span class="line">DHCP_SRV(config-router)#network 192.168.10.0 0.0.0.255 area 0</span><br><span class="line"></span><br><span class="line">SW1(config)#router ospf 1</span><br><span class="line">SW1(config-router)#router-id 1.1.1.1</span><br><span class="line">SW1(config-router)#network 192.168.10.0 0.0.0.255 area 0</span><br><span class="line">SW1(config-router)#network 192.168.20.0 0.0.0.255 area 0</span><br><span class="line">SW1(config-router)#network 192.168.30.0 0.0.0.255 area 0</span><br><span class="line">SW1(config-router)#network 192.168.40.0 0.0.0.255 area 0</span><br></pre></td></tr></table></figure>
 
-<blockquote>
-<p>查看R3的路由表，可知此时通过R4去往5.5.5.0/24网段</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0kmoqO.png"></p>
-<blockquote>
-<p>在R1上跟踪路由，问题解决</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0knSL8.png"></p>
 <ul>
-<li>【解决措施4】使用前缀列表匹配，并用分发列表过滤</li>
+<li>在SW1的各VLAN的SVI接口中配置中继地址</li>
 </ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="comment">//使用前缀列表拒绝5.5.5.0/24</span></span><br><span class="line">R3(config)#ip prefix-list a deny 5.5.5.0/24</span><br><span class="line"><span class="comment">//前缀列表允许剩下的所有路由</span></span><br><span class="line">R3(config)#ip prefix-list a permit 0.0.0.0/0 le 32</span><br><span class="line">R3(config)#router rip</span><br><span class="line"><span class="comment">//使用分发列表调用前缀列表</span></span><br><span class="line">R3(config-router)#distribute-list prefix a in e0/2</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>由于DHCP_SRV在VLAN10中，所以无需在VLAN10的SVI端口配置中继地址</p>
+</blockquote>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">SW1(config)#int vlan 20</span><br><span class="line">SW1(config-if)#ip helper-address 192.168.10.100</span><br><span class="line">SW1(config)#int vlan 30</span><br><span class="line">SW1(config-if)#ip helper-address 192.168.10.100</span><br><span class="line">SW1(config)#int vlan 40</span><br><span class="line">SW1(config-if)#ip helper-address 192.168.10.100</span><br></pre></td></tr></table></figure>
 
-<blockquote>
-<p>查看R3的路由表，可知此时通过R4去往5.5.5.0/24网段</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0kK5Mq.png"></p>
-<blockquote>
-<p>在R1上跟踪路由，问题解决</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0kMmOP.png"></p>
 <ul>
-<li>【解决措施5】在R6的out方向调用分发列表</li>
+<li>各主机自动获取IP地址</li>
 </ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R6(config)#access-list 1 deny 5.5.5.0 /24</span><br><span class="line">R6(config)#access-list 1 permit any    </span><br><span class="line">R6(config)#router rip</span><br><span class="line"><span class="comment">//将ospf重分布进RIP时，只有被ACL 1允许的才会进行重分布</span></span><br><span class="line">R6(config-router)#distribute-list 1 out ospf 1</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>查看R3的路由表，可知此时通过R4去往5.5.5.0/24网段</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0kQajI.png"></p>
-<blockquote>
-<p>在R1上跟踪路由，问题解决</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0kQhD0.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wsJB60.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wsJDXV.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wsJ0lq.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wsJwpn.png"></p>
 <ul>
-<li>【解决措施6】使用偏移列表（只针对距离矢量有意义）</li>
+<li>让FTP_SRV自动获取地址</li>
 </ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R6(config)#access-list 1 permit 5.5.5.0 /24</span><br><span class="line">R6(config)#router rip</span><br><span class="line"><span class="comment">//针对被ACL 1匹配到的路由，对其跳数进行偏移2，即此时R3从R6上学习到的5.5.5.0/24的路由的跳数为3</span></span><br><span class="line">R6(config-router)#offset-list 1 out 2 e0/1</span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">FTP_SRV(config)#int e0/0</span><br><span class="line">FTP_SRV(config-if)#no shutdown </span><br><span class="line">FTP_SRV(config-if)#ip address dhcp</span><br></pre></td></tr></table></figure>
 
 <blockquote>
-<p>查看R3的路由表，可知此时通过R4去往5.5.5.0/24网段</p>
+<p>如下图所示，此时通过DHCP方式获取到的IP地址为192.168.40.2，并不符合要求的192.168.40.100</p>
 </blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0k15hF.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wsYVcq.png"></p>
+<ul>
+<li>查看DHCP_SRV的DHCP绑定表，可以得到FTP_SRV的电路ID</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wsYdED.png"></p>
+<ul>
+<li>在DHCP_SRV上清空FTP_SRV的地址绑定信息</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">DHCP_SRV#clear ip dhcp binding 192.168.40.2</span><br></pre></td></tr></table></figure>
+
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wsY2b8.png"></p>
+<ul>
+<li>在DHCP_SRV上创建FTP_SRV专用的地址池，与FTP_SRV的电路ID进行绑定</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">DHCP_SRV(config)#ip dhcp pool FTP_SRV</span><br><span class="line">DHCP_SRV(dhcp-config)#host 192.168.40.100 255.255.255.0</span><br><span class="line">DHCP_SRV(dhcp-config)#default-router 192.168.40.254</span><br><span class="line">DHCP_SRV(dhcp-config)#client-identifier 0063.6973.636f.2d61.6162.622e.6363.3030.2e35.3030.302d.4574.302f.30</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在FTP_SRV上使用DHCP方式获取IP地址，此时获取到的IP地址为192.168.40.100，符合要求</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wstZPH.png"></p>
+<p><strong>（6）完成必要配置，实现各主机可以访问ISP上的Web_SRV</strong></p>
+<ul>
+<li>在R1和SW1上运行OSPF协议，实现内网的可达性</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R1(config)#router ospf 1</span><br><span class="line">R1(config-router)#router-id 2.2.2.2</span><br><span class="line">R1(config-router)#network 10.10.10.0 0.0.0.255 area 0</span><br><span class="line"></span><br><span class="line">SW1(config)#router ospf 1</span><br><span class="line">SW1(config-router)#network 10.10.10.0 0.0.0.255 area 0</span><br></pre></td></tr></table></figure>
+
 <blockquote>
-<p>在R1上跟踪路由，问题解决</p>
+<p>此时PC3可以访问R1</p>
 </blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0k3n3Q.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wstJiQ.png"></p>
+<ul>
+<li>在R1上配置默认路由，指定出接口为s1/0，并在OSPF进程下发默认路由</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R1(config)#ip route 0.0.0.0 0.0.0.0 s1/0</span><br><span class="line">R1(config)#router ospf 1</span><br><span class="line">R1(config-router)#default-information originate </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>指定Web_SRV的网关为ISP的e0/0接口的地址200.100.100.1</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">Web_SRV(config)#ip default-gateway 200.100.100.1</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>此时实现了R1可以访问Web_SRV</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wst4eK.png"></p>
+<ul>
+<li>在R1上配置PAT，实现内网主机可以访问Web_SRV</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R1(config)#access-list 1 permit 192.168.0.0 /16  //ACL用于匹配内网主机</span><br><span class="line">R1(config)#ip nat inside source list 1 interface s1/0 overload </span><br><span class="line">R1(config)#int e0/0</span><br><span class="line">R1(config-if)#ip nat inside </span><br><span class="line">R1(config)#int s1/0</span><br><span class="line">R1(config-if)#ip nat outside </span><br></pre></td></tr></table></figure>
+
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wst7JH.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wstHWd.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wstIoD.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wstTFe.png"></p>
+<ul>
+<li>在R1上查看地址转换表，可知在R1上进行了地址转换</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/15/wstvef.png"></p>
 ]]></content>
       <categories>
-        <category>学习笔记</category>
+        <category>实验</category>
       </categories>
       <tags>
-        <tag>路由协议</tag>
-        <tag>重分布</tag>
+        <tag>DHCP</tag>
+        <tag>EtherChannel</tag>
+        <tag>VTP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>单臂路由运用</title>
+    <url>/2020/08/30/%E5%8D%95%E8%87%82%E8%B7%AF%E7%94%B1%E8%BF%90%E7%94%A8/</url>
+    <content><![CDATA[<h4 id="1、实验目的"><a href="#1、实验目的" class="headerlink" title="1、实验目的"></a>1、实验目的</h4><p>1）掌握交换机上VLAN的创建和划分<br>2）掌握trunk的作用<br>3）掌握VTP的作用与配置<br>4）掌握单臂路由原理与配置<br>5）理解trunk链路上的802.1Q标记的作用</p>
+<a id="more"></a>
+<h4 id="2、拓扑结构"><a href="#2、拓扑结构" class="headerlink" title="2、拓扑结构"></a>2、拓扑结构</h4><p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqOjXR.png"></p>
+<h4 id="3、实验步骤"><a href="#3、实验步骤" class="headerlink" title="3、实验步骤"></a>3、实验步骤</h4><p><strong>（1）在SW1上创建两个vlan，vlan10和vlan20，并将vlan10命名为sales，将vlan20命名为engineers</strong></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqXEjA.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqXeBt.png"></p>
+<p><strong>（2）完成必要的配置，实现两交换机的vlan数据库同步，并使用相关命令验证和查看vlan数据库的信息</strong></p>
+<blockquote>
+<p>要实现两交换机的vlan数据库同步，需要进行vtp的配置</p>
+</blockquote>
+<ul>
+<li>将两交换机相连的端口设置为trunk</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqXJun.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqj8PO.png"></p>
+<ul>
+<li>指定vtp的域和密码，并指定SW1的vtp模式为server，SW2的vtp模式为client</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqjyRg.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqvFOA.png"></p>
+<ul>
+<li>在SW2上查看vlna信息，此前并未在SW2上创建vlan，由此可知两交换机之间实现了vlan数据库的同步</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqv6k6.png"></p>
+<ul>
+<li>尝试在SW2上创建一个vlan，日志提示在vtp的模式为client的条件下不允许创建vlan</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqvRpD.png"></p>
+<ul>
+<li>在SW1上查看vtp的状态信息，从下图可知SW1的vtp模式为server（默认），已存在的vlan数量为7，修订版本号为8</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqx9A0.png"></p>
+<p><strong>（3）将连接PC1和PC3的交换端口划分进vlan10，将连接PC2的交换端口划分进vlan20中，并为各PC配置合适的IP地址和网关</strong></p>
+<ul>
+<li>依题意将交换机上的端口划分进对应的vlan</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqxYDA.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqxUEt.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqxd4f.png"></p>
+<ul>
+<li>由于各PC为使用路由器镜像模拟，需在PC上关闭路由功能。按下图所示为各PC配置IP地址和网关</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqxIv4.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqxHbR.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqxLUx.png"></p>
+<p><strong>（4）使用show vlan brief查看各交换机的vlan信息</strong></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqzFat.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqzEPf.png"></p>
+<p><strong>（5）测试各主机之间的连通性</strong></p>
+<blockquote>
+<p>PC1和PC3之间可以相互ping通（两PC属于同一vlan，无需经过三层设备）</p>
+<p>PC1和PC2之间无法通信（两PC属于不同vlan，需要经过三层设备，此时还未在路由器上进行相应的配置）</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqzlaq.png"></p>
+<p><strong>（6）在交换机和路由器上完成必要的配置，实现各主机间可以互相通信</strong></p>
+<ul>
+<li>将SW1上连路由器的端口配置成trunk</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqzTW8.png">、</p>
+<ul>
+<li><p>在R1上进行单臂路由的配置</p>
+<blockquote>
+<p>单臂路由是指在路由器的一个接口上通过配置子接口(或”逻辑接口”，并不真实存在)的方式，实现原来相互隔离的不同vlan之间的互联互通</p>
+<p>值得注意的是这些逻辑子接口不能被单独的开启或关闭，即当物理接口被开启或关闭时，所有的该物理接口的子接口也将对应的被开启或关闭</p>
+<p>由于单臂路由存在瓶颈和单点故障的问题，因此必须限制主机/vlan的数量。此时可以通过SVI实现不同vlan间的通信（后续会进行介绍）</p>
+</blockquote>
+</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqzHSS.png"></p>
+<ul>
+<li>测试各主机之间的连通性，如下图所示，三台PC之间可以互相ping通</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqzbQg.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqzLLj.png"></p>
+]]></content>
+      <categories>
+        <category>实验</category>
+      </categories>
+      <tags>
+        <tag>CCNA</tag>
+        <tag>单臂路由</tag>
+        <tag>vtp</tag>
       </tags>
   </entry>
   <entry>
@@ -2323,6 +2362,159 @@
         <tag>STP</tag>
         <tag>RSTP</tag>
         <tag>MST</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>重分布引起的路由环路问题</title>
+    <url>/2020/09/27/%E9%87%8D%E5%88%86%E5%B8%83%E5%BC%95%E8%B5%B7%E7%9A%84%E8%B7%AF%E7%94%B1%E7%8E%AF%E8%B7%AF%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h3 id="1、环境介绍"><a href="#1、环境介绍" class="headerlink" title="1、环境介绍"></a>1、环境介绍</h3><blockquote>
+<p>如下图所示，左边部分运行OSPF，右边部分运行RIP，在R5上启用一个回环口并将其通告进RIP中，在R2和R6上进行重分布</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0FxaCQ.png"></p>
+<ul>
+<li>在R2上将RIP重分布进OSPF，在R6上将OSPF重分布进RIP</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R2(config)#router ospf 1</span><br><span class="line">R2(config-router)#redistribute rip subnets</span><br><span class="line"></span><br><span class="line">R6(config)#router rip</span><br><span class="line">R6(config-router)#redistribute ospf 1 metric 1    //指定跳数为1</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>将R5上的回环口通告进RIP</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R5(config)#router rip</span><br><span class="line">R5(config-router)#network 5.5.5.0       </span><br></pre></td></tr></table></figure>
+
+<h3 id="2、产生环路"><a href="#2、产生环路" class="headerlink" title="2、产生环路"></a>2、产生环路</h3><ul>
+<li>在R1上跟踪到达R5所经过的路径，产生了环路（R1→R2→R3→R6→R1……）</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">R1#traceroute 5.5.5.5 numeric </span><br><span class="line">Type <span class="built_in">escape</span> sequence to abort.</span><br><span class="line">Tracing the route to <span class="number">5.5</span><span class="number">.5</span><span class="number">.5</span></span><br><span class="line">VRF info: (vrf <span class="keyword">in</span> name/id, vrf out name/id)</span><br><span class="line">  <span class="number">1</span> <span class="number">12.12</span><span class="number">.12</span><span class="number">.2</span> <span class="number">0</span> msec <span class="number">0</span> msec <span class="number">0</span> msec</span><br><span class="line">  <span class="number">2</span> <span class="number">23.23</span><span class="number">.23</span><span class="number">.3</span> <span class="number">0</span> msec <span class="number">1</span> msec <span class="number">0</span> msec</span><br><span class="line">  <span class="number">3</span> <span class="number">36.36</span><span class="number">.36</span><span class="number">.6</span> <span class="number">1</span> msec <span class="number">0</span> msec <span class="number">1</span> msec</span><br><span class="line">  <span class="number">4</span> <span class="number">16.16</span><span class="number">.16</span><span class="number">.1</span> <span class="number">0</span> msec <span class="number">1</span> msec <span class="number">0</span> msec</span><br><span class="line">  <span class="number">5</span> <span class="number">12.12</span><span class="number">.12</span><span class="number">.2</span> <span class="number">1</span> msec <span class="number">0</span> msec <span class="number">0</span> msec</span><br><span class="line">  <span class="number">6</span> <span class="number">23.23</span><span class="number">.23</span><span class="number">.3</span> <span class="number">1</span> msec <span class="number">1</span> msec <span class="number">3</span> msec</span><br><span class="line">  <span class="number">7</span> <span class="number">36.36</span><span class="number">.36</span><span class="number">.6</span> <span class="number">1</span> msec <span class="number">1</span> msec <span class="number">0</span> msec</span><br><span class="line">  <span class="number">8</span> <span class="number">16.16</span><span class="number">.16</span><span class="number">.1</span> <span class="number">1</span> msec <span class="number">1</span> msec <span class="number">1</span> msec</span><br><span class="line">  <span class="number">9</span> <span class="number">12.12</span><span class="number">.12</span><span class="number">.2</span> <span class="number">0</span> msec <span class="number">1</span> msec <span class="number">1</span> msec</span><br><span class="line">  ……</span><br><span class="line">  ……</span><br><span class="line">  ……</span><br></pre></td></tr></table></figure>
+
+<h3 id="3、分析"><a href="#3、分析" class="headerlink" title="3、分析"></a>3、分析</h3><ul>
+<li>查看R4的路由表</li>
+</ul>
+<blockquote>
+<p>R4从R5上学习到5.5.5.0/24的路由条目，AD值为120，cost值为1，下一跳为45.45.45.5</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">R4#show ip route </span><br><span class="line"><span class="comment">//省略部分输出</span></span><br><span class="line">      <span class="number">5.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">24</span> is subnetted, <span class="number">1</span> subnets</span><br><span class="line">R        <span class="number">5.5</span><span class="number">.5</span><span class="number">.0</span> [<span class="number">120</span>/<span class="number">1</span>] via <span class="number">45.45</span><span class="number">.45</span><span class="number">.5</span>, <span class="number">00</span>:<span class="number">00</span>:<span class="number">11</span>, Ethernet0/<span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看R3的路由表</li>
+</ul>
+<blockquote>
+<p>R3本应从R4上学习到5.5.5.0/24的路由条目，此时的下一跳却为R6。</p>
+<p>分析：若R3从R4上学习5.5.5.0/24的路由，则跳数为2。由于在R6上进行了重分布，将OSPF重分布进RIP时指定了跳数为1，所以在相同协议条件下，优先选择cost值小的，因此R3会选择R6去往5.5.5.0/24网段</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">R3#show ip route </span><br><span class="line"><span class="comment">//省略部分输出</span></span><br><span class="line">      <span class="number">5.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">24</span> is subnetted, <span class="number">1</span> subnets</span><br><span class="line">R        <span class="number">5.5</span><span class="number">.5</span><span class="number">.0</span> [<span class="number">120</span>/<span class="number">1</span>] via <span class="number">36.36</span><span class="number">.36</span><span class="number">.6</span>, <span class="number">00</span>:<span class="number">00</span>:<span class="number">03</span>, Ethernet0/<span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看R2的路由表</li>
+</ul>
+<blockquote>
+<p>显示下一跳为R3，cost值为2</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">R2#show ip route</span><br><span class="line"><span class="comment">//省略部分输出</span></span><br><span class="line">      <span class="number">5.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">24</span> is subnetted, <span class="number">1</span> subnets</span><br><span class="line">R        <span class="number">5.5</span><span class="number">.5</span><span class="number">.0</span> [<span class="number">120</span>/<span class="number">2</span>] via <span class="number">23.23</span><span class="number">.23</span><span class="number">.3</span>, <span class="number">00</span>:<span class="number">00</span>:<span class="number">12</span>, Ethernet0/<span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看R1的路由表</li>
+</ul>
+<blockquote>
+<p>显示下一跳为R2：R2将RIP重分布进了OSPF中，未指定类型，则默认为O E2，传递过程中保持cost值为20</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">R1#show ip route </span><br><span class="line"><span class="comment">///省略部分输出///</span></span><br><span class="line">      <span class="number">5.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">24</span> is subnetted, <span class="number">1</span> subnets</span><br><span class="line">O E2     <span class="number">5.5</span><span class="number">.5</span><span class="number">.0</span> [<span class="number">110</span>/<span class="number">20</span>] via <span class="number">12.12</span><span class="number">.12</span><span class="number">.2</span>, <span class="number">00</span>:<span class="number">32</span>:<span class="number">42</span>, Ethernet0/<span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看R6路由表</li>
+</ul>
+<blockquote>
+<p>R6从R1上学习到5.5.5.0/24的路由条目</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">R6#show ip route </span><br><span class="line"><span class="comment">//省略部分输出</span></span><br><span class="line">      <span class="number">5.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">24</span> is subnetted, <span class="number">1</span> subnets</span><br><span class="line">O E2     <span class="number">5.5</span><span class="number">.5</span><span class="number">.0</span> [<span class="number">110</span>/<span class="number">20</span>] via <span class="number">16.16</span><span class="number">.16</span><span class="number">.1</span>, <span class="number">00</span>:<span class="number">32</span>:<span class="number">57</span>, Ethernet0/<span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>分析总结</strong>：R4从R5上学习到了5.5.5.0/24的路由条目，并将其通告给R3，R3此时若通过R4访问5.5.5.5/24，则开销值为2。R3再将自身的路由信息通告给R2和R6，则此时R2和R6到达5.5.5.5/24的开销值都为3，并且管理距离都为120。在R2上将RIP重分布进OSPF，此时R1通过R2学习到的去往5.5.5.0/24的路由的管理距离为110，开销为20。R6与R1建立了OSPF邻居关系，则R6将会从R1上再次学习到5.5.5.0/24的路由条目，此时R6通过两种路由协议学习到了到达同一目的的路由，则会比较管理距离，最后R6选择通过R1去往5.5.5.0/24网段，因为OSPF的管理距离为110，小于RIP的120，所以在R6的路由表上显示的到达5.5.5.0的路由类型为O E2。R6上又将OSPF重分布进了RIP中，并且指定了开销值为1，此时R3通过同种路由协议学习到了到达同一目的地址的路由，会比较开销，最终选择通过R6去往5.5.5.0/24，因为R6告诉R3去往该网段的开销为1。最终，导致了环路的形成。</p>
+</blockquote>
+<h3 id="4、问题解决"><a href="#4、问题解决" class="headerlink" title="4、问题解决"></a>4、问题解决</h3><ul>
+<li>【解决措施1】修改跳数——在R6上将OSPF重分布进RIP时将跳数设置为大于2</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R6(config)#router rip</span><br><span class="line">R6(config-router)#redistribute ospf 1 metric 3</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>查看R3的路由表，可知此时通过R4去往5.5.5.0/24网段</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0kVFv8.png"></p>
+<blockquote>
+<p>在R1上跟踪路由，问题解决</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0kV0xK.png"></p>
+<ul>
+<li>【解决措施2】使用分发列表过滤，在R3上将R6传过来的5.5.5.0/24的路由进行过滤</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R3(config)#access-list 1 deny 5.5.5.0 /24</span><br><span class="line">R3(config)#access-list 1 permit any </span><br><span class="line">R3(config)#router rip</span><br><span class="line">R3(config-router)#distribute-list 1 in e0/2</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>查看R3的路由表，可知此时通过R4去往5.5.5.0/24网段</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0ke8AJ.png"></p>
+<blockquote>
+<p>在R1上跟踪路由，问题解决</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0kerAH.png"></p>
+<ul>
+<li>【解决措施3】针对特定的通告者修改管理距离——把从R6学习到的5.5.5.0/24的路由的AD值改为大于120</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R3(config)#access-list 1 permit 5.5.5.0 /24</span><br><span class="line">R3(config)#router rip</span><br><span class="line"><span class="comment">//针对R6通告的并被ACL 1匹配到的路由，将其管理距离更改为130</span></span><br><span class="line">R3(config-router)#distance 130 36.36.36.6 0.0.0.0 1</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>查看R3的路由表，可知此时通过R4去往5.5.5.0/24网段</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0kmoqO.png"></p>
+<blockquote>
+<p>在R1上跟踪路由，问题解决</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0knSL8.png"></p>
+<ul>
+<li>【解决措施4】使用前缀列表匹配，并用分发列表过滤</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="comment">//使用前缀列表拒绝5.5.5.0/24</span></span><br><span class="line">R3(config)#ip prefix-list a deny 5.5.5.0/24</span><br><span class="line"><span class="comment">//前缀列表允许剩下的所有路由</span></span><br><span class="line">R3(config)#ip prefix-list a permit 0.0.0.0/0 le 32</span><br><span class="line">R3(config)#router rip</span><br><span class="line"><span class="comment">//使用分发列表调用前缀列表</span></span><br><span class="line">R3(config-router)#distribute-list prefix a in e0/2</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>查看R3的路由表，可知此时通过R4去往5.5.5.0/24网段</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0kK5Mq.png"></p>
+<blockquote>
+<p>在R1上跟踪路由，问题解决</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0kMmOP.png"></p>
+<ul>
+<li>【解决措施5】在R6的out方向调用分发列表</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R6(config)#access-list 1 deny 5.5.5.0 /24</span><br><span class="line">R6(config)#access-list 1 permit any    </span><br><span class="line">R6(config)#router rip</span><br><span class="line"><span class="comment">//将ospf重分布进RIP时，只有被ACL 1允许的才会进行重分布</span></span><br><span class="line">R6(config-router)#distribute-list 1 out ospf 1</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>查看R3的路由表，可知此时通过R4去往5.5.5.0/24网段</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0kQajI.png"></p>
+<blockquote>
+<p>在R1上跟踪路由，问题解决</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0kQhD0.png"></p>
+<ul>
+<li>【解决措施6】使用偏移列表（只针对距离矢量有意义）</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R6(config)#access-list 1 permit 5.5.5.0 /24</span><br><span class="line">R6(config)#router rip</span><br><span class="line"><span class="comment">//针对被ACL 1匹配到的路由，对其跳数进行偏移2，即此时R3从R6上学习到的5.5.5.0/24的路由的跳数为3</span></span><br><span class="line">R6(config-router)#offset-list 1 out 2 e0/1</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>查看R3的路由表，可知此时通过R4去往5.5.5.0/24网段</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0k15hF.png"></p>
+<blockquote>
+<p>在R1上跟踪路由，问题解决</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0k3n3Q.png"></p>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>路由协议</tag>
+        <tag>重分布</tag>
       </tags>
   </entry>
   <entry>
@@ -2659,230 +2851,6 @@
       </tags>
   </entry>
   <entry>
-    <title>OSPF基本原理</title>
-    <url>/2020/11/15/OSPF%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/</url>
-    <content><![CDATA[<h3 id="1、概述"><a href="#1、概述" class="headerlink" title="1、概述　　"></a>1、概述　　</h3><p>　　开放式最短路径优先（Open Shortest Path First，OSPF）协议是由Internet工程任务组（Internet Engineering Task Force，IETF）开发的路由选择协议，用来替代存在一些问题的RIP协议。现在，OSPF协议是IETF组织建议使用的内部网关协议（IGP）。OSPF使用Dijkstra算法来计算最短路径树。像所有的链路状态协议一样，OSPF协议和距离矢量协议相比，一个主要的改善在于它的快速收敛，这使得OSPF协议可以支持更大型的网络，并且不容易受到有害路由选择信息的影响。OSPF协议的其他一些特性有：</p>
-<ul>
-<li>使用了区域的概念，这样可以有效地减少路由选择协议对路由器的CPU和内存的占用；划分区域还可以降低路由选择协议的通信量，这使构建一个层次化的网络拓扑成为可能；</li>
-<li>完全无类别地处理地址问题，排除了不连续子网这样的有类路由选择协议的问题；</li>
-<li>支持无类别路由表查询、VLAM和用来进行有效地址管理的超网技术；</li>
-<li>支持无大小限制的、任意的度量值；</li>
-<li>支持使用多条路径的效率更高的等价负载均衡；</li>
-<li>使用保留的组播地址来减少对不宣告OSPF的设备的影响；</li>
-<li>使用可以跟踪外部路由的路由标记</li>
-</ul>
-<h3 id="2、OSPF的相关术语"><a href="#2、OSPF的相关术语" class="headerlink" title="2、OSPF的相关术语"></a>2、OSPF的相关术语</h3><ul>
-<li><p><input disabled="" type="checkbox">  链路：链路就是一个网络或者一个被指定给任一给定网络的路由器接口。当一个接口被添加到OSPF进程时，它就被OSPF认定是一个链路。这个链路或接口都将有一个与它关联的状态信息（up或down），以及一个或多个IP地址</p>
-</li>
-<li><p><input disabled="" type="checkbox">  路由器ID：路由器ID（RID）是一个用来标识此路由器的IP地址。该地址可以通过手动指定（必须唯一）；若未指定，则选择路由器上所有活跃的环回接口中最大的IPv4地址；若不存在环回接口，则选择所有活跃的物理接口中最大的IPv4地址</p>
-</li>
-<li><p><input disabled="" type="checkbox">  邻居：邻居可以是两个或更多的路由器，这些路由器的某个接口是连接在同一个公共网络上，比如两个通过点到点串行链路连接在一起的路由器</p>
-</li>
-<li><p><input disabled="" type="checkbox">  邻接：邻接是指两个OSPF路由器之间的关系，这两个路由器之间允许直接交换路由更新数据。注意，并不是所有的邻居都可以建立邻接关系，这将取决于网络类型和路由器配置</p>
-</li>
-<li><p><input disabled="" type="checkbox">  Hello协议：OSPF的Hello协议能够动态地发现邻居，并维护邻居关系。在两台路由器成为邻居之前，需要通告这两台路由器必须相互认可的几个参数。Hello数据包确保了邻居路由器之间的双向通信，并且和链路状态通告（LSA）共同用于建立并维护拓扑数据库</p>
-</li>
-<li><p><input disabled="" type="checkbox">  邻居关系数据库：邻居关系数据库是一个OSPF路由器的列表，这些路由器的Hello数据包相互可见。每个路由器上的邻居关系数据库中管理着各种详细的资料，包括路由器ID和状态等信息</p>
-</li>
-<li><p><input disabled="" type="checkbox">  拓扑数据库：拓扑数据库中包含有来自同一区域接收的所有链路状态通告数据包的信息。路由器使用来自拓扑数据库中的信息，作为Dijkstra算法的输入，并通过该算法为每个网络计算出最短路径</p>
-</li>
-<li><p><input disabled="" type="checkbox">  链路状态通告（LSA）：LSA中包含着OSPF路由器共享的链路状态和路由选择信息</p>
-</li>
-<li><p><input disabled="" type="checkbox">  指定路由器和备用指定路由器：当OSPF路由器被连接到同一多路访问网络时，都需要选择一个指定路由器（DR）和备用指定路由器（BDR）。DR负责将路由选择信息分发到广播网络或链路中其他路由器上，或收集其他路由器的路由选择信息。如果DR失效了，那么BDR将成为新的DR。DR和BDR的选择规则如下：</p>
-</li>
-<li><p>先比较优先级，优先级大的优先；默认情况下以太网接口的优先级为1，串行接口的优先级为0（优先级为0不参与DR/BDR的选举）</p>
-</li>
-<li><p>若优先级相同，则继续比较RID，RID越大越优先</p>
-</li>
-</ul>
-<blockquote>
-<p>注意，DR和BDR的选举是非抢占的（也就是说，在已经选取了DR和BDR路由器后，如果一台具有更高优先级的路由器加入，那么这台新的路由器将不会替代DR和BDR路由器的任何一台）</p>
-</blockquote>
-<h3 id="3、OSPF的网络类型"><a href="#3、OSPF的网络类型" class="headerlink" title="3、OSPF的网络类型"></a>3、OSPF的网络类型</h3><ul>
-<li>点到点网络（point-to-point）</li>
-</ul>
-<p>　　点到点网络，像T1、DS-3或SONET链路，是连接单独一对路由器的。在点到点网络上的有效邻居总是可以形成邻接关系。在这些网络上的OSPF数据包的目的地址也总是保留的D类地址224.0.0.5，这个组播地址称为ALLSPFRouters。在点到点网络类型不需要进行DR/BDR的选举。</p>
-<ul>
-<li>广播型网络（broadcast）</li>
-</ul>
-<p>　　广播型网络，像以太网、令牌环网和FDDI，也可以更确切地定义为广播型多址网络。需要进行DR和BDR的选举。由于是广播型的，所以连接在这种网络上的所有设备都可以接收到个别传送的数据包。</p>
-<ul>
-<li>非广播多路访问（NBMA）网络</li>
-</ul>
-<p>　　NBMA网络，像X.25、帧中继和ATM等，可以连接两台以上的路由器，但是它们没有广播数据包的能力。一台在NBMA网络上的路由器发送的数据包将不能被其他与之相连的路由器收到。在NBMA网络上的OSPF路由器需要选举DR和BDR，并且所有的OSPF数据包都是单播的，在这些网络上的路由器需要增加另外的配置来获得它们的邻居。</p>
-<ul>
-<li>点到多点网络（point-to-multipoint）</li>
-</ul>
-<p>　　点到多点网络是NBMA网络的一个特殊配置，可以被看做是一群点到点链路的集合。在这些网络上的OSPF路由器不需要选举DR和BDR，OSPF数据包以单播方式发送给每一个已知的邻居。</p>
-<ul>
-<li>虚链路（virtual links）</li>
-</ul>
-<p>　　虚链路可以被路由器认为是没有编号的点到点网络的一种特殊配置。在虚链路上OSPF数据包是以单播方式发送的。</p>
-<h3 id="4、OSPF消息类型"><a href="#4、OSPF消息类型" class="headerlink" title="4、OSPF消息类型"></a>4、OSPF消息类型</h3><p>　　OSPF使用五种类型的路由协议包，共享通用的协议头部。每个OSPF包被直接封装在IP头部中。OSPF的IP协议号是89。</p>
-<ul>
-<li>类型一：Hello数据包。Hello数据包负责发现、构建并维持OSPF邻居邻接关系。为了形成一种邻接关系，Hello数据包携带的参数必须和它的邻居保持一致。</li>
-<li>类型二：DBD（数据库描述）数据包。数据库描述数据包用于正在建立的邻接关系。它的一个主要的目的是描述始发路由器数据库中的一些或全部LSA信息，以便接收路由器能够确定所收到的LSA在其数据库中是否已经有了一个匹配的LSA。路由器由此判断数据库是否同步。</li>
-<li>类型三：LSR（链路状态请求）数据包。在数据库同步过程中如果收到了数据库描述数据包，路由器将会查看数据库描述数据包里有哪些LSA不在自己的数据库中，或者有哪些LSA比自己数据库中的LSA更新。然后，将把这些LSA记录在链路状态请求列表中。接着，路由器会发送一个或多个链路状态请求数据包去向它的邻居请求发送在链路状态请求列表中的这些LSA的副本。</li>
-<li>类型四：LSU（链路状态更新）数据包。LSU数据包包括几种类型的LSA。LSU负责泛洪LSA，以及发送对LSR包的LSA响应。LSA响应只会发给之前以LSR包形式请求LSA的直连邻居。进行泛洪时，邻居路由器负责把收到的LSA信息重新封装在新的LSU包中。</li>
-<li>类型五：LSAck（链路状态确认）数据包。LSAck负责进行可靠的LSA泛洪。路由器必须明确确认每个收到的LSA，可以用一个LSAck包确认多个LSA。</li>
-</ul>
-<h3 id="5、OSPF状态机"><a href="#5、OSPF状态机" class="headerlink" title="5、OSPF状态机"></a>5、OSPF状态机</h3><ul>
-<li>Down（失效状态）——这是一个邻居会话的初始状态，用来指明在最近一个路由死亡间隔时间内还没有收到来自邻居路由器的Hello数据包。如果一台邻居路由器从其他更高一些的邻居状态转换到了失效状态，那么路由器将会清空链路状态重传列表、数据库摘要列表和链路状态请求列表。当邻居邻接关系建立成功后，由于接口松动、重启进程或其他一些因素也会是OSPF状态动Full转换到Down。在Down状态，网段上不会收到信息。</li>
-<li>Attempt（尝试状态）——这种状态仅仅适用于NBMA网络上的邻居，在NBMA网络上邻居路由器是手工配置的。当NBMA网络上具有DR选取资格的路由器和其邻居路由器相连的接口开始变为有效时，或者当这台路由器成为DR或BDR时，这台具有DR选取资格的路由器会把邻居路由器的状态转换到Attempt状态。在Attempt状态下，路由器将使用HelloInterval的时间代替PollInterval的时间来作为向邻居发送Hello数据包的时间间隔。</li>
-<li>Init（初始状态）——这一状态表明在最近的RouterDeadInterval时间里路由器收到了来自邻居路由器的Hello数据包，但是双向通信仍然没有建立。路由器将会在Hello数据包的邻居字段中包含这种状态下或更高状态的所有邻居路由器的路由器ID。</li>
-<li>2-Way（双向通信状态）——这一状态表明本地路由器已经在来自邻居路由器的Hello数据包的邻居字段中看到了自己的路由器ID，这也就意味着一个双向通信的会话已经成功建立了。在多址网络中，邻居路由器必须在这个状态或更高状态时才能有资格被选作该网络上的DR或BDR。</li>
-<li>ExStart（信息交换初始状态）——在这一状态下，本地路由器和它的邻居将建立起主/从关系，并确定数据库描述数据包的序列号，以便为数据库描述数据包的信息交换做准备。在这里，具有最高路由器ID的邻居路由器将成为”主”路由器。</li>
-<li>Exchange（信息交换状态）——在这一状态下，本地路由器将向它的邻居路由器发送可以描述它整个链路状态数据库信息的数据库描述数据包。同时，在这个Exchange状态下，本地路由器也会发送链路状态请求数据包给它的邻居路由器，用来请求最新的LSA。</li>
-<li>Loading（信息加载状态）——在这一状态下，本地路由器将会向它的邻居路由器发送链路状态请求数据包，用来请求最新的LSA通告。虽然在Exchange状态下已经发现了这些最新的LSA通告，但是本地路由器还没有收到这些LSA通告。</li>
-<li>Full（完全邻接状态）——在这一状态下，邻居路由器之间将建立起完全邻接关系，这种邻接关系出现在路由器LSA和网络LSA中。</li>
-</ul>
-<h3 id="6、建立一个邻接关系"><a href="#6、建立一个邻接关系" class="headerlink" title="6、建立一个邻接关系"></a>6、建立一个邻接关系</h3><p>　　在一个邻接关系的创建过程中，OSPF协议使用以下3种数据包类型：</p>
-<ul>
-<li>数据库描述数据包</li>
-<li>链路状态请求数据包</li>
-<li>链路状态更新数据包</li>
-</ul>
-<p>　　在数据库描述数据包中有3个标记位用来管理邻接关系的建立过程：</p>
-<ul>
-<li>I位：当需要指明所发送的是第一个数据库描述数据包时，该位设置为1；</li>
-<li>M位：当需要指明所发送的还不是最后一个数据库描述数据包时，该位设置为1；</li>
-<li>MS位：当数据库描述数据包始发于一个”主”路由器时，该位设置为1.</li>
-</ul>
-<hr>
-
-
-<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DikbSP.png"></p>
-<p>（1）在多路访问的网络上，路由器RT1变为有效状态，并发送一个Hello数据包。由于它还没有学习到任何邻居，因而这个Hello数据包的邻居字段是空的，而DR和BDR字段设置为0.0.0.0。</p>
-<p>（2）RT2收到RT1的Hello数据包后，会为RT1创建一个邻居数据结构，并将RT1的状态设置为Init。RT2把RT1的Hello数据包中的RID提取出来，添加到自己的Hello数据包中，发送给RT1。当RT1和RT2在接收到的Hello包中都看到了自己的RID，则会进入2-Way状态。此时会进行DR和BDR的选举。</p>
-<p>（3）RT1产生一个空的DBD数据包（没有包含LSA摘要），并把DBD的序列号设置为x。同时设置初始位（I）来指明这个数据包是路由器RT1用来进行本次信息交换的最初的数据库描述数据包，并设置后继位（M）来指明这个数据包不是最后的数据库描述数据包，最后还要设置主从位（MS）来指明RT1声称自己是”主”路由器。</p>
-<p>（4）RT2收到来自RT1的数据库描述数据包后，就会把RT1的状态转换到ExStart状态。接着，它将发送一个响应的数据库描述数据包，并把这个数据库描述数据包的序列号设置为y。由于RT2拥有比RT1更高的RID，因此它将把自己的MS位置1。该数据包也用于主从关系协商，因此也是空的。当RT1收到此数据包后，会将RT2的状态转换到ExStart状态。</p>
-<p>（5）当两台邻居路由器同意RT2是主路由器后，路由器RT1就把路由器RT2的状态转换为Exchange状态。路由器RT1将产生一个数据库描述数据包，这个数据包的序列号使用RT2的数据库描述数据包的序列号y，并设置MS位为0用来指明RT1是”从”路由器。同时，该数据包将会传送路由器RT1的链路状态摘要列表中的LSA头部。</p>
-<p>（6）当路由器RT2收到来自RT1的数据库描述数据包，就会把它的邻居状态转化到Exchange状态。接着，它将发送一个数据库描述数据包，这个数据包包含路由器RT2自己的链路状态摘要列表中的LSA头部，并使它的数据库描述序列号增加到y+1。</p>
-<p>（7）当路由器RT1从路由器RT2收到上述的数据库描述数据包后，路由器RT1就会发送一个包含相同序列号的确认数据包。这个过程将一直延续，路由器RT2发送一个单一的数据库描述数据包，接着等待从RT1发出的包含相同序列号的确认数据包，然后RT2再发送下一个数据库描述数据包，直到路由器RT2发出包含最后一个LSA摘要的数据库描述数据包，并把这个数据包的M位设置为0。</p>
-<p>（8）收到上述数据包并且确信它所发出的确认数据包包含它自己最后的LSA摘要后，路由器RT1就会认为Exchange过程已经完成。然而，路由器RT1的链路状态请求列表中还存在LSA条目，因此，它将转换到信息加载状态（Loading）。</p>
-<p>（9）当路由器RT2收到RT1的最后一个数据库描述数据包时，路由器RT2将把RT1的状态转换为完全邻接状态（Full），这是因为在它（RT2）的链路状态请求列表中已经没有LSA条目了。</p>
-<p>（10）路由器RT1发送链路状态请求数据包，而路由器RT2通过链路状态更新数据包发送被请求的LSA通告，这个过程一直持续到路由器RT1的链路状态请求列表变为空。然后，路由器RT1也将路由器RT2的状态转换到完全邻接状态。</p>
-<h3 id="7、OSPF的区域"><a href="#7、OSPF的区域" class="headerlink" title="7、OSPF的区域"></a>7、OSPF的区域</h3><p>　　OSPF协议由于使用了多个数据库和复杂的算法，因而相比其他的路由选择协议而言，他将会耗费路由器更多的内存和更多的CPU处理能力。当网络的规模不断增大时，对路由器的性能要求就会显得比较重要甚至达到了路由器性能的极限。另一方面，虽然LSA的泛洪扩散比RIP协议中周期性的、全路由表的更新更加有效率，但是对于一个大型的网络来说，它依然给大量数据链路带来了无法承受的负担。</p>
-<p>　　OSPF协议可以利用区域的概念来缩小这些不利的影响。在OSPF协议的环境下，区域是一组逻辑上的OSPF路由器和链路，它可以有效地把一个OSPF域分割成几个子域。在一个区域内的路由器将不再需要了解他们所在区域外部的拓扑细节。在这种环境下：</p>
-<ul>
-<li>路由器仅需要和它所在区域的其他路由器具有相同的链路状态数据库，因此，链路状态数据库大小的缩减就降低了对路由器内存的消耗</li>
-<li>链路状态数据库的减少也意味着处理较少的LSA，从而也就降低了对路由器CPU的消耗</li>
-<li>由于链路状态数据库只需要在一个区域内进行维护，因此，大量的LSA泛洪扩散也就被限制在一个区域里面了</li>
-</ul>
-<p>　　OSPF使用两层的区域分级：</p>
-<ul>
-<li><p><input disabled="" type="checkbox">  骨干区域（区域0）——骨干区域的要求为，骨干区域必须连接所有其他非骨干区域；骨干区域必须连续；非骨干区域之间要通信必须经过骨干区域。一般来说，骨干区域中没有终端用户。</p>
-</li>
-<li><p><input disabled="" type="checkbox">  非骨干区域——此区域的主要功能是连接终端用户和资源。非骨干区域通常根据功能性或地理位置进行划分。不同非骨干区域之间的流量必须总是经过骨干区域。</p>
-</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DiASFs.png"></p>
-<p>虚链路（virtual link）是指一条通过一个非骨干区域连接到骨干区域的链路。虚链路主要应用于以下几种目的：</p>
-<ul>
-<li>通过一个非骨干区域连接一个区域到骨干区域</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DiAnYR.png"></p>
-<ul>
-<li>通过一个非骨干区域连接一个分段的骨干区域两边的部分区域</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DiAoBF.png"></p>
-<p>　在上述例子中，虚链路和具体的物理链路没有关系。虚链路事实上是一个逻辑通道，数据包可以通过选择最优的路径从一端到达另一端。在配置虚链路时，相关的规则说明如下：</p>
-<ul>
-<li>虚链路必须配置在两台ABR路由器之间</li>
-<li>配置了虚链路所经过的区域必须拥有全部的路由选择信息，这样的区域又被称为传送区域（transit areaa）</li>
-<li>传送区域不能是一个末梢区域</li>
-</ul>
-<p>　　正如前面所提及的，OSPF协议也把虚链路归类为一个网络类型。更特别的是，虚链路可以看成是在两台ABR路由器之间的一个无编码的——也就是说无编址地址——链路，并且它是属于骨干区域的。这些ABR路由器之间虽然没有物理的数据链路相连，但是它们可以看作是通过他们之间的虚链路逻辑上虚拟连接的邻居。在每一个ABR路由器的路由表中，当发现有到达邻居的ABR路由器的路由时，虚链路将转换到完全可操作的点到点接口状态。这条虚链路的代价就是到达它的邻居路由器的代价。当接口状态变为点到点状态时，一个邻接关系将通过这条虚链路建立成功。</p>
-<p>　　虚链路的存在增加了网络的复杂度，使故障的排除更加困难。因此，最好避免使用虚链路，而应该在区域上，特别是骨干区域上设计冗余链路来确保防止分段区域的产生。虚链路可以看做是一个标明网络的某个部分是否需要重新设计的标志。事实上，永久虚链路的存在总是一个设计比较糟糕的网络的标志。</p>
-<h3 id="8、链路状态数据库"><a href="#8、链路状态数据库" class="headerlink" title="8、链路状态数据库"></a>8、链路状态数据库</h3><p>　　一台路由器中所有有效的LSA都被存放在它的链路状态数据库中。正确的LSA将可以描述一个OSPF区域网络拓扑的结构。一个区域中的每一台路由器都要利用这个数据库的信息来计算它自己的最短路径树，因此，所有区域数据库的统一性对于正确的路由选择来说就变得十分重要。</p>
-<p>　　由于OSPF协议定义了多种路由器的类型，因而定义多种LSA通告的类型也是必要的。每一种LSA通告类型都描述了OSPF网络的一种不同情况。</p>
-<table>
-<thead>
-<tr>
-<th>类型代码</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>1</td>
-<td>路由器LSA</td>
-</tr>
-<tr>
-<td>2</td>
-<td>网络LSA</td>
-</tr>
-<tr>
-<td>3</td>
-<td>网络汇总LSA</td>
-</tr>
-<tr>
-<td>4</td>
-<td>ASBR汇总LSA</td>
-</tr>
-<tr>
-<td>5</td>
-<td>AS外部LSA</td>
-</tr>
-<tr>
-<td>6</td>
-<td>组成员LSA</td>
-</tr>
-<tr>
-<td>7</td>
-<td>NSSA外部LSA</td>
-</tr>
-<tr>
-<td>8</td>
-<td>外部属性LSA</td>
-</tr>
-<tr>
-<td>9</td>
-<td>Opaque LSA（链路本地范围）</td>
-</tr>
-<tr>
-<td>10</td>
-<td>Opaque LSA（本地区域范围）</td>
-</tr>
-<tr>
-<td>11</td>
-<td>Opaque LSA（AS范围）</td>
-</tr>
-</tbody></table>
-<ul>
-<li><p>路由器LSA（Router LSA）——每一台路由器都会产生路由器LSA通告。这个最基本的LSA通告列出了路由器所有的链路或接口，并指明了它们的状态和沿每条链路方向出站的代价，以及该链路上所有已知的OSPF邻居。这些LSA通告只会在始发它们的区域内部进行泛洪扩散。通过命令<span style="color:red"><code>show ip ospf database router</code></span>可以查看数据库中列出的所有路由器LSA通告。</p>
-</li>
-<li><p>网络LSA（Network LSA）——每一个多路访问网络中的指定路由器（DR）将会产生网络LSA通告。DR路由器可以看作一个”伪”节点，或是一个虚拟路由器，用来描绘一个多路访问网络和与之相连的所有路由器。从这个角度来看，一条网络LSA通告也可以描绘一个逻辑上的”伪”节点，就像一条路由器LSA通告描绘一个物理上的单台路由器一样。网络LSA通告列出了所有与之相连的路由器，包括DR路由器本身。网络LSA仅仅在产生这条网络LSA的区域内部进行泛洪扩散。可以使用命令<span style="color:red"><code>show ip ospf database network</code></span>查看网络LSA通告的信息。</p>
-</li>
-<li><p>网络汇总LSA（Network Summary LSA）——是由ABR路由器始发的。ABR路由器将发送网络汇总LSA到一个区域，用来通告该区域外部的目的地址。换句话说，这些网络汇总LSA就是ABR路由器告诉与其相连的区域内的内部路由器所能到达的目的地址的一种方法。可以通过命令<span style="color:red"><code>show ip ospf database summary</code></span>显示链路状态数据库中的网络汇总LSA信息。</p>
-</li>
-<li><p>ASBR汇总LSA（ASBR Summary LSA）——由ABR路由器始发。ASBR汇总LSA除了所通告的目的地是一台ASBR路由器而不是一个网络外，其他的和网络汇总LSA都是一样的。使用命令<span style="color:red"><code>show ip ospf database asbr-summary</code></span>可以查看ASBR汇总LSA的信息。通过ASBR汇总LSA通告的目的地将总是一个主机地址，因为它是一条到达一台路由器的路由。</p>
-</li>
-<li><p>自主系统外部LSA（Autonomous System External LSA）——即外部LSA，始发于ASBR路由器，用来通告到达OSPF自主系统外部的目的地或者是OSPF自主系统外部的缺省路由的LSA。外部LSA通告将在整个自主系统中进行泛洪扩散。使用命令<span style="color:red"><code>show ip ospf database external</code></span>可以查看AS外部LSA的信息。</p>
-</li>
-<li><p>NSSA外部LSA（NSSA External LSA）——是指在非纯末梢区域（Not-So-Stubby Area，NSSA）内始发于ASBR路由器的LSA通告。NSSA外部LSA通告仅在始发这个NSSA外部LSA通告的非纯末梢区域内部进行泛洪扩散。可以通过命令<span style="color:red"><code>show ip ospf database nssa-external</code></span>来显示NSSA外部LSA通告的信息。</p>
-</li>
-</ul>
-<h3 id="9、末梢（Stub）区域"><a href="#9、末梢（Stub）区域" class="headerlink" title="9、末梢（Stub）区域"></a>9、末梢（Stub）区域</h3><p>　　一个学习到外部目的地路由信息的ASBR路由器，将通过在整个OSPF自主系统中泛洪扩散自主系统外部LSA来通告那些外部的目的路由信息。这些外部LSA通告可能会在每台路由器的链路状态数据库中构成较大百分比的LSA数量，对性能不好的路由器产生压力。</p>
-<p>　　末梢区域是一个不允许AS外部LSA通告在其内部进行泛洪扩散的区域。若在一个区域内没有学习到类型5的LSA通告，那么类型4的LSA通告也是不必要的了，因此这些LSA通告也将被阻塞。位于末梢区域边界的ABR路由器将使用网络汇总LSA向这个区域通告一个简单的缺省路由。（即在Stub区域中会将类型4和类型5的LSA进行过滤，并且下发类型3的默认路由）</p>
-<p>　　末梢区域中存在的4个限制条件：</p>
-<ul>
-<li>末梢区域内的所有路由器都会在它们的Hello数据包中设置一个标志——E-bit位，并将它设置为0。这样，这些末梢区域路由器将不接受其他路由器发送的任何E-bit为1的Hello数据包。因此，需要将Stub区域内的所有路由器配置成末梢区域路由器。</li>
-<li>末梢区域中不能有虚链路的存在</li>
-<li>末梢区域内需存在一台或多台ABR路由器，但是不能存在ASBR路由器。</li>
-<li>骨干区域不能配置成特殊区域</li>
-</ul>
-<p>　　完全末梢区域（totally stubby area）不仅使用缺省路由到达OSPF自主系统外部的目的地址，而且使用缺省路由到达这个区域外部的所有目的地址。（过滤类型4和类型5的LSA，并且下发类型3的默认路由，再将类型3的LSA进行过滤）</p>
-<p>　　非纯末梢区域（Not-So-Stubby-Area，NSSA）允许外部路由通告到OSPF自主系统内部，而同时保留自主系统其余部分的末梢区域特征。NSSA区域允许ASBR路由器的存在。NSSA外部LSA在它的头部有一个称为P-bit位的标志。NSSA ASBR路由器可以设置或清除这个P-bit位。如果一台NSSA ABR路由器收到一条P-bit设置为1的类型7的LSA数据包，那么它将把这条类型7的LSA转换成为类型5的LSA，并且将这条LSA泛洪扩散到其他区域中。如果这个P-bit位被设置为0，那么将不会转换这条类型7的LSA，而且这条类型7的LSA携带的目的地址也不能通告到这个NSSA区域的外部。</p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DiE1Cn.png"></p>
-]]></content>
-      <categories>
-        <category>学习笔记</category>
-      </categories>
-      <tags>
-        <tag>OSPF</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>OSPF的配置</title>
     <url>/2020/11/15/OSPF%E7%9A%84%E9%85%8D%E7%BD%AE/</url>
     <content><![CDATA[<h3 id="一、基本的OSPF配置"><a href="#一、基本的OSPF配置" class="headerlink" title="一、基本的OSPF配置"></a>一、基本的OSPF配置</h3><p>　　拓扑如下图所示</p>
@@ -3124,6 +3092,230 @@
 <p>与上图相比，外部路由被汇总为10.10.0.0/16</p>
 </blockquote>
 <p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DidLeU.png"></p>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>OSPF</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>OSPF基本原理</title>
+    <url>/2020/11/15/OSPF%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/</url>
+    <content><![CDATA[<h3 id="1、概述"><a href="#1、概述" class="headerlink" title="1、概述　　"></a>1、概述　　</h3><p>　　开放式最短路径优先（Open Shortest Path First，OSPF）协议是由Internet工程任务组（Internet Engineering Task Force，IETF）开发的路由选择协议，用来替代存在一些问题的RIP协议。现在，OSPF协议是IETF组织建议使用的内部网关协议（IGP）。OSPF使用Dijkstra算法来计算最短路径树。像所有的链路状态协议一样，OSPF协议和距离矢量协议相比，一个主要的改善在于它的快速收敛，这使得OSPF协议可以支持更大型的网络，并且不容易受到有害路由选择信息的影响。OSPF协议的其他一些特性有：</p>
+<ul>
+<li>使用了区域的概念，这样可以有效地减少路由选择协议对路由器的CPU和内存的占用；划分区域还可以降低路由选择协议的通信量，这使构建一个层次化的网络拓扑成为可能；</li>
+<li>完全无类别地处理地址问题，排除了不连续子网这样的有类路由选择协议的问题；</li>
+<li>支持无类别路由表查询、VLAM和用来进行有效地址管理的超网技术；</li>
+<li>支持无大小限制的、任意的度量值；</li>
+<li>支持使用多条路径的效率更高的等价负载均衡；</li>
+<li>使用保留的组播地址来减少对不宣告OSPF的设备的影响；</li>
+<li>使用可以跟踪外部路由的路由标记</li>
+</ul>
+<h3 id="2、OSPF的相关术语"><a href="#2、OSPF的相关术语" class="headerlink" title="2、OSPF的相关术语"></a>2、OSPF的相关术语</h3><ul>
+<li><p><input disabled="" type="checkbox">  链路：链路就是一个网络或者一个被指定给任一给定网络的路由器接口。当一个接口被添加到OSPF进程时，它就被OSPF认定是一个链路。这个链路或接口都将有一个与它关联的状态信息（up或down），以及一个或多个IP地址</p>
+</li>
+<li><p><input disabled="" type="checkbox">  路由器ID：路由器ID（RID）是一个用来标识此路由器的IP地址。该地址可以通过手动指定（必须唯一）；若未指定，则选择路由器上所有活跃的环回接口中最大的IPv4地址；若不存在环回接口，则选择所有活跃的物理接口中最大的IPv4地址</p>
+</li>
+<li><p><input disabled="" type="checkbox">  邻居：邻居可以是两个或更多的路由器，这些路由器的某个接口是连接在同一个公共网络上，比如两个通过点到点串行链路连接在一起的路由器</p>
+</li>
+<li><p><input disabled="" type="checkbox">  邻接：邻接是指两个OSPF路由器之间的关系，这两个路由器之间允许直接交换路由更新数据。注意，并不是所有的邻居都可以建立邻接关系，这将取决于网络类型和路由器配置</p>
+</li>
+<li><p><input disabled="" type="checkbox">  Hello协议：OSPF的Hello协议能够动态地发现邻居，并维护邻居关系。在两台路由器成为邻居之前，需要通告这两台路由器必须相互认可的几个参数。Hello数据包确保了邻居路由器之间的双向通信，并且和链路状态通告（LSA）共同用于建立并维护拓扑数据库</p>
+</li>
+<li><p><input disabled="" type="checkbox">  邻居关系数据库：邻居关系数据库是一个OSPF路由器的列表，这些路由器的Hello数据包相互可见。每个路由器上的邻居关系数据库中管理着各种详细的资料，包括路由器ID和状态等信息</p>
+</li>
+<li><p><input disabled="" type="checkbox">  拓扑数据库：拓扑数据库中包含有来自同一区域接收的所有链路状态通告数据包的信息。路由器使用来自拓扑数据库中的信息，作为Dijkstra算法的输入，并通过该算法为每个网络计算出最短路径</p>
+</li>
+<li><p><input disabled="" type="checkbox">  链路状态通告（LSA）：LSA中包含着OSPF路由器共享的链路状态和路由选择信息</p>
+</li>
+<li><p><input disabled="" type="checkbox">  指定路由器和备用指定路由器：当OSPF路由器被连接到同一多路访问网络时，都需要选择一个指定路由器（DR）和备用指定路由器（BDR）。DR负责将路由选择信息分发到广播网络或链路中其他路由器上，或收集其他路由器的路由选择信息。如果DR失效了，那么BDR将成为新的DR。DR和BDR的选择规则如下：</p>
+</li>
+<li><p>先比较优先级，优先级大的优先；默认情况下以太网接口的优先级为1，串行接口的优先级为0（优先级为0不参与DR/BDR的选举）</p>
+</li>
+<li><p>若优先级相同，则继续比较RID，RID越大越优先</p>
+</li>
+</ul>
+<blockquote>
+<p>注意，DR和BDR的选举是非抢占的（也就是说，在已经选取了DR和BDR路由器后，如果一台具有更高优先级的路由器加入，那么这台新的路由器将不会替代DR和BDR路由器的任何一台）</p>
+</blockquote>
+<h3 id="3、OSPF的网络类型"><a href="#3、OSPF的网络类型" class="headerlink" title="3、OSPF的网络类型"></a>3、OSPF的网络类型</h3><ul>
+<li>点到点网络（point-to-point）</li>
+</ul>
+<p>　　点到点网络，像T1、DS-3或SONET链路，是连接单独一对路由器的。在点到点网络上的有效邻居总是可以形成邻接关系。在这些网络上的OSPF数据包的目的地址也总是保留的D类地址224.0.0.5，这个组播地址称为ALLSPFRouters。在点到点网络类型不需要进行DR/BDR的选举。</p>
+<ul>
+<li>广播型网络（broadcast）</li>
+</ul>
+<p>　　广播型网络，像以太网、令牌环网和FDDI，也可以更确切地定义为广播型多址网络。需要进行DR和BDR的选举。由于是广播型的，所以连接在这种网络上的所有设备都可以接收到个别传送的数据包。</p>
+<ul>
+<li>非广播多路访问（NBMA）网络</li>
+</ul>
+<p>　　NBMA网络，像X.25、帧中继和ATM等，可以连接两台以上的路由器，但是它们没有广播数据包的能力。一台在NBMA网络上的路由器发送的数据包将不能被其他与之相连的路由器收到。在NBMA网络上的OSPF路由器需要选举DR和BDR，并且所有的OSPF数据包都是单播的，在这些网络上的路由器需要增加另外的配置来获得它们的邻居。</p>
+<ul>
+<li>点到多点网络（point-to-multipoint）</li>
+</ul>
+<p>　　点到多点网络是NBMA网络的一个特殊配置，可以被看做是一群点到点链路的集合。在这些网络上的OSPF路由器不需要选举DR和BDR，OSPF数据包以单播方式发送给每一个已知的邻居。</p>
+<ul>
+<li>虚链路（virtual links）</li>
+</ul>
+<p>　　虚链路可以被路由器认为是没有编号的点到点网络的一种特殊配置。在虚链路上OSPF数据包是以单播方式发送的。</p>
+<h3 id="4、OSPF消息类型"><a href="#4、OSPF消息类型" class="headerlink" title="4、OSPF消息类型"></a>4、OSPF消息类型</h3><p>　　OSPF使用五种类型的路由协议包，共享通用的协议头部。每个OSPF包被直接封装在IP头部中。OSPF的IP协议号是89。</p>
+<ul>
+<li>类型一：Hello数据包。Hello数据包负责发现、构建并维持OSPF邻居邻接关系。为了形成一种邻接关系，Hello数据包携带的参数必须和它的邻居保持一致。</li>
+<li>类型二：DBD（数据库描述）数据包。数据库描述数据包用于正在建立的邻接关系。它的一个主要的目的是描述始发路由器数据库中的一些或全部LSA信息，以便接收路由器能够确定所收到的LSA在其数据库中是否已经有了一个匹配的LSA。路由器由此判断数据库是否同步。</li>
+<li>类型三：LSR（链路状态请求）数据包。在数据库同步过程中如果收到了数据库描述数据包，路由器将会查看数据库描述数据包里有哪些LSA不在自己的数据库中，或者有哪些LSA比自己数据库中的LSA更新。然后，将把这些LSA记录在链路状态请求列表中。接着，路由器会发送一个或多个链路状态请求数据包去向它的邻居请求发送在链路状态请求列表中的这些LSA的副本。</li>
+<li>类型四：LSU（链路状态更新）数据包。LSU数据包包括几种类型的LSA。LSU负责泛洪LSA，以及发送对LSR包的LSA响应。LSA响应只会发给之前以LSR包形式请求LSA的直连邻居。进行泛洪时，邻居路由器负责把收到的LSA信息重新封装在新的LSU包中。</li>
+<li>类型五：LSAck（链路状态确认）数据包。LSAck负责进行可靠的LSA泛洪。路由器必须明确确认每个收到的LSA，可以用一个LSAck包确认多个LSA。</li>
+</ul>
+<h3 id="5、OSPF状态机"><a href="#5、OSPF状态机" class="headerlink" title="5、OSPF状态机"></a>5、OSPF状态机</h3><ul>
+<li>Down（失效状态）——这是一个邻居会话的初始状态，用来指明在最近一个路由死亡间隔时间内还没有收到来自邻居路由器的Hello数据包。如果一台邻居路由器从其他更高一些的邻居状态转换到了失效状态，那么路由器将会清空链路状态重传列表、数据库摘要列表和链路状态请求列表。当邻居邻接关系建立成功后，由于接口松动、重启进程或其他一些因素也会是OSPF状态动Full转换到Down。在Down状态，网段上不会收到信息。</li>
+<li>Attempt（尝试状态）——这种状态仅仅适用于NBMA网络上的邻居，在NBMA网络上邻居路由器是手工配置的。当NBMA网络上具有DR选取资格的路由器和其邻居路由器相连的接口开始变为有效时，或者当这台路由器成为DR或BDR时，这台具有DR选取资格的路由器会把邻居路由器的状态转换到Attempt状态。在Attempt状态下，路由器将使用HelloInterval的时间代替PollInterval的时间来作为向邻居发送Hello数据包的时间间隔。</li>
+<li>Init（初始状态）——这一状态表明在最近的RouterDeadInterval时间里路由器收到了来自邻居路由器的Hello数据包，但是双向通信仍然没有建立。路由器将会在Hello数据包的邻居字段中包含这种状态下或更高状态的所有邻居路由器的路由器ID。</li>
+<li>2-Way（双向通信状态）——这一状态表明本地路由器已经在来自邻居路由器的Hello数据包的邻居字段中看到了自己的路由器ID，这也就意味着一个双向通信的会话已经成功建立了。在多址网络中，邻居路由器必须在这个状态或更高状态时才能有资格被选作该网络上的DR或BDR。</li>
+<li>ExStart（信息交换初始状态）——在这一状态下，本地路由器和它的邻居将建立起主/从关系，并确定数据库描述数据包的序列号，以便为数据库描述数据包的信息交换做准备。在这里，具有最高路由器ID的邻居路由器将成为”主”路由器。</li>
+<li>Exchange（信息交换状态）——在这一状态下，本地路由器将向它的邻居路由器发送可以描述它整个链路状态数据库信息的数据库描述数据包。同时，在这个Exchange状态下，本地路由器也会发送链路状态请求数据包给它的邻居路由器，用来请求最新的LSA。</li>
+<li>Loading（信息加载状态）——在这一状态下，本地路由器将会向它的邻居路由器发送链路状态请求数据包，用来请求最新的LSA通告。虽然在Exchange状态下已经发现了这些最新的LSA通告，但是本地路由器还没有收到这些LSA通告。</li>
+<li>Full（完全邻接状态）——在这一状态下，邻居路由器之间将建立起完全邻接关系，这种邻接关系出现在路由器LSA和网络LSA中。</li>
+</ul>
+<h3 id="6、建立一个邻接关系"><a href="#6、建立一个邻接关系" class="headerlink" title="6、建立一个邻接关系"></a>6、建立一个邻接关系</h3><p>　　在一个邻接关系的创建过程中，OSPF协议使用以下3种数据包类型：</p>
+<ul>
+<li>数据库描述数据包</li>
+<li>链路状态请求数据包</li>
+<li>链路状态更新数据包</li>
+</ul>
+<p>　　在数据库描述数据包中有3个标记位用来管理邻接关系的建立过程：</p>
+<ul>
+<li>I位：当需要指明所发送的是第一个数据库描述数据包时，该位设置为1；</li>
+<li>M位：当需要指明所发送的还不是最后一个数据库描述数据包时，该位设置为1；</li>
+<li>MS位：当数据库描述数据包始发于一个”主”路由器时，该位设置为1.</li>
+</ul>
+<hr>
+
+
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DikbSP.png"></p>
+<p>（1）在多路访问的网络上，路由器RT1变为有效状态，并发送一个Hello数据包。由于它还没有学习到任何邻居，因而这个Hello数据包的邻居字段是空的，而DR和BDR字段设置为0.0.0.0。</p>
+<p>（2）RT2收到RT1的Hello数据包后，会为RT1创建一个邻居数据结构，并将RT1的状态设置为Init。RT2把RT1的Hello数据包中的RID提取出来，添加到自己的Hello数据包中，发送给RT1。当RT1和RT2在接收到的Hello包中都看到了自己的RID，则会进入2-Way状态。此时会进行DR和BDR的选举。</p>
+<p>（3）RT1产生一个空的DBD数据包（没有包含LSA摘要），并把DBD的序列号设置为x。同时设置初始位（I）来指明这个数据包是路由器RT1用来进行本次信息交换的最初的数据库描述数据包，并设置后继位（M）来指明这个数据包不是最后的数据库描述数据包，最后还要设置主从位（MS）来指明RT1声称自己是”主”路由器。</p>
+<p>（4）RT2收到来自RT1的数据库描述数据包后，就会把RT1的状态转换到ExStart状态。接着，它将发送一个响应的数据库描述数据包，并把这个数据库描述数据包的序列号设置为y。由于RT2拥有比RT1更高的RID，因此它将把自己的MS位置1。该数据包也用于主从关系协商，因此也是空的。当RT1收到此数据包后，会将RT2的状态转换到ExStart状态。</p>
+<p>（5）当两台邻居路由器同意RT2是主路由器后，路由器RT1就把路由器RT2的状态转换为Exchange状态。路由器RT1将产生一个数据库描述数据包，这个数据包的序列号使用RT2的数据库描述数据包的序列号y，并设置MS位为0用来指明RT1是”从”路由器。同时，该数据包将会传送路由器RT1的链路状态摘要列表中的LSA头部。</p>
+<p>（6）当路由器RT2收到来自RT1的数据库描述数据包，就会把它的邻居状态转化到Exchange状态。接着，它将发送一个数据库描述数据包，这个数据包包含路由器RT2自己的链路状态摘要列表中的LSA头部，并使它的数据库描述序列号增加到y+1。</p>
+<p>（7）当路由器RT1从路由器RT2收到上述的数据库描述数据包后，路由器RT1就会发送一个包含相同序列号的确认数据包。这个过程将一直延续，路由器RT2发送一个单一的数据库描述数据包，接着等待从RT1发出的包含相同序列号的确认数据包，然后RT2再发送下一个数据库描述数据包，直到路由器RT2发出包含最后一个LSA摘要的数据库描述数据包，并把这个数据包的M位设置为0。</p>
+<p>（8）收到上述数据包并且确信它所发出的确认数据包包含它自己最后的LSA摘要后，路由器RT1就会认为Exchange过程已经完成。然而，路由器RT1的链路状态请求列表中还存在LSA条目，因此，它将转换到信息加载状态（Loading）。</p>
+<p>（9）当路由器RT2收到RT1的最后一个数据库描述数据包时，路由器RT2将把RT1的状态转换为完全邻接状态（Full），这是因为在它（RT2）的链路状态请求列表中已经没有LSA条目了。</p>
+<p>（10）路由器RT1发送链路状态请求数据包，而路由器RT2通过链路状态更新数据包发送被请求的LSA通告，这个过程一直持续到路由器RT1的链路状态请求列表变为空。然后，路由器RT1也将路由器RT2的状态转换到完全邻接状态。</p>
+<h3 id="7、OSPF的区域"><a href="#7、OSPF的区域" class="headerlink" title="7、OSPF的区域"></a>7、OSPF的区域</h3><p>　　OSPF协议由于使用了多个数据库和复杂的算法，因而相比其他的路由选择协议而言，他将会耗费路由器更多的内存和更多的CPU处理能力。当网络的规模不断增大时，对路由器的性能要求就会显得比较重要甚至达到了路由器性能的极限。另一方面，虽然LSA的泛洪扩散比RIP协议中周期性的、全路由表的更新更加有效率，但是对于一个大型的网络来说，它依然给大量数据链路带来了无法承受的负担。</p>
+<p>　　OSPF协议可以利用区域的概念来缩小这些不利的影响。在OSPF协议的环境下，区域是一组逻辑上的OSPF路由器和链路，它可以有效地把一个OSPF域分割成几个子域。在一个区域内的路由器将不再需要了解他们所在区域外部的拓扑细节。在这种环境下：</p>
+<ul>
+<li>路由器仅需要和它所在区域的其他路由器具有相同的链路状态数据库，因此，链路状态数据库大小的缩减就降低了对路由器内存的消耗</li>
+<li>链路状态数据库的减少也意味着处理较少的LSA，从而也就降低了对路由器CPU的消耗</li>
+<li>由于链路状态数据库只需要在一个区域内进行维护，因此，大量的LSA泛洪扩散也就被限制在一个区域里面了</li>
+</ul>
+<p>　　OSPF使用两层的区域分级：</p>
+<ul>
+<li><p><input disabled="" type="checkbox">  骨干区域（区域0）——骨干区域的要求为，骨干区域必须连接所有其他非骨干区域；骨干区域必须连续；非骨干区域之间要通信必须经过骨干区域。一般来说，骨干区域中没有终端用户。</p>
+</li>
+<li><p><input disabled="" type="checkbox">  非骨干区域——此区域的主要功能是连接终端用户和资源。非骨干区域通常根据功能性或地理位置进行划分。不同非骨干区域之间的流量必须总是经过骨干区域。</p>
+</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DiASFs.png"></p>
+<p>虚链路（virtual link）是指一条通过一个非骨干区域连接到骨干区域的链路。虚链路主要应用于以下几种目的：</p>
+<ul>
+<li>通过一个非骨干区域连接一个区域到骨干区域</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DiAnYR.png"></p>
+<ul>
+<li>通过一个非骨干区域连接一个分段的骨干区域两边的部分区域</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DiAoBF.png"></p>
+<p>　在上述例子中，虚链路和具体的物理链路没有关系。虚链路事实上是一个逻辑通道，数据包可以通过选择最优的路径从一端到达另一端。在配置虚链路时，相关的规则说明如下：</p>
+<ul>
+<li>虚链路必须配置在两台ABR路由器之间</li>
+<li>配置了虚链路所经过的区域必须拥有全部的路由选择信息，这样的区域又被称为传送区域（transit areaa）</li>
+<li>传送区域不能是一个末梢区域</li>
+</ul>
+<p>　　正如前面所提及的，OSPF协议也把虚链路归类为一个网络类型。更特别的是，虚链路可以看成是在两台ABR路由器之间的一个无编码的——也就是说无编址地址——链路，并且它是属于骨干区域的。这些ABR路由器之间虽然没有物理的数据链路相连，但是它们可以看作是通过他们之间的虚链路逻辑上虚拟连接的邻居。在每一个ABR路由器的路由表中，当发现有到达邻居的ABR路由器的路由时，虚链路将转换到完全可操作的点到点接口状态。这条虚链路的代价就是到达它的邻居路由器的代价。当接口状态变为点到点状态时，一个邻接关系将通过这条虚链路建立成功。</p>
+<p>　　虚链路的存在增加了网络的复杂度，使故障的排除更加困难。因此，最好避免使用虚链路，而应该在区域上，特别是骨干区域上设计冗余链路来确保防止分段区域的产生。虚链路可以看做是一个标明网络的某个部分是否需要重新设计的标志。事实上，永久虚链路的存在总是一个设计比较糟糕的网络的标志。</p>
+<h3 id="8、链路状态数据库"><a href="#8、链路状态数据库" class="headerlink" title="8、链路状态数据库"></a>8、链路状态数据库</h3><p>　　一台路由器中所有有效的LSA都被存放在它的链路状态数据库中。正确的LSA将可以描述一个OSPF区域网络拓扑的结构。一个区域中的每一台路由器都要利用这个数据库的信息来计算它自己的最短路径树，因此，所有区域数据库的统一性对于正确的路由选择来说就变得十分重要。</p>
+<p>　　由于OSPF协议定义了多种路由器的类型，因而定义多种LSA通告的类型也是必要的。每一种LSA通告类型都描述了OSPF网络的一种不同情况。</p>
+<table>
+<thead>
+<tr>
+<th>类型代码</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>路由器LSA</td>
+</tr>
+<tr>
+<td>2</td>
+<td>网络LSA</td>
+</tr>
+<tr>
+<td>3</td>
+<td>网络汇总LSA</td>
+</tr>
+<tr>
+<td>4</td>
+<td>ASBR汇总LSA</td>
+</tr>
+<tr>
+<td>5</td>
+<td>AS外部LSA</td>
+</tr>
+<tr>
+<td>6</td>
+<td>组成员LSA</td>
+</tr>
+<tr>
+<td>7</td>
+<td>NSSA外部LSA</td>
+</tr>
+<tr>
+<td>8</td>
+<td>外部属性LSA</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Opaque LSA（链路本地范围）</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Opaque LSA（本地区域范围）</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Opaque LSA（AS范围）</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>路由器LSA（Router LSA）——每一台路由器都会产生路由器LSA通告。这个最基本的LSA通告列出了路由器所有的链路或接口，并指明了它们的状态和沿每条链路方向出站的代价，以及该链路上所有已知的OSPF邻居。这些LSA通告只会在始发它们的区域内部进行泛洪扩散。通过命令<span style="color:red"><code>show ip ospf database router</code></span>可以查看数据库中列出的所有路由器LSA通告。</p>
+</li>
+<li><p>网络LSA（Network LSA）——每一个多路访问网络中的指定路由器（DR）将会产生网络LSA通告。DR路由器可以看作一个”伪”节点，或是一个虚拟路由器，用来描绘一个多路访问网络和与之相连的所有路由器。从这个角度来看，一条网络LSA通告也可以描绘一个逻辑上的”伪”节点，就像一条路由器LSA通告描绘一个物理上的单台路由器一样。网络LSA通告列出了所有与之相连的路由器，包括DR路由器本身。网络LSA仅仅在产生这条网络LSA的区域内部进行泛洪扩散。可以使用命令<span style="color:red"><code>show ip ospf database network</code></span>查看网络LSA通告的信息。</p>
+</li>
+<li><p>网络汇总LSA（Network Summary LSA）——是由ABR路由器始发的。ABR路由器将发送网络汇总LSA到一个区域，用来通告该区域外部的目的地址。换句话说，这些网络汇总LSA就是ABR路由器告诉与其相连的区域内的内部路由器所能到达的目的地址的一种方法。可以通过命令<span style="color:red"><code>show ip ospf database summary</code></span>显示链路状态数据库中的网络汇总LSA信息。</p>
+</li>
+<li><p>ASBR汇总LSA（ASBR Summary LSA）——由ABR路由器始发。ASBR汇总LSA除了所通告的目的地是一台ASBR路由器而不是一个网络外，其他的和网络汇总LSA都是一样的。使用命令<span style="color:red"><code>show ip ospf database asbr-summary</code></span>可以查看ASBR汇总LSA的信息。通过ASBR汇总LSA通告的目的地将总是一个主机地址，因为它是一条到达一台路由器的路由。</p>
+</li>
+<li><p>自主系统外部LSA（Autonomous System External LSA）——即外部LSA，始发于ASBR路由器，用来通告到达OSPF自主系统外部的目的地或者是OSPF自主系统外部的缺省路由的LSA。外部LSA通告将在整个自主系统中进行泛洪扩散。使用命令<span style="color:red"><code>show ip ospf database external</code></span>可以查看AS外部LSA的信息。</p>
+</li>
+<li><p>NSSA外部LSA（NSSA External LSA）——是指在非纯末梢区域（Not-So-Stubby Area，NSSA）内始发于ASBR路由器的LSA通告。NSSA外部LSA通告仅在始发这个NSSA外部LSA通告的非纯末梢区域内部进行泛洪扩散。可以通过命令<span style="color:red"><code>show ip ospf database nssa-external</code></span>来显示NSSA外部LSA通告的信息。</p>
+</li>
+</ul>
+<h3 id="9、末梢（Stub）区域"><a href="#9、末梢（Stub）区域" class="headerlink" title="9、末梢（Stub）区域"></a>9、末梢（Stub）区域</h3><p>　　一个学习到外部目的地路由信息的ASBR路由器，将通过在整个OSPF自主系统中泛洪扩散自主系统外部LSA来通告那些外部的目的路由信息。这些外部LSA通告可能会在每台路由器的链路状态数据库中构成较大百分比的LSA数量，对性能不好的路由器产生压力。</p>
+<p>　　末梢区域是一个不允许AS外部LSA通告在其内部进行泛洪扩散的区域。若在一个区域内没有学习到类型5的LSA通告，那么类型4的LSA通告也是不必要的了，因此这些LSA通告也将被阻塞。位于末梢区域边界的ABR路由器将使用网络汇总LSA向这个区域通告一个简单的缺省路由。（即在Stub区域中会将类型4和类型5的LSA进行过滤，并且下发类型3的默认路由）</p>
+<p>　　末梢区域中存在的4个限制条件：</p>
+<ul>
+<li>末梢区域内的所有路由器都会在它们的Hello数据包中设置一个标志——E-bit位，并将它设置为0。这样，这些末梢区域路由器将不接受其他路由器发送的任何E-bit为1的Hello数据包。因此，需要将Stub区域内的所有路由器配置成末梢区域路由器。</li>
+<li>末梢区域中不能有虚链路的存在</li>
+<li>末梢区域内需存在一台或多台ABR路由器，但是不能存在ASBR路由器。</li>
+<li>骨干区域不能配置成特殊区域</li>
+</ul>
+<p>　　完全末梢区域（totally stubby area）不仅使用缺省路由到达OSPF自主系统外部的目的地址，而且使用缺省路由到达这个区域外部的所有目的地址。（过滤类型4和类型5的LSA，并且下发类型3的默认路由，再将类型3的LSA进行过滤）</p>
+<p>　　非纯末梢区域（Not-So-Stubby-Area，NSSA）允许外部路由通告到OSPF自主系统内部，而同时保留自主系统其余部分的末梢区域特征。NSSA区域允许ASBR路由器的存在。NSSA外部LSA在它的头部有一个称为P-bit位的标志。NSSA ASBR路由器可以设置或清除这个P-bit位。如果一台NSSA ABR路由器收到一条P-bit设置为1的类型7的LSA数据包，那么它将把这条类型7的LSA转换成为类型5的LSA，并且将这条LSA泛洪扩散到其他区域中。如果这个P-bit位被设置为0，那么将不会转换这条类型7的LSA，而且这条类型7的LSA携带的目的地址也不能通告到这个NSSA区域的外部。</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DiE1Cn.png"></p>
 ]]></content>
       <categories>
         <category>学习笔记</category>
