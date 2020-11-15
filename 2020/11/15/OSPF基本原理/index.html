@@ -1,0 +1,359 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>OSPF基本原理 | shain</title><meta name="keywords" content="OSPF"><meta name="author" content="~鑫~"><meta name="copyright" content="~鑫~"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="1、概述　　　　开放式最短路径优先（Open Shortest Path First，OSPF）协议是由Internet工程任务组（Internet Engineering Task Force，IETF）开发的路由选择协议，用来替代存在一些问题的RIP协议。现在，OSPF协议是IETF组织建议使用的内部网关协议（IGP）。OSPF使用Dijkstra算法来计算最短路径树。像所有的链路状态协议一样">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OSPF基本原理">
+<meta property="og:url" content="http://shain.top/2020/11/15/OSPF%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/index.html">
+<meta property="og:site_name" content="shain">
+<meta property="og:description" content="1、概述　　　　开放式最短路径优先（Open Shortest Path First，OSPF）协议是由Internet工程任务组（Internet Engineering Task Force，IETF）开发的路由选择协议，用来替代存在一些问题的RIP协议。现在，OSPF协议是IETF组织建议使用的内部网关协议（IGP）。OSPF使用Dijkstra算法来计算最短路径树。像所有的链路状态协议一样">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://shain.top/img/avatar.png">
+<meta property="article:published_time" content="2020-11-15T02:07:25.000Z">
+<meta property="article:modified_time" content="2020-11-15T02:21:18.086Z">
+<meta property="article:author" content="~鑫~">
+<meta property="article:tag" content="OSPF">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://shain.top/img/avatar.png"><link rel="shortcut icon" href="/img/dinosaur.png"><link rel="canonical" href="http://shain.top/2020/11/15/OSPF%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  hexoversion: '5.1.1',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  baiduPush: false,
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isSidebar: true,
+  postUpdate: '2020-11-15 10:21:18'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>var activateDarkMode = function () {
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+  }
+}
+var activateLightMode = function () {
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+  }
+}
+
+var autoChangeMode = 'false'
+var t = saveToLocal.get('theme')
+if (autoChangeMode === '1') {
+  var isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+  var isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+  var isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+  var hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+  if (t === undefined) {
+    if (isLightMode) activateLightMode()
+    else if (isDarkMode) activateDarkMode()
+    else if (isNotSpecified || hasNoSupport) {
+      var now = new Date()
+      var hour = now.getHours()
+      var isNight = hour <= 6 || hour >= 18
+      isNight ? activateDarkMode() : activateLightMode()
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+      if (saveToLocal.get('theme') === undefined) {
+        e.matches ? activateDarkMode() : activateLightMode()
+      }
+    })
+  } else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else if (autoChangeMode === '2') {
+  now = new Date()
+  hour = now.getHours()
+  isNight = hour <= 6 || hour >= 18
+  if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else {
+  if (t === 'dark') activateDarkMode()
+  else if (t === 'light') activateLightMode()
+}</script><meta name="generator" content="Hexo 5.1.1"><link rel="alternate" href="/atom.xml" title="shain" type="application/atom+xml">
+</head><body><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" data-lazy-src="/img/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">24</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">29</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">5</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div id="body-wrap"><div id="sidebar"><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E6%A6%82%E8%BF%B0"><span class="toc-text">1、概述　　</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81OSPF%E7%9A%84%E7%9B%B8%E5%85%B3%E6%9C%AF%E8%AF%AD"><span class="toc-text">2、OSPF的相关术语</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81OSPF%E7%9A%84%E7%BD%91%E7%BB%9C%E7%B1%BB%E5%9E%8B"><span class="toc-text">3、OSPF的网络类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E3%80%81OSPF%E6%B6%88%E6%81%AF%E7%B1%BB%E5%9E%8B"><span class="toc-text">4、OSPF消息类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5%E3%80%81OSPF%E7%8A%B6%E6%80%81%E6%9C%BA"><span class="toc-text">5、OSPF状态机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6%E3%80%81%E5%BB%BA%E7%AB%8B%E4%B8%80%E4%B8%AA%E9%82%BB%E6%8E%A5%E5%85%B3%E7%B3%BB"><span class="toc-text">6、建立一个邻接关系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7%E3%80%81OSPF%E7%9A%84%E5%8C%BA%E5%9F%9F"><span class="toc-text">7、OSPF的区域</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8%E3%80%81%E9%93%BE%E8%B7%AF%E7%8A%B6%E6%80%81%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-text">8、链路状态数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9%E3%80%81%E6%9C%AB%E6%A2%A2%EF%BC%88Stub%EF%BC%89%E5%8C%BA%E5%9F%9F"><span class="toc-text">9、末梢（Stub）区域</span></a></li></ol></div></div></div><header class="post-bg" id="page-header"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">shain</a></span><span id="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">OSPF基本原理</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-11-15T02:07:25.000Z" title="发表于 2020-11-15 10:07:25">2020-11-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-11-15T02:21:18.086Z" title="更新于 2020-11-15 10:21:18">2020-11-15</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">7k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>21分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><h3 id="1、概述"><a href="#1、概述" class="headerlink" title="1、概述　　"></a>1、概述　　</h3><p>　　开放式最短路径优先（Open Shortest Path First，OSPF）协议是由Internet工程任务组（Internet Engineering Task Force，IETF）开发的路由选择协议，用来替代存在一些问题的RIP协议。现在，OSPF协议是IETF组织建议使用的内部网关协议（IGP）。OSPF使用Dijkstra算法来计算最短路径树。像所有的链路状态协议一样，OSPF协议和距离矢量协议相比，一个主要的改善在于它的快速收敛，这使得OSPF协议可以支持更大型的网络，并且不容易受到有害路由选择信息的影响。OSPF协议的其他一些特性有：</p>
+<ul>
+<li>使用了区域的概念，这样可以有效地减少路由选择协议对路由器的CPU和内存的占用；划分区域还可以降低路由选择协议的通信量，这使构建一个层次化的网络拓扑成为可能；</li>
+<li>完全无类别地处理地址问题，排除了不连续子网这样的有类路由选择协议的问题；</li>
+<li>支持无类别路由表查询、VLAM和用来进行有效地址管理的超网技术；</li>
+<li>支持无大小限制的、任意的度量值；</li>
+<li>支持使用多条路径的效率更高的等价负载均衡；</li>
+<li>使用保留的组播地址来减少对不宣告OSPF的设备的影响；</li>
+<li>使用可以跟踪外部路由的路由标记</li>
+</ul>
+<h3 id="2、OSPF的相关术语"><a href="#2、OSPF的相关术语" class="headerlink" title="2、OSPF的相关术语"></a>2、OSPF的相关术语</h3><ul>
+<li><p><input disabled="" type="checkbox">  链路：链路就是一个网络或者一个被指定给任一给定网络的路由器接口。当一个接口被添加到OSPF进程时，它就被OSPF认定是一个链路。这个链路或接口都将有一个与它关联的状态信息（up或down），以及一个或多个IP地址</p>
+</li>
+<li><p><input disabled="" type="checkbox">  路由器ID：路由器ID（RID）是一个用来标识此路由器的IP地址。该地址可以通过手动指定（必须唯一）；若未指定，则选择路由器上所有活跃的环回接口中最大的IPv4地址；若不存在环回接口，则选择所有活跃的物理接口中最大的IPv4地址</p>
+</li>
+<li><p><input disabled="" type="checkbox">  邻居：邻居可以是两个或更多的路由器，这些路由器的某个接口是连接在同一个公共网络上，比如两个通过点到点串行链路连接在一起的路由器</p>
+</li>
+<li><p><input disabled="" type="checkbox">  邻接：邻接是指两个OSPF路由器之间的关系，这两个路由器之间允许直接交换路由更新数据。注意，并不是所有的邻居都可以建立邻接关系，这将取决于网络类型和路由器配置</p>
+</li>
+<li><p><input disabled="" type="checkbox">  Hello协议：OSPF的Hello协议能够动态地发现邻居，并维护邻居关系。在两台路由器成为邻居之前，需要通告这两台路由器必须相互认可的几个参数。Hello数据包确保了邻居路由器之间的双向通信，并且和链路状态通告（LSA）共同用于建立并维护拓扑数据库</p>
+</li>
+<li><p><input disabled="" type="checkbox">  邻居关系数据库：邻居关系数据库是一个OSPF路由器的列表，这些路由器的Hello数据包相互可见。每个路由器上的邻居关系数据库中管理着各种详细的资料，包括路由器ID和状态等信息</p>
+</li>
+<li><p><input disabled="" type="checkbox">  拓扑数据库：拓扑数据库中包含有来自同一区域接收的所有链路状态通告数据包的信息。路由器使用来自拓扑数据库中的信息，作为Dijkstra算法的输入，并通过该算法为每个网络计算出最短路径</p>
+</li>
+<li><p><input disabled="" type="checkbox">  链路状态通告（LSA）：LSA中包含着OSPF路由器共享的链路状态和路由选择信息</p>
+</li>
+<li><p><input disabled="" type="checkbox">  指定路由器和备用指定路由器：当OSPF路由器被连接到同一多路访问网络时，都需要选择一个指定路由器（DR）和备用指定路由器（BDR）。DR负责将路由选择信息分发到广播网络或链路中其他路由器上，或收集其他路由器的路由选择信息。如果DR失效了，那么BDR将成为新的DR。DR和BDR的选择规则如下：</p>
+</li>
+<li><p>先比较优先级，优先级大的优先；默认情况下以太网接口的优先级为1，串行接口的优先级为0（优先级为0不参与DR/BDR的选举）</p>
+</li>
+<li><p>若优先级相同，则继续比较RID，RID越大越优先</p>
+</li>
+</ul>
+<blockquote>
+<p>注意，DR和BDR的选举是非抢占的（也就是说，在已经选取了DR和BDR路由器后，如果一台具有更高优先级的路由器加入，那么这台新的路由器将不会替代DR和BDR路由器的任何一台）</p>
+</blockquote>
+<h3 id="3、OSPF的网络类型"><a href="#3、OSPF的网络类型" class="headerlink" title="3、OSPF的网络类型"></a>3、OSPF的网络类型</h3><ul>
+<li>点到点网络（point-to-point）</li>
+</ul>
+<p>　　点到点网络，像T1、DS-3或SONET链路，是连接单独一对路由器的。在点到点网络上的有效邻居总是可以形成邻接关系。在这些网络上的OSPF数据包的目的地址也总是保留的D类地址224.0.0.5，这个组播地址称为ALLSPFRouters。在点到点网络类型不需要进行DR/BDR的选举。</p>
+<ul>
+<li>广播型网络（broadcast）</li>
+</ul>
+<p>　　广播型网络，像以太网、令牌环网和FDDI，也可以更确切地定义为广播型多址网络。需要进行DR和BDR的选举。由于是广播型的，所以连接在这种网络上的所有设备都可以接收到个别传送的数据包。</p>
+<ul>
+<li>非广播多路访问（NBMA）网络</li>
+</ul>
+<p>　　NBMA网络，像X.25、帧中继和ATM等，可以连接两台以上的路由器，但是它们没有广播数据包的能力。一台在NBMA网络上的路由器发送的数据包将不能被其他与之相连的路由器收到。在NBMA网络上的OSPF路由器需要选举DR和BDR，并且所有的OSPF数据包都是单播的，在这些网络上的路由器需要增加另外的配置来获得它们的邻居。</p>
+<ul>
+<li>点到多点网络（point-to-multipoint）</li>
+</ul>
+<p>　　点到多点网络是NBMA网络的一个特殊配置，可以被看做是一群点到点链路的集合。在这些网络上的OSPF路由器不需要选举DR和BDR，OSPF数据包以单播方式发送给每一个已知的邻居。</p>
+<ul>
+<li>虚链路（virtual links）</li>
+</ul>
+<p>　　虚链路可以被路由器认为是没有编号的点到点网络的一种特殊配置。在虚链路上OSPF数据包是以单播方式发送的。</p>
+<h3 id="4、OSPF消息类型"><a href="#4、OSPF消息类型" class="headerlink" title="4、OSPF消息类型"></a>4、OSPF消息类型</h3><p>　　OSPF使用五种类型的路由协议包，共享通用的协议头部。每个OSPF包被直接封装在IP头部中。OSPF的IP协议号是89。</p>
+<ul>
+<li>类型一：Hello数据包。Hello数据包负责发现、构建并维持OSPF邻居邻接关系。为了形成一种邻接关系，Hello数据包携带的参数必须和它的邻居保持一致。</li>
+<li>类型二：DBD（数据库描述）数据包。数据库描述数据包用于正在建立的邻接关系。它的一个主要的目的是描述始发路由器数据库中的一些或全部LSA信息，以便接收路由器能够确定所收到的LSA在其数据库中是否已经有了一个匹配的LSA。路由器由此判断数据库是否同步。</li>
+<li>类型三：LSR（链路状态请求）数据包。在数据库同步过程中如果收到了数据库描述数据包，路由器将会查看数据库描述数据包里有哪些LSA不在自己的数据库中，或者有哪些LSA比自己数据库中的LSA更新。然后，将把这些LSA记录在链路状态请求列表中。接着，路由器会发送一个或多个链路状态请求数据包去向它的邻居请求发送在链路状态请求列表中的这些LSA的副本。</li>
+<li>类型四：LSU（链路状态更新）数据包。LSU数据包包括几种类型的LSA。LSU负责泛洪LSA，以及发送对LSR包的LSA响应。LSA响应只会发给之前以LSR包形式请求LSA的直连邻居。进行泛洪时，邻居路由器负责把收到的LSA信息重新封装在新的LSU包中。</li>
+<li>类型五：LSAck（链路状态确认）数据包。LSAck负责进行可靠的LSA泛洪。路由器必须明确确认每个收到的LSA，可以用一个LSAck包确认多个LSA。</li>
+</ul>
+<h3 id="5、OSPF状态机"><a href="#5、OSPF状态机" class="headerlink" title="5、OSPF状态机"></a>5、OSPF状态机</h3><ul>
+<li>Down（失效状态）——这是一个邻居会话的初始状态，用来指明在最近一个路由死亡间隔时间内还没有收到来自邻居路由器的Hello数据包。如果一台邻居路由器从其他更高一些的邻居状态转换到了失效状态，那么路由器将会清空链路状态重传列表、数据库摘要列表和链路状态请求列表。当邻居邻接关系建立成功后，由于接口松动、重启进程或其他一些因素也会是OSPF状态动Full转换到Down。在Down状态，网段上不会收到信息。</li>
+<li>Attempt（尝试状态）——这种状态仅仅适用于NBMA网络上的邻居，在NBMA网络上邻居路由器是手工配置的。当NBMA网络上具有DR选取资格的路由器和其邻居路由器相连的接口开始变为有效时，或者当这台路由器成为DR或BDR时，这台具有DR选取资格的路由器会把邻居路由器的状态转换到Attempt状态。在Attempt状态下，路由器将使用HelloInterval的时间代替PollInterval的时间来作为向邻居发送Hello数据包的时间间隔。</li>
+<li>Init（初始状态）——这一状态表明在最近的RouterDeadInterval时间里路由器收到了来自邻居路由器的Hello数据包，但是双向通信仍然没有建立。路由器将会在Hello数据包的邻居字段中包含这种状态下或更高状态的所有邻居路由器的路由器ID。</li>
+<li>2-Way（双向通信状态）——这一状态表明本地路由器已经在来自邻居路由器的Hello数据包的邻居字段中看到了自己的路由器ID，这也就意味着一个双向通信的会话已经成功建立了。在多址网络中，邻居路由器必须在这个状态或更高状态时才能有资格被选作该网络上的DR或BDR。</li>
+<li>ExStart（信息交换初始状态）——在这一状态下，本地路由器和它的邻居将建立起主/从关系，并确定数据库描述数据包的序列号，以便为数据库描述数据包的信息交换做准备。在这里，具有最高路由器ID的邻居路由器将成为”主”路由器。</li>
+<li>Exchange（信息交换状态）——在这一状态下，本地路由器将向它的邻居路由器发送可以描述它整个链路状态数据库信息的数据库描述数据包。同时，在这个Exchange状态下，本地路由器也会发送链路状态请求数据包给它的邻居路由器，用来请求最新的LSA。</li>
+<li>Loading（信息加载状态）——在这一状态下，本地路由器将会向它的邻居路由器发送链路状态请求数据包，用来请求最新的LSA通告。虽然在Exchange状态下已经发现了这些最新的LSA通告，但是本地路由器还没有收到这些LSA通告。</li>
+<li>Full（完全邻接状态）——在这一状态下，邻居路由器之间将建立起完全邻接关系，这种邻接关系出现在路由器LSA和网络LSA中。</li>
+</ul>
+<h3 id="6、建立一个邻接关系"><a href="#6、建立一个邻接关系" class="headerlink" title="6、建立一个邻接关系"></a>6、建立一个邻接关系</h3><p>　　在一个邻接关系的创建过程中，OSPF协议使用以下3种数据包类型：</p>
+<ul>
+<li>数据库描述数据包</li>
+<li>链路状态请求数据包</li>
+<li>链路状态更新数据包</li>
+</ul>
+<p>　　在数据库描述数据包中有3个标记位用来管理邻接关系的建立过程：</p>
+<ul>
+<li>I位：当需要指明所发送的是第一个数据库描述数据包时，该位设置为1；</li>
+<li>M位：当需要指明所发送的还不是最后一个数据库描述数据包时，该位设置为1；</li>
+<li>MS位：当数据库描述数据包始发于一个”主”路由器时，该位设置为1.</li>
+</ul>
+<hr>
+
+
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DikbSP.png"></p>
+<p>（1）在多路访问的网络上，路由器RT1变为有效状态，并发送一个Hello数据包。由于它还没有学习到任何邻居，因而这个Hello数据包的邻居字段是空的，而DR和BDR字段设置为0.0.0.0。</p>
+<p>（2）RT2收到RT1的Hello数据包后，会为RT1创建一个邻居数据结构，并将RT1的状态设置为Init。RT2把RT1的Hello数据包中的RID提取出来，添加到自己的Hello数据包中，发送给RT1。当RT1和RT2在接收到的Hello包中都看到了自己的RID，则会进入2-Way状态。此时会进行DR和BDR的选举。</p>
+<p>（3）RT1产生一个空的DBD数据包（没有包含LSA摘要），并把DBD的序列号设置为x。同时设置初始位（I）来指明这个数据包是路由器RT1用来进行本次信息交换的最初的数据库描述数据包，并设置后继位（M）来指明这个数据包不是最后的数据库描述数据包，最后还要设置主从位（MS）来指明RT1声称自己是”主”路由器。</p>
+<p>（4）RT2收到来自RT1的数据库描述数据包后，就会把RT1的状态转换到ExStart状态。接着，它将发送一个响应的数据库描述数据包，并把这个数据库描述数据包的序列号设置为y。由于RT2拥有比RT1更高的RID，因此它将把自己的MS位置1。该数据包也用于主从关系协商，因此也是空的。当RT1收到此数据包后，会将RT2的状态转换到ExStart状态。</p>
+<p>（5）当两台邻居路由器同意RT2是主路由器后，路由器RT1就把路由器RT2的状态转换为Exchange状态。路由器RT1将产生一个数据库描述数据包，这个数据包的序列号使用RT2的数据库描述数据包的序列号y，并设置MS位为0用来指明RT1是”从”路由器。同时，该数据包将会传送路由器RT1的链路状态摘要列表中的LSA头部。</p>
+<p>（6）当路由器RT2收到来自RT1的数据库描述数据包，就会把它的邻居状态转化到Exchange状态。接着，它将发送一个数据库描述数据包，这个数据包包含路由器RT2自己的链路状态摘要列表中的LSA头部，并使它的数据库描述序列号增加到y+1。</p>
+<p>（7）当路由器RT1从路由器RT2收到上述的数据库描述数据包后，路由器RT1就会发送一个包含相同序列号的确认数据包。这个过程将一直延续，路由器RT2发送一个单一的数据库描述数据包，接着等待从RT1发出的包含相同序列号的确认数据包，然后RT2再发送下一个数据库描述数据包，直到路由器RT2发出包含最后一个LSA摘要的数据库描述数据包，并把这个数据包的M位设置为0。</p>
+<p>（8）收到上述数据包并且确信它所发出的确认数据包包含它自己最后的LSA摘要后，路由器RT1就会认为Exchange过程已经完成。然而，路由器RT1的链路状态请求列表中还存在LSA条目，因此，它将转换到信息加载状态（Loading）。</p>
+<p>（9）当路由器RT2收到RT1的最后一个数据库描述数据包时，路由器RT2将把RT1的状态转换为完全邻接状态（Full），这是因为在它（RT2）的链路状态请求列表中已经没有LSA条目了。</p>
+<p>（10）路由器RT1发送链路状态请求数据包，而路由器RT2通过链路状态更新数据包发送被请求的LSA通告，这个过程一直持续到路由器RT1的链路状态请求列表变为空。然后，路由器RT1也将路由器RT2的状态转换到完全邻接状态。</p>
+<h3 id="7、OSPF的区域"><a href="#7、OSPF的区域" class="headerlink" title="7、OSPF的区域"></a>7、OSPF的区域</h3><p>　　OSPF协议由于使用了多个数据库和复杂的算法，因而相比其他的路由选择协议而言，他将会耗费路由器更多的内存和更多的CPU处理能力。当网络的规模不断增大时，对路由器的性能要求就会显得比较重要甚至达到了路由器性能的极限。另一方面，虽然LSA的泛洪扩散比RIP协议中周期性的、全路由表的更新更加有效率，但是对于一个大型的网络来说，它依然给大量数据链路带来了无法承受的负担。</p>
+<p>　　OSPF协议可以利用区域的概念来缩小这些不利的影响。在OSPF协议的环境下，区域是一组逻辑上的OSPF路由器和链路，它可以有效地把一个OSPF域分割成几个子域。在一个区域内的路由器将不再需要了解他们所在区域外部的拓扑细节。在这种环境下：</p>
+<ul>
+<li>路由器仅需要和它所在区域的其他路由器具有相同的链路状态数据库，因此，链路状态数据库大小的缩减就降低了对路由器内存的消耗</li>
+<li>链路状态数据库的减少也意味着处理较少的LSA，从而也就降低了对路由器CPU的消耗</li>
+<li>由于链路状态数据库只需要在一个区域内进行维护，因此，大量的LSA泛洪扩散也就被限制在一个区域里面了</li>
+</ul>
+<p>　　OSPF使用两层的区域分级：</p>
+<ul>
+<li><p><input disabled="" type="checkbox">  骨干区域（区域0）——骨干区域的要求为，骨干区域必须连接所有其他非骨干区域；骨干区域必须连续；非骨干区域之间要通信必须经过骨干区域。一般来说，骨干区域中没有终端用户。</p>
+</li>
+<li><p><input disabled="" type="checkbox">  非骨干区域——此区域的主要功能是连接终端用户和资源。非骨干区域通常根据功能性或地理位置进行划分。不同非骨干区域之间的流量必须总是经过骨干区域。</p>
+</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DiASFs.png"></p>
+<p>虚链路（virtual link）是指一条通过一个非骨干区域连接到骨干区域的链路。虚链路主要应用于以下几种目的：</p>
+<ul>
+<li>通过一个非骨干区域连接一个区域到骨干区域</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DiAnYR.png"></p>
+<ul>
+<li>通过一个非骨干区域连接一个分段的骨干区域两边的部分区域</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DiAoBF.png"></p>
+<p>　在上述例子中，虚链路和具体的物理链路没有关系。虚链路事实上是一个逻辑通道，数据包可以通过选择最优的路径从一端到达另一端。在配置虚链路时，相关的规则说明如下：</p>
+<ul>
+<li>虚链路必须配置在两台ABR路由器之间</li>
+<li>配置了虚链路所经过的区域必须拥有全部的路由选择信息，这样的区域又被称为传送区域（transit areaa）</li>
+<li>传送区域不能是一个末梢区域</li>
+</ul>
+<p>　　正如前面所提及的，OSPF协议也把虚链路归类为一个网络类型。更特别的是，虚链路可以看成是在两台ABR路由器之间的一个无编码的——也就是说无编址地址——链路，并且它是属于骨干区域的。这些ABR路由器之间虽然没有物理的数据链路相连，但是它们可以看作是通过他们之间的虚链路逻辑上虚拟连接的邻居。在每一个ABR路由器的路由表中，当发现有到达邻居的ABR路由器的路由时，虚链路将转换到完全可操作的点到点接口状态。这条虚链路的代价就是到达它的邻居路由器的代价。当接口状态变为点到点状态时，一个邻接关系将通过这条虚链路建立成功。</p>
+<p>　　虚链路的存在增加了网络的复杂度，使故障的排除更加困难。因此，最好避免使用虚链路，而应该在区域上，特别是骨干区域上设计冗余链路来确保防止分段区域的产生。虚链路可以看做是一个标明网络的某个部分是否需要重新设计的标志。事实上，永久虚链路的存在总是一个设计比较糟糕的网络的标志。</p>
+<h3 id="8、链路状态数据库"><a href="#8、链路状态数据库" class="headerlink" title="8、链路状态数据库"></a>8、链路状态数据库</h3><p>　　一台路由器中所有有效的LSA都被存放在它的链路状态数据库中。正确的LSA将可以描述一个OSPF区域网络拓扑的结构。一个区域中的每一台路由器都要利用这个数据库的信息来计算它自己的最短路径树，因此，所有区域数据库的统一性对于正确的路由选择来说就变得十分重要。</p>
+<p>　　由于OSPF协议定义了多种路由器的类型，因而定义多种LSA通告的类型也是必要的。每一种LSA通告类型都描述了OSPF网络的一种不同情况。</p>
+<table>
+<thead>
+<tr>
+<th>类型代码</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>路由器LSA</td>
+</tr>
+<tr>
+<td>2</td>
+<td>网络LSA</td>
+</tr>
+<tr>
+<td>3</td>
+<td>网络汇总LSA</td>
+</tr>
+<tr>
+<td>4</td>
+<td>ASBR汇总LSA</td>
+</tr>
+<tr>
+<td>5</td>
+<td>AS外部LSA</td>
+</tr>
+<tr>
+<td>6</td>
+<td>组成员LSA</td>
+</tr>
+<tr>
+<td>7</td>
+<td>NSSA外部LSA</td>
+</tr>
+<tr>
+<td>8</td>
+<td>外部属性LSA</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Opaque LSA（链路本地范围）</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Opaque LSA（本地区域范围）</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Opaque LSA（AS范围）</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>路由器LSA（Router LSA）——每一台路由器都会产生路由器LSA通告。这个最基本的LSA通告列出了路由器所有的链路或接口，并指明了它们的状态和沿每条链路方向出站的代价，以及该链路上所有已知的OSPF邻居。这些LSA通告只会在始发它们的区域内部进行泛洪扩散。通过命令<span style="color:red"><code>show ip ospf database router</code></span>可以查看数据库中列出的所有路由器LSA通告。</p>
+</li>
+<li><p>网络LSA（Network LSA）——每一个多路访问网络中的指定路由器（DR）将会产生网络LSA通告。DR路由器可以看作一个”伪”节点，或是一个虚拟路由器，用来描绘一个多路访问网络和与之相连的所有路由器。从这个角度来看，一条网络LSA通告也可以描绘一个逻辑上的”伪”节点，就像一条路由器LSA通告描绘一个物理上的单台路由器一样。网络LSA通告列出了所有与之相连的路由器，包括DR路由器本身。网络LSA仅仅在产生这条网络LSA的区域内部进行泛洪扩散。可以使用命令<span style="color:red"><code>show ip ospf database network</code></span>查看网络LSA通告的信息。</p>
+</li>
+<li><p>网络汇总LSA（Network Summary LSA）——是由ABR路由器始发的。ABR路由器将发送网络汇总LSA到一个区域，用来通告该区域外部的目的地址。换句话说，这些网络汇总LSA就是ABR路由器告诉与其相连的区域内的内部路由器所能到达的目的地址的一种方法。可以通过命令<span style="color:red"><code>show ip ospf database summary</code></span>显示链路状态数据库中的网络汇总LSA信息。</p>
+</li>
+<li><p>ASBR汇总LSA（ASBR Summary LSA）——由ABR路由器始发。ASBR汇总LSA除了所通告的目的地是一台ASBR路由器而不是一个网络外，其他的和网络汇总LSA都是一样的。使用命令<span style="color:red"><code>show ip ospf database asbr-summary</code></span>可以查看ASBR汇总LSA的信息。通过ASBR汇总LSA通告的目的地将总是一个主机地址，因为它是一条到达一台路由器的路由。</p>
+</li>
+<li><p>自主系统外部LSA（Autonomous System External LSA）——即外部LSA，始发于ASBR路由器，用来通告到达OSPF自主系统外部的目的地或者是OSPF自主系统外部的缺省路由的LSA。外部LSA通告将在整个自主系统中进行泛洪扩散。使用命令<span style="color:red"><code>show ip ospf database external</code></span>可以查看AS外部LSA的信息。</p>
+</li>
+<li><p>NSSA外部LSA（NSSA External LSA）——是指在非纯末梢区域（Not-So-Stubby Area，NSSA）内始发于ASBR路由器的LSA通告。NSSA外部LSA通告仅在始发这个NSSA外部LSA通告的非纯末梢区域内部进行泛洪扩散。可以通过命令<span style="color:red"><code>show ip ospf database nssa-external</code></span>来显示NSSA外部LSA通告的信息。</p>
+</li>
+</ul>
+<h3 id="9、末梢（Stub）区域"><a href="#9、末梢（Stub）区域" class="headerlink" title="9、末梢（Stub）区域"></a>9、末梢（Stub）区域</h3><p>　　一个学习到外部目的地路由信息的ASBR路由器，将通过在整个OSPF自主系统中泛洪扩散自主系统外部LSA来通告那些外部的目的路由信息。这些外部LSA通告可能会在每台路由器的链路状态数据库中构成较大百分比的LSA数量，对性能不好的路由器产生压力。</p>
+<p>　　末梢区域是一个不允许AS外部LSA通告在其内部进行泛洪扩散的区域。若在一个区域内没有学习到类型5的LSA通告，那么类型4的LSA通告也是不必要的了，因此这些LSA通告也将被阻塞。位于末梢区域边界的ABR路由器将使用网络汇总LSA向这个区域通告一个简单的缺省路由。（即在Stub区域中会将类型4和类型5的LSA进行过滤，并且下发类型3的默认路由）</p>
+<p>　　末梢区域中存在的4个限制条件：</p>
+<ul>
+<li>末梢区域内的所有路由器都会在它们的Hello数据包中设置一个标志——E-bit位，并将它设置为0。这样，这些末梢区域路由器将不接受其他路由器发送的任何E-bit为1的Hello数据包。因此，需要将Stub区域内的所有路由器配置成末梢区域路由器。</li>
+<li>末梢区域中不能有虚链路的存在</li>
+<li>末梢区域内需存在一台或多台ABR路由器，但是不能存在ASBR路由器。</li>
+<li>骨干区域不能配置成特殊区域</li>
+</ul>
+<p>　　完全末梢区域（totally stubby area）不仅使用缺省路由到达OSPF自主系统外部的目的地址，而且使用缺省路由到达这个区域外部的所有目的地址。（过滤类型4和类型5的LSA，并且下发类型3的默认路由，再将类型3的LSA进行过滤）</p>
+<p>　　非纯末梢区域（Not-So-Stubby-Area，NSSA）允许外部路由通告到OSPF自主系统内部，而同时保留自主系统其余部分的末梢区域特征。NSSA区域允许ASBR路由器的存在。NSSA外部LSA在它的头部有一个称为P-bit位的标志。NSSA ASBR路由器可以设置或清除这个P-bit位。如果一台NSSA ABR路由器收到一条P-bit设置为1的类型7的LSA数据包，那么它将把这条类型7的LSA转换成为类型5的LSA，并且将这条LSA泛洪扩散到其他区域中。如果这个P-bit位被设置为0，那么将不会转换这条类型7的LSA，而且这条类型7的LSA携带的目的地址也不能通告到这个NSSA区域的外部。</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DiE1Cn.png"></p>
+</div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">~鑫~</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://shain.top/2020/11/15/OSPF%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/">http://shain.top/2020/11/15/OSPF%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://shain.top" target="_blank">shain</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/OSPF/">OSPF</a></div><div class="post_share"></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" data-lazy-src="/img/alipay.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/11/15/OSPF%E7%9A%84%E9%85%8D%E7%BD%AE/"><img class="prev-cover" data-lazy-src="/null" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">OSPF的配置</div></div></a></div><div class="next-post pull-right"><a href="/2020/11/15/DHCP/"><img class="next-cover" data-lazy-src="/null" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">DHCP</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2020/08/29/单区域OSPF的实现/" title="单区域OSPF的实现"><img class="cover" data-lazy-src="/null"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-08-29</div><div class="title">单区域OSPF的实现</div></div></a></div><div><a href="/2020/11/15/OSPF的配置/" title="OSPF的配置"><img class="cover" data-lazy-src="/null"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-11-15</div><div class="title">OSPF的配置</div></div></a></div></div></div></article></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By ~鑫~</div><!--if theme.footer.copyright--><!--  .framework-info--><!--    span= _p('footer.framework') + ' '--><!--    a(href='https://hexo.io')= 'Hexo'--><!--    span.footer-separator |--><!--    span= _p('footer.theme') + ' '--><!--    a(href='https://github.com/jerryc127/hexo-theme-butterfly')= 'Butterfly'--></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-heart.min.js" async="async" mobile="false"></script></div></body></html>
