@@ -1,137 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>ACL的运用</title>
-    <url>/2020/09/01/ACL%E7%9A%84%E8%BF%90%E7%94%A8/</url>
-    <content><![CDATA[<h3 id="1、实验目的"><a href="#1、实验目的" class="headerlink" title="1、实验目的"></a>1、实验目的</h3><p>1）掌握ACL的作用<br>2）理解标准和扩展ACL的区别<br>3）熟悉标准和扩展ACL的配置<br>4）掌握ACL的验证和查看命令<br>5）理解命名的ACL的作用与配置</p>
-<a id="more"></a>
-<h3 id="2、拓扑结构"><a href="#2、拓扑结构" class="headerlink" title="2、拓扑结构"></a>2、拓扑结构</h3><p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dz9FzR.png"></p>
-<h3 id="3、实验步骤"><a href="#3、实验步骤" class="headerlink" title="3、实验步骤"></a>3、实验步骤</h3><p><strong>（1）完成各路由器的基本配置，实现各直连设备之间可以互ping对方，主机和路由器接口的地址自己规划</strong></p>
-<blockquote>
-<p>两台PC及三台路由器的IP地址配置如拓扑图所示，此处不再将图贴出</p>
-</blockquote>
-<p><strong>（2）在R2上添加两个loopback接口，loopback1和loopback2，其中loopback1地址为2.2.2.2/24，loopback2地址为22.22.22.22/24</strong></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzCFAS.png"></p>
-<p><strong>（3）完成必要的配置实现全网可达</strong></p>
-<blockquote>
-<p>在路由器上运行路由协议，实现全网可达</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzCVpj.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzCecn.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzCKBV.png"></p>
-<p><strong>（4）使用标准ACL实现PC1不能访问PC2，并使用ping命令验证结果</strong></p>
-<blockquote>
-<p>标准ACL建议在离目标近的设备上配置，在R3上配置ACL拒绝来自主机172.16.1.1的流量，并在进接口方向调用，此时实现PC1不能访问PC2</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzCT3j.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzCHvn.png"></p>
-<p><strong>（5）使用标准ACL实现只允许PC2远程登录到路由器R2，并使用telnet命令验证结果</strong></p>
-<blockquote>
-<p>在R2上配置ACL，允许主机172.16.3.1的流量，默认隐含一条拒绝所有，即拒绝除PC2之外的流量。在vty中允许其他设备使用telnet远程登录，并在in方向调用ACL</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzPGa8.png"></p>
-<blockquote>
-<p>在PC1和PC2上进行测试，此时实现了只允许PC2远程登录到R2</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dziPJg.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dziVLq.png"></p>
-<p><strong>（6）使用标准ACL实现禁止loopback2所在网段的所有主机访问PC1，对loopback1所在网段主机的访问不做限制</strong></p>
-<blockquote>
-<p>在R1上配置ACL，允许loopback1网段，拒绝loopback2网段，然后在e0/1接口的in方向调用</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzizc9.png"></p>
-<blockquote>
-<p>此时实现了R2上的loopback1网段可以访问PC1，而loopback2网段不能</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzFtjs.png"></p>
-<p><strong>（7）使用命名ACL完整上述标准ACL的需求</strong></p>
-<ul>
-<li>实现PC1不能访问PC2</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzecvD.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzeoPP.png"></p>
-<ul>
-<li>实现只允许PC2远程登录到路由器R2</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dznifP.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dznAl8.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dznVOg.png"></p>
-<ul>
-<li>实现禁止loopback2所在网段的所有主机访问PC1，对loopback1所在网段主机的访问不做限制</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzuCB4.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzuPHJ.png"></p>
-<p><strong>（8）使用扩展ACL实现禁止PC1远程登录到R2，对其他访问不做限制</strong></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzu34I.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzu1UA.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzulEd.png"></p>
-<p><strong>（9）使用扩展ACL实现PC2可以telnet到路由器R1，但不能ping通路由器R1，分别使用ping和telnet验证结果</strong></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzuOqe.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzuLrD.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzuHxK.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzuqKO.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzu726.png"></p>
-<p><strong>（10）使用扩展ACL实现PC1可以pingPC2，但禁止PC2pingPC1，其他的访问不受限制，使用ping验证结果</strong></p>
-<blockquote>
-<p>ICMP</p>
-<ul>
-<li><p>echo request    –echo的请求包</p>
-</li>
-<li><p>echo reply         –echo的响应包</p>
-</li>
-</ul>
-<p>只有以上两种报文是正常的，那么此时的ping才是能通的</p>
-<p>PC1 ping PC2 正常</p>
-<ul>
-<li><p>PC1 给 PC2 发送的echo request是正常的（源是PC1，目标是PC2）</p>
-</li>
-<li><p>PC2给PC1发送的echo reply也是正常的（源是PC2，目标是PC1）</p>
-</li>
-</ul>
-<p>PC2 ping PC1 不正常</p>
-<ul>
-<li><p>PC2不能给PC1发送 echo request（源是PC2，目的是PC1）</p>
-</li>
-<li><p>PC2不能接收到来自PC1的echo  reply（源是PC1，目的是PC2）</p>
-</li>
-</ul>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzKOS0.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzKqWq.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzKbYn.png"></p>
-<p><strong>（11）使用命名ACL完成上述扩展ACL的需求</strong></p>
-<ul>
-<li>实现禁止PC1远程登录到R2，对其他访问不做限制</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzQCDS.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzQPHg.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzQ9u8.png"></p>
-<ul>
-<li>实现PC2可以telnet到路由器R1，但不能ping路由器R1，分别使用ping和telnet验证结果</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzQKDU.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzQuuT.png"></p>
-<ul>
-<li>实现PC1可以pingPC2，但禁止PC2pingPC1，其他的访问不受限制，使用ping验证结果</li>
-</ul>
-<p><span style="color:red">方法一：拒绝PC2向PC1发送icmp的echo-request报文</span></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzQWqS.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzQRr8.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzQ2Kf.png"></p>
-<p><span style="color:red">方法二：拒绝PC1向PC2发送icmp的echo-reply报文</span></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzl1L8.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzllsf.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzlQQP.png"></p>
-]]></content>
-      <categories>
-        <category>实验</category>
-      </categories>
-      <tags>
-        <tag>CCNA</tag>
-        <tag>ACL</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>DHCP</title>
     <url>/2020/11/15/DHCP/</url>
     <content><![CDATA[<h3 id="1、DHCP概述"><a href="#1、DHCP概述" class="headerlink" title="1、DHCP概述"></a>1、DHCP概述</h3><p>　　DHCP（Dynamic Host Configuration Protocol，动态主机配置协议）是一种帮助网络管理员管理及自动分配IP地址的网络协议。在不使用DHCP的情况下，管理员必须手动为每台终端配置IP地址、子网掩码、默认网关等IP配置。在大型网络中，这将是一项繁重的工作，尤其是在设备物理位置频繁更改的环境中。在企业网环境中，DHCP服务器通常是一台专用设备；然而在小型网络或是分支机构中，DHCP服务器往往由Cisco Catalyst交换机或Cisco路由器配置实现。</p>
@@ -475,6 +344,137 @@
 ]]></content>
       <tags>
         <tag>VPN</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ACL的运用</title>
+    <url>/2020/09/01/ACL%E7%9A%84%E8%BF%90%E7%94%A8/</url>
+    <content><![CDATA[<h3 id="1、实验目的"><a href="#1、实验目的" class="headerlink" title="1、实验目的"></a>1、实验目的</h3><p>1）掌握ACL的作用<br>2）理解标准和扩展ACL的区别<br>3）熟悉标准和扩展ACL的配置<br>4）掌握ACL的验证和查看命令<br>5）理解命名的ACL的作用与配置</p>
+<a id="more"></a>
+<h3 id="2、拓扑结构"><a href="#2、拓扑结构" class="headerlink" title="2、拓扑结构"></a>2、拓扑结构</h3><p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dz9FzR.png"></p>
+<h3 id="3、实验步骤"><a href="#3、实验步骤" class="headerlink" title="3、实验步骤"></a>3、实验步骤</h3><p><strong>（1）完成各路由器的基本配置，实现各直连设备之间可以互ping对方，主机和路由器接口的地址自己规划</strong></p>
+<blockquote>
+<p>两台PC及三台路由器的IP地址配置如拓扑图所示，此处不再将图贴出</p>
+</blockquote>
+<p><strong>（2）在R2上添加两个loopback接口，loopback1和loopback2，其中loopback1地址为2.2.2.2/24，loopback2地址为22.22.22.22/24</strong></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzCFAS.png"></p>
+<p><strong>（3）完成必要的配置实现全网可达</strong></p>
+<blockquote>
+<p>在路由器上运行路由协议，实现全网可达</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzCVpj.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzCecn.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzCKBV.png"></p>
+<p><strong>（4）使用标准ACL实现PC1不能访问PC2，并使用ping命令验证结果</strong></p>
+<blockquote>
+<p>标准ACL建议在离目标近的设备上配置，在R3上配置ACL拒绝来自主机172.16.1.1的流量，并在进接口方向调用，此时实现PC1不能访问PC2</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzCT3j.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzCHvn.png"></p>
+<p><strong>（5）使用标准ACL实现只允许PC2远程登录到路由器R2，并使用telnet命令验证结果</strong></p>
+<blockquote>
+<p>在R2上配置ACL，允许主机172.16.3.1的流量，默认隐含一条拒绝所有，即拒绝除PC2之外的流量。在vty中允许其他设备使用telnet远程登录，并在in方向调用ACL</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzPGa8.png"></p>
+<blockquote>
+<p>在PC1和PC2上进行测试，此时实现了只允许PC2远程登录到R2</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dziPJg.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dziVLq.png"></p>
+<p><strong>（6）使用标准ACL实现禁止loopback2所在网段的所有主机访问PC1，对loopback1所在网段主机的访问不做限制</strong></p>
+<blockquote>
+<p>在R1上配置ACL，允许loopback1网段，拒绝loopback2网段，然后在e0/1接口的in方向调用</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzizc9.png"></p>
+<blockquote>
+<p>此时实现了R2上的loopback1网段可以访问PC1，而loopback2网段不能</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzFtjs.png"></p>
+<p><strong>（7）使用命名ACL完整上述标准ACL的需求</strong></p>
+<ul>
+<li>实现PC1不能访问PC2</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzecvD.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzeoPP.png"></p>
+<ul>
+<li>实现只允许PC2远程登录到路由器R2</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dznifP.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dznAl8.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dznVOg.png"></p>
+<ul>
+<li>实现禁止loopback2所在网段的所有主机访问PC1，对loopback1所在网段主机的访问不做限制</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzuCB4.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzuPHJ.png"></p>
+<p><strong>（8）使用扩展ACL实现禁止PC1远程登录到R2，对其他访问不做限制</strong></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzu34I.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzu1UA.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzulEd.png"></p>
+<p><strong>（9）使用扩展ACL实现PC2可以telnet到路由器R1，但不能ping通路由器R1，分别使用ping和telnet验证结果</strong></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzuOqe.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzuLrD.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzuHxK.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzuqKO.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzu726.png"></p>
+<p><strong>（10）使用扩展ACL实现PC1可以pingPC2，但禁止PC2pingPC1，其他的访问不受限制，使用ping验证结果</strong></p>
+<blockquote>
+<p>ICMP</p>
+<ul>
+<li><p>echo request    –echo的请求包</p>
+</li>
+<li><p>echo reply         –echo的响应包</p>
+</li>
+</ul>
+<p>只有以上两种报文是正常的，那么此时的ping才是能通的</p>
+<p>PC1 ping PC2 正常</p>
+<ul>
+<li><p>PC1 给 PC2 发送的echo request是正常的（源是PC1，目标是PC2）</p>
+</li>
+<li><p>PC2给PC1发送的echo reply也是正常的（源是PC2，目标是PC1）</p>
+</li>
+</ul>
+<p>PC2 ping PC1 不正常</p>
+<ul>
+<li><p>PC2不能给PC1发送 echo request（源是PC2，目的是PC1）</p>
+</li>
+<li><p>PC2不能接收到来自PC1的echo  reply（源是PC1，目的是PC2）</p>
+</li>
+</ul>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzKOS0.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzKqWq.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzKbYn.png"></p>
+<p><strong>（11）使用命名ACL完成上述扩展ACL的需求</strong></p>
+<ul>
+<li>实现禁止PC1远程登录到R2，对其他访问不做限制</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzQCDS.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzQPHg.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzQ9u8.png"></p>
+<ul>
+<li>实现PC2可以telnet到路由器R1，但不能ping路由器R1，分别使用ping和telnet验证结果</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzQKDU.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzQuuT.png"></p>
+<ul>
+<li>实现PC1可以pingPC2，但禁止PC2pingPC1，其他的访问不受限制，使用ping验证结果</li>
+</ul>
+<p><span style="color:red">方法一：拒绝PC2向PC1发送icmp的echo-request报文</span></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzQWqS.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzQRr8.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzQ2Kf.png"></p>
+<p><span style="color:red">方法二：拒绝PC1向PC2发送icmp的echo-reply报文</span></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzl1L8.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzllsf.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzlQQP.png"></p>
+]]></content>
+      <categories>
+        <category>实验</category>
+      </categories>
+      <tags>
+        <tag>CCNA</tag>
+        <tag>ACL</tag>
       </tags>
   </entry>
   <entry>
@@ -1531,164 +1531,6 @@
       </tags>
   </entry>
   <entry>
-    <title>单区域OSPF的实现</title>
-    <url>/2020/08/29/%E5%8D%95%E5%8C%BA%E5%9F%9FOSPF%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
-    <content><![CDATA[<h4 id="1、实验目的"><a href="#1、实验目的" class="headerlink" title="1、实验目的"></a>1、实验目的</h4><p>1）掌握OSPF的基本配置<br>2）掌握OSPF的邻居表、拓扑表及路由表的含义<br>3）掌握OSPF的DR和BDR的作用<br>4）掌握OSPF的DR和BDR的选举<br>5）查看和调试OSPF路由协议的相关信息<br>6）熟悉OSPF中hello报文的作用和格式</p>
-<a id="more"></a>
-<h4 id="2、拓扑结构"><a href="#2、拓扑结构" class="headerlink" title="2、拓扑结构"></a>2、拓扑结构</h4><p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dHg68e.png" alt="拓扑图"></p>
-<h4 id="3、实验步骤"><a href="#3、实验步骤" class="headerlink" title="3、实验步骤"></a>3、实验步骤</h4><p><strong>（1）完成各路由器的基本配置，实现各直连设备之间可以互ping对方，主机和路由器接口的地址自己规划</strong></p>
-<ul>
-<li>各接口地址如拓扑图标记所示进行配置</li>
-</ul>
-<p><strong>（2）全网启用OSPF，并划分如区域0</strong></p>
-<blockquote>
-<p>距离矢量为通告</p>
-<p>链路状态为使能</p>
-<p>network表示的是划分一个范围，路由器上属于此范围的对应接口加入OSPF的相应进程的相应区域</p>
-<p>如network 192.168.12.0 0.0.0.255 area 0 表示的是划分一个范围为192.168.12.0，看此路由器上的哪个接口在这个范围内，则这个接口就会被加入OSPF的区域0中</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dH2hQJ.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dH2Tdx.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dH2qJO.png"></p>
-<p><strong>（3）观察各路由器的邻居表、拓扑表及路由表，观察哪些链路上有进行DR/BDR的选举，并测试主机之间的连通性</strong></p>
-<blockquote>
-<p>优先级用于选举DR/BDR——以太网链路存在DR/BDR的选举，串行链路则没有</p>
-<p>选举规则：</p>
-<ul>
-<li><p>先比较优先级，优先级大的优先；默认情况下以太网接口的优先级都为1，串行链路的接口优先级都为0（优先级为0不能参与DR/BDR的选举）</p>
-</li>
-<li><p>如果优先级都一样，继续比较RID，RID大的优先</p>
-</li>
-<li><p>DR的选举是非抢占的</p>
-</li>
-</ul>
-</blockquote>
-<blockquote>
-<p>Hello报文</p>
-<p>作用：用来发现、建立、维持邻居之间的关系</p>
-<p>每隔10s往224.0.0.5发送Hello报文，如果在40之后没有收到来自邻居的Hello，则认为该邻居挂了，就切断和该邻居之间的关系（死亡时间通常在30-39之间）</p>
-</blockquote>
-<blockquote>
-<p>-————————————————————————————————————————–</p>
-<p>Neighbor ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pri &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;State &nbsp;&nbsp;&nbsp;Dead Time &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Address    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Interface</p>
-<p>&nbsp;&nbsp;&nbsp;邻居的ID &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;优先级 &nbsp;&nbsp;状态 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;死亡时间 &nbsp;&nbsp;&nbsp;&nbsp;邻居的IP地址 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;自己用于建立邻居的接口</p>
-<p>-————————————————————————————————————————–</p>
-</blockquote>
-<ul>
-<li>邻居表</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dHWXqA.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dHWxat.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dHWzIP.png"></p>
-<ul>
-<li>拓扑表</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dHfVZn.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dHfeI0.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dHfuGT.png"></p>
-<ul>
-<li>路由表</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dHfydI.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dHfgFP.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dHffSS.png"></p>
-<ul>
-<li>连通性测试</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dHhpwR.png"></p>
-<p><strong>（4）指定R2的RID为20.20.20.20，R3的RID为30.30.30.30，使用相关命令观察和验证各路由器RID的变化</strong></p>
-<blockquote>
-<p>【RID的选举】</p>
-<ul>
-<li><p>手工指定：最优先</p>
-<p>R2(config)#router ospf 1</p>
-<p>R2(config-router)#router-id 20.20.20.20    –手动指定RID</p>
-<p>Reload or use “clear ip ospf process” command, for this to take effect</p>
-<p>R2#clear ip ospf process    –重置OSPF的进程 </p>
-<p>Reset ALL OSPF processes? [no]: y</p>
-</li>
-<li><p>自动选择：在没有手工指定情况下，优先选择回环口中IP地址最大的；若没有回环口，选择物理接口（双UP）中IP地址最大。</p>
-</li>
-</ul>
-</blockquote>
-<ul>
-<li>查看当前R2和R3的RID，由于没有手工指定，也没有存在回环口，则选择物理接口中IP地址最大的作为RID</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dHhI1O.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dHhTje.png"></p>
-<ul>
-<li>指定R2和R3路由器的RID</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dH4PBj.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dH4kEn.png"></p>
-<ul>
-<li>再次查看R2和R3的RID</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dH4ANq.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dH4E40.png"></p>
-<p><strong>（5）实现R2为以太网链路网段上的DR</strong></p>
-<ul>
-<li>由于R1和R2的优先级默认都为1，并且R2的RID为20.20.20.20，而R1的RID为192.168.12.1，此时需要修改R2的e0/0接口的优先级，使之成为以太网链路上的DR。此处指定R2上e0/0接口的优先级为2即可</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dH4zI1.png"></p>
-<ul>
-<li>由于DR、BDR的选举为非抢占，此时应重置OSPF进程</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dHIpwj.png"></p>
-<ul>
-<li>查看R1和R2的邻居表，可知此时R2成为以太网链路上的DR</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dHIFf0.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dHIApV.png"></p>
-<p><strong>（6）分别在R2和R3的路由器上添加172.16.2.0/24和172.16.3.0/24的网段，添加必要配置实现这两个网络之间的连通性</strong></p>
-<ul>
-<li>由于R3上已存在172.16.3.0/24网段，此时在R2上添加一个回环口（地址为172.16.2.2/24）用作测试</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">R2(config)#interface loopback 1</span><br><span class="line">R2(config-if)#ip address 172.16.2.2 255.255.255.0</span><br><span class="line">R2(config-if)#ip ospf 1 area 0  --把该接口加入到OSPF进程1区域0中</span><br></pre></td></tr></table></figure>
-
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dHIqHJ.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dHIXNR.png"></p>
-<p><strong>（7）开启debug信息，观察OSPF在以太网链路之间信息交互的过程</strong></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dHIx9x.png"></p>
-<p><strong>（8）开启debug信息，观察OSPF在串行链路之间信息交互的过程，比较以太网链路和串行链路上OSPF的debug信息输出的区别</strong></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dHoPDe.png"></p>
-<blockquote>
-<p>最主要区别在于以太网链路会进行DR/BDR的选举；串行链路则没有进行DR/BDR的选举</p>
-<p>以太网链路中，路由信息会先被发送到组播地址224.0.0.6，即被DR/BDR所接收，再由DR将此信息发送到组播地址224.0.0.5</p>
-</blockquote>
-<p><strong>（9）使用wireshark抓取OSPF的hello报文，理解hello报文各字段的含义</strong></p>
-<blockquote>
-<p>hello报文用于邻居的发现，建立和维持</p>
-<p>hello报文中的相关信息包括：</p>
-<ul>
-<li>Network Mask：发送hello报文的接口所在网络的掩码</li>
-<li>Hello Interval（默认为10s）：发送hello报文的时间间隔</li>
-<li>Options：可选项<ul>
-<li>E：允许Flood AS-External-LSAs</li>
-<li>MC：转发IP组播报文</li>
-<li>N/P：处理Type-7 LSAs</li>
-<li>DC：处理按需链路</li>
-</ul>
-</li>
-<li>Router Priority：优先级，默认为1，如果设置为0，则不参与DR或BDR的选举</li>
-<li>Router Dead Interval（默认40s）：失效时间，如果在此时间内未收到邻居发送的hello报文，则认为邻居失效</li>
-<li>Designated Router：DR的接口地址</li>
-<li>Backup Designated Router：BDR的接口地址</li>
-<li>Active Neighbor：活跃的邻居，以RID标识</li>
-</ul>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dHoE4I.png"></p>
-]]></content>
-      <categories>
-        <category>实验</category>
-      </categories>
-      <tags>
-        <tag>CCNA</tag>
-        <tag>路由协议</tag>
-        <tag>OSPF</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Hello World</title>
     <url>/2020/08/26/hello-world/</url>
     <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
@@ -1870,6 +1712,164 @@
         <tag>DHCP</tag>
         <tag>VTP</tag>
         <tag>EtherChannel</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>单区域OSPF的实现</title>
+    <url>/2020/08/29/%E5%8D%95%E5%8C%BA%E5%9F%9FOSPF%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
+    <content><![CDATA[<h4 id="1、实验目的"><a href="#1、实验目的" class="headerlink" title="1、实验目的"></a>1、实验目的</h4><p>1）掌握OSPF的基本配置<br>2）掌握OSPF的邻居表、拓扑表及路由表的含义<br>3）掌握OSPF的DR和BDR的作用<br>4）掌握OSPF的DR和BDR的选举<br>5）查看和调试OSPF路由协议的相关信息<br>6）熟悉OSPF中hello报文的作用和格式</p>
+<a id="more"></a>
+<h4 id="2、拓扑结构"><a href="#2、拓扑结构" class="headerlink" title="2、拓扑结构"></a>2、拓扑结构</h4><p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dHg68e.png" alt="拓扑图"></p>
+<h4 id="3、实验步骤"><a href="#3、实验步骤" class="headerlink" title="3、实验步骤"></a>3、实验步骤</h4><p><strong>（1）完成各路由器的基本配置，实现各直连设备之间可以互ping对方，主机和路由器接口的地址自己规划</strong></p>
+<ul>
+<li>各接口地址如拓扑图标记所示进行配置</li>
+</ul>
+<p><strong>（2）全网启用OSPF，并划分如区域0</strong></p>
+<blockquote>
+<p>距离矢量为通告</p>
+<p>链路状态为使能</p>
+<p>network表示的是划分一个范围，路由器上属于此范围的对应接口加入OSPF的相应进程的相应区域</p>
+<p>如network 192.168.12.0 0.0.0.255 area 0 表示的是划分一个范围为192.168.12.0，看此路由器上的哪个接口在这个范围内，则这个接口就会被加入OSPF的区域0中</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dH2hQJ.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dH2Tdx.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dH2qJO.png"></p>
+<p><strong>（3）观察各路由器的邻居表、拓扑表及路由表，观察哪些链路上有进行DR/BDR的选举，并测试主机之间的连通性</strong></p>
+<blockquote>
+<p>优先级用于选举DR/BDR——以太网链路存在DR/BDR的选举，串行链路则没有</p>
+<p>选举规则：</p>
+<ul>
+<li><p>先比较优先级，优先级大的优先；默认情况下以太网接口的优先级都为1，串行链路的接口优先级都为0（优先级为0不能参与DR/BDR的选举）</p>
+</li>
+<li><p>如果优先级都一样，继续比较RID，RID大的优先</p>
+</li>
+<li><p>DR的选举是非抢占的</p>
+</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>Hello报文</p>
+<p>作用：用来发现、建立、维持邻居之间的关系</p>
+<p>每隔10s往224.0.0.5发送Hello报文，如果在40之后没有收到来自邻居的Hello，则认为该邻居挂了，就切断和该邻居之间的关系（死亡时间通常在30-39之间）</p>
+</blockquote>
+<blockquote>
+<p>-————————————————————————————————————————–</p>
+<p>Neighbor ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pri &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;State &nbsp;&nbsp;&nbsp;Dead Time &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Address    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Interface</p>
+<p>&nbsp;&nbsp;&nbsp;邻居的ID &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;优先级 &nbsp;&nbsp;状态 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;死亡时间 &nbsp;&nbsp;&nbsp;&nbsp;邻居的IP地址 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;自己用于建立邻居的接口</p>
+<p>-————————————————————————————————————————–</p>
+</blockquote>
+<ul>
+<li>邻居表</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dHWXqA.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dHWxat.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dHWzIP.png"></p>
+<ul>
+<li>拓扑表</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dHfVZn.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dHfeI0.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dHfuGT.png"></p>
+<ul>
+<li>路由表</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dHfydI.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dHfgFP.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dHffSS.png"></p>
+<ul>
+<li>连通性测试</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dHhpwR.png"></p>
+<p><strong>（4）指定R2的RID为20.20.20.20，R3的RID为30.30.30.30，使用相关命令观察和验证各路由器RID的变化</strong></p>
+<blockquote>
+<p>【RID的选举】</p>
+<ul>
+<li><p>手工指定：最优先</p>
+<p>R2(config)#router ospf 1</p>
+<p>R2(config-router)#router-id 20.20.20.20    –手动指定RID</p>
+<p>Reload or use “clear ip ospf process” command, for this to take effect</p>
+<p>R2#clear ip ospf process    –重置OSPF的进程 </p>
+<p>Reset ALL OSPF processes? [no]: y</p>
+</li>
+<li><p>自动选择：在没有手工指定情况下，优先选择回环口中IP地址最大的；若没有回环口，选择物理接口（双UP）中IP地址最大。</p>
+</li>
+</ul>
+</blockquote>
+<ul>
+<li>查看当前R2和R3的RID，由于没有手工指定，也没有存在回环口，则选择物理接口中IP地址最大的作为RID</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dHhI1O.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dHhTje.png"></p>
+<ul>
+<li>指定R2和R3路由器的RID</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dH4PBj.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dH4kEn.png"></p>
+<ul>
+<li>再次查看R2和R3的RID</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dH4ANq.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dH4E40.png"></p>
+<p><strong>（5）实现R2为以太网链路网段上的DR</strong></p>
+<ul>
+<li>由于R1和R2的优先级默认都为1，并且R2的RID为20.20.20.20，而R1的RID为192.168.12.1，此时需要修改R2的e0/0接口的优先级，使之成为以太网链路上的DR。此处指定R2上e0/0接口的优先级为2即可</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dH4zI1.png"></p>
+<ul>
+<li>由于DR、BDR的选举为非抢占，此时应重置OSPF进程</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dHIpwj.png"></p>
+<ul>
+<li>查看R1和R2的邻居表，可知此时R2成为以太网链路上的DR</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dHIFf0.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/29/dHIApV.png"></p>
+<p><strong>（6）分别在R2和R3的路由器上添加172.16.2.0/24和172.16.3.0/24的网段，添加必要配置实现这两个网络之间的连通性</strong></p>
+<ul>
+<li>由于R3上已存在172.16.3.0/24网段，此时在R2上添加一个回环口（地址为172.16.2.2/24）用作测试</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">R2(config)#interface loopback 1</span><br><span class="line">R2(config-if)#ip address 172.16.2.2 255.255.255.0</span><br><span class="line">R2(config-if)#ip ospf 1 area 0  --把该接口加入到OSPF进程1区域0中</span><br></pre></td></tr></table></figure>
+
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dHIqHJ.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dHIXNR.png"></p>
+<p><strong>（7）开启debug信息，观察OSPF在以太网链路之间信息交互的过程</strong></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dHIx9x.png"></p>
+<p><strong>（8）开启debug信息，观察OSPF在串行链路之间信息交互的过程，比较以太网链路和串行链路上OSPF的debug信息输出的区别</strong></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dHoPDe.png"></p>
+<blockquote>
+<p>最主要区别在于以太网链路会进行DR/BDR的选举；串行链路则没有进行DR/BDR的选举</p>
+<p>以太网链路中，路由信息会先被发送到组播地址224.0.0.6，即被DR/BDR所接收，再由DR将此信息发送到组播地址224.0.0.5</p>
+</blockquote>
+<p><strong>（9）使用wireshark抓取OSPF的hello报文，理解hello报文各字段的含义</strong></p>
+<blockquote>
+<p>hello报文用于邻居的发现，建立和维持</p>
+<p>hello报文中的相关信息包括：</p>
+<ul>
+<li>Network Mask：发送hello报文的接口所在网络的掩码</li>
+<li>Hello Interval（默认为10s）：发送hello报文的时间间隔</li>
+<li>Options：可选项<ul>
+<li>E：允许Flood AS-External-LSAs</li>
+<li>MC：转发IP组播报文</li>
+<li>N/P：处理Type-7 LSAs</li>
+<li>DC：处理按需链路</li>
+</ul>
+</li>
+<li>Router Priority：优先级，默认为1，如果设置为0，则不参与DR或BDR的选举</li>
+<li>Router Dead Interval（默认40s）：失效时间，如果在此时间内未收到邻居发送的hello报文，则认为邻居失效</li>
+<li>Designated Router：DR的接口地址</li>
+<li>Backup Designated Router：BDR的接口地址</li>
+<li>Active Neighbor：活跃的邻居，以RID标识</li>
+</ul>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dHoE4I.png"></p>
+]]></content>
+      <categories>
+        <category>实验</category>
+      </categories>
+      <tags>
+        <tag>CCNA</tag>
+        <tag>路由协议</tag>
+        <tag>OSPF</tag>
       </tags>
   </entry>
   <entry>
@@ -2137,6 +2137,159 @@
       </tags>
   </entry>
   <entry>
+    <title>重分布引起的路由环路问题</title>
+    <url>/2020/09/27/%E9%87%8D%E5%88%86%E5%B8%83%E5%BC%95%E8%B5%B7%E7%9A%84%E8%B7%AF%E7%94%B1%E7%8E%AF%E8%B7%AF%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h3 id="1、环境介绍"><a href="#1、环境介绍" class="headerlink" title="1、环境介绍"></a>1、环境介绍</h3><blockquote>
+<p>如下图所示，左边部分运行OSPF，右边部分运行RIP，在R5上启用一个回环口并将其通告进RIP中，在R2和R6上进行重分布</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0FxaCQ.png"></p>
+<ul>
+<li>在R2上将RIP重分布进OSPF，在R6上将OSPF重分布进RIP</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R2(config)#router ospf 1</span><br><span class="line">R2(config-router)#redistribute rip subnets</span><br><span class="line"></span><br><span class="line">R6(config)#router rip</span><br><span class="line">R6(config-router)#redistribute ospf 1 metric 1    //指定跳数为1</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>将R5上的回环口通告进RIP</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R5(config)#router rip</span><br><span class="line">R5(config-router)#network 5.5.5.0       </span><br></pre></td></tr></table></figure>
+
+<h3 id="2、产生环路"><a href="#2、产生环路" class="headerlink" title="2、产生环路"></a>2、产生环路</h3><ul>
+<li>在R1上跟踪到达R5所经过的路径，产生了环路（R1→R2→R3→R6→R1……）</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">R1#traceroute 5.5.5.5 numeric </span><br><span class="line">Type <span class="built_in">escape</span> sequence to abort.</span><br><span class="line">Tracing the route to <span class="number">5.5</span><span class="number">.5</span><span class="number">.5</span></span><br><span class="line">VRF info: (vrf <span class="keyword">in</span> name/id, vrf out name/id)</span><br><span class="line">  <span class="number">1</span> <span class="number">12.12</span><span class="number">.12</span><span class="number">.2</span> <span class="number">0</span> msec <span class="number">0</span> msec <span class="number">0</span> msec</span><br><span class="line">  <span class="number">2</span> <span class="number">23.23</span><span class="number">.23</span><span class="number">.3</span> <span class="number">0</span> msec <span class="number">1</span> msec <span class="number">0</span> msec</span><br><span class="line">  <span class="number">3</span> <span class="number">36.36</span><span class="number">.36</span><span class="number">.6</span> <span class="number">1</span> msec <span class="number">0</span> msec <span class="number">1</span> msec</span><br><span class="line">  <span class="number">4</span> <span class="number">16.16</span><span class="number">.16</span><span class="number">.1</span> <span class="number">0</span> msec <span class="number">1</span> msec <span class="number">0</span> msec</span><br><span class="line">  <span class="number">5</span> <span class="number">12.12</span><span class="number">.12</span><span class="number">.2</span> <span class="number">1</span> msec <span class="number">0</span> msec <span class="number">0</span> msec</span><br><span class="line">  <span class="number">6</span> <span class="number">23.23</span><span class="number">.23</span><span class="number">.3</span> <span class="number">1</span> msec <span class="number">1</span> msec <span class="number">3</span> msec</span><br><span class="line">  <span class="number">7</span> <span class="number">36.36</span><span class="number">.36</span><span class="number">.6</span> <span class="number">1</span> msec <span class="number">1</span> msec <span class="number">0</span> msec</span><br><span class="line">  <span class="number">8</span> <span class="number">16.16</span><span class="number">.16</span><span class="number">.1</span> <span class="number">1</span> msec <span class="number">1</span> msec <span class="number">1</span> msec</span><br><span class="line">  <span class="number">9</span> <span class="number">12.12</span><span class="number">.12</span><span class="number">.2</span> <span class="number">0</span> msec <span class="number">1</span> msec <span class="number">1</span> msec</span><br><span class="line">  ……</span><br><span class="line">  ……</span><br><span class="line">  ……</span><br></pre></td></tr></table></figure>
+
+<h3 id="3、分析"><a href="#3、分析" class="headerlink" title="3、分析"></a>3、分析</h3><ul>
+<li>查看R4的路由表</li>
+</ul>
+<blockquote>
+<p>R4从R5上学习到5.5.5.0/24的路由条目，AD值为120，cost值为1，下一跳为45.45.45.5</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">R4#show ip route </span><br><span class="line"><span class="comment">//省略部分输出</span></span><br><span class="line">      <span class="number">5.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">24</span> is subnetted, <span class="number">1</span> subnets</span><br><span class="line">R        <span class="number">5.5</span><span class="number">.5</span><span class="number">.0</span> [<span class="number">120</span>/<span class="number">1</span>] via <span class="number">45.45</span><span class="number">.45</span><span class="number">.5</span>, <span class="number">00</span>:<span class="number">00</span>:<span class="number">11</span>, Ethernet0/<span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看R3的路由表</li>
+</ul>
+<blockquote>
+<p>R3本应从R4上学习到5.5.5.0/24的路由条目，此时的下一跳却为R6。</p>
+<p>分析：若R3从R4上学习5.5.5.0/24的路由，则跳数为2。由于在R6上进行了重分布，将OSPF重分布进RIP时指定了跳数为1，所以在相同协议条件下，优先选择cost值小的，因此R3会选择R6去往5.5.5.0/24网段</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">R3#show ip route </span><br><span class="line"><span class="comment">//省略部分输出</span></span><br><span class="line">      <span class="number">5.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">24</span> is subnetted, <span class="number">1</span> subnets</span><br><span class="line">R        <span class="number">5.5</span><span class="number">.5</span><span class="number">.0</span> [<span class="number">120</span>/<span class="number">1</span>] via <span class="number">36.36</span><span class="number">.36</span><span class="number">.6</span>, <span class="number">00</span>:<span class="number">00</span>:<span class="number">03</span>, Ethernet0/<span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看R2的路由表</li>
+</ul>
+<blockquote>
+<p>显示下一跳为R3，cost值为2</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">R2#show ip route</span><br><span class="line"><span class="comment">//省略部分输出</span></span><br><span class="line">      <span class="number">5.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">24</span> is subnetted, <span class="number">1</span> subnets</span><br><span class="line">R        <span class="number">5.5</span><span class="number">.5</span><span class="number">.0</span> [<span class="number">120</span>/<span class="number">2</span>] via <span class="number">23.23</span><span class="number">.23</span><span class="number">.3</span>, <span class="number">00</span>:<span class="number">00</span>:<span class="number">12</span>, Ethernet0/<span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看R1的路由表</li>
+</ul>
+<blockquote>
+<p>显示下一跳为R2：R2将RIP重分布进了OSPF中，未指定类型，则默认为O E2，传递过程中保持cost值为20</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">R1#show ip route </span><br><span class="line"><span class="comment">///省略部分输出///</span></span><br><span class="line">      <span class="number">5.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">24</span> is subnetted, <span class="number">1</span> subnets</span><br><span class="line">O E2     <span class="number">5.5</span><span class="number">.5</span><span class="number">.0</span> [<span class="number">110</span>/<span class="number">20</span>] via <span class="number">12.12</span><span class="number">.12</span><span class="number">.2</span>, <span class="number">00</span>:<span class="number">32</span>:<span class="number">42</span>, Ethernet0/<span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看R6路由表</li>
+</ul>
+<blockquote>
+<p>R6从R1上学习到5.5.5.0/24的路由条目</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">R6#show ip route </span><br><span class="line"><span class="comment">//省略部分输出</span></span><br><span class="line">      <span class="number">5.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">24</span> is subnetted, <span class="number">1</span> subnets</span><br><span class="line">O E2     <span class="number">5.5</span><span class="number">.5</span><span class="number">.0</span> [<span class="number">110</span>/<span class="number">20</span>] via <span class="number">16.16</span><span class="number">.16</span><span class="number">.1</span>, <span class="number">00</span>:<span class="number">32</span>:<span class="number">57</span>, Ethernet0/<span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>分析总结</strong>：R4从R5上学习到了5.5.5.0/24的路由条目，并将其通告给R3，R3此时若通过R4访问5.5.5.5/24，则开销值为2。R3再将自身的路由信息通告给R2和R6，则此时R2和R6到达5.5.5.5/24的开销值都为3，并且管理距离都为120。在R2上将RIP重分布进OSPF，此时R1通过R2学习到的去往5.5.5.0/24的路由的管理距离为110，开销为20。R6与R1建立了OSPF邻居关系，则R6将会从R1上再次学习到5.5.5.0/24的路由条目，此时R6通过两种路由协议学习到了到达同一目的的路由，则会比较管理距离，最后R6选择通过R1去往5.5.5.0/24网段，因为OSPF的管理距离为110，小于RIP的120，所以在R6的路由表上显示的到达5.5.5.0的路由类型为O E2。R6上又将OSPF重分布进了RIP中，并且指定了开销值为1，此时R3通过同种路由协议学习到了到达同一目的地址的路由，会比较开销，最终选择通过R6去往5.5.5.0/24，因为R6告诉R3去往该网段的开销为1。最终，导致了环路的形成。</p>
+</blockquote>
+<h3 id="4、问题解决"><a href="#4、问题解决" class="headerlink" title="4、问题解决"></a>4、问题解决</h3><ul>
+<li>【解决措施1】修改跳数——在R6上将OSPF重分布进RIP时将跳数设置为大于2</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R6(config)#router rip</span><br><span class="line">R6(config-router)#redistribute ospf 1 metric 3</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>查看R3的路由表，可知此时通过R4去往5.5.5.0/24网段</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0kVFv8.png"></p>
+<blockquote>
+<p>在R1上跟踪路由，问题解决</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0kV0xK.png"></p>
+<ul>
+<li>【解决措施2】使用分发列表过滤，在R3上将R6传过来的5.5.5.0/24的路由进行过滤</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R3(config)#access-list 1 deny 5.5.5.0 /24</span><br><span class="line">R3(config)#access-list 1 permit any </span><br><span class="line">R3(config)#router rip</span><br><span class="line">R3(config-router)#distribute-list 1 in e0/2</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>查看R3的路由表，可知此时通过R4去往5.5.5.0/24网段</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0ke8AJ.png"></p>
+<blockquote>
+<p>在R1上跟踪路由，问题解决</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0kerAH.png"></p>
+<ul>
+<li>【解决措施3】针对特定的通告者修改管理距离——把从R6学习到的5.5.5.0/24的路由的AD值改为大于120</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R3(config)#access-list 1 permit 5.5.5.0 /24</span><br><span class="line">R3(config)#router rip</span><br><span class="line"><span class="comment">//针对R6通告的并被ACL 1匹配到的路由，将其管理距离更改为130</span></span><br><span class="line">R3(config-router)#distance 130 36.36.36.6 0.0.0.0 1</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>查看R3的路由表，可知此时通过R4去往5.5.5.0/24网段</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0kmoqO.png"></p>
+<blockquote>
+<p>在R1上跟踪路由，问题解决</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0knSL8.png"></p>
+<ul>
+<li>【解决措施4】使用前缀列表匹配，并用分发列表过滤</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="comment">//使用前缀列表拒绝5.5.5.0/24</span></span><br><span class="line">R3(config)#ip prefix-list a deny 5.5.5.0/24</span><br><span class="line"><span class="comment">//前缀列表允许剩下的所有路由</span></span><br><span class="line">R3(config)#ip prefix-list a permit 0.0.0.0/0 le 32</span><br><span class="line">R3(config)#router rip</span><br><span class="line"><span class="comment">//使用分发列表调用前缀列表</span></span><br><span class="line">R3(config-router)#distribute-list prefix a in e0/2</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>查看R3的路由表，可知此时通过R4去往5.5.5.0/24网段</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0kK5Mq.png"></p>
+<blockquote>
+<p>在R1上跟踪路由，问题解决</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0kMmOP.png"></p>
+<ul>
+<li>【解决措施5】在R6的out方向调用分发列表</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R6(config)#access-list 1 deny 5.5.5.0 /24</span><br><span class="line">R6(config)#access-list 1 permit any    </span><br><span class="line">R6(config)#router rip</span><br><span class="line"><span class="comment">//将ospf重分布进RIP时，只有被ACL 1允许的才会进行重分布</span></span><br><span class="line">R6(config-router)#distribute-list 1 out ospf 1</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>查看R3的路由表，可知此时通过R4去往5.5.5.0/24网段</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0kQajI.png"></p>
+<blockquote>
+<p>在R1上跟踪路由，问题解决</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0kQhD0.png"></p>
+<ul>
+<li>【解决措施6】使用偏移列表（只针对距离矢量有意义）</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R6(config)#access-list 1 permit 5.5.5.0 /24</span><br><span class="line">R6(config)#router rip</span><br><span class="line"><span class="comment">//针对被ACL 1匹配到的路由，对其跳数进行偏移2，即此时R3从R6上学习到的5.5.5.0/24的路由的跳数为3</span></span><br><span class="line">R6(config-router)#offset-list 1 out 2 e0/1</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>查看R3的路由表，可知此时通过R4去往5.5.5.0/24网段</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0k15hF.png"></p>
+<blockquote>
+<p>在R1上跟踪路由，问题解决</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0k3n3Q.png"></p>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>路由协议</tag>
+        <tag>重分布</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>生成树综合测试</title>
     <url>/2020/09/26/%E7%94%9F%E6%88%90%E6%A0%91%E7%BB%BC%E5%90%88%E6%B5%8B%E8%AF%95/</url>
     <content><![CDATA[<h3 id="1、实验目的"><a href="#1、实验目的" class="headerlink" title="1、实验目的"></a>1、实验目的</h3><p>1）掌握RSTP的配置与检验<br>2）掌握MST的配置与检验<br>3）掌握生成树特性的应用<br>4）实现VLAN间的通信</p>
@@ -2367,159 +2520,6 @@
         <tag>STP</tag>
         <tag>RSTP</tag>
         <tag>MST</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>重分布引起的路由环路问题</title>
-    <url>/2020/09/27/%E9%87%8D%E5%88%86%E5%B8%83%E5%BC%95%E8%B5%B7%E7%9A%84%E8%B7%AF%E7%94%B1%E7%8E%AF%E8%B7%AF%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<h3 id="1、环境介绍"><a href="#1、环境介绍" class="headerlink" title="1、环境介绍"></a>1、环境介绍</h3><blockquote>
-<p>如下图所示，左边部分运行OSPF，右边部分运行RIP，在R5上启用一个回环口并将其通告进RIP中，在R2和R6上进行重分布</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0FxaCQ.png"></p>
-<ul>
-<li>在R2上将RIP重分布进OSPF，在R6上将OSPF重分布进RIP</li>
-</ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R2(config)#router ospf 1</span><br><span class="line">R2(config-router)#redistribute rip subnets</span><br><span class="line"></span><br><span class="line">R6(config)#router rip</span><br><span class="line">R6(config-router)#redistribute ospf 1 metric 1    //指定跳数为1</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>将R5上的回环口通告进RIP</li>
-</ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R5(config)#router rip</span><br><span class="line">R5(config-router)#network 5.5.5.0       </span><br></pre></td></tr></table></figure>
-
-<h3 id="2、产生环路"><a href="#2、产生环路" class="headerlink" title="2、产生环路"></a>2、产生环路</h3><ul>
-<li>在R1上跟踪到达R5所经过的路径，产生了环路（R1→R2→R3→R6→R1……）</li>
-</ul>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">R1#traceroute 5.5.5.5 numeric </span><br><span class="line">Type <span class="built_in">escape</span> sequence to abort.</span><br><span class="line">Tracing the route to <span class="number">5.5</span><span class="number">.5</span><span class="number">.5</span></span><br><span class="line">VRF info: (vrf <span class="keyword">in</span> name/id, vrf out name/id)</span><br><span class="line">  <span class="number">1</span> <span class="number">12.12</span><span class="number">.12</span><span class="number">.2</span> <span class="number">0</span> msec <span class="number">0</span> msec <span class="number">0</span> msec</span><br><span class="line">  <span class="number">2</span> <span class="number">23.23</span><span class="number">.23</span><span class="number">.3</span> <span class="number">0</span> msec <span class="number">1</span> msec <span class="number">0</span> msec</span><br><span class="line">  <span class="number">3</span> <span class="number">36.36</span><span class="number">.36</span><span class="number">.6</span> <span class="number">1</span> msec <span class="number">0</span> msec <span class="number">1</span> msec</span><br><span class="line">  <span class="number">4</span> <span class="number">16.16</span><span class="number">.16</span><span class="number">.1</span> <span class="number">0</span> msec <span class="number">1</span> msec <span class="number">0</span> msec</span><br><span class="line">  <span class="number">5</span> <span class="number">12.12</span><span class="number">.12</span><span class="number">.2</span> <span class="number">1</span> msec <span class="number">0</span> msec <span class="number">0</span> msec</span><br><span class="line">  <span class="number">6</span> <span class="number">23.23</span><span class="number">.23</span><span class="number">.3</span> <span class="number">1</span> msec <span class="number">1</span> msec <span class="number">3</span> msec</span><br><span class="line">  <span class="number">7</span> <span class="number">36.36</span><span class="number">.36</span><span class="number">.6</span> <span class="number">1</span> msec <span class="number">1</span> msec <span class="number">0</span> msec</span><br><span class="line">  <span class="number">8</span> <span class="number">16.16</span><span class="number">.16</span><span class="number">.1</span> <span class="number">1</span> msec <span class="number">1</span> msec <span class="number">1</span> msec</span><br><span class="line">  <span class="number">9</span> <span class="number">12.12</span><span class="number">.12</span><span class="number">.2</span> <span class="number">0</span> msec <span class="number">1</span> msec <span class="number">1</span> msec</span><br><span class="line">  ……</span><br><span class="line">  ……</span><br><span class="line">  ……</span><br></pre></td></tr></table></figure>
-
-<h3 id="3、分析"><a href="#3、分析" class="headerlink" title="3、分析"></a>3、分析</h3><ul>
-<li>查看R4的路由表</li>
-</ul>
-<blockquote>
-<p>R4从R5上学习到5.5.5.0/24的路由条目，AD值为120，cost值为1，下一跳为45.45.45.5</p>
-</blockquote>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">R4#show ip route </span><br><span class="line"><span class="comment">//省略部分输出</span></span><br><span class="line">      <span class="number">5.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">24</span> is subnetted, <span class="number">1</span> subnets</span><br><span class="line">R        <span class="number">5.5</span><span class="number">.5</span><span class="number">.0</span> [<span class="number">120</span>/<span class="number">1</span>] via <span class="number">45.45</span><span class="number">.45</span><span class="number">.5</span>, <span class="number">00</span>:<span class="number">00</span>:<span class="number">11</span>, Ethernet0/<span class="number">1</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>查看R3的路由表</li>
-</ul>
-<blockquote>
-<p>R3本应从R4上学习到5.5.5.0/24的路由条目，此时的下一跳却为R6。</p>
-<p>分析：若R3从R4上学习5.5.5.0/24的路由，则跳数为2。由于在R6上进行了重分布，将OSPF重分布进RIP时指定了跳数为1，所以在相同协议条件下，优先选择cost值小的，因此R3会选择R6去往5.5.5.0/24网段</p>
-</blockquote>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">R3#show ip route </span><br><span class="line"><span class="comment">//省略部分输出</span></span><br><span class="line">      <span class="number">5.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">24</span> is subnetted, <span class="number">1</span> subnets</span><br><span class="line">R        <span class="number">5.5</span><span class="number">.5</span><span class="number">.0</span> [<span class="number">120</span>/<span class="number">1</span>] via <span class="number">36.36</span><span class="number">.36</span><span class="number">.6</span>, <span class="number">00</span>:<span class="number">00</span>:<span class="number">03</span>, Ethernet0/<span class="number">2</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>查看R2的路由表</li>
-</ul>
-<blockquote>
-<p>显示下一跳为R3，cost值为2</p>
-</blockquote>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">R2#show ip route</span><br><span class="line"><span class="comment">//省略部分输出</span></span><br><span class="line">      <span class="number">5.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">24</span> is subnetted, <span class="number">1</span> subnets</span><br><span class="line">R        <span class="number">5.5</span><span class="number">.5</span><span class="number">.0</span> [<span class="number">120</span>/<span class="number">2</span>] via <span class="number">23.23</span><span class="number">.23</span><span class="number">.3</span>, <span class="number">00</span>:<span class="number">00</span>:<span class="number">12</span>, Ethernet0/<span class="number">1</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>查看R1的路由表</li>
-</ul>
-<blockquote>
-<p>显示下一跳为R2：R2将RIP重分布进了OSPF中，未指定类型，则默认为O E2，传递过程中保持cost值为20</p>
-</blockquote>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">R1#show ip route </span><br><span class="line"><span class="comment">///省略部分输出///</span></span><br><span class="line">      <span class="number">5.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">24</span> is subnetted, <span class="number">1</span> subnets</span><br><span class="line">O E2     <span class="number">5.5</span><span class="number">.5</span><span class="number">.0</span> [<span class="number">110</span>/<span class="number">20</span>] via <span class="number">12.12</span><span class="number">.12</span><span class="number">.2</span>, <span class="number">00</span>:<span class="number">32</span>:<span class="number">42</span>, Ethernet0/<span class="number">0</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>查看R6路由表</li>
-</ul>
-<blockquote>
-<p>R6从R1上学习到5.5.5.0/24的路由条目</p>
-</blockquote>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">R6#show ip route </span><br><span class="line"><span class="comment">//省略部分输出</span></span><br><span class="line">      <span class="number">5.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">24</span> is subnetted, <span class="number">1</span> subnets</span><br><span class="line">O E2     <span class="number">5.5</span><span class="number">.5</span><span class="number">.0</span> [<span class="number">110</span>/<span class="number">20</span>] via <span class="number">16.16</span><span class="number">.16</span><span class="number">.1</span>, <span class="number">00</span>:<span class="number">32</span>:<span class="number">57</span>, Ethernet0/<span class="number">0</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p><strong>分析总结</strong>：R4从R5上学习到了5.5.5.0/24的路由条目，并将其通告给R3，R3此时若通过R4访问5.5.5.5/24，则开销值为2。R3再将自身的路由信息通告给R2和R6，则此时R2和R6到达5.5.5.5/24的开销值都为3，并且管理距离都为120。在R2上将RIP重分布进OSPF，此时R1通过R2学习到的去往5.5.5.0/24的路由的管理距离为110，开销为20。R6与R1建立了OSPF邻居关系，则R6将会从R1上再次学习到5.5.5.0/24的路由条目，此时R6通过两种路由协议学习到了到达同一目的的路由，则会比较管理距离，最后R6选择通过R1去往5.5.5.0/24网段，因为OSPF的管理距离为110，小于RIP的120，所以在R6的路由表上显示的到达5.5.5.0的路由类型为O E2。R6上又将OSPF重分布进了RIP中，并且指定了开销值为1，此时R3通过同种路由协议学习到了到达同一目的地址的路由，会比较开销，最终选择通过R6去往5.5.5.0/24，因为R6告诉R3去往该网段的开销为1。最终，导致了环路的形成。</p>
-</blockquote>
-<h3 id="4、问题解决"><a href="#4、问题解决" class="headerlink" title="4、问题解决"></a>4、问题解决</h3><ul>
-<li>【解决措施1】修改跳数——在R6上将OSPF重分布进RIP时将跳数设置为大于2</li>
-</ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R6(config)#router rip</span><br><span class="line">R6(config-router)#redistribute ospf 1 metric 3</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>查看R3的路由表，可知此时通过R4去往5.5.5.0/24网段</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0kVFv8.png"></p>
-<blockquote>
-<p>在R1上跟踪路由，问题解决</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0kV0xK.png"></p>
-<ul>
-<li>【解决措施2】使用分发列表过滤，在R3上将R6传过来的5.5.5.0/24的路由进行过滤</li>
-</ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R3(config)#access-list 1 deny 5.5.5.0 /24</span><br><span class="line">R3(config)#access-list 1 permit any </span><br><span class="line">R3(config)#router rip</span><br><span class="line">R3(config-router)#distribute-list 1 in e0/2</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>查看R3的路由表，可知此时通过R4去往5.5.5.0/24网段</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0ke8AJ.png"></p>
-<blockquote>
-<p>在R1上跟踪路由，问题解决</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0kerAH.png"></p>
-<ul>
-<li>【解决措施3】针对特定的通告者修改管理距离——把从R6学习到的5.5.5.0/24的路由的AD值改为大于120</li>
-</ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R3(config)#access-list 1 permit 5.5.5.0 /24</span><br><span class="line">R3(config)#router rip</span><br><span class="line"><span class="comment">//针对R6通告的并被ACL 1匹配到的路由，将其管理距离更改为130</span></span><br><span class="line">R3(config-router)#distance 130 36.36.36.6 0.0.0.0 1</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>查看R3的路由表，可知此时通过R4去往5.5.5.0/24网段</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0kmoqO.png"></p>
-<blockquote>
-<p>在R1上跟踪路由，问题解决</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0knSL8.png"></p>
-<ul>
-<li>【解决措施4】使用前缀列表匹配，并用分发列表过滤</li>
-</ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="comment">//使用前缀列表拒绝5.5.5.0/24</span></span><br><span class="line">R3(config)#ip prefix-list a deny 5.5.5.0/24</span><br><span class="line"><span class="comment">//前缀列表允许剩下的所有路由</span></span><br><span class="line">R3(config)#ip prefix-list a permit 0.0.0.0/0 le 32</span><br><span class="line">R3(config)#router rip</span><br><span class="line"><span class="comment">//使用分发列表调用前缀列表</span></span><br><span class="line">R3(config-router)#distribute-list prefix a in e0/2</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>查看R3的路由表，可知此时通过R4去往5.5.5.0/24网段</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0kK5Mq.png"></p>
-<blockquote>
-<p>在R1上跟踪路由，问题解决</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0kMmOP.png"></p>
-<ul>
-<li>【解决措施5】在R6的out方向调用分发列表</li>
-</ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R6(config)#access-list 1 deny 5.5.5.0 /24</span><br><span class="line">R6(config)#access-list 1 permit any    </span><br><span class="line">R6(config)#router rip</span><br><span class="line"><span class="comment">//将ospf重分布进RIP时，只有被ACL 1允许的才会进行重分布</span></span><br><span class="line">R6(config-router)#distribute-list 1 out ospf 1</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>查看R3的路由表，可知此时通过R4去往5.5.5.0/24网段</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0kQajI.png"></p>
-<blockquote>
-<p>在R1上跟踪路由，问题解决</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0kQhD0.png"></p>
-<ul>
-<li>【解决措施6】使用偏移列表（只针对距离矢量有意义）</li>
-</ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R6(config)#access-list 1 permit 5.5.5.0 /24</span><br><span class="line">R6(config)#router rip</span><br><span class="line"><span class="comment">//针对被ACL 1匹配到的路由，对其跳数进行偏移2，即此时R3从R6上学习到的5.5.5.0/24的路由的跳数为3</span></span><br><span class="line">R6(config-router)#offset-list 1 out 2 e0/1</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>查看R3的路由表，可知此时通过R4去往5.5.5.0/24网段</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0k15hF.png"></p>
-<blockquote>
-<p>在R1上跟踪路由，问题解决</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/27/0k3n3Q.png"></p>
-]]></content>
-      <categories>
-        <category>学习笔记</category>
-      </categories>
-      <tags>
-        <tag>路由协议</tag>
-        <tag>重分布</tag>
       </tags>
   </entry>
   <entry>
