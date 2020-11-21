@@ -1,137 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>ACL的运用</title>
-    <url>/2020/09/01/ACL%E7%9A%84%E8%BF%90%E7%94%A8/</url>
-    <content><![CDATA[<h3 id="1、实验目的"><a href="#1、实验目的" class="headerlink" title="1、实验目的"></a>1、实验目的</h3><p>1）掌握ACL的作用<br>2）理解标准和扩展ACL的区别<br>3）熟悉标准和扩展ACL的配置<br>4）掌握ACL的验证和查看命令<br>5）理解命名的ACL的作用与配置</p>
-<a id="more"></a>
-<h3 id="2、拓扑结构"><a href="#2、拓扑结构" class="headerlink" title="2、拓扑结构"></a>2、拓扑结构</h3><p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dz9FzR.png"></p>
-<h3 id="3、实验步骤"><a href="#3、实验步骤" class="headerlink" title="3、实验步骤"></a>3、实验步骤</h3><p><strong>（1）完成各路由器的基本配置，实现各直连设备之间可以互ping对方，主机和路由器接口的地址自己规划</strong></p>
-<blockquote>
-<p>两台PC及三台路由器的IP地址配置如拓扑图所示，此处不再将图贴出</p>
-</blockquote>
-<p><strong>（2）在R2上添加两个loopback接口，loopback1和loopback2，其中loopback1地址为2.2.2.2/24，loopback2地址为22.22.22.22/24</strong></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzCFAS.png"></p>
-<p><strong>（3）完成必要的配置实现全网可达</strong></p>
-<blockquote>
-<p>在路由器上运行路由协议，实现全网可达</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzCVpj.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzCecn.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzCKBV.png"></p>
-<p><strong>（4）使用标准ACL实现PC1不能访问PC2，并使用ping命令验证结果</strong></p>
-<blockquote>
-<p>标准ACL建议在离目标近的设备上配置，在R3上配置ACL拒绝来自主机172.16.1.1的流量，并在进接口方向调用，此时实现PC1不能访问PC2</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzCT3j.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzCHvn.png"></p>
-<p><strong>（5）使用标准ACL实现只允许PC2远程登录到路由器R2，并使用telnet命令验证结果</strong></p>
-<blockquote>
-<p>在R2上配置ACL，允许主机172.16.3.1的流量，默认隐含一条拒绝所有，即拒绝除PC2之外的流量。在vty中允许其他设备使用telnet远程登录，并在in方向调用ACL</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzPGa8.png"></p>
-<blockquote>
-<p>在PC1和PC2上进行测试，此时实现了只允许PC2远程登录到R2</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dziPJg.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dziVLq.png"></p>
-<p><strong>（6）使用标准ACL实现禁止loopback2所在网段的所有主机访问PC1，对loopback1所在网段主机的访问不做限制</strong></p>
-<blockquote>
-<p>在R1上配置ACL，允许loopback1网段，拒绝loopback2网段，然后在e0/1接口的in方向调用</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzizc9.png"></p>
-<blockquote>
-<p>此时实现了R2上的loopback1网段可以访问PC1，而loopback2网段不能</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzFtjs.png"></p>
-<p><strong>（7）使用命名ACL完整上述标准ACL的需求</strong></p>
-<ul>
-<li>实现PC1不能访问PC2</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzecvD.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzeoPP.png"></p>
-<ul>
-<li>实现只允许PC2远程登录到路由器R2</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dznifP.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dznAl8.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dznVOg.png"></p>
-<ul>
-<li>实现禁止loopback2所在网段的所有主机访问PC1，对loopback1所在网段主机的访问不做限制</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzuCB4.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzuPHJ.png"></p>
-<p><strong>（8）使用扩展ACL实现禁止PC1远程登录到R2，对其他访问不做限制</strong></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzu34I.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzu1UA.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzulEd.png"></p>
-<p><strong>（9）使用扩展ACL实现PC2可以telnet到路由器R1，但不能ping通路由器R1，分别使用ping和telnet验证结果</strong></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzuOqe.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzuLrD.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzuHxK.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzuqKO.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzu726.png"></p>
-<p><strong>（10）使用扩展ACL实现PC1可以pingPC2，但禁止PC2pingPC1，其他的访问不受限制，使用ping验证结果</strong></p>
-<blockquote>
-<p>ICMP</p>
-<ul>
-<li><p>echo request    –echo的请求包</p>
-</li>
-<li><p>echo reply         –echo的响应包</p>
-</li>
-</ul>
-<p>只有以上两种报文是正常的，那么此时的ping才是能通的</p>
-<p>PC1 ping PC2 正常</p>
-<ul>
-<li><p>PC1 给 PC2 发送的echo request是正常的（源是PC1，目标是PC2）</p>
-</li>
-<li><p>PC2给PC1发送的echo reply也是正常的（源是PC2，目标是PC1）</p>
-</li>
-</ul>
-<p>PC2 ping PC1 不正常</p>
-<ul>
-<li><p>PC2不能给PC1发送 echo request（源是PC2，目的是PC1）</p>
-</li>
-<li><p>PC2不能接收到来自PC1的echo  reply（源是PC1，目的是PC2）</p>
-</li>
-</ul>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzKOS0.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzKqWq.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzKbYn.png"></p>
-<p><strong>（11）使用命名ACL完成上述扩展ACL的需求</strong></p>
-<ul>
-<li>实现禁止PC1远程登录到R2，对其他访问不做限制</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzQCDS.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzQPHg.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzQ9u8.png"></p>
-<ul>
-<li>实现PC2可以telnet到路由器R1，但不能ping路由器R1，分别使用ping和telnet验证结果</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzQKDU.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzQuuT.png"></p>
-<ul>
-<li>实现PC1可以pingPC2，但禁止PC2pingPC1，其他的访问不受限制，使用ping验证结果</li>
-</ul>
-<p><span style="color:red">方法一：拒绝PC2向PC1发送icmp的echo-request报文</span></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzQWqS.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzQRr8.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzQ2Kf.png"></p>
-<p><span style="color:red">方法二：拒绝PC1向PC2发送icmp的echo-reply报文</span></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzl1L8.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzllsf.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzlQQP.png"></p>
-]]></content>
-      <categories>
-        <category>实验</category>
-      </categories>
-      <tags>
-        <tag>CCNA</tag>
-        <tag>ACL</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>DHCP</title>
     <url>/2020/11/15/DHCP/</url>
     <content><![CDATA[<h3 id="1、DHCP概述"><a href="#1、DHCP概述" class="headerlink" title="1、DHCP概述"></a>1、DHCP概述</h3><p>　　DHCP（Dynamic Host Configuration Protocol，动态主机配置协议）是一种帮助网络管理员管理及自动分配IP地址的网络协议。在不使用DHCP的情况下，管理员必须手动为每台终端配置IP地址、子网掩码、默认网关等IP配置。在大型网络中，这将是一项繁重的工作，尤其是在设备物理位置频繁更改的环境中。在企业网环境中，DHCP服务器通常是一台专用设备；然而在小型网络或是分支机构中，DHCP服务器往往由Cisco Catalyst交换机或Cisco路由器配置实现。</p>
@@ -263,6 +132,137 @@
       <tags>
         <tag>DHCP</tag>
         <tag>DHCP中继</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ACL的运用</title>
+    <url>/2020/09/01/ACL%E7%9A%84%E8%BF%90%E7%94%A8/</url>
+    <content><![CDATA[<h3 id="1、实验目的"><a href="#1、实验目的" class="headerlink" title="1、实验目的"></a>1、实验目的</h3><p>1）掌握ACL的作用<br>2）理解标准和扩展ACL的区别<br>3）熟悉标准和扩展ACL的配置<br>4）掌握ACL的验证和查看命令<br>5）理解命名的ACL的作用与配置</p>
+<a id="more"></a>
+<h3 id="2、拓扑结构"><a href="#2、拓扑结构" class="headerlink" title="2、拓扑结构"></a>2、拓扑结构</h3><p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dz9FzR.png"></p>
+<h3 id="3、实验步骤"><a href="#3、实验步骤" class="headerlink" title="3、实验步骤"></a>3、实验步骤</h3><p><strong>（1）完成各路由器的基本配置，实现各直连设备之间可以互ping对方，主机和路由器接口的地址自己规划</strong></p>
+<blockquote>
+<p>两台PC及三台路由器的IP地址配置如拓扑图所示，此处不再将图贴出</p>
+</blockquote>
+<p><strong>（2）在R2上添加两个loopback接口，loopback1和loopback2，其中loopback1地址为2.2.2.2/24，loopback2地址为22.22.22.22/24</strong></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzCFAS.png"></p>
+<p><strong>（3）完成必要的配置实现全网可达</strong></p>
+<blockquote>
+<p>在路由器上运行路由协议，实现全网可达</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzCVpj.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzCecn.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzCKBV.png"></p>
+<p><strong>（4）使用标准ACL实现PC1不能访问PC2，并使用ping命令验证结果</strong></p>
+<blockquote>
+<p>标准ACL建议在离目标近的设备上配置，在R3上配置ACL拒绝来自主机172.16.1.1的流量，并在进接口方向调用，此时实现PC1不能访问PC2</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzCT3j.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzCHvn.png"></p>
+<p><strong>（5）使用标准ACL实现只允许PC2远程登录到路由器R2，并使用telnet命令验证结果</strong></p>
+<blockquote>
+<p>在R2上配置ACL，允许主机172.16.3.1的流量，默认隐含一条拒绝所有，即拒绝除PC2之外的流量。在vty中允许其他设备使用telnet远程登录，并在in方向调用ACL</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzPGa8.png"></p>
+<blockquote>
+<p>在PC1和PC2上进行测试，此时实现了只允许PC2远程登录到R2</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dziPJg.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dziVLq.png"></p>
+<p><strong>（6）使用标准ACL实现禁止loopback2所在网段的所有主机访问PC1，对loopback1所在网段主机的访问不做限制</strong></p>
+<blockquote>
+<p>在R1上配置ACL，允许loopback1网段，拒绝loopback2网段，然后在e0/1接口的in方向调用</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzizc9.png"></p>
+<blockquote>
+<p>此时实现了R2上的loopback1网段可以访问PC1，而loopback2网段不能</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzFtjs.png"></p>
+<p><strong>（7）使用命名ACL完整上述标准ACL的需求</strong></p>
+<ul>
+<li>实现PC1不能访问PC2</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzecvD.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzeoPP.png"></p>
+<ul>
+<li>实现只允许PC2远程登录到路由器R2</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dznifP.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dznAl8.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dznVOg.png"></p>
+<ul>
+<li>实现禁止loopback2所在网段的所有主机访问PC1，对loopback1所在网段主机的访问不做限制</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzuCB4.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzuPHJ.png"></p>
+<p><strong>（8）使用扩展ACL实现禁止PC1远程登录到R2，对其他访问不做限制</strong></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzu34I.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzu1UA.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzulEd.png"></p>
+<p><strong>（9）使用扩展ACL实现PC2可以telnet到路由器R1，但不能ping通路由器R1，分别使用ping和telnet验证结果</strong></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzuOqe.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzuLrD.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzuHxK.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzuqKO.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzu726.png"></p>
+<p><strong>（10）使用扩展ACL实现PC1可以pingPC2，但禁止PC2pingPC1，其他的访问不受限制，使用ping验证结果</strong></p>
+<blockquote>
+<p>ICMP</p>
+<ul>
+<li><p>echo request    –echo的请求包</p>
+</li>
+<li><p>echo reply         –echo的响应包</p>
+</li>
+</ul>
+<p>只有以上两种报文是正常的，那么此时的ping才是能通的</p>
+<p>PC1 ping PC2 正常</p>
+<ul>
+<li><p>PC1 给 PC2 发送的echo request是正常的（源是PC1，目标是PC2）</p>
+</li>
+<li><p>PC2给PC1发送的echo reply也是正常的（源是PC2，目标是PC1）</p>
+</li>
+</ul>
+<p>PC2 ping PC1 不正常</p>
+<ul>
+<li><p>PC2不能给PC1发送 echo request（源是PC2，目的是PC1）</p>
+</li>
+<li><p>PC2不能接收到来自PC1的echo  reply（源是PC1，目的是PC2）</p>
+</li>
+</ul>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzKOS0.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzKqWq.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzKbYn.png"></p>
+<p><strong>（11）使用命名ACL完成上述扩展ACL的需求</strong></p>
+<ul>
+<li>实现禁止PC1远程登录到R2，对其他访问不做限制</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzQCDS.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzQPHg.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzQ9u8.png"></p>
+<ul>
+<li>实现PC2可以telnet到路由器R1，但不能ping路由器R1，分别使用ping和telnet验证结果</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzQKDU.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzQuuT.png"></p>
+<ul>
+<li>实现PC1可以pingPC2，但禁止PC2pingPC1，其他的访问不受限制，使用ping验证结果</li>
+</ul>
+<p><span style="color:red">方法一：拒绝PC2向PC1发送icmp的echo-request报文</span></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzQWqS.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzQRr8.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzQ2Kf.png"></p>
+<p><span style="color:red">方法二：拒绝PC1向PC2发送icmp的echo-reply报文</span></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzl1L8.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzllsf.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/09/01/dzlQQP.png"></p>
+]]></content>
+      <categories>
+        <category>实验</category>
+      </categories>
+      <tags>
+        <tag>CCNA</tag>
+        <tag>ACL</tag>
       </tags>
   </entry>
   <entry>
@@ -1034,6 +1034,77 @@
       </tags>
   </entry>
   <entry>
+    <title>STP的运用</title>
+    <url>/2020/08/31/STP%E7%9A%84%E8%BF%90%E7%94%A8/</url>
+    <content><![CDATA[<h4 id="1、实验目的"><a href="#1、实验目的" class="headerlink" title="1、实验目的"></a>1、实验目的</h4><p>1）理解STP的作用<br>2）熟悉STP的工作原理<br>3）掌握STP的查看命令</p>
+<a id="more"></a>
+
+<h4 id="2、拓扑结构"><a href="#2、拓扑结构" class="headerlink" title="2、拓扑结构"></a>2、拓扑结构</h4><p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djPbAe.png"></p>
+<h4 id="3、实验步骤"><a href="#3、实验步骤" class="headerlink" title="3、实验步骤"></a>3、实验步骤</h4><p><strong>（1）在相应的交换机上创建vlan10，并将连接PC1和PC2的交换端口都划分进该vlan中</strong></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djiiNQ.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djiVcq.png"></p>
+<p><strong>（2）为主机设置合适的IP地址，IP地址自定，完成必要的配置实现主机间的通信</strong></p>
+<ul>
+<li>为两台PC配置IP地址（注意关闭路由功能，因为实验中的PC使用的是路由器的镜像）</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djiUHO.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djiDCd.png"></p>
+<ul>
+<li>将交换机之间的端口封装802.1Q，并配置成trunk</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djFmRA.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djFKMt.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djFYGj.png"></p>
+<ul>
+<li>测试PC的连通性</li>
+</ul>
+<blockquote>
+<p>由于PC1和PC2属于同一vlan，所以通过上述配置即可相互ping通</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djFxw8.png"></p>
+<p><strong>（3）查看各交换机的STP信息</strong></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djksnP.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djk678.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djkgAS.png"></p>
+<p><strong>（4）将SW1设置为vlan10的根桥，使用相关命令验证和查看各交换机上根桥的变化</strong></p>
+<ul>
+<li>设置SW1为vlan10的根桥</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djAmut.png"></p>
+<ul>
+<li>使用<span style="color:red">show spanning-tree</span>命令查看交换机状态</li>
+</ul>
+<blockquote>
+<p>由于设置SW1为vlan10的根桥，由下图可知，优先级默认降低2*4096，即为24576，加上vlan-id的10，所以优先级为24586</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djZVgJ.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djZQUK.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djZGgH.png"></p>
+<p><strong>（5）测试正常链路出现故障对主机通信的影响</strong></p>
+<ul>
+<li>将SW2的e0/1接口shutdown</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djZcKs.png"></p>
+<ul>
+<li>PC1仍然可以ping通PC2</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djZ2bq.png"></p>
+<p><strong>（6）先断开PC1与交换机的连接，然后恢复PC1与交换机的连接，观察主机重新接入交换机要经历多久才能够进行数据转发</strong></p>
+<blockquote>
+<p>由下图可知，PC1重新接入交换机需要经历30s（由于关闭的是SW2上的端口，可以直接进入listening状态（无需经历20s的blocking状态），再经历15s进入learning状态，最后经历15s进入forwarding状态）</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djero6.png"></p>
+]]></content>
+      <categories>
+        <category>实验</category>
+      </categories>
+      <tags>
+        <tag>CCNA</tag>
+        <tag>交换</tag>
+        <tag>STP</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>RIP的应用</title>
     <url>/2020/08/27/RIP%E7%9A%84%E5%BA%94%E7%94%A8/</url>
     <content><![CDATA[<h4 id="1、-实验目的"><a href="#1、-实验目的" class="headerlink" title="1、 实验目的"></a>1、 实验目的</h4><ol>
@@ -1371,79 +1442,8 @@
         <category>学习笔记</category>
       </categories>
       <tags>
+        <tag>交换</tag>
         <tag>SVI</tag>
-        <tag>交换</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>STP的运用</title>
-    <url>/2020/08/31/STP%E7%9A%84%E8%BF%90%E7%94%A8/</url>
-    <content><![CDATA[<h4 id="1、实验目的"><a href="#1、实验目的" class="headerlink" title="1、实验目的"></a>1、实验目的</h4><p>1）理解STP的作用<br>2）熟悉STP的工作原理<br>3）掌握STP的查看命令</p>
-<a id="more"></a>
-
-<h4 id="2、拓扑结构"><a href="#2、拓扑结构" class="headerlink" title="2、拓扑结构"></a>2、拓扑结构</h4><p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djPbAe.png"></p>
-<h4 id="3、实验步骤"><a href="#3、实验步骤" class="headerlink" title="3、实验步骤"></a>3、实验步骤</h4><p><strong>（1）在相应的交换机上创建vlan10，并将连接PC1和PC2的交换端口都划分进该vlan中</strong></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djiiNQ.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djiVcq.png"></p>
-<p><strong>（2）为主机设置合适的IP地址，IP地址自定，完成必要的配置实现主机间的通信</strong></p>
-<ul>
-<li>为两台PC配置IP地址（注意关闭路由功能，因为实验中的PC使用的是路由器的镜像）</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djiUHO.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djiDCd.png"></p>
-<ul>
-<li>将交换机之间的端口封装802.1Q，并配置成trunk</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djFmRA.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djFKMt.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djFYGj.png"></p>
-<ul>
-<li>测试PC的连通性</li>
-</ul>
-<blockquote>
-<p>由于PC1和PC2属于同一vlan，所以通过上述配置即可相互ping通</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djFxw8.png"></p>
-<p><strong>（3）查看各交换机的STP信息</strong></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djksnP.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djk678.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djkgAS.png"></p>
-<p><strong>（4）将SW1设置为vlan10的根桥，使用相关命令验证和查看各交换机上根桥的变化</strong></p>
-<ul>
-<li>设置SW1为vlan10的根桥</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djAmut.png"></p>
-<ul>
-<li>使用<span style="color:red">show spanning-tree</span>命令查看交换机状态</li>
-</ul>
-<blockquote>
-<p>由于设置SW1为vlan10的根桥，由下图可知，优先级默认降低2*4096，即为24576，加上vlan-id的10，所以优先级为24586</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djZVgJ.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djZQUK.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djZGgH.png"></p>
-<p><strong>（5）测试正常链路出现故障对主机通信的影响</strong></p>
-<ul>
-<li>将SW2的e0/1接口shutdown</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djZcKs.png"></p>
-<ul>
-<li>PC1仍然可以ping通PC2</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djZ2bq.png"></p>
-<p><strong>（6）先断开PC1与交换机的连接，然后恢复PC1与交换机的连接，观察主机重新接入交换机要经历多久才能够进行数据转发</strong></p>
-<blockquote>
-<p>由下图可知，PC1重新接入交换机需要经历30s（由于关闭的是SW2上的端口，可以直接进入listening状态（无需经历20s的blocking状态），再经历15s进入learning状态，最后经历15s进入forwarding状态）</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/31/djero6.png"></p>
-]]></content>
-      <categories>
-        <category>实验</category>
-      </categories>
-      <tags>
-        <tag>CCNA</tag>
-        <tag>STP</tag>
-        <tag>交换</tag>
       </tags>
   </entry>
   <entry>
@@ -1868,93 +1868,6 @@
       </tags>
   </entry>
   <entry>
-    <title>单臂路由运用</title>
-    <url>/2020/08/30/%E5%8D%95%E8%87%82%E8%B7%AF%E7%94%B1%E8%BF%90%E7%94%A8/</url>
-    <content><![CDATA[<h4 id="1、实验目的"><a href="#1、实验目的" class="headerlink" title="1、实验目的"></a>1、实验目的</h4><p>1）掌握交换机上VLAN的创建和划分<br>2）掌握trunk的作用<br>3）掌握VTP的作用与配置<br>4）掌握单臂路由原理与配置<br>5）理解trunk链路上的802.1Q标记的作用</p>
-<a id="more"></a>
-<h4 id="2、拓扑结构"><a href="#2、拓扑结构" class="headerlink" title="2、拓扑结构"></a>2、拓扑结构</h4><p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqOjXR.png"></p>
-<h4 id="3、实验步骤"><a href="#3、实验步骤" class="headerlink" title="3、实验步骤"></a>3、实验步骤</h4><p><strong>（1）在SW1上创建两个vlan，vlan10和vlan20，并将vlan10命名为sales，将vlan20命名为engineers</strong></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqXEjA.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqXeBt.png"></p>
-<p><strong>（2）完成必要的配置，实现两交换机的vlan数据库同步，并使用相关命令验证和查看vlan数据库的信息</strong></p>
-<blockquote>
-<p>要实现两交换机的vlan数据库同步，需要进行vtp的配置</p>
-</blockquote>
-<ul>
-<li>将两交换机相连的端口设置为trunk</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqXJun.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqj8PO.png"></p>
-<ul>
-<li>指定vtp的域和密码，并指定SW1的vtp模式为server，SW2的vtp模式为client</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqjyRg.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqvFOA.png"></p>
-<ul>
-<li>在SW2上查看vlna信息，此前并未在SW2上创建vlan，由此可知两交换机之间实现了vlan数据库的同步</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqv6k6.png"></p>
-<ul>
-<li>尝试在SW2上创建一个vlan，日志提示在vtp的模式为client的条件下不允许创建vlan</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqvRpD.png"></p>
-<ul>
-<li>在SW1上查看vtp的状态信息，从下图可知SW1的vtp模式为server（默认），已存在的vlan数量为7，修订版本号为8</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqx9A0.png"></p>
-<p><strong>（3）将连接PC1和PC3的交换端口划分进vlan10，将连接PC2的交换端口划分进vlan20中，并为各PC配置合适的IP地址和网关</strong></p>
-<ul>
-<li>依题意将交换机上的端口划分进对应的vlan</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqxYDA.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqxUEt.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqxd4f.png"></p>
-<ul>
-<li>由于各PC为使用路由器镜像模拟，需在PC上关闭路由功能。按下图所示为各PC配置IP地址和网关</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqxIv4.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqxHbR.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqxLUx.png"></p>
-<p><strong>（4）使用show vlan brief查看各交换机的vlan信息</strong></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqzFat.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqzEPf.png"></p>
-<p><strong>（5）测试各主机之间的连通性</strong></p>
-<blockquote>
-<p>PC1和PC3之间可以相互ping通（两PC属于同一vlan，无需经过三层设备）</p>
-<p>PC1和PC2之间无法通信（两PC属于不同vlan，需要经过三层设备，此时还未在路由器上进行相应的配置）</p>
-</blockquote>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqzlaq.png"></p>
-<p><strong>（6）在交换机和路由器上完成必要的配置，实现各主机间可以互相通信</strong></p>
-<ul>
-<li>将SW1上连路由器的端口配置成trunk</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqzTW8.png">、</p>
-<ul>
-<li><p>在R1上进行单臂路由的配置</p>
-<blockquote>
-<p>单臂路由是指在路由器的一个接口上通过配置子接口(或”逻辑接口”，并不真实存在)的方式，实现原来相互隔离的不同vlan之间的互联互通</p>
-<p>值得注意的是这些逻辑子接口不能被单独的开启或关闭，即当物理接口被开启或关闭时，所有的该物理接口的子接口也将对应的被开启或关闭</p>
-<p>由于单臂路由存在瓶颈和单点故障的问题，因此必须限制主机/vlan的数量。此时可以通过SVI实现不同vlan间的通信（后续会进行介绍）</p>
-</blockquote>
-</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqzHSS.png"></p>
-<ul>
-<li>测试各主机之间的连通性，如下图所示，三台PC之间可以互相ping通</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqzbQg.png"></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqzLLj.png"></p>
-]]></content>
-      <categories>
-        <category>实验</category>
-      </categories>
-      <tags>
-        <tag>CCNA</tag>
-        <tag>单臂路由</tag>
-        <tag>vtp</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>在交换网络中部署EtherChannel技术</title>
     <url>/2020/09/05/%E5%9C%A8%E4%BA%A4%E6%8D%A2%E7%BD%91%E7%BB%9C%E4%B8%AD%E9%83%A8%E7%BD%B2EtherChannel%E6%8A%80%E6%9C%AF/</url>
     <content><![CDATA[<p>　　在有些网络环境中，用户与资源之间的距离也许非常远，交换机与交换机之间或交换机与服务器之间的链路可能会变得非常阻塞。虽然通过线路改造可以增加这些链路的带宽，但并不是所有的链路都具备带宽升级的条件。因此，在以最大化节省现有投资为目的的前提下，EtherChannel技术应运而生。EtherChannel技术可以将多条物理链路捆绑成一条逻辑链路来解决流量拥塞的问题，在提升带宽的同时，也实现了冗余性。</p>
@@ -2129,6 +2042,93 @@
       <tags>
         <tag>交换</tag>
         <tag>EtherChannel</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>单臂路由运用</title>
+    <url>/2020/08/30/%E5%8D%95%E8%87%82%E8%B7%AF%E7%94%B1%E8%BF%90%E7%94%A8/</url>
+    <content><![CDATA[<h4 id="1、实验目的"><a href="#1、实验目的" class="headerlink" title="1、实验目的"></a>1、实验目的</h4><p>1）掌握交换机上VLAN的创建和划分<br>2）掌握trunk的作用<br>3）掌握VTP的作用与配置<br>4）掌握单臂路由原理与配置<br>5）理解trunk链路上的802.1Q标记的作用</p>
+<a id="more"></a>
+<h4 id="2、拓扑结构"><a href="#2、拓扑结构" class="headerlink" title="2、拓扑结构"></a>2、拓扑结构</h4><p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqOjXR.png"></p>
+<h4 id="3、实验步骤"><a href="#3、实验步骤" class="headerlink" title="3、实验步骤"></a>3、实验步骤</h4><p><strong>（1）在SW1上创建两个vlan，vlan10和vlan20，并将vlan10命名为sales，将vlan20命名为engineers</strong></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqXEjA.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqXeBt.png"></p>
+<p><strong>（2）完成必要的配置，实现两交换机的vlan数据库同步，并使用相关命令验证和查看vlan数据库的信息</strong></p>
+<blockquote>
+<p>要实现两交换机的vlan数据库同步，需要进行vtp的配置</p>
+</blockquote>
+<ul>
+<li>将两交换机相连的端口设置为trunk</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqXJun.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqj8PO.png"></p>
+<ul>
+<li>指定vtp的域和密码，并指定SW1的vtp模式为server，SW2的vtp模式为client</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqjyRg.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqvFOA.png"></p>
+<ul>
+<li>在SW2上查看vlna信息，此前并未在SW2上创建vlan，由此可知两交换机之间实现了vlan数据库的同步</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqv6k6.png"></p>
+<ul>
+<li>尝试在SW2上创建一个vlan，日志提示在vtp的模式为client的条件下不允许创建vlan</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqvRpD.png"></p>
+<ul>
+<li>在SW1上查看vtp的状态信息，从下图可知SW1的vtp模式为server（默认），已存在的vlan数量为7，修订版本号为8</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqx9A0.png"></p>
+<p><strong>（3）将连接PC1和PC3的交换端口划分进vlan10，将连接PC2的交换端口划分进vlan20中，并为各PC配置合适的IP地址和网关</strong></p>
+<ul>
+<li>依题意将交换机上的端口划分进对应的vlan</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqxYDA.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqxUEt.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqxd4f.png"></p>
+<ul>
+<li>由于各PC为使用路由器镜像模拟，需在PC上关闭路由功能。按下图所示为各PC配置IP地址和网关</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqxIv4.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqxHbR.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqxLUx.png"></p>
+<p><strong>（4）使用show vlan brief查看各交换机的vlan信息</strong></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqzFat.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqzEPf.png"></p>
+<p><strong>（5）测试各主机之间的连通性</strong></p>
+<blockquote>
+<p>PC1和PC3之间可以相互ping通（两PC属于同一vlan，无需经过三层设备）</p>
+<p>PC1和PC2之间无法通信（两PC属于不同vlan，需要经过三层设备，此时还未在路由器上进行相应的配置）</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqzlaq.png"></p>
+<p><strong>（6）在交换机和路由器上完成必要的配置，实现各主机间可以互相通信</strong></p>
+<ul>
+<li>将SW1上连路由器的端口配置成trunk</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqzTW8.png">、</p>
+<ul>
+<li><p>在R1上进行单臂路由的配置</p>
+<blockquote>
+<p>单臂路由是指在路由器的一个接口上通过配置子接口(或”逻辑接口”，并不真实存在)的方式，实现原来相互隔离的不同vlan之间的互联互通</p>
+<p>值得注意的是这些逻辑子接口不能被单独的开启或关闭，即当物理接口被开启或关闭时，所有的该物理接口的子接口也将对应的被开启或关闭</p>
+<p>由于单臂路由存在瓶颈和单点故障的问题，因此必须限制主机/vlan的数量。此时可以通过SVI实现不同vlan间的通信（后续会进行介绍）</p>
+</blockquote>
+</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqzHSS.png"></p>
+<ul>
+<li>测试各主机之间的连通性，如下图所示，三台PC之间可以互相ping通</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqzbQg.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s1.ax1x.com/2020/08/30/dqzLLj.png"></p>
+]]></content>
+      <categories>
+        <category>实验</category>
+      </categories>
+      <tags>
+        <tag>CCNA</tag>
+        <tag>单臂路由</tag>
+        <tag>vtp</tag>
       </tags>
   </entry>
   <entry>
@@ -2851,227 +2851,278 @@
       </tags>
   </entry>
   <entry>
-    <title>OSPF基本原理</title>
-    <url>/2020/11/15/OSPF%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/</url>
-    <content><![CDATA[<h3 id="1、概述"><a href="#1、概述" class="headerlink" title="1、概述　　"></a>1、概述　　</h3><p>　　开放式最短路径优先（Open Shortest Path First，OSPF）协议是由Internet工程任务组（Internet Engineering Task Force，IETF）开发的路由选择协议，用来替代存在一些问题的RIP协议。现在，OSPF协议是IETF组织建议使用的内部网关协议（IGP）。OSPF使用Dijkstra算法来计算最短路径树。像所有的链路状态协议一样，OSPF协议和距离矢量协议相比，一个主要的改善在于它的快速收敛，这使得OSPF协议可以支持更大型的网络，并且不容易受到有害路由选择信息的影响。OSPF协议的其他一些特性有：</p>
+    <title>EIGRP基本原理与实现</title>
+    <url>/2020/11/21/EIGRP%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E7%8E%B0/</url>
+    <content><![CDATA[<h3 id="1、EIGRP概述"><a href="#1、EIGRP概述" class="headerlink" title="1、EIGRP概述"></a>1、EIGRP概述</h3><p>　　增强型内部网关路由选择协议（Enhanced Interior Gateway Routing Protocol，EIGRP）是Cisco内部网关路由选择协议（Cisco Interior Gateway Routing Protocol，IGRP）的增强版。EIGRP是Cisco公司的私有协议（2013年已经公有化）。EIGRP结合了链路状态和距离矢量型路由选择协议，采用扩散更新算法（DUAL）来实现快速收敛，可以不发送定期的路由更新信息以减少带宽的占用。EIGRP协议的一个主要特性是它不仅可以进行IP协议的路由选择，而且可以进行IPX协议和AppleTalk协议的路由选择。</p>
+<p>　　EIGRP特点：</p>
 <ul>
-<li>使用了区域的概念，这样可以有效地减少路由选择协议对路由器的CPU和内存的占用；划分区域还可以降低路由选择协议的通信量，这使构建一个层次化的网络拓扑成为可能；</li>
-<li>完全无类别地处理地址问题，排除了不连续子网这样的有类路由选择协议的问题；</li>
-<li>支持无类别路由表查询、VLAM和用来进行有效地址管理的超网技术；</li>
-<li>支持无大小限制的、任意的度量值；</li>
-<li>支持使用多条路径的效率更高的等价负载均衡；</li>
-<li>使用保留的组播地址来减少对不宣告OSPF的设备的影响；</li>
-<li>使用可以跟踪外部路由的路由标记</li>
+<li>早期为思科私有</li>
+<li>属于距离矢量协议</li>
+<li>采用组播和单播更新</li>
+<li>属于无类路由协议</li>
+<li>快速收敛</li>
+<li>部分更新：触发式的增量更新</li>
+<li>支持等价和不等价均衡</li>
+<li>基于IP 88发送</li>
 </ul>
-<h3 id="2、OSPF的相关术语"><a href="#2、OSPF的相关术语" class="headerlink" title="2、OSPF的相关术语"></a>2、OSPF的相关术语</h3><ul>
-<li><p><input disabled="" type="checkbox">  链路：链路就是一个网络或者一个被指定给任一给定网络的路由器接口。当一个接口被添加到OSPF进程时，它就被OSPF认定是一个链路。这个链路或接口都将有一个与它关联的状态信息（up或down），以及一个或多个IP地址</p>
+<h3 id="2、EIGRP的主要部件"><a href="#2、EIGRP的主要部件" class="headerlink" title="2、EIGRP的主要部件"></a>2、EIGRP的主要部件</h3><p>　　EIGRP协议包含以下4个部件</p>
+<ul>
+<li>依赖于协议的模块</li>
+<li>可靠传输协议（RTP）</li>
+<li>邻居发现和恢复</li>
+<li>扩散更新算法（DUAL）</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D1gvBd.png"></p>
+<h4 id="2-1、依赖于协议的模块（Protocol-Dependent-Modules）"><a href="#2-1、依赖于协议的模块（Protocol-Dependent-Modules）" class="headerlink" title="2.1、依赖于协议的模块（Protocol-Dependent Modules）"></a>2.1、依赖于协议的模块（Protocol-Dependent Modules）</h4><p>　　EIGRP协议实现了IP协议、IPX协议和AppleTalk协议的模块，它可以担负起某一特定协议的路由选择任务。例如，IPX EIGRP模块可以负责在IPX网络上与其他IPX EIGRP进程进行路由信息交换，并且将这些信息传递给DUAL。另外，IPX模块也可以接收和发送SAP信息。如上图所示，每个单独模块的通信量被封装在它们各自的网络层协议中；例如，对于IPX协议的EIGRP通过IPX协议数据包传输。</p>
+<p>　　EIGRP协议在很多情况下和其他路由选择协议自动进行路由重新分配：</p>
+<ul>
+<li>IPX EIGRP将自动地和IPX RIP协议、NLSP协议进行路由重新分配；</li>
+<li>AppleTalk EIGRP将自动地和AppleTalk RTMP协议进行路由重新分配；</li>
+<li>如果IGRP进程和EIGRP进程在同一个自主系统内，那么IP EIGRP也将自动地和IGRP进行路由重新分配</li>
+</ul>
+<h4 id="2-2、可靠传输协议"><a href="#2-2、可靠传输协议" class="headerlink" title="2.2、可靠传输协议"></a>2.2、可靠传输协议</h4><p>　　可靠传输协议（Reliable Transport Protocol，RTP）用来管理EIGRP数据包的发送和接收。可靠的发送是指发送是有保障的而且数据包是有序的发送的。有保障的发送是依赖Cisco公司私有的算法来实现的，这个私有的算法被称为”可靠组播（reliable multicast）”，它使用保留的D类地址224.0.0.10。每一个接收可靠组播数据包的邻居都会发送一个单播的确认数据包。</p>
+<p>　　有序的发送是通过在每个数据包中包含两个序列号来实现的。每一个数据包都包含一个由发送该数据包的路由器分配的序列号，这个序列号在每台路由器发送一个新的数据包时递增1。另外，发送路由器会把最近从目的路由器收到的数据包的序列号放在该数据包中。在一些实例中，RTP也可以使用不可靠的发送，不需要确认，而且在使用不可靠发送的EIGRP数据包中不包含序列号。</p>
+<p>　　EIGRP协议使用多种类型的数据包，所有这些数据包都通过IP头部的协议号88来表示</p>
+<ul>
+<li><p>Hello（Hello）——用于邻居发现和恢复进程。Hello数据包使用组播方式发送，而且使用不可靠的发送方式。</p>
 </li>
-<li><p><input disabled="" type="checkbox">  路由器ID：路由器ID（RID）是一个用来标识此路由器的IP地址。该地址可以通过手动指定（必须唯一）；若未指定，则选择路由器上所有活跃的环回接口中最大的IPv4地址；若不存在环回接口，则选择所有活跃的物理接口中最大的IPv4地址</p>
+<li><p>确认（Acknowledgments，ACK）——是不包含数据的Hello数据包。Update、Query、Reply需要通过ACK报文进行确认。ACK总是使用单播方式和不可靠的发送方式。</p>
 </li>
-<li><p><input disabled="" type="checkbox">  邻居：邻居可以是两个或更多的路由器，这些路由器的某个接口是连接在同一个公共网络上，比如两个通过点到点串行链路连接在一起的路由器</p>
+<li><p>更新（Update）——用于传递路由更新信息。EIGRP协议的更新数据包只在必要的时候传递必要的信息，而且仅仅传递给需要路由更新的路由器。当只有某一指定的路由器需要路由更新时，更新数据包就是单播发送的；当有多台路由器需要路由更新时，更新数据包就是组播发送的。更新数据包总是使用可靠的发送方式。</p>
 </li>
-<li><p><input disabled="" type="checkbox">  邻接：邻接是指两个OSPF路由器之间的关系，这两个路由器之间允许直接交换路由更新数据。注意，并不是所有的邻居都可以建立邻接关系，这将取决于网络类型和路由器配置</p>
+<li><p>查询（Query）和答复（Reply）——是DUAL有限状态机（DUAL finite state machine）用来管理它的扩散计算的。查询消息可以使用组播方式或者单播方式发送，而回复消息总是单播方式发送的。查询和回复数据包都使用可靠的发送方式。</p>
 </li>
-<li><p><input disabled="" type="checkbox">  Hello协议：OSPF的Hello协议能够动态地发现邻居，并维护邻居关系。在两台路由器成为邻居之前，需要通告这两台路由器必须相互认可的几个参数。Hello数据包确保了邻居路由器之间的双向通信，并且和链路状态通告（LSA）共同用于建立并维护拓扑数据库</p>
-</li>
-<li><p><input disabled="" type="checkbox">  邻居关系数据库：邻居关系数据库是一个OSPF路由器的列表，这些路由器的Hello数据包相互可见。每个路由器上的邻居关系数据库中管理着各种详细的资料，包括路由器ID和状态等信息</p>
-</li>
-<li><p><input disabled="" type="checkbox">  拓扑数据库：拓扑数据库中包含有来自同一区域接收的所有链路状态通告数据包的信息。路由器使用来自拓扑数据库中的信息，作为Dijkstra算法的输入，并通过该算法为每个网络计算出最短路径</p>
-</li>
-<li><p><input disabled="" type="checkbox">  链路状态通告（LSA）：LSA中包含着OSPF路由器共享的链路状态和路由选择信息</p>
-</li>
-<li><p><input disabled="" type="checkbox">  指定路由器和备用指定路由器：当OSPF路由器被连接到同一多路访问网络时，都需要选择一个指定路由器（DR）和备用指定路由器（BDR）。DR负责将路由选择信息分发到广播网络或链路中其他路由器上，或收集其他路由器的路由选择信息。如果DR失效了，那么BDR将成为新的DR。DR和BDR的选择规则如下：</p>
-</li>
-<li><p>先比较优先级，优先级大的优先；默认情况下以太网接口的优先级为1，串行接口的优先级为0（优先级为0不参与DR/BDR的选举）</p>
-</li>
-<li><p>若优先级相同，则继续比较RID，RID越大越优先</p>
-</li>
+</ul>
+<p>　　如果任何数据包通过可靠的方式组播出去，而没有从邻居那里收到一个ACK数据包，那么这个数据包就会以单播方式被重新发送给那个没有响应的邻居。如果经过16次这样的单播重传还没有收到一个ACK数据包的话，那么这个邻居就会被宣告为无效。</p>
+<h4 id="2-3、邻居发现和恢复"><a href="#2-3、邻居发现和恢复" class="headerlink" title="2.3、邻居发现和恢复"></a>2.3、邻居发现和恢复</h4><p>　　EIGRP协议的更新消息是非周期的，因此有一个发现和跟踪邻居的方法是非常重要的。 在大多数网络中，Hello数据包是以组播方式每5s发送一次的，其中减掉一个很小的随机时间差用来防止更新的同步。Hello数据包无需进行确认。缺省的Hello数据包的时间间隔可以在每个接口上使用命令<code>ip hello-interval eigrp</code>进行更改。</p>
+<p>　　当一台路由器从它的邻居路由器收到一个Hello数据包时，这个数据包将包含一个抑制时间（hold time）。这个抑制时间会告诉本路由器，在它收到后续的Hello数据包之前等待的最长时间。如果抑制计时器超时了，路由器还没有收到Hello数据包，那么将宣告这个邻居不可达，并且通知DUAL这个邻居丢失了。在缺省情况下，抑制时间是Hello时间间隔的3倍。也就是说，对于低速的非广播多路访问（NBMA）网络来说是180s，对于其他所有网络来说是15s。这个缺省值可以通过在每个接口上配置<code>ip hold-time eigrp</code>来更改。EIGRP协议具有在15s以内检测邻居丢失的能力，对照RIP协议的180s和IGRP协议的270s所花费的时间，显然这是一个对EIGRP的快速收敛起很大作用的因素。</p>
+<p>　　每一个邻居的相关信息都记录在一个邻居表中。邻居表记录了邻居路由器的IP地址和收到邻居Hello数据包的接口。</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D12nNq.png"></p>
+<blockquote>
+<p>H：记录了这台路由器所学到的邻居的顺序号</p>
+<p>Address：邻居路由器的IP地址</p>
+<p>Interface：收到邻居Hello数据包的接口</p>
+<p>Hold：定义了等待没有从邻居那里接收到任何包的最大时间，当接收到新的包以后，Hold复位（在10~15s之间循环）</p>
+<p>Uptime：邻居关系建立时间，即邻居第一次被添加到邻居表后到现在所经过的时间</p>
+<p>SRTT（Smooth Round-Trip Time）：用于衡量路由器发送EIGRP数据包到邻居和从邻居那里接收到该数据包的确认所花费的平均时间</p>
+<p>RTO：重传超时时间，指在一个组播方式的数据包发送失败后，路由器等待一个单播方式发送的数据包的确认时间</p>
+<p>Q：队列计数。如果一个EIGRP的更新、查询或答复数据包被发送出去，那么这个数据包的一个拷贝就会放在一个重传队列里排队。如果重传超时了还没有收到确认数据包，那么重传队列中数据包的另一个拷贝将被再次发送出去。队列计数就是标识在这个重传队列中等待发送的数据包数量的。（在运行正常的环境下该值应为0，如果值大于0则说明发生了拥塞）</p>
+<p>Seq：序列号。可靠传输协议RTP跟踪这些序列号，以确保来自邻居的数据包不是无序的</p>
+</blockquote>
+<h4 id="2-4、扩散更新算法"><a href="#2-4、扩散更新算法" class="headerlink" title="2.4、扩散更新算法"></a>2.4、扩散更新算法</h4><p>　　扩散更新算法（Diffusing Update Algorithm，DUAL）是一个收敛算法，它代替了用于其他距离向量协议使用的Bellman-Ford或Ford-Fulkerson算法。</p>
+<p>　　<span style="color:red">DUAL的术语：</span></p>
+<ul>
+<li>邻接（adjacency）：邻接是指两个互相交换路由信息邻居之间形成的一条逻辑的关联关系。一旦邻接关系成功地建立，路由器就可以从它们的邻居那里接受路由更新消息了。对于每一条路由，路由器都将会基于它邻居通告的距离和到它的邻居的链路代价计算出一个距离。</li>
+<li>通告距离（Advertised Distance，AD）：邻居路由器到达目的地的距离。</li>
+<li>可行距离（Feasible Distance，FD）：到达每一个目的地的最小度量将作为该目的网络的可行距离。</li>
+<li>可行性条件（Feasibility Condition，FC）：本地路由器的一个邻居路由器所通告的到达一个目的网络的距离是否小于本地路由器到达相同目的网络的可行距离——FD1＞AD2</li>
+<li>可行后继路由器（Feasible Successor，FS）：如果本地路由器的邻居路由器所通告的到达目的网络的距离满足了FC，那么这个邻居就会成为该目的网络的一个可行后继路由器。</li>
+<li>后继路由器（Successor）：对于在拓扑结构表中列出的每一个目的网络，将选用拥有最小度量值的路由并放置到路由表中。通告这条路由的邻居就成为一个后继路由器，或者是到达目的网络的数据包的下一跳路由器。</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">-----不满足FD1&gt;AD2的条件-----</span><br><span class="line">P <span class="number">4.4</span><span class="number">.4</span><span class="number">.0</span>/<span class="number">24</span>, <span class="number">1</span> successors, FD is <span class="number">409600</span>, serno <span class="number">9</span></span><br><span class="line">        via <span class="number">192.168</span><span class="number">.34</span><span class="number">.4</span> (<span class="number">409600</span>/<span class="number">128256</span>), Ethernet0/<span class="number">0</span></span><br><span class="line">        via <span class="number">192.168</span><span class="number">.23</span><span class="number">.2</span> (<span class="number">2809856</span>/<span class="number">2297856</span>), Serial1/<span class="number">1</span></span><br><span class="line">-----满足FD1&gt;AD2的条件-----</span><br><span class="line">P <span class="number">4.4</span><span class="number">.4</span><span class="number">.0</span>/<span class="number">24</span>, <span class="number">1</span> successors, FD is <span class="number">2297856</span></span><br><span class="line">        via <span class="number">192.168</span><span class="number">.24</span><span class="number">.4</span> (<span class="number">2297856</span>/<span class="number">128256</span>), Serial1/<span class="number">2</span></span><br><span class="line">        via <span class="number">192.168</span><span class="number">.23</span><span class="number">.3</span> (<span class="number">2323456</span>/<span class="number">409600</span>), Serial1/<span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>　　<span style="color:red">DUAL有限状态机</span></p>
+<p>　　当一个EIGRP的路由器不执行扩散计算时，每一条路由都处于被动状态。每一条路由左边的关键字就是用来指出路由的被动状态的。</p>
+<p>　　在产生输入事件的任何时候，路由器都会重新评估一条路由的可行后继路由器的列表。一个输入事件可以是：</p>
+<ul>
+<li>直连链路的代价发生变化</li>
+<li>直连链路的状态（up或down）发生变化</li>
+<li>收到一个更新数据包</li>
+<li>收到一个查询数据包</li>
+<li>收到一个答复数据包</li>
+</ul>
+<p>　　路由器重新评估的第一步是在本地路由器上执行一个本地计算，也就是对于所有的可行后继路由器，重新计算到达目的地的距离。可能的结果有以下几种：</p>
+<ul>
+<li>如果拥有最低的度量距离的可行后继路由器和已经存在的后继路由器不同，那么可行后继路由器将成为后继路由器</li>
+<li>如果新的度量距离小于FD，那么就更新FD</li>
+<li>如果新的度量距离和已经存在的度量距离不同，那么将向所有的邻居发送更新</li>
+</ul>
+<p>　　当路由器执行一个本地计算时，路由依然保持被动状态。如果本地路由器发现了一台可行后继路由器，那么将发送一个更新消息给它所有的邻居，但不改变路由器的状态。如果在拓扑结构表中没有发现任何一台可行后继路由器，那么路由器将开始进行扩散计算，而且路由器的路由状态改变成活动状态。在扩散计算完成和路由的状态返回到被动状态前，路由器不能：</p>
+<ul>
+<li>改变路由的后继路由器</li>
+<li>改变正在通告的路由的距离</li>
+<li>改变路由的FD</li>
+<li>开始进行路由的另一个扩散计算</li>
+</ul>
+<p>　　如下图所示，路由器通过向它所有的邻居发送查询来开始一个扩散计算，查询中包含一个到达目的地的新的本地路由器计算的距离。收到查询后，每一台邻居路由器将执行它自己的本地计算：</p>
+<ul>
+<li>如果该邻居拥有到达目的地的一台或多台可行后继路由器，它将发送一个答复给原来发送查询的路由器。答复中包含这台邻居路由器所计算的它到达目的网络的最小距离。</li>
+<li>如果一个邻居没有可行后继路由器，它将把路由的状态改为活动状态，并且开始进行扩散计算。</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D120gO.png"></p>
+<p>　　对于每一台接收查询的邻居路由器，本地路由器将设置一个答复状态标记来不断地跟踪所有未处理的查询。当本地路由器收到所有发送到邻居路由器的查询的答复时，扩散计算就完成了。在扩散完成时，始发路由器会将FD设置成无穷大，这样可以确保任何答复到达目的地时有限距离的邻居路由器都满足FC，并成为一条可行后继路由器。对于这些答复消息，度量都是由答复消息中所通告的距离加上与发送答复的邻居路由器相连的链路代价计算得出的。选择一台后继路由器是基于最低的度量值的，而且该度量值被设置为FD。任何一台可行后继路由器如果不满足该新的可行距离（FD）的可行性条件（FC）的话，就会从拓扑表结构表中被删除。需要注意的是，在收到所有的答复之前不会选择后继路由器。</p>
+<h3 id="3、EIGRP基本配置"><a href="#3、EIGRP基本配置" class="headerlink" title="3、EIGRP基本配置"></a>3、EIGRP基本配置</h3><p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D12U4x.png"></p>
+<ul>
+<li>在各路由器上配置EIGRP</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="comment">//启动EIGRP进程，进程ID可以是1~65535之间的任何一个数字，共享路由信息的路由器上的所有EIGRP进程ID号必须一致</span></span><br><span class="line">R1(config)#router eigrp 90</span><br><span class="line"><span class="comment">//关闭自动汇总</span></span><br><span class="line">R1(config-router)#no auto-summary </span><br><span class="line"><span class="comment">//指定运行EIGRP协议的每个网络</span></span><br><span class="line">R1(config-router)#network 12.12.12.0 0.0.0.255 </span><br><span class="line"></span><br><span class="line">R2(config)#router eigrp 90</span><br><span class="line">R2(config-router)#no auto-summary </span><br><span class="line">R2(config-router)#network 12.12.12.0 0.0.0.255</span><br><span class="line">R2(config-router)#network 23.23.23.0 0.0.0.255</span><br><span class="line"></span><br><span class="line">R3(config)#router eigrp 90</span><br><span class="line">R3(config-router)#no auto-summary </span><br><span class="line">R3(config-router)#network 23.23.23.0 0.0.0.255</span><br><span class="line">R3(config-router)#network 34.34.34.0 0.0.0.255</span><br><span class="line"></span><br><span class="line">R4(config)#router eigrp 90</span><br><span class="line">R4(config-router)#no auto-summary </span><br><span class="line">R4(config-router)#network 34.34.34.0 0.0.0.255</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看R1的EIGRP邻居表</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D12NU1.png"></p>
+<ul>
+<li>查看R1的拓扑表</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D12w8K.png"></p>
+<ul>
+<li>查看R1的路由表</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D12dC6.png"></p>
+<h3 id="4、不等价负载均衡"><a href="#4、不等价负载均衡" class="headerlink" title="4、不等价负载均衡"></a>4、不等价负载均衡</h3><p>　　负载均衡的两种方式</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D12cVA.png"></p>
+<ul>
+<li>按每目的地：去往同一个目标只会选择其中一个路径</li>
+<li>按每数据包：按照比例进行转发</li>
+</ul>
+<p>　　拓扑如下图所示</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D12sDH.png"></p>
+<ul>
+<li>在4台路由器上进行EIGRP的配置，network相对应的网段。查看R2的路由表中的EIGRP条目</li>
 </ul>
 <blockquote>
-<p>注意，DR和BDR的选举是非抢占的（也就是说，在已经选取了DR和BDR路由器后，如果一台具有更高优先级的路由器加入，那么这台新的路由器将不会替代DR和BDR路由器的任何一台）</p>
+<p>如下图所示，R2到达192.168.34.0/24网段进行了等价负载均衡；R2到达4.4.4.0/24网段则通过s1/1接口</p>
 </blockquote>
-<h3 id="3、OSPF的网络类型"><a href="#3、OSPF的网络类型" class="headerlink" title="3、OSPF的网络类型"></a>3、OSPF的网络类型</h3><ul>
-<li>点到点网络（point-to-point）</li>
-</ul>
-<p>　　点到点网络，像T1、DS-3或SONET链路，是连接单独一对路由器的。在点到点网络上的有效邻居总是可以形成邻接关系。在这些网络上的OSPF数据包的目的地址也总是保留的D类地址224.0.0.5，这个组播地址称为ALLSPFRouters。在点到点网络类型不需要进行DR/BDR的选举。</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D1RDJ0.png"></p>
 <ul>
-<li>广播型网络（broadcast）</li>
+<li>查看R2的EIGRP拓扑表</li>
 </ul>
-<p>　　广播型网络，像以太网、令牌环网和FDDI，也可以更确切地定义为广播型多址网络。需要进行DR和BDR的选举。由于是广播型的，所以连接在这种网络上的所有设备都可以接收到个别传送的数据包。</p>
+<blockquote>
+<p>由下图可知，R2的EIGRP拓扑表中，到达4.4.4.0/24网段存在两条路径，且满足FC条件——最优路径的FD值＞次优路径的AD值（2297856＞409600），R3成为可行后继路由器</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D1RgL4.png"></p>
 <ul>
-<li>非广播多路访问（NBMA）网络</li>
+<li>修改variance值，使得最优路径的FD×v＞次优路径的FD，即2297856×v＞2323456。此处取v=2即可符合要求</li>
 </ul>
-<p>　　NBMA网络，像X.25、帧中继和ATM等，可以连接两台以上的路由器，但是它们没有广播数据包的能力。一台在NBMA网络上的路由器发送的数据包将不能被其他与之相连的路由器收到。在NBMA网络上的OSPF路由器需要选举DR和BDR，并且所有的OSPF数据包都是单播的，在这些网络上的路由器需要增加另外的配置来获得它们的邻居。</p>
-<ul>
-<li>点到多点网络（point-to-multipoint）</li>
-</ul>
-<p>　　点到多点网络是NBMA网络的一个特殊配置，可以被看做是一群点到点链路的集合。在这些网络上的OSPF路由器不需要选举DR和BDR，OSPF数据包以单播方式发送给每一个已知的邻居。</p>
-<ul>
-<li>虚链路（virtual links）</li>
-</ul>
-<p>　　虚链路可以被路由器认为是没有编号的点到点网络的一种特殊配置。在虚链路上OSPF数据包是以单播方式发送的。</p>
-<h3 id="4、OSPF消息类型"><a href="#4、OSPF消息类型" class="headerlink" title="4、OSPF消息类型"></a>4、OSPF消息类型</h3><p>　　OSPF使用五种类型的路由协议包，共享通用的协议头部。每个OSPF包被直接封装在IP头部中。OSPF的IP协议号是89。</p>
-<ul>
-<li>类型一：Hello数据包。Hello数据包负责发现、构建并维持OSPF邻居邻接关系。为了形成一种邻接关系，Hello数据包携带的参数必须和它的邻居保持一致。</li>
-<li>类型二：DBD（数据库描述）数据包。数据库描述数据包用于正在建立的邻接关系。它的一个主要的目的是描述始发路由器数据库中的一些或全部LSA信息，以便接收路由器能够确定所收到的LSA在其数据库中是否已经有了一个匹配的LSA。路由器由此判断数据库是否同步。</li>
-<li>类型三：LSR（链路状态请求）数据包。在数据库同步过程中如果收到了数据库描述数据包，路由器将会查看数据库描述数据包里有哪些LSA不在自己的数据库中，或者有哪些LSA比自己数据库中的LSA更新。然后，将把这些LSA记录在链路状态请求列表中。接着，路由器会发送一个或多个链路状态请求数据包去向它的邻居请求发送在链路状态请求列表中的这些LSA的副本。</li>
-<li>类型四：LSU（链路状态更新）数据包。LSU数据包包括几种类型的LSA。LSU负责泛洪LSA，以及发送对LSR包的LSA响应。LSA响应只会发给之前以LSR包形式请求LSA的直连邻居。进行泛洪时，邻居路由器负责把收到的LSA信息重新封装在新的LSU包中。</li>
-<li>类型五：LSAck（链路状态确认）数据包。LSAck负责进行可靠的LSA泛洪。路由器必须明确确认每个收到的LSA，可以用一个LSAck包确认多个LSA。</li>
-</ul>
-<h3 id="5、OSPF状态机"><a href="#5、OSPF状态机" class="headerlink" title="5、OSPF状态机"></a>5、OSPF状态机</h3><ul>
-<li>Down（失效状态）——这是一个邻居会话的初始状态，用来指明在最近一个路由死亡间隔时间内还没有收到来自邻居路由器的Hello数据包。如果一台邻居路由器从其他更高一些的邻居状态转换到了失效状态，那么路由器将会清空链路状态重传列表、数据库摘要列表和链路状态请求列表。当邻居邻接关系建立成功后，由于接口松动、重启进程或其他一些因素也会是OSPF状态动Full转换到Down。在Down状态，网段上不会收到信息。</li>
-<li>Attempt（尝试状态）——这种状态仅仅适用于NBMA网络上的邻居，在NBMA网络上邻居路由器是手工配置的。当NBMA网络上具有DR选取资格的路由器和其邻居路由器相连的接口开始变为有效时，或者当这台路由器成为DR或BDR时，这台具有DR选取资格的路由器会把邻居路由器的状态转换到Attempt状态。在Attempt状态下，路由器将使用HelloInterval的时间代替PollInterval的时间来作为向邻居发送Hello数据包的时间间隔。</li>
-<li>Init（初始状态）——这一状态表明在最近的RouterDeadInterval时间里路由器收到了来自邻居路由器的Hello数据包，但是双向通信仍然没有建立。路由器将会在Hello数据包的邻居字段中包含这种状态下或更高状态的所有邻居路由器的路由器ID。</li>
-<li>2-Way（双向通信状态）——这一状态表明本地路由器已经在来自邻居路由器的Hello数据包的邻居字段中看到了自己的路由器ID，这也就意味着一个双向通信的会话已经成功建立了。在多址网络中，邻居路由器必须在这个状态或更高状态时才能有资格被选作该网络上的DR或BDR。</li>
-<li>ExStart（信息交换初始状态）——在这一状态下，本地路由器和它的邻居将建立起主/从关系，并确定数据库描述数据包的序列号，以便为数据库描述数据包的信息交换做准备。在这里，具有最高路由器ID的邻居路由器将成为”主”路由器。</li>
-<li>Exchange（信息交换状态）——在这一状态下，本地路由器将向它的邻居路由器发送可以描述它整个链路状态数据库信息的数据库描述数据包。同时，在这个Exchange状态下，本地路由器也会发送链路状态请求数据包给它的邻居路由器，用来请求最新的LSA。</li>
-<li>Loading（信息加载状态）——在这一状态下，本地路由器将会向它的邻居路由器发送链路状态请求数据包，用来请求最新的LSA通告。虽然在Exchange状态下已经发现了这些最新的LSA通告，但是本地路由器还没有收到这些LSA通告。</li>
-<li>Full（完全邻接状态）——在这一状态下，邻居路由器之间将建立起完全邻接关系，这种邻接关系出现在路由器LSA和网络LSA中。</li>
-</ul>
-<h3 id="6、建立一个邻接关系"><a href="#6、建立一个邻接关系" class="headerlink" title="6、建立一个邻接关系"></a>6、建立一个邻接关系</h3><p>　　在一个邻接关系的创建过程中，OSPF协议使用以下3种数据包类型：</p>
-<ul>
-<li>数据库描述数据包</li>
-<li>链路状态请求数据包</li>
-<li>链路状态更新数据包</li>
-</ul>
-<p>　　在数据库描述数据包中有3个标记位用来管理邻接关系的建立过程：</p>
-<ul>
-<li>I位：当需要指明所发送的是第一个数据库描述数据包时，该位设置为1；</li>
-<li>M位：当需要指明所发送的还不是最后一个数据库描述数据包时，该位设置为1；</li>
-<li>MS位：当数据库描述数据包始发于一个”主”路由器时，该位设置为1.</li>
-</ul>
-<hr>
+<blockquote>
+<p>差异变量（variance）命令用来确定哪些路由在不等价负载均衡中是可以使用的。variance定义了一个倍数因子，用来表示一条路由的度量值和最小代价路由的差异程度。任何路由的度量值如果超过了最小代价路由的度量值乘以variance的值，那么这条路由将不被使用。variance的缺省值为1，这意味着如果要实现负载均衡，多条路由的度量值必须是相同的。variance必须是整数。</p>
+</blockquote>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R2(config)#router eigrp 90</span><br><span class="line"><span class="comment">//修改variance的值为2</span></span><br><span class="line">R2(config-router)#variance 2</span><br></pre></td></tr></table></figure>
 
+<ul>
+<li>再次查看R2的路由表，此时到达4.4.4.0/24网段实现了不等价负载均衡</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D1R4F1.png"></p>
+<ul>
+<li>查看4.4.4.0/24路由的详细信息，可知两条链路的转发比例接近1:1</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D1L64U.png"></p>
+<h3 id="5、EIGRP的身份验证"><a href="#5、EIGRP的身份验证" class="headerlink" title="5、EIGRP的身份验证"></a>5、EIGRP的身份验证</h3><p>（1）身份验证的目的：避免接收恶意路由更新源的恶意路由更新，对外执行</p>
+<p>（2）身份验证的方式：明文验证（类似PAP验证）和MD5验证（类似CHAP验证）</p>
+<p>（3）EIGRP只支持MD5验证</p>
+<p>（4）EIGRP验证的实现：接口上实现</p>
+<p>　　使用如下拓扑，在R1和R2之间进行EIGRP的身份验证</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D1LTUK.png"></p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R1(config)#int e0/0</span><br><span class="line"><span class="comment">//在接口下针对EIGRP的AS 90开启md5验证</span></span><br><span class="line">R1(config-if)#ip authentication mode eigrp 90 md5</span><br><span class="line"><span class="comment">//指定使用密钥链的名称为shain（只是密钥链的名称，并非真正的密码）</span></span><br><span class="line">R1(config-if)#ip authentication key-chain eigrp 90 shain</span><br><span class="line"><span class="comment">//密钥链</span></span><br><span class="line">R1(config)#key chain shain</span><br><span class="line"><span class="comment">//key id，验证双方必须存在相同的key id</span></span><br><span class="line">R1(config-keychain)#key 1</span><br><span class="line"><span class="comment">//密码</span></span><br><span class="line">R1(config-keychain-key)#key-string cisco</span><br><span class="line"><span class="comment">//指定第二个密钥，只有当第一个密钥失效后，第二个密钥才会生效</span></span><br><span class="line">R1(config-keychain)#key 2</span><br><span class="line">R1(config-keychain-key)#key-string 123456</span><br><span class="line"></span><br><span class="line">R2(config)#int e0/0</span><br><span class="line">R2(config-if)#ip authentication mode eigrp 90 md5 </span><br><span class="line">R2(config-if)#ip authentication key-chain eigrp 90 shain</span><br><span class="line">R2(config)#key chain shain</span><br><span class="line">R2(config-keychain)#key 1</span><br><span class="line">R2(config-keychain-key)#key-string cisco</span><br><span class="line">R2(config-keychain)#key 2</span><br><span class="line">R2(config-keychain-key)#key-string 123456</span><br></pre></td></tr></table></figure>
 
-<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DikbSP.png"></p>
-<p>（1）在多路访问的网络上，路由器RT1变为有效状态，并发送一个Hello数据包。由于它还没有学习到任何邻居，因而这个Hello数据包的邻居字段是空的，而DR和BDR字段设置为0.0.0.0。</p>
-<p>（2）RT2收到RT1的Hello数据包后，会为RT1创建一个邻居数据结构，并将RT1的状态设置为Init。RT2把RT1的Hello数据包中的RID提取出来，添加到自己的Hello数据包中，发送给RT1。当RT1和RT2在接收到的Hello包中都看到了自己的RID，则会进入2-Way状态。此时会进行DR和BDR的选举。</p>
-<p>（3）RT1产生一个空的DBD数据包（没有包含LSA摘要），并把DBD的序列号设置为x。同时设置初始位（I）来指明这个数据包是路由器RT1用来进行本次信息交换的最初的数据库描述数据包，并设置后继位（M）来指明这个数据包不是最后的数据库描述数据包，最后还要设置主从位（MS）来指明RT1声称自己是”主”路由器。</p>
-<p>（4）RT2收到来自RT1的数据库描述数据包后，就会把RT1的状态转换到ExStart状态。接着，它将发送一个响应的数据库描述数据包，并把这个数据库描述数据包的序列号设置为y。由于RT2拥有比RT1更高的RID，因此它将把自己的MS位置1。该数据包也用于主从关系协商，因此也是空的。当RT1收到此数据包后，会将RT2的状态转换到ExStart状态。</p>
-<p>（5）当两台邻居路由器同意RT2是主路由器后，路由器RT1就把路由器RT2的状态转换为Exchange状态。路由器RT1将产生一个数据库描述数据包，这个数据包的序列号使用RT2的数据库描述数据包的序列号y，并设置MS位为0用来指明RT1是”从”路由器。同时，该数据包将会传送路由器RT1的链路状态摘要列表中的LSA头部。</p>
-<p>（6）当路由器RT2收到来自RT1的数据库描述数据包，就会把它的邻居状态转化到Exchange状态。接着，它将发送一个数据库描述数据包，这个数据包包含路由器RT2自己的链路状态摘要列表中的LSA头部，并使它的数据库描述序列号增加到y+1。</p>
-<p>（7）当路由器RT1从路由器RT2收到上述的数据库描述数据包后，路由器RT1就会发送一个包含相同序列号的确认数据包。这个过程将一直延续，路由器RT2发送一个单一的数据库描述数据包，接着等待从RT1发出的包含相同序列号的确认数据包，然后RT2再发送下一个数据库描述数据包，直到路由器RT2发出包含最后一个LSA摘要的数据库描述数据包，并把这个数据包的M位设置为0。</p>
-<p>（8）收到上述数据包并且确信它所发出的确认数据包包含它自己最后的LSA摘要后，路由器RT1就会认为Exchange过程已经完成。然而，路由器RT1的链路状态请求列表中还存在LSA条目，因此，它将转换到信息加载状态（Loading）。</p>
-<p>（9）当路由器RT2收到RT1的最后一个数据库描述数据包时，路由器RT2将把RT1的状态转换为完全邻接状态（Full），这是因为在它（RT2）的链路状态请求列表中已经没有LSA条目了。</p>
-<p>（10）路由器RT1发送链路状态请求数据包，而路由器RT2通过链路状态更新数据包发送被请求的LSA通告，这个过程一直持续到路由器RT1的链路状态请求列表变为空。然后，路由器RT1也将路由器RT2的状态转换到完全邻接状态。</p>
-<h3 id="7、OSPF的区域"><a href="#7、OSPF的区域" class="headerlink" title="7、OSPF的区域"></a>7、OSPF的区域</h3><p>　　OSPF协议由于使用了多个数据库和复杂的算法，因而相比其他的路由选择协议而言，他将会耗费路由器更多的内存和更多的CPU处理能力。当网络的规模不断增大时，对路由器的性能要求就会显得比较重要甚至达到了路由器性能的极限。另一方面，虽然LSA的泛洪扩散比RIP协议中周期性的、全路由表的更新更加有效率，但是对于一个大型的网络来说，它依然给大量数据链路带来了无法承受的负担。</p>
-<p>　　OSPF协议可以利用区域的概念来缩小这些不利的影响。在OSPF协议的环境下，区域是一组逻辑上的OSPF路由器和链路，它可以有效地把一个OSPF域分割成几个子域。在一个区域内的路由器将不再需要了解他们所在区域外部的拓扑细节。在这种环境下：</p>
 <ul>
-<li>路由器仅需要和它所在区域的其他路由器具有相同的链路状态数据库，因此，链路状态数据库大小的缩减就降低了对路由器内存的消耗</li>
-<li>链路状态数据库的减少也意味着处理较少的LSA，从而也就降低了对路由器CPU的消耗</li>
-<li>由于链路状态数据库只需要在一个区域内进行维护，因此，大量的LSA泛洪扩散也就被限制在一个区域里面了</li>
+<li>R1和R2仍可以建立邻居关系</li>
 </ul>
-<p>　　OSPF使用两层的区域分级：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D1LbCD.png"></p>
 <ul>
-<li><p><input disabled="" type="checkbox">  骨干区域（区域0）——骨干区域的要求为，骨干区域必须连接所有其他非骨干区域；骨干区域必须连续；非骨干区域之间要通信必须经过骨干区域。一般来说，骨干区域中没有终端用户。</p>
-</li>
-<li><p><input disabled="" type="checkbox">  非骨干区域——此区域的主要功能是连接终端用户和资源。非骨干区域通常根据功能性或地理位置进行划分。不同非骨干区域之间的流量必须总是经过骨干区域。</p>
-</li>
+<li>在R1上查看密钥链的信息</li>
 </ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DiASFs.png"></p>
-<p>虚链路（virtual link）是指一条通过一个非骨干区域连接到骨干区域的链路。虚链路主要应用于以下几种目的：</p>
+<blockquote>
+<p>其中，accept lifetime表示在该时间段内收到验证信息之后，用此密码做本地哈希计算，将计算结果与收到的作比较；send lifetime表示在该时间段内用该密钥做哈希计算，将生成的摘要发送给对端</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D1OBxH.png"></p>
 <ul>
-<li>通过一个非骨干区域连接一个区域到骨干区域</li>
+<li>使用Wireshark进行抓包验证</li>
 </ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DiAnYR.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D1OssA.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D1OrMd.png"></p>
+<h3 id="6、EIGRP的路由汇总"><a href="#6、EIGRP的路由汇总" class="headerlink" title="6、EIGRP的路由汇总"></a>6、EIGRP的路由汇总</h3><p>（1）在启用EIGRP的任意接口进行汇总</p>
+<p>（2）汇总的好处：减少路由表的大小、节约资源的消耗、提高路由的稳定性、EIGRP的路由汇总可以限制EIGRP的查询范围</p>
+<p>（3）EIGRP的汇总路由默认AD值为5，可以通过<code>R1(config-router)#summary-metric a.b.c.d/x distance xx</code>的方式来调整该汇总路由的默认AD值</p>
+<p>　　拓扑如下所示</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D1LTUK.png"></p>
 <ul>
-<li>通过一个非骨干区域连接一个分段的骨干区域两边的部分区域</li>
-</ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DiAoBF.png"></p>
-<p>　在上述例子中，虚链路和具体的物理链路没有关系。虚链路事实上是一个逻辑通道，数据包可以通过选择最优的路径从一端到达另一端。在配置虚链路时，相关的规则说明如下：</p>
-<ul>
-<li>虚链路必须配置在两台ABR路由器之间</li>
-<li>配置了虚链路所经过的区域必须拥有全部的路由选择信息，这样的区域又被称为传送区域（transit areaa）</li>
-<li>传送区域不能是一个末梢区域</li>
-</ul>
-<p>　　正如前面所提及的，OSPF协议也把虚链路归类为一个网络类型。更特别的是，虚链路可以看成是在两台ABR路由器之间的一个无编码的——也就是说无编址地址——链路，并且它是属于骨干区域的。这些ABR路由器之间虽然没有物理的数据链路相连，但是它们可以看作是通过他们之间的虚链路逻辑上虚拟连接的邻居。在每一个ABR路由器的路由表中，当发现有到达邻居的ABR路由器的路由时，虚链路将转换到完全可操作的点到点接口状态。这条虚链路的代价就是到达它的邻居路由器的代价。当接口状态变为点到点状态时，一个邻接关系将通过这条虚链路建立成功。</p>
-<p>　　虚链路的存在增加了网络的复杂度，使故障的排除更加困难。因此，最好避免使用虚链路，而应该在区域上，特别是骨干区域上设计冗余链路来确保防止分段区域的产生。虚链路可以看做是一个标明网络的某个部分是否需要重新设计的标志。事实上，永久虚链路的存在总是一个设计比较糟糕的网络的标志。</p>
-<h3 id="8、链路状态数据库"><a href="#8、链路状态数据库" class="headerlink" title="8、链路状态数据库"></a>8、链路状态数据库</h3><p>　　一台路由器中所有有效的LSA都被存放在它的链路状态数据库中。正确的LSA将可以描述一个OSPF区域网络拓扑的结构。一个区域中的每一台路由器都要利用这个数据库的信息来计算它自己的最短路径树，因此，所有区域数据库的统一性对于正确的路由选择来说就变得十分重要。</p>
-<p>　　由于OSPF协议定义了多种路由器的类型，因而定义多种LSA通告的类型也是必要的。每一种LSA通告类型都描述了OSPF网络的一种不同情况。</p>
-<table>
-<thead>
-<tr>
-<th>类型代码</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>1</td>
-<td>路由器LSA</td>
-</tr>
-<tr>
-<td>2</td>
-<td>网络LSA</td>
-</tr>
-<tr>
-<td>3</td>
-<td>网络汇总LSA</td>
-</tr>
-<tr>
-<td>4</td>
-<td>ASBR汇总LSA</td>
-</tr>
-<tr>
-<td>5</td>
-<td>AS外部LSA</td>
-</tr>
-<tr>
-<td>6</td>
-<td>组成员LSA</td>
-</tr>
-<tr>
-<td>7</td>
-<td>NSSA外部LSA</td>
-</tr>
-<tr>
-<td>8</td>
-<td>外部属性LSA</td>
-</tr>
-<tr>
-<td>9</td>
-<td>Opaque LSA（链路本地范围）</td>
-</tr>
-<tr>
-<td>10</td>
-<td>Opaque LSA（本地区域范围）</td>
-</tr>
-<tr>
-<td>11</td>
-<td>Opaque LSA（AS范围）</td>
-</tr>
-</tbody></table>
-<ul>
-<li><p>路由器LSA（Router LSA）——每一台路由器都会产生路由器LSA通告。这个最基本的LSA通告列出了路由器所有的链路或接口，并指明了它们的状态和沿每条链路方向出站的代价，以及该链路上所有已知的OSPF邻居。这些LSA通告只会在始发它们的区域内部进行泛洪扩散。通过命令<span style="color:red"><code>show ip ospf database router</code></span>可以查看数据库中列出的所有路由器LSA通告。</p>
+<li><p>在R1上启用多个loopback接口，并将其在EIGRP进程中network</p>
 </li>
-<li><p>网络LSA（Network LSA）——每一个多路访问网络中的指定路由器（DR）将会产生网络LSA通告。DR路由器可以看作一个”伪”节点，或是一个虚拟路由器，用来描绘一个多路访问网络和与之相连的所有路由器。从这个角度来看，一条网络LSA通告也可以描绘一个逻辑上的”伪”节点，就像一条路由器LSA通告描绘一个物理上的单台路由器一样。网络LSA通告列出了所有与之相连的路由器，包括DR路由器本身。网络LSA仅仅在产生这条网络LSA的区域内部进行泛洪扩散。可以使用命令<span style="color:red"><code>show ip ospf database network</code></span>查看网络LSA通告的信息。</p>
-</li>
-<li><p>网络汇总LSA（Network Summary LSA）——是由ABR路由器始发的。ABR路由器将发送网络汇总LSA到一个区域，用来通告该区域外部的目的地址。换句话说，这些网络汇总LSA就是ABR路由器告诉与其相连的区域内的内部路由器所能到达的目的地址的一种方法。可以通过命令<span style="color:red"><code>show ip ospf database summary</code></span>显示链路状态数据库中的网络汇总LSA信息。</p>
-</li>
-<li><p>ASBR汇总LSA（ASBR Summary LSA）——由ABR路由器始发。ASBR汇总LSA除了所通告的目的地是一台ASBR路由器而不是一个网络外，其他的和网络汇总LSA都是一样的。使用命令<span style="color:red"><code>show ip ospf database asbr-summary</code></span>可以查看ASBR汇总LSA的信息。通过ASBR汇总LSA通告的目的地将总是一个主机地址，因为它是一条到达一台路由器的路由。</p>
-</li>
-<li><p>自主系统外部LSA（Autonomous System External LSA）——即外部LSA，始发于ASBR路由器，用来通告到达OSPF自主系统外部的目的地或者是OSPF自主系统外部的缺省路由的LSA。外部LSA通告将在整个自主系统中进行泛洪扩散。使用命令<span style="color:red"><code>show ip ospf database external</code></span>可以查看AS外部LSA的信息。</p>
-</li>
-<li><p>NSSA外部LSA（NSSA External LSA）——是指在非纯末梢区域（Not-So-Stubby Area，NSSA）内始发于ASBR路由器的LSA通告。NSSA外部LSA通告仅在始发这个NSSA外部LSA通告的非纯末梢区域内部进行泛洪扩散。可以通过命令<span style="color:red"><code>show ip ospf database nssa-external</code></span>来显示NSSA外部LSA通告的信息。</p>
+<li><p>查看R2路由表中的EIGRP路由</p>
 </li>
 </ul>
-<h3 id="9、末梢（Stub）区域"><a href="#9、末梢（Stub）区域" class="headerlink" title="9、末梢（Stub）区域"></a>9、末梢（Stub）区域</h3><p>　　一个学习到外部目的地路由信息的ASBR路由器，将通过在整个OSPF自主系统中泛洪扩散自主系统外部LSA来通告那些外部的目的路由信息。这些外部LSA通告可能会在每台路由器的链路状态数据库中构成较大百分比的LSA数量，对性能不好的路由器产生压力。</p>
-<p>　　末梢区域是一个不允许AS外部LSA通告在其内部进行泛洪扩散的区域。若在一个区域内没有学习到类型5的LSA通告，那么类型4的LSA通告也是不必要的了，因此这些LSA通告也将被阻塞。位于末梢区域边界的ABR路由器将使用网络汇总LSA向这个区域通告一个简单的缺省路由。（即在Stub区域中会将类型4和类型5的LSA进行过滤，并且下发类型3的默认路由）</p>
-<p>　　末梢区域中存在的4个限制条件：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D1OIMj.png"></p>
 <ul>
-<li>末梢区域内的所有路由器都会在它们的Hello数据包中设置一个标志——E-bit位，并将它设置为0。这样，这些末梢区域路由器将不接受其他路由器发送的任何E-bit为1的Hello数据包。因此，需要将Stub区域内的所有路由器配置成末梢区域路由器。</li>
-<li>末梢区域中不能有虚链路的存在</li>
-<li>末梢区域内需存在一台或多台ABR路由器，但是不能存在ASBR路由器。</li>
-<li>骨干区域不能配置成特殊区域</li>
+<li>查看汇总前R2上消耗的路由资源</li>
 </ul>
-<p>　　完全末梢区域（totally stubby area）不仅使用缺省路由到达OSPF自主系统外部的目的地址，而且使用缺省路由到达这个区域外部的所有目的地址。（过滤类型4和类型5的LSA，并且下发类型3的默认路由，再将类型3的LSA进行过滤）</p>
-<p>　　非纯末梢区域（Not-So-Stubby-Area，NSSA）允许外部路由通告到OSPF自主系统内部，而同时保留自主系统其余部分的末梢区域特征。NSSA区域允许ASBR路由器的存在。NSSA外部LSA在它的头部有一个称为P-bit位的标志。NSSA ASBR路由器可以设置或清除这个P-bit位。如果一台NSSA ABR路由器收到一条P-bit设置为1的类型7的LSA数据包，那么它将把这条类型7的LSA转换成为类型5的LSA，并且将这条LSA泛洪扩散到其他区域中。如果这个P-bit位被设置为0，那么将不会转换这条类型7的LSA，而且这条类型7的LSA携带的目的地址也不能通告到这个NSSA区域的外部。</p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DiE1Cn.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D1OOiT.png"></p>
+<ul>
+<li>在R1上进行汇总</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R1(config)#int e0/0</span><br><span class="line">R1(config-if)#ip summary-address eigrp 90 1.1.0.0 255.255.0.0</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>再次查看R2的路由表</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D1XKeI.png"></p>
+<ul>
+<li>查看汇总后R2上消耗的路由资源</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D1XnOA.png"></p>
+<ul>
+<li>在R1上配置EIGRP的路由泄露</li>
+</ul>
+<blockquote>
+<p>路由泄露即在发送汇总路由的同时，额外发送明细路由。站点之间存在多路径的环境，EIGRP/BGP/ISIS都支持路由泄漏</p>
+</blockquote>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="comment">//匹配要进行泄露的路由</span></span><br><span class="line">R1(config)#access-list 1 permit 1.1.1.0 /24</span><br><span class="line"><span class="comment">//使用路由图匹配ACL 1</span></span><br><span class="line">R1(config)#route-map leak</span><br><span class="line">R1(config-route-map)#match ip address 1</span><br><span class="line">R1(config)#int e0/0</span><br><span class="line"><span class="comment">//进行汇总的时候使用leak-map调用路由图</span></span><br><span class="line">R1(config-if)#ip summary-address eigrp 90 1.1.0.0 255.255.0.0 leak-map leak</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看R2的路由表，可知此时R2在收到汇总路由的同时也收到了1.1.1.0/24的明细路由</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D1X3Y8.png"></p>
+<h3 id="7、EIGRP的默认路由下发"><a href="#7、EIGRP的默认路由下发" class="headerlink" title="7、EIGRP的默认路由下发"></a>7、EIGRP的默认路由下发</h3><p>　　通过EIGRP动态向内网下发默认路由</p>
+<ul>
+<li>方式一：在连接内网的接口，进行汇总——ip summary-address eigrp 90 0.0.0.0/0</li>
+<li>方式二：重分布，将静态路由重分布到EIGRP</li>
+<li>方式三：写出接口的默认路由，然后network到EIGRP中</li>
+</ul>
+<p>　　拓扑如下图所示</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D1XNOs.png"></p>
+<ul>
+<li>在R1的e0/0接口上进行汇总</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R1(config)#int e0/0</span><br><span class="line">R1(config-if)#ip summary-address eigrp 90 0.0.0.0/0</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看R2的路由表，此时存在一条EIGRP默认路由</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D1XwT0.png"></p>
+<ul>
+<li>使用重分布的方式下发EIGRP默认路由</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R1(config)#ip route 0.0.0.0 0.0.0.0 15.15.15.5</span><br><span class="line">R1(config)#router eigrp 90</span><br><span class="line">R1(config-router)#redistribute static </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看R2的路由表</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D1XrfU.png"></p>
+<h3 id="8、EIGRP-STUB路由器"><a href="#8、EIGRP-STUB路由器" class="headerlink" title="8、EIGRP STUB路由器"></a>8、EIGRP STUB路由器</h3><p>　　一台具有EIGRP末梢邻居的路由器将不会向它的末梢发送查询，因此这就排除了配置末梢的远端站点引起”卡在活动状态”的情形发生的机会，也降低了网络中其余部分路由选择的不稳定。</p>
+<p>　　应用场合：网络的边缘路由器，末端路由器</p>
+<ul>
+<li>末梢选项（默认选项为connected和summary）</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">-receive-only：阻止末梢发送任何类型的路由</span><br><span class="line">-connected：允许末梢发送直连的路由（可能仍需要重分布）</span><br><span class="line">-<span class="keyword">static</span>：允许末梢发送静态路由（仍必须重分布）</span><br><span class="line">-summary：允许末梢发送汇总路由</span><br><span class="line">-redistribute：允许末梢发松重分布的路由</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>将R1配置为stub路由器</li>
+</ul>
+<blockquote>
+<p>R1为STUB路由器，当R2上的链路失效，则不会向R1发送Query，可以节约资源</p>
+</blockquote>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">R1(config)#router eigrp 90</span><br><span class="line">R1(config-router)#eigrp stub </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在R2上查看邻居表的详细信息</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D1XypF.png"></p>
 ]]></content>
       <categories>
         <category>学习笔记</category>
       </categories>
       <tags>
-        <tag>OSPF</tag>
+        <tag>EIGRP</tag>
       </tags>
   </entry>
   <entry>
@@ -3316,6 +3367,230 @@
 <p>与上图相比，外部路由被汇总为10.10.0.0/16</p>
 </blockquote>
 <p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DidLeU.png"></p>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>OSPF</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>OSPF基本原理</title>
+    <url>/2020/11/15/OSPF%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/</url>
+    <content><![CDATA[<h3 id="1、概述"><a href="#1、概述" class="headerlink" title="1、概述　　"></a>1、概述　　</h3><p>　　开放式最短路径优先（Open Shortest Path First，OSPF）协议是由Internet工程任务组（Internet Engineering Task Force，IETF）开发的路由选择协议，用来替代存在一些问题的RIP协议。现在，OSPF协议是IETF组织建议使用的内部网关协议（IGP）。OSPF使用Dijkstra算法来计算最短路径树。像所有的链路状态协议一样，OSPF协议和距离矢量协议相比，一个主要的改善在于它的快速收敛，这使得OSPF协议可以支持更大型的网络，并且不容易受到有害路由选择信息的影响。OSPF协议的其他一些特性有：</p>
+<ul>
+<li>使用了区域的概念，这样可以有效地减少路由选择协议对路由器的CPU和内存的占用；划分区域还可以降低路由选择协议的通信量，这使构建一个层次化的网络拓扑成为可能；</li>
+<li>完全无类别地处理地址问题，排除了不连续子网这样的有类路由选择协议的问题；</li>
+<li>支持无类别路由表查询、VLAM和用来进行有效地址管理的超网技术；</li>
+<li>支持无大小限制的、任意的度量值；</li>
+<li>支持使用多条路径的效率更高的等价负载均衡；</li>
+<li>使用保留的组播地址来减少对不宣告OSPF的设备的影响；</li>
+<li>使用可以跟踪外部路由的路由标记</li>
+</ul>
+<h3 id="2、OSPF的相关术语"><a href="#2、OSPF的相关术语" class="headerlink" title="2、OSPF的相关术语"></a>2、OSPF的相关术语</h3><ul>
+<li><p><input disabled="" type="checkbox">  链路：链路就是一个网络或者一个被指定给任一给定网络的路由器接口。当一个接口被添加到OSPF进程时，它就被OSPF认定是一个链路。这个链路或接口都将有一个与它关联的状态信息（up或down），以及一个或多个IP地址</p>
+</li>
+<li><p><input disabled="" type="checkbox">  路由器ID：路由器ID（RID）是一个用来标识此路由器的IP地址。该地址可以通过手动指定（必须唯一）；若未指定，则选择路由器上所有活跃的环回接口中最大的IPv4地址；若不存在环回接口，则选择所有活跃的物理接口中最大的IPv4地址</p>
+</li>
+<li><p><input disabled="" type="checkbox">  邻居：邻居可以是两个或更多的路由器，这些路由器的某个接口是连接在同一个公共网络上，比如两个通过点到点串行链路连接在一起的路由器</p>
+</li>
+<li><p><input disabled="" type="checkbox">  邻接：邻接是指两个OSPF路由器之间的关系，这两个路由器之间允许直接交换路由更新数据。注意，并不是所有的邻居都可以建立邻接关系，这将取决于网络类型和路由器配置</p>
+</li>
+<li><p><input disabled="" type="checkbox">  Hello协议：OSPF的Hello协议能够动态地发现邻居，并维护邻居关系。在两台路由器成为邻居之前，需要通告这两台路由器必须相互认可的几个参数。Hello数据包确保了邻居路由器之间的双向通信，并且和链路状态通告（LSA）共同用于建立并维护拓扑数据库</p>
+</li>
+<li><p><input disabled="" type="checkbox">  邻居关系数据库：邻居关系数据库是一个OSPF路由器的列表，这些路由器的Hello数据包相互可见。每个路由器上的邻居关系数据库中管理着各种详细的资料，包括路由器ID和状态等信息</p>
+</li>
+<li><p><input disabled="" type="checkbox">  拓扑数据库：拓扑数据库中包含有来自同一区域接收的所有链路状态通告数据包的信息。路由器使用来自拓扑数据库中的信息，作为Dijkstra算法的输入，并通过该算法为每个网络计算出最短路径</p>
+</li>
+<li><p><input disabled="" type="checkbox">  链路状态通告（LSA）：LSA中包含着OSPF路由器共享的链路状态和路由选择信息</p>
+</li>
+<li><p><input disabled="" type="checkbox">  指定路由器和备用指定路由器：当OSPF路由器被连接到同一多路访问网络时，都需要选择一个指定路由器（DR）和备用指定路由器（BDR）。DR负责将路由选择信息分发到广播网络或链路中其他路由器上，或收集其他路由器的路由选择信息。如果DR失效了，那么BDR将成为新的DR。DR和BDR的选择规则如下：</p>
+</li>
+<li><p>先比较优先级，优先级大的优先；默认情况下以太网接口的优先级为1，串行接口的优先级为0（优先级为0不参与DR/BDR的选举）</p>
+</li>
+<li><p>若优先级相同，则继续比较RID，RID越大越优先</p>
+</li>
+</ul>
+<blockquote>
+<p>注意，DR和BDR的选举是非抢占的（也就是说，在已经选取了DR和BDR路由器后，如果一台具有更高优先级的路由器加入，那么这台新的路由器将不会替代DR和BDR路由器的任何一台）</p>
+</blockquote>
+<h3 id="3、OSPF的网络类型"><a href="#3、OSPF的网络类型" class="headerlink" title="3、OSPF的网络类型"></a>3、OSPF的网络类型</h3><ul>
+<li>点到点网络（point-to-point）</li>
+</ul>
+<p>　　点到点网络，像T1、DS-3或SONET链路，是连接单独一对路由器的。在点到点网络上的有效邻居总是可以形成邻接关系。在这些网络上的OSPF数据包的目的地址也总是保留的D类地址224.0.0.5，这个组播地址称为ALLSPFRouters。在点到点网络类型不需要进行DR/BDR的选举。</p>
+<ul>
+<li>广播型网络（broadcast）</li>
+</ul>
+<p>　　广播型网络，像以太网、令牌环网和FDDI，也可以更确切地定义为广播型多址网络。需要进行DR和BDR的选举。由于是广播型的，所以连接在这种网络上的所有设备都可以接收到个别传送的数据包。</p>
+<ul>
+<li>非广播多路访问（NBMA）网络</li>
+</ul>
+<p>　　NBMA网络，像X.25、帧中继和ATM等，可以连接两台以上的路由器，但是它们没有广播数据包的能力。一台在NBMA网络上的路由器发送的数据包将不能被其他与之相连的路由器收到。在NBMA网络上的OSPF路由器需要选举DR和BDR，并且所有的OSPF数据包都是单播的，在这些网络上的路由器需要增加另外的配置来获得它们的邻居。</p>
+<ul>
+<li>点到多点网络（point-to-multipoint）</li>
+</ul>
+<p>　　点到多点网络是NBMA网络的一个特殊配置，可以被看做是一群点到点链路的集合。在这些网络上的OSPF路由器不需要选举DR和BDR，OSPF数据包以单播方式发送给每一个已知的邻居。</p>
+<ul>
+<li>虚链路（virtual links）</li>
+</ul>
+<p>　　虚链路可以被路由器认为是没有编号的点到点网络的一种特殊配置。在虚链路上OSPF数据包是以单播方式发送的。</p>
+<h3 id="4、OSPF消息类型"><a href="#4、OSPF消息类型" class="headerlink" title="4、OSPF消息类型"></a>4、OSPF消息类型</h3><p>　　OSPF使用五种类型的路由协议包，共享通用的协议头部。每个OSPF包被直接封装在IP头部中。OSPF的IP协议号是89。</p>
+<ul>
+<li>类型一：Hello数据包。Hello数据包负责发现、构建并维持OSPF邻居邻接关系。为了形成一种邻接关系，Hello数据包携带的参数必须和它的邻居保持一致。</li>
+<li>类型二：DBD（数据库描述）数据包。数据库描述数据包用于正在建立的邻接关系。它的一个主要的目的是描述始发路由器数据库中的一些或全部LSA信息，以便接收路由器能够确定所收到的LSA在其数据库中是否已经有了一个匹配的LSA。路由器由此判断数据库是否同步。</li>
+<li>类型三：LSR（链路状态请求）数据包。在数据库同步过程中如果收到了数据库描述数据包，路由器将会查看数据库描述数据包里有哪些LSA不在自己的数据库中，或者有哪些LSA比自己数据库中的LSA更新。然后，将把这些LSA记录在链路状态请求列表中。接着，路由器会发送一个或多个链路状态请求数据包去向它的邻居请求发送在链路状态请求列表中的这些LSA的副本。</li>
+<li>类型四：LSU（链路状态更新）数据包。LSU数据包包括几种类型的LSA。LSU负责泛洪LSA，以及发送对LSR包的LSA响应。LSA响应只会发给之前以LSR包形式请求LSA的直连邻居。进行泛洪时，邻居路由器负责把收到的LSA信息重新封装在新的LSU包中。</li>
+<li>类型五：LSAck（链路状态确认）数据包。LSAck负责进行可靠的LSA泛洪。路由器必须明确确认每个收到的LSA，可以用一个LSAck包确认多个LSA。</li>
+</ul>
+<h3 id="5、OSPF状态机"><a href="#5、OSPF状态机" class="headerlink" title="5、OSPF状态机"></a>5、OSPF状态机</h3><ul>
+<li>Down（失效状态）——这是一个邻居会话的初始状态，用来指明在最近一个路由死亡间隔时间内还没有收到来自邻居路由器的Hello数据包。如果一台邻居路由器从其他更高一些的邻居状态转换到了失效状态，那么路由器将会清空链路状态重传列表、数据库摘要列表和链路状态请求列表。当邻居邻接关系建立成功后，由于接口松动、重启进程或其他一些因素也会是OSPF状态动Full转换到Down。在Down状态，网段上不会收到信息。</li>
+<li>Attempt（尝试状态）——这种状态仅仅适用于NBMA网络上的邻居，在NBMA网络上邻居路由器是手工配置的。当NBMA网络上具有DR选取资格的路由器和其邻居路由器相连的接口开始变为有效时，或者当这台路由器成为DR或BDR时，这台具有DR选取资格的路由器会把邻居路由器的状态转换到Attempt状态。在Attempt状态下，路由器将使用HelloInterval的时间代替PollInterval的时间来作为向邻居发送Hello数据包的时间间隔。</li>
+<li>Init（初始状态）——这一状态表明在最近的RouterDeadInterval时间里路由器收到了来自邻居路由器的Hello数据包，但是双向通信仍然没有建立。路由器将会在Hello数据包的邻居字段中包含这种状态下或更高状态的所有邻居路由器的路由器ID。</li>
+<li>2-Way（双向通信状态）——这一状态表明本地路由器已经在来自邻居路由器的Hello数据包的邻居字段中看到了自己的路由器ID，这也就意味着一个双向通信的会话已经成功建立了。在多址网络中，邻居路由器必须在这个状态或更高状态时才能有资格被选作该网络上的DR或BDR。</li>
+<li>ExStart（信息交换初始状态）——在这一状态下，本地路由器和它的邻居将建立起主/从关系，并确定数据库描述数据包的序列号，以便为数据库描述数据包的信息交换做准备。在这里，具有最高路由器ID的邻居路由器将成为”主”路由器。</li>
+<li>Exchange（信息交换状态）——在这一状态下，本地路由器将向它的邻居路由器发送可以描述它整个链路状态数据库信息的数据库描述数据包。同时，在这个Exchange状态下，本地路由器也会发送链路状态请求数据包给它的邻居路由器，用来请求最新的LSA。</li>
+<li>Loading（信息加载状态）——在这一状态下，本地路由器将会向它的邻居路由器发送链路状态请求数据包，用来请求最新的LSA通告。虽然在Exchange状态下已经发现了这些最新的LSA通告，但是本地路由器还没有收到这些LSA通告。</li>
+<li>Full（完全邻接状态）——在这一状态下，邻居路由器之间将建立起完全邻接关系，这种邻接关系出现在路由器LSA和网络LSA中。</li>
+</ul>
+<h3 id="6、建立一个邻接关系"><a href="#6、建立一个邻接关系" class="headerlink" title="6、建立一个邻接关系"></a>6、建立一个邻接关系</h3><p>　　在一个邻接关系的创建过程中，OSPF协议使用以下3种数据包类型：</p>
+<ul>
+<li>数据库描述数据包</li>
+<li>链路状态请求数据包</li>
+<li>链路状态更新数据包</li>
+</ul>
+<p>　　在数据库描述数据包中有3个标记位用来管理邻接关系的建立过程：</p>
+<ul>
+<li>I位：当需要指明所发送的是第一个数据库描述数据包时，该位设置为1；</li>
+<li>M位：当需要指明所发送的还不是最后一个数据库描述数据包时，该位设置为1；</li>
+<li>MS位：当数据库描述数据包始发于一个”主”路由器时，该位设置为1.</li>
+</ul>
+<hr>
+
+
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DikbSP.png"></p>
+<p>（1）在多路访问的网络上，路由器RT1变为有效状态，并发送一个Hello数据包。由于它还没有学习到任何邻居，因而这个Hello数据包的邻居字段是空的，而DR和BDR字段设置为0.0.0.0。</p>
+<p>（2）RT2收到RT1的Hello数据包后，会为RT1创建一个邻居数据结构，并将RT1的状态设置为Init。RT2把RT1的Hello数据包中的RID提取出来，添加到自己的Hello数据包中，发送给RT1。当RT1和RT2在接收到的Hello包中都看到了自己的RID，则会进入2-Way状态。此时会进行DR和BDR的选举。</p>
+<p>（3）RT1产生一个空的DBD数据包（没有包含LSA摘要），并把DBD的序列号设置为x。同时设置初始位（I）来指明这个数据包是路由器RT1用来进行本次信息交换的最初的数据库描述数据包，并设置后继位（M）来指明这个数据包不是最后的数据库描述数据包，最后还要设置主从位（MS）来指明RT1声称自己是”主”路由器。</p>
+<p>（4）RT2收到来自RT1的数据库描述数据包后，就会把RT1的状态转换到ExStart状态。接着，它将发送一个响应的数据库描述数据包，并把这个数据库描述数据包的序列号设置为y。由于RT2拥有比RT1更高的RID，因此它将把自己的MS位置1。该数据包也用于主从关系协商，因此也是空的。当RT1收到此数据包后，会将RT2的状态转换到ExStart状态。</p>
+<p>（5）当两台邻居路由器同意RT2是主路由器后，路由器RT1就把路由器RT2的状态转换为Exchange状态。路由器RT1将产生一个数据库描述数据包，这个数据包的序列号使用RT2的数据库描述数据包的序列号y，并设置MS位为0用来指明RT1是”从”路由器。同时，该数据包将会传送路由器RT1的链路状态摘要列表中的LSA头部。</p>
+<p>（6）当路由器RT2收到来自RT1的数据库描述数据包，就会把它的邻居状态转化到Exchange状态。接着，它将发送一个数据库描述数据包，这个数据包包含路由器RT2自己的链路状态摘要列表中的LSA头部，并使它的数据库描述序列号增加到y+1。</p>
+<p>（7）当路由器RT1从路由器RT2收到上述的数据库描述数据包后，路由器RT1就会发送一个包含相同序列号的确认数据包。这个过程将一直延续，路由器RT2发送一个单一的数据库描述数据包，接着等待从RT1发出的包含相同序列号的确认数据包，然后RT2再发送下一个数据库描述数据包，直到路由器RT2发出包含最后一个LSA摘要的数据库描述数据包，并把这个数据包的M位设置为0。</p>
+<p>（8）收到上述数据包并且确信它所发出的确认数据包包含它自己最后的LSA摘要后，路由器RT1就会认为Exchange过程已经完成。然而，路由器RT1的链路状态请求列表中还存在LSA条目，因此，它将转换到信息加载状态（Loading）。</p>
+<p>（9）当路由器RT2收到RT1的最后一个数据库描述数据包时，路由器RT2将把RT1的状态转换为完全邻接状态（Full），这是因为在它（RT2）的链路状态请求列表中已经没有LSA条目了。</p>
+<p>（10）路由器RT1发送链路状态请求数据包，而路由器RT2通过链路状态更新数据包发送被请求的LSA通告，这个过程一直持续到路由器RT1的链路状态请求列表变为空。然后，路由器RT1也将路由器RT2的状态转换到完全邻接状态。</p>
+<h3 id="7、OSPF的区域"><a href="#7、OSPF的区域" class="headerlink" title="7、OSPF的区域"></a>7、OSPF的区域</h3><p>　　OSPF协议由于使用了多个数据库和复杂的算法，因而相比其他的路由选择协议而言，他将会耗费路由器更多的内存和更多的CPU处理能力。当网络的规模不断增大时，对路由器的性能要求就会显得比较重要甚至达到了路由器性能的极限。另一方面，虽然LSA的泛洪扩散比RIP协议中周期性的、全路由表的更新更加有效率，但是对于一个大型的网络来说，它依然给大量数据链路带来了无法承受的负担。</p>
+<p>　　OSPF协议可以利用区域的概念来缩小这些不利的影响。在OSPF协议的环境下，区域是一组逻辑上的OSPF路由器和链路，它可以有效地把一个OSPF域分割成几个子域。在一个区域内的路由器将不再需要了解他们所在区域外部的拓扑细节。在这种环境下：</p>
+<ul>
+<li>路由器仅需要和它所在区域的其他路由器具有相同的链路状态数据库，因此，链路状态数据库大小的缩减就降低了对路由器内存的消耗</li>
+<li>链路状态数据库的减少也意味着处理较少的LSA，从而也就降低了对路由器CPU的消耗</li>
+<li>由于链路状态数据库只需要在一个区域内进行维护，因此，大量的LSA泛洪扩散也就被限制在一个区域里面了</li>
+</ul>
+<p>　　OSPF使用两层的区域分级：</p>
+<ul>
+<li><p><input disabled="" type="checkbox">  骨干区域（区域0）——骨干区域的要求为，骨干区域必须连接所有其他非骨干区域；骨干区域必须连续；非骨干区域之间要通信必须经过骨干区域。一般来说，骨干区域中没有终端用户。</p>
+</li>
+<li><p><input disabled="" type="checkbox">  非骨干区域——此区域的主要功能是连接终端用户和资源。非骨干区域通常根据功能性或地理位置进行划分。不同非骨干区域之间的流量必须总是经过骨干区域。</p>
+</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DiASFs.png"></p>
+<p>虚链路（virtual link）是指一条通过一个非骨干区域连接到骨干区域的链路。虚链路主要应用于以下几种目的：</p>
+<ul>
+<li>通过一个非骨干区域连接一个区域到骨干区域</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DiAnYR.png"></p>
+<ul>
+<li>通过一个非骨干区域连接一个分段的骨干区域两边的部分区域</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DiAoBF.png"></p>
+<p>　在上述例子中，虚链路和具体的物理链路没有关系。虚链路事实上是一个逻辑通道，数据包可以通过选择最优的路径从一端到达另一端。在配置虚链路时，相关的规则说明如下：</p>
+<ul>
+<li>虚链路必须配置在两台ABR路由器之间</li>
+<li>配置了虚链路所经过的区域必须拥有全部的路由选择信息，这样的区域又被称为传送区域（transit areaa）</li>
+<li>传送区域不能是一个末梢区域</li>
+</ul>
+<p>　　正如前面所提及的，OSPF协议也把虚链路归类为一个网络类型。更特别的是，虚链路可以看成是在两台ABR路由器之间的一个无编码的——也就是说无编址地址——链路，并且它是属于骨干区域的。这些ABR路由器之间虽然没有物理的数据链路相连，但是它们可以看作是通过他们之间的虚链路逻辑上虚拟连接的邻居。在每一个ABR路由器的路由表中，当发现有到达邻居的ABR路由器的路由时，虚链路将转换到完全可操作的点到点接口状态。这条虚链路的代价就是到达它的邻居路由器的代价。当接口状态变为点到点状态时，一个邻接关系将通过这条虚链路建立成功。</p>
+<p>　　虚链路的存在增加了网络的复杂度，使故障的排除更加困难。因此，最好避免使用虚链路，而应该在区域上，特别是骨干区域上设计冗余链路来确保防止分段区域的产生。虚链路可以看做是一个标明网络的某个部分是否需要重新设计的标志。事实上，永久虚链路的存在总是一个设计比较糟糕的网络的标志。</p>
+<h3 id="8、链路状态数据库"><a href="#8、链路状态数据库" class="headerlink" title="8、链路状态数据库"></a>8、链路状态数据库</h3><p>　　一台路由器中所有有效的LSA都被存放在它的链路状态数据库中。正确的LSA将可以描述一个OSPF区域网络拓扑的结构。一个区域中的每一台路由器都要利用这个数据库的信息来计算它自己的最短路径树，因此，所有区域数据库的统一性对于正确的路由选择来说就变得十分重要。</p>
+<p>　　由于OSPF协议定义了多种路由器的类型，因而定义多种LSA通告的类型也是必要的。每一种LSA通告类型都描述了OSPF网络的一种不同情况。</p>
+<table>
+<thead>
+<tr>
+<th>类型代码</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>路由器LSA</td>
+</tr>
+<tr>
+<td>2</td>
+<td>网络LSA</td>
+</tr>
+<tr>
+<td>3</td>
+<td>网络汇总LSA</td>
+</tr>
+<tr>
+<td>4</td>
+<td>ASBR汇总LSA</td>
+</tr>
+<tr>
+<td>5</td>
+<td>AS外部LSA</td>
+</tr>
+<tr>
+<td>6</td>
+<td>组成员LSA</td>
+</tr>
+<tr>
+<td>7</td>
+<td>NSSA外部LSA</td>
+</tr>
+<tr>
+<td>8</td>
+<td>外部属性LSA</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Opaque LSA（链路本地范围）</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Opaque LSA（本地区域范围）</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Opaque LSA（AS范围）</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>路由器LSA（Router LSA）——每一台路由器都会产生路由器LSA通告。这个最基本的LSA通告列出了路由器所有的链路或接口，并指明了它们的状态和沿每条链路方向出站的代价，以及该链路上所有已知的OSPF邻居。这些LSA通告只会在始发它们的区域内部进行泛洪扩散。通过命令<span style="color:red"><code>show ip ospf database router</code></span>可以查看数据库中列出的所有路由器LSA通告。</p>
+</li>
+<li><p>网络LSA（Network LSA）——每一个多路访问网络中的指定路由器（DR）将会产生网络LSA通告。DR路由器可以看作一个”伪”节点，或是一个虚拟路由器，用来描绘一个多路访问网络和与之相连的所有路由器。从这个角度来看，一条网络LSA通告也可以描绘一个逻辑上的”伪”节点，就像一条路由器LSA通告描绘一个物理上的单台路由器一样。网络LSA通告列出了所有与之相连的路由器，包括DR路由器本身。网络LSA仅仅在产生这条网络LSA的区域内部进行泛洪扩散。可以使用命令<span style="color:red"><code>show ip ospf database network</code></span>查看网络LSA通告的信息。</p>
+</li>
+<li><p>网络汇总LSA（Network Summary LSA）——是由ABR路由器始发的。ABR路由器将发送网络汇总LSA到一个区域，用来通告该区域外部的目的地址。换句话说，这些网络汇总LSA就是ABR路由器告诉与其相连的区域内的内部路由器所能到达的目的地址的一种方法。可以通过命令<span style="color:red"><code>show ip ospf database summary</code></span>显示链路状态数据库中的网络汇总LSA信息。</p>
+</li>
+<li><p>ASBR汇总LSA（ASBR Summary LSA）——由ABR路由器始发。ASBR汇总LSA除了所通告的目的地是一台ASBR路由器而不是一个网络外，其他的和网络汇总LSA都是一样的。使用命令<span style="color:red"><code>show ip ospf database asbr-summary</code></span>可以查看ASBR汇总LSA的信息。通过ASBR汇总LSA通告的目的地将总是一个主机地址，因为它是一条到达一台路由器的路由。</p>
+</li>
+<li><p>自主系统外部LSA（Autonomous System External LSA）——即外部LSA，始发于ASBR路由器，用来通告到达OSPF自主系统外部的目的地或者是OSPF自主系统外部的缺省路由的LSA。外部LSA通告将在整个自主系统中进行泛洪扩散。使用命令<span style="color:red"><code>show ip ospf database external</code></span>可以查看AS外部LSA的信息。</p>
+</li>
+<li><p>NSSA外部LSA（NSSA External LSA）——是指在非纯末梢区域（Not-So-Stubby Area，NSSA）内始发于ASBR路由器的LSA通告。NSSA外部LSA通告仅在始发这个NSSA外部LSA通告的非纯末梢区域内部进行泛洪扩散。可以通过命令<span style="color:red"><code>show ip ospf database nssa-external</code></span>来显示NSSA外部LSA通告的信息。</p>
+</li>
+</ul>
+<h3 id="9、末梢（Stub）区域"><a href="#9、末梢（Stub）区域" class="headerlink" title="9、末梢（Stub）区域"></a>9、末梢（Stub）区域</h3><p>　　一个学习到外部目的地路由信息的ASBR路由器，将通过在整个OSPF自主系统中泛洪扩散自主系统外部LSA来通告那些外部的目的路由信息。这些外部LSA通告可能会在每台路由器的链路状态数据库中构成较大百分比的LSA数量，对性能不好的路由器产生压力。</p>
+<p>　　末梢区域是一个不允许AS外部LSA通告在其内部进行泛洪扩散的区域。若在一个区域内没有学习到类型5的LSA通告，那么类型4的LSA通告也是不必要的了，因此这些LSA通告也将被阻塞。位于末梢区域边界的ABR路由器将使用网络汇总LSA向这个区域通告一个简单的缺省路由。（即在Stub区域中会将类型4和类型5的LSA进行过滤，并且下发类型3的默认路由）</p>
+<p>　　末梢区域中存在的4个限制条件：</p>
+<ul>
+<li>末梢区域内的所有路由器都会在它们的Hello数据包中设置一个标志——E-bit位，并将它设置为0。这样，这些末梢区域路由器将不接受其他路由器发送的任何E-bit为1的Hello数据包。因此，需要将Stub区域内的所有路由器配置成末梢区域路由器。</li>
+<li>末梢区域中不能有虚链路的存在</li>
+<li>末梢区域内需存在一台或多台ABR路由器，但是不能存在ASBR路由器。</li>
+<li>骨干区域不能配置成特殊区域</li>
+</ul>
+<p>　　完全末梢区域（totally stubby area）不仅使用缺省路由到达OSPF自主系统外部的目的地址，而且使用缺省路由到达这个区域外部的所有目的地址。（过滤类型4和类型5的LSA，并且下发类型3的默认路由，再将类型3的LSA进行过滤）</p>
+<p>　　非纯末梢区域（Not-So-Stubby-Area，NSSA）允许外部路由通告到OSPF自主系统内部，而同时保留自主系统其余部分的末梢区域特征。NSSA区域允许ASBR路由器的存在。NSSA外部LSA在它的头部有一个称为P-bit位的标志。NSSA ASBR路由器可以设置或清除这个P-bit位。如果一台NSSA ABR路由器收到一条P-bit设置为1的类型7的LSA数据包，那么它将把这条类型7的LSA转换成为类型5的LSA，并且将这条LSA泛洪扩散到其他区域中。如果这个P-bit位被设置为0，那么将不会转换这条类型7的LSA，而且这条类型7的LSA携带的目的地址也不能通告到这个NSSA区域的外部。</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/15/DiE1Cn.png"></p>
 ]]></content>
       <categories>
         <category>学习笔记</category>

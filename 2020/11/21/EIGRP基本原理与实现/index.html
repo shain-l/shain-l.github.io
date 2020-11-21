@@ -1,0 +1,410 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>EIGRP基本原理与实现 | shain</title><meta name="keywords" content="EIGRP"><meta name="author" content="~鑫~"><meta name="copyright" content="~鑫~"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="1、EIGRP概述　　增强型内部网关路由选择协议（Enhanced Interior Gateway Routing Protocol，EIGRP）是Cisco内部网关路由选择协议（Cisco Interior Gateway Routing Protocol，IGRP）的增强版。EIGRP是Cisco公司的私有协议（2013年已经公有化）。EIGRP结合了链路状态和距离矢量型路由选择协议，采用扩">
+<meta property="og:type" content="article">
+<meta property="og:title" content="EIGRP基本原理与实现">
+<meta property="og:url" content="http://shain.top/2020/11/21/EIGRP%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E7%8E%B0/index.html">
+<meta property="og:site_name" content="shain">
+<meta property="og:description" content="1、EIGRP概述　　增强型内部网关路由选择协议（Enhanced Interior Gateway Routing Protocol，EIGRP）是Cisco内部网关路由选择协议（Cisco Interior Gateway Routing Protocol，IGRP）的增强版。EIGRP是Cisco公司的私有协议（2013年已经公有化）。EIGRP结合了链路状态和距离矢量型路由选择协议，采用扩">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://shain.top/img/avatar.png">
+<meta property="article:published_time" content="2020-11-21T08:45:15.000Z">
+<meta property="article:modified_time" content="2020-11-21T10:50:20.374Z">
+<meta property="article:author" content="~鑫~">
+<meta property="article:tag" content="EIGRP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://shain.top/img/avatar.png"><link rel="shortcut icon" href="/img/dinosaur.png"><link rel="canonical" href="http://shain.top/2020/11/21/EIGRP%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E7%8E%B0/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  hexoversion: '5.1.1',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  baiduPush: false,
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isSidebar: true,
+  postUpdate: '2020-11-21 18:50:20'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>var activateDarkMode = function () {
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+  }
+}
+var activateLightMode = function () {
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+  }
+}
+
+var autoChangeMode = 'false'
+var t = saveToLocal.get('theme')
+if (autoChangeMode === '1') {
+  var isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+  var isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+  var isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+  var hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+  if (t === undefined) {
+    if (isLightMode) activateLightMode()
+    else if (isDarkMode) activateDarkMode()
+    else if (isNotSpecified || hasNoSupport) {
+      var now = new Date()
+      var hour = now.getHours()
+      var isNight = hour <= 6 || hour >= 18
+      isNight ? activateDarkMode() : activateLightMode()
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+      if (saveToLocal.get('theme') === undefined) {
+        e.matches ? activateDarkMode() : activateLightMode()
+      }
+    })
+  } else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else if (autoChangeMode === '2') {
+  now = new Date()
+  hour = now.getHours()
+  isNight = hour <= 6 || hour >= 18
+  if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else {
+  if (t === 'dark') activateDarkMode()
+  else if (t === 'light') activateLightMode()
+}</script><meta name="generator" content="Hexo 5.1.1"><link rel="alternate" href="/atom.xml" title="shain" type="application/atom+xml">
+</head><body><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" data-lazy-src="/img/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">27</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">29</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">5</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div id="body-wrap"><div id="sidebar"><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81EIGRP%E6%A6%82%E8%BF%B0"><span class="toc-text">1、EIGRP概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81EIGRP%E7%9A%84%E4%B8%BB%E8%A6%81%E9%83%A8%E4%BB%B6"><span class="toc-text">2、EIGRP的主要部件</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1%E3%80%81%E4%BE%9D%E8%B5%96%E4%BA%8E%E5%8D%8F%E8%AE%AE%E7%9A%84%E6%A8%A1%E5%9D%97%EF%BC%88Protocol-Dependent-Modules%EF%BC%89"><span class="toc-text">2.1、依赖于协议的模块（Protocol-Dependent Modules）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2%E3%80%81%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE"><span class="toc-text">2.2、可靠传输协议</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3%E3%80%81%E9%82%BB%E5%B1%85%E5%8F%91%E7%8E%B0%E5%92%8C%E6%81%A2%E5%A4%8D"><span class="toc-text">2.3、邻居发现和恢复</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-4%E3%80%81%E6%89%A9%E6%95%A3%E6%9B%B4%E6%96%B0%E7%AE%97%E6%B3%95"><span class="toc-text">2.4、扩散更新算法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81EIGRP%E5%9F%BA%E6%9C%AC%E9%85%8D%E7%BD%AE"><span class="toc-text">3、EIGRP基本配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E3%80%81%E4%B8%8D%E7%AD%89%E4%BB%B7%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1"><span class="toc-text">4、不等价负载均衡</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5%E3%80%81EIGRP%E7%9A%84%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81"><span class="toc-text">5、EIGRP的身份验证</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6%E3%80%81EIGRP%E7%9A%84%E8%B7%AF%E7%94%B1%E6%B1%87%E6%80%BB"><span class="toc-text">6、EIGRP的路由汇总</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7%E3%80%81EIGRP%E7%9A%84%E9%BB%98%E8%AE%A4%E8%B7%AF%E7%94%B1%E4%B8%8B%E5%8F%91"><span class="toc-text">7、EIGRP的默认路由下发</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8%E3%80%81EIGRP-STUB%E8%B7%AF%E7%94%B1%E5%99%A8"><span class="toc-text">8、EIGRP STUB路由器</span></a></li></ol></div></div></div><header class="post-bg" id="page-header"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">shain</a></span><span id="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">EIGRP基本原理与实现</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-11-21T08:45:15.000Z" title="发表于 2020-11-21 16:45:15">2020-11-21</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-11-21T10:50:20.374Z" title="更新于 2020-11-21 18:50:20">2020-11-21</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">5.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>17分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><h3 id="1、EIGRP概述"><a href="#1、EIGRP概述" class="headerlink" title="1、EIGRP概述"></a>1、EIGRP概述</h3><p>　　增强型内部网关路由选择协议（Enhanced Interior Gateway Routing Protocol，EIGRP）是Cisco内部网关路由选择协议（Cisco Interior Gateway Routing Protocol，IGRP）的增强版。EIGRP是Cisco公司的私有协议（2013年已经公有化）。EIGRP结合了链路状态和距离矢量型路由选择协议，采用扩散更新算法（DUAL）来实现快速收敛，可以不发送定期的路由更新信息以减少带宽的占用。EIGRP协议的一个主要特性是它不仅可以进行IP协议的路由选择，而且可以进行IPX协议和AppleTalk协议的路由选择。</p>
+<p>　　EIGRP特点：</p>
+<ul>
+<li>早期为思科私有</li>
+<li>属于距离矢量协议</li>
+<li>采用组播和单播更新</li>
+<li>属于无类路由协议</li>
+<li>快速收敛</li>
+<li>部分更新：触发式的增量更新</li>
+<li>支持等价和不等价均衡</li>
+<li>基于IP 88发送</li>
+</ul>
+<h3 id="2、EIGRP的主要部件"><a href="#2、EIGRP的主要部件" class="headerlink" title="2、EIGRP的主要部件"></a>2、EIGRP的主要部件</h3><p>　　EIGRP协议包含以下4个部件</p>
+<ul>
+<li>依赖于协议的模块</li>
+<li>可靠传输协议（RTP）</li>
+<li>邻居发现和恢复</li>
+<li>扩散更新算法（DUAL）</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D1gvBd.png"></p>
+<h4 id="2-1、依赖于协议的模块（Protocol-Dependent-Modules）"><a href="#2-1、依赖于协议的模块（Protocol-Dependent-Modules）" class="headerlink" title="2.1、依赖于协议的模块（Protocol-Dependent Modules）"></a>2.1、依赖于协议的模块（Protocol-Dependent Modules）</h4><p>　　EIGRP协议实现了IP协议、IPX协议和AppleTalk协议的模块，它可以担负起某一特定协议的路由选择任务。例如，IPX EIGRP模块可以负责在IPX网络上与其他IPX EIGRP进程进行路由信息交换，并且将这些信息传递给DUAL。另外，IPX模块也可以接收和发送SAP信息。如上图所示，每个单独模块的通信量被封装在它们各自的网络层协议中；例如，对于IPX协议的EIGRP通过IPX协议数据包传输。</p>
+<p>　　EIGRP协议在很多情况下和其他路由选择协议自动进行路由重新分配：</p>
+<ul>
+<li>IPX EIGRP将自动地和IPX RIP协议、NLSP协议进行路由重新分配；</li>
+<li>AppleTalk EIGRP将自动地和AppleTalk RTMP协议进行路由重新分配；</li>
+<li>如果IGRP进程和EIGRP进程在同一个自主系统内，那么IP EIGRP也将自动地和IGRP进行路由重新分配</li>
+</ul>
+<h4 id="2-2、可靠传输协议"><a href="#2-2、可靠传输协议" class="headerlink" title="2.2、可靠传输协议"></a>2.2、可靠传输协议</h4><p>　　可靠传输协议（Reliable Transport Protocol，RTP）用来管理EIGRP数据包的发送和接收。可靠的发送是指发送是有保障的而且数据包是有序的发送的。有保障的发送是依赖Cisco公司私有的算法来实现的，这个私有的算法被称为”可靠组播（reliable multicast）”，它使用保留的D类地址224.0.0.10。每一个接收可靠组播数据包的邻居都会发送一个单播的确认数据包。</p>
+<p>　　有序的发送是通过在每个数据包中包含两个序列号来实现的。每一个数据包都包含一个由发送该数据包的路由器分配的序列号，这个序列号在每台路由器发送一个新的数据包时递增1。另外，发送路由器会把最近从目的路由器收到的数据包的序列号放在该数据包中。在一些实例中，RTP也可以使用不可靠的发送，不需要确认，而且在使用不可靠发送的EIGRP数据包中不包含序列号。</p>
+<p>　　EIGRP协议使用多种类型的数据包，所有这些数据包都通过IP头部的协议号88来表示</p>
+<ul>
+<li><p>Hello（Hello）——用于邻居发现和恢复进程。Hello数据包使用组播方式发送，而且使用不可靠的发送方式。</p>
+</li>
+<li><p>确认（Acknowledgments，ACK）——是不包含数据的Hello数据包。Update、Query、Reply需要通过ACK报文进行确认。ACK总是使用单播方式和不可靠的发送方式。</p>
+</li>
+<li><p>更新（Update）——用于传递路由更新信息。EIGRP协议的更新数据包只在必要的时候传递必要的信息，而且仅仅传递给需要路由更新的路由器。当只有某一指定的路由器需要路由更新时，更新数据包就是单播发送的；当有多台路由器需要路由更新时，更新数据包就是组播发送的。更新数据包总是使用可靠的发送方式。</p>
+</li>
+<li><p>查询（Query）和答复（Reply）——是DUAL有限状态机（DUAL finite state machine）用来管理它的扩散计算的。查询消息可以使用组播方式或者单播方式发送，而回复消息总是单播方式发送的。查询和回复数据包都使用可靠的发送方式。</p>
+</li>
+</ul>
+<p>　　如果任何数据包通过可靠的方式组播出去，而没有从邻居那里收到一个ACK数据包，那么这个数据包就会以单播方式被重新发送给那个没有响应的邻居。如果经过16次这样的单播重传还没有收到一个ACK数据包的话，那么这个邻居就会被宣告为无效。</p>
+<h4 id="2-3、邻居发现和恢复"><a href="#2-3、邻居发现和恢复" class="headerlink" title="2.3、邻居发现和恢复"></a>2.3、邻居发现和恢复</h4><p>　　EIGRP协议的更新消息是非周期的，因此有一个发现和跟踪邻居的方法是非常重要的。 在大多数网络中，Hello数据包是以组播方式每5s发送一次的，其中减掉一个很小的随机时间差用来防止更新的同步。Hello数据包无需进行确认。缺省的Hello数据包的时间间隔可以在每个接口上使用命令<code>ip hello-interval eigrp</code>进行更改。</p>
+<p>　　当一台路由器从它的邻居路由器收到一个Hello数据包时，这个数据包将包含一个抑制时间（hold time）。这个抑制时间会告诉本路由器，在它收到后续的Hello数据包之前等待的最长时间。如果抑制计时器超时了，路由器还没有收到Hello数据包，那么将宣告这个邻居不可达，并且通知DUAL这个邻居丢失了。在缺省情况下，抑制时间是Hello时间间隔的3倍。也就是说，对于低速的非广播多路访问（NBMA）网络来说是180s，对于其他所有网络来说是15s。这个缺省值可以通过在每个接口上配置<code>ip hold-time eigrp</code>来更改。EIGRP协议具有在15s以内检测邻居丢失的能力，对照RIP协议的180s和IGRP协议的270s所花费的时间，显然这是一个对EIGRP的快速收敛起很大作用的因素。</p>
+<p>　　每一个邻居的相关信息都记录在一个邻居表中。邻居表记录了邻居路由器的IP地址和收到邻居Hello数据包的接口。</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D12nNq.png"></p>
+<blockquote>
+<p>H：记录了这台路由器所学到的邻居的顺序号</p>
+<p>Address：邻居路由器的IP地址</p>
+<p>Interface：收到邻居Hello数据包的接口</p>
+<p>Hold：定义了等待没有从邻居那里接收到任何包的最大时间，当接收到新的包以后，Hold复位（在10~15s之间循环）</p>
+<p>Uptime：邻居关系建立时间，即邻居第一次被添加到邻居表后到现在所经过的时间</p>
+<p>SRTT（Smooth Round-Trip Time）：用于衡量路由器发送EIGRP数据包到邻居和从邻居那里接收到该数据包的确认所花费的平均时间</p>
+<p>RTO：重传超时时间，指在一个组播方式的数据包发送失败后，路由器等待一个单播方式发送的数据包的确认时间</p>
+<p>Q：队列计数。如果一个EIGRP的更新、查询或答复数据包被发送出去，那么这个数据包的一个拷贝就会放在一个重传队列里排队。如果重传超时了还没有收到确认数据包，那么重传队列中数据包的另一个拷贝将被再次发送出去。队列计数就是标识在这个重传队列中等待发送的数据包数量的。（在运行正常的环境下该值应为0，如果值大于0则说明发生了拥塞）</p>
+<p>Seq：序列号。可靠传输协议RTP跟踪这些序列号，以确保来自邻居的数据包不是无序的</p>
+</blockquote>
+<h4 id="2-4、扩散更新算法"><a href="#2-4、扩散更新算法" class="headerlink" title="2.4、扩散更新算法"></a>2.4、扩散更新算法</h4><p>　　扩散更新算法（Diffusing Update Algorithm，DUAL）是一个收敛算法，它代替了用于其他距离向量协议使用的Bellman-Ford或Ford-Fulkerson算法。</p>
+<p>　　<span style="color:red">DUAL的术语：</span></p>
+<ul>
+<li>邻接（adjacency）：邻接是指两个互相交换路由信息邻居之间形成的一条逻辑的关联关系。一旦邻接关系成功地建立，路由器就可以从它们的邻居那里接受路由更新消息了。对于每一条路由，路由器都将会基于它邻居通告的距离和到它的邻居的链路代价计算出一个距离。</li>
+<li>通告距离（Advertised Distance，AD）：邻居路由器到达目的地的距离。</li>
+<li>可行距离（Feasible Distance，FD）：到达每一个目的地的最小度量将作为该目的网络的可行距离。</li>
+<li>可行性条件（Feasibility Condition，FC）：本地路由器的一个邻居路由器所通告的到达一个目的网络的距离是否小于本地路由器到达相同目的网络的可行距离——FD1＞AD2</li>
+<li>可行后继路由器（Feasible Successor，FS）：如果本地路由器的邻居路由器所通告的到达目的网络的距离满足了FC，那么这个邻居就会成为该目的网络的一个可行后继路由器。</li>
+<li>后继路由器（Successor）：对于在拓扑结构表中列出的每一个目的网络，将选用拥有最小度量值的路由并放置到路由表中。通告这条路由的邻居就成为一个后继路由器，或者是到达目的网络的数据包的下一跳路由器。</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-----不满足FD1&gt;AD2的条件-----</span><br><span class="line">P <span class="number">4.4</span><span class="number">.4</span><span class="number">.0</span>/<span class="number">24</span>, <span class="number">1</span> successors, FD is <span class="number">409600</span>, serno <span class="number">9</span></span><br><span class="line">        via <span class="number">192.168</span><span class="number">.34</span><span class="number">.4</span> (<span class="number">409600</span>/<span class="number">128256</span>), Ethernet0/<span class="number">0</span></span><br><span class="line">        via <span class="number">192.168</span><span class="number">.23</span><span class="number">.2</span> (<span class="number">2809856</span>/<span class="number">2297856</span>), Serial1/<span class="number">1</span></span><br><span class="line">-----满足FD1&gt;AD2的条件-----</span><br><span class="line">P <span class="number">4.4</span><span class="number">.4</span><span class="number">.0</span>/<span class="number">24</span>, <span class="number">1</span> successors, FD is <span class="number">2297856</span></span><br><span class="line">        via <span class="number">192.168</span><span class="number">.24</span><span class="number">.4</span> (<span class="number">2297856</span>/<span class="number">128256</span>), Serial1/<span class="number">2</span></span><br><span class="line">        via <span class="number">192.168</span><span class="number">.23</span><span class="number">.3</span> (<span class="number">2323456</span>/<span class="number">409600</span>), Serial1/<span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>　　<span style="color:red">DUAL有限状态机</span></p>
+<p>　　当一个EIGRP的路由器不执行扩散计算时，每一条路由都处于被动状态。每一条路由左边的关键字就是用来指出路由的被动状态的。</p>
+<p>　　在产生输入事件的任何时候，路由器都会重新评估一条路由的可行后继路由器的列表。一个输入事件可以是：</p>
+<ul>
+<li>直连链路的代价发生变化</li>
+<li>直连链路的状态（up或down）发生变化</li>
+<li>收到一个更新数据包</li>
+<li>收到一个查询数据包</li>
+<li>收到一个答复数据包</li>
+</ul>
+<p>　　路由器重新评估的第一步是在本地路由器上执行一个本地计算，也就是对于所有的可行后继路由器，重新计算到达目的地的距离。可能的结果有以下几种：</p>
+<ul>
+<li>如果拥有最低的度量距离的可行后继路由器和已经存在的后继路由器不同，那么可行后继路由器将成为后继路由器</li>
+<li>如果新的度量距离小于FD，那么就更新FD</li>
+<li>如果新的度量距离和已经存在的度量距离不同，那么将向所有的邻居发送更新</li>
+</ul>
+<p>　　当路由器执行一个本地计算时，路由依然保持被动状态。如果本地路由器发现了一台可行后继路由器，那么将发送一个更新消息给它所有的邻居，但不改变路由器的状态。如果在拓扑结构表中没有发现任何一台可行后继路由器，那么路由器将开始进行扩散计算，而且路由器的路由状态改变成活动状态。在扩散计算完成和路由的状态返回到被动状态前，路由器不能：</p>
+<ul>
+<li>改变路由的后继路由器</li>
+<li>改变正在通告的路由的距离</li>
+<li>改变路由的FD</li>
+<li>开始进行路由的另一个扩散计算</li>
+</ul>
+<p>　　如下图所示，路由器通过向它所有的邻居发送查询来开始一个扩散计算，查询中包含一个到达目的地的新的本地路由器计算的距离。收到查询后，每一台邻居路由器将执行它自己的本地计算：</p>
+<ul>
+<li>如果该邻居拥有到达目的地的一台或多台可行后继路由器，它将发送一个答复给原来发送查询的路由器。答复中包含这台邻居路由器所计算的它到达目的网络的最小距离。</li>
+<li>如果一个邻居没有可行后继路由器，它将把路由的状态改为活动状态，并且开始进行扩散计算。</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D120gO.png"></p>
+<p>　　对于每一台接收查询的邻居路由器，本地路由器将设置一个答复状态标记来不断地跟踪所有未处理的查询。当本地路由器收到所有发送到邻居路由器的查询的答复时，扩散计算就完成了。在扩散完成时，始发路由器会将FD设置成无穷大，这样可以确保任何答复到达目的地时有限距离的邻居路由器都满足FC，并成为一条可行后继路由器。对于这些答复消息，度量都是由答复消息中所通告的距离加上与发送答复的邻居路由器相连的链路代价计算得出的。选择一台后继路由器是基于最低的度量值的，而且该度量值被设置为FD。任何一台可行后继路由器如果不满足该新的可行距离（FD）的可行性条件（FC）的话，就会从拓扑表结构表中被删除。需要注意的是，在收到所有的答复之前不会选择后继路由器。</p>
+<h3 id="3、EIGRP基本配置"><a href="#3、EIGRP基本配置" class="headerlink" title="3、EIGRP基本配置"></a>3、EIGRP基本配置</h3><p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D12U4x.png"></p>
+<ul>
+<li>在各路由器上配置EIGRP</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//启动EIGRP进程，进程ID可以是1~65535之间的任何一个数字，共享路由信息的路由器上的所有EIGRP进程ID号必须一致</span></span><br><span class="line">R1(config)#router eigrp 90</span><br><span class="line"><span class="comment">//关闭自动汇总</span></span><br><span class="line">R1(config-router)#no auto-summary </span><br><span class="line"><span class="comment">//指定运行EIGRP协议的每个网络</span></span><br><span class="line">R1(config-router)#network 12.12.12.0 0.0.0.255 </span><br><span class="line"></span><br><span class="line">R2(config)#router eigrp 90</span><br><span class="line">R2(config-router)#no auto-summary </span><br><span class="line">R2(config-router)#network 12.12.12.0 0.0.0.255</span><br><span class="line">R2(config-router)#network 23.23.23.0 0.0.0.255</span><br><span class="line"></span><br><span class="line">R3(config)#router eigrp 90</span><br><span class="line">R3(config-router)#no auto-summary </span><br><span class="line">R3(config-router)#network 23.23.23.0 0.0.0.255</span><br><span class="line">R3(config-router)#network 34.34.34.0 0.0.0.255</span><br><span class="line"></span><br><span class="line">R4(config)#router eigrp 90</span><br><span class="line">R4(config-router)#no auto-summary </span><br><span class="line">R4(config-router)#network 34.34.34.0 0.0.0.255</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看R1的EIGRP邻居表</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D12NU1.png"></p>
+<ul>
+<li>查看R1的拓扑表</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D12w8K.png"></p>
+<ul>
+<li>查看R1的路由表</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D12dC6.png"></p>
+<h3 id="4、不等价负载均衡"><a href="#4、不等价负载均衡" class="headerlink" title="4、不等价负载均衡"></a>4、不等价负载均衡</h3><p>　　负载均衡的两种方式</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D12cVA.png"></p>
+<ul>
+<li>按每目的地：去往同一个目标只会选择其中一个路径</li>
+<li>按每数据包：按照比例进行转发</li>
+</ul>
+<p>　　拓扑如下图所示</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D12sDH.png"></p>
+<ul>
+<li>在4台路由器上进行EIGRP的配置，network相对应的网段。查看R2的路由表中的EIGRP条目</li>
+</ul>
+<blockquote>
+<p>如下图所示，R2到达192.168.34.0/24网段进行了等价负载均衡；R2到达4.4.4.0/24网段则通过s1/1接口</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D1RDJ0.png"></p>
+<ul>
+<li>查看R2的EIGRP拓扑表</li>
+</ul>
+<blockquote>
+<p>由下图可知，R2的EIGRP拓扑表中，到达4.4.4.0/24网段存在两条路径，且满足FC条件——最优路径的FD值＞次优路径的AD值（2297856＞409600），R3成为可行后继路由器</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D1RgL4.png"></p>
+<ul>
+<li>修改variance值，使得最优路径的FD×v＞次优路径的FD，即2297856×v＞2323456。此处取v=2即可符合要求</li>
+</ul>
+<blockquote>
+<p>差异变量（variance）命令用来确定哪些路由在不等价负载均衡中是可以使用的。variance定义了一个倍数因子，用来表示一条路由的度量值和最小代价路由的差异程度。任何路由的度量值如果超过了最小代价路由的度量值乘以variance的值，那么这条路由将不被使用。variance的缺省值为1，这意味着如果要实现负载均衡，多条路由的度量值必须是相同的。variance必须是整数。</p>
+</blockquote>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">R2(config)#router eigrp 90</span><br><span class="line"><span class="comment">//修改variance的值为2</span></span><br><span class="line">R2(config-router)#variance 2</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>再次查看R2的路由表，此时到达4.4.4.0/24网段实现了不等价负载均衡</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D1R4F1.png"></p>
+<ul>
+<li>查看4.4.4.0/24路由的详细信息，可知两条链路的转发比例接近1:1</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D1L64U.png"></p>
+<h3 id="5、EIGRP的身份验证"><a href="#5、EIGRP的身份验证" class="headerlink" title="5、EIGRP的身份验证"></a>5、EIGRP的身份验证</h3><p>（1）身份验证的目的：避免接收恶意路由更新源的恶意路由更新，对外执行</p>
+<p>（2）身份验证的方式：明文验证（类似PAP验证）和MD5验证（类似CHAP验证）</p>
+<p>（3）EIGRP只支持MD5验证</p>
+<p>（4）EIGRP验证的实现：接口上实现</p>
+<p>　　使用如下拓扑，在R1和R2之间进行EIGRP的身份验证</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D1LTUK.png"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">R1(config)#int e0/0</span><br><span class="line"><span class="comment">//在接口下针对EIGRP的AS 90开启md5验证</span></span><br><span class="line">R1(config-if)#ip authentication mode eigrp 90 md5</span><br><span class="line"><span class="comment">//指定使用密钥链的名称为shain（只是密钥链的名称，并非真正的密码）</span></span><br><span class="line">R1(config-if)#ip authentication key-chain eigrp 90 shain</span><br><span class="line"><span class="comment">//密钥链</span></span><br><span class="line">R1(config)#key chain shain</span><br><span class="line"><span class="comment">//key id，验证双方必须存在相同的key id</span></span><br><span class="line">R1(config-keychain)#key 1</span><br><span class="line"><span class="comment">//密码</span></span><br><span class="line">R1(config-keychain-key)#key-string cisco</span><br><span class="line"><span class="comment">//指定第二个密钥，只有当第一个密钥失效后，第二个密钥才会生效</span></span><br><span class="line">R1(config-keychain)#key 2</span><br><span class="line">R1(config-keychain-key)#key-string 123456</span><br><span class="line"></span><br><span class="line">R2(config)#int e0/0</span><br><span class="line">R2(config-if)#ip authentication mode eigrp 90 md5 </span><br><span class="line">R2(config-if)#ip authentication key-chain eigrp 90 shain</span><br><span class="line">R2(config)#key chain shain</span><br><span class="line">R2(config-keychain)#key 1</span><br><span class="line">R2(config-keychain-key)#key-string cisco</span><br><span class="line">R2(config-keychain)#key 2</span><br><span class="line">R2(config-keychain-key)#key-string 123456</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>R1和R2仍可以建立邻居关系</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D1LbCD.png"></p>
+<ul>
+<li>在R1上查看密钥链的信息</li>
+</ul>
+<blockquote>
+<p>其中，accept lifetime表示在该时间段内收到验证信息之后，用此密码做本地哈希计算，将计算结果与收到的作比较；send lifetime表示在该时间段内用该密钥做哈希计算，将生成的摘要发送给对端</p>
+</blockquote>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D1OBxH.png"></p>
+<ul>
+<li>使用Wireshark进行抓包验证</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D1OssA.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D1OrMd.png"></p>
+<h3 id="6、EIGRP的路由汇总"><a href="#6、EIGRP的路由汇总" class="headerlink" title="6、EIGRP的路由汇总"></a>6、EIGRP的路由汇总</h3><p>（1）在启用EIGRP的任意接口进行汇总</p>
+<p>（2）汇总的好处：减少路由表的大小、节约资源的消耗、提高路由的稳定性、EIGRP的路由汇总可以限制EIGRP的查询范围</p>
+<p>（3）EIGRP的汇总路由默认AD值为5，可以通过<code>R1(config-router)#summary-metric a.b.c.d/x distance xx</code>的方式来调整该汇总路由的默认AD值</p>
+<p>　　拓扑如下所示</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D1LTUK.png"></p>
+<ul>
+<li><p>在R1上启用多个loopback接口，并将其在EIGRP进程中network</p>
+</li>
+<li><p>查看R2路由表中的EIGRP路由</p>
+</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D1OIMj.png"></p>
+<ul>
+<li>查看汇总前R2上消耗的路由资源</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D1OOiT.png"></p>
+<ul>
+<li>在R1上进行汇总</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">R1(config)#int e0/0</span><br><span class="line">R1(config-if)#ip summary-address eigrp 90 1.1.0.0 255.255.0.0</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>再次查看R2的路由表</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D1XKeI.png"></p>
+<ul>
+<li>查看汇总后R2上消耗的路由资源</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D1XnOA.png"></p>
+<ul>
+<li>在R1上配置EIGRP的路由泄露</li>
+</ul>
+<blockquote>
+<p>路由泄露即在发送汇总路由的同时，额外发送明细路由。站点之间存在多路径的环境，EIGRP/BGP/ISIS都支持路由泄漏</p>
+</blockquote>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//匹配要进行泄露的路由</span></span><br><span class="line">R1(config)#access-list 1 permit 1.1.1.0 /24</span><br><span class="line"><span class="comment">//使用路由图匹配ACL 1</span></span><br><span class="line">R1(config)#route-map leak</span><br><span class="line">R1(config-route-map)#match ip address 1</span><br><span class="line">R1(config)#int e0/0</span><br><span class="line"><span class="comment">//进行汇总的时候使用leak-map调用路由图</span></span><br><span class="line">R1(config-if)#ip summary-address eigrp 90 1.1.0.0 255.255.0.0 leak-map leak</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看R2的路由表，可知此时R2在收到汇总路由的同时也收到了1.1.1.0/24的明细路由</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D1X3Y8.png"></p>
+<h3 id="7、EIGRP的默认路由下发"><a href="#7、EIGRP的默认路由下发" class="headerlink" title="7、EIGRP的默认路由下发"></a>7、EIGRP的默认路由下发</h3><p>　　通过EIGRP动态向内网下发默认路由</p>
+<ul>
+<li>方式一：在连接内网的接口，进行汇总——ip summary-address eigrp 90 0.0.0.0/0</li>
+<li>方式二：重分布，将静态路由重分布到EIGRP</li>
+<li>方式三：写出接口的默认路由，然后network到EIGRP中</li>
+</ul>
+<p>　　拓扑如下图所示</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D1XNOs.png"></p>
+<ul>
+<li>在R1的e0/0接口上进行汇总</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">R1(config)#int e0/0</span><br><span class="line">R1(config-if)#ip summary-address eigrp 90 0.0.0.0/0</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看R2的路由表，此时存在一条EIGRP默认路由</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D1XwT0.png"></p>
+<ul>
+<li>使用重分布的方式下发EIGRP默认路由</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">R1(config)#ip route 0.0.0.0 0.0.0.0 15.15.15.5</span><br><span class="line">R1(config)#router eigrp 90</span><br><span class="line">R1(config-router)#redistribute static </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看R2的路由表</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D1XrfU.png"></p>
+<h3 id="8、EIGRP-STUB路由器"><a href="#8、EIGRP-STUB路由器" class="headerlink" title="8、EIGRP STUB路由器"></a>8、EIGRP STUB路由器</h3><p>　　一台具有EIGRP末梢邻居的路由器将不会向它的末梢发送查询，因此这就排除了配置末梢的远端站点引起”卡在活动状态”的情形发生的机会，也降低了网络中其余部分路由选择的不稳定。</p>
+<p>　　应用场合：网络的边缘路由器，末端路由器</p>
+<ul>
+<li>末梢选项（默认选项为connected和summary）</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-receive-only：阻止末梢发送任何类型的路由</span><br><span class="line">-connected：允许末梢发送直连的路由（可能仍需要重分布）</span><br><span class="line">-<span class="keyword">static</span>：允许末梢发送静态路由（仍必须重分布）</span><br><span class="line">-summary：允许末梢发送汇总路由</span><br><span class="line">-redistribute：允许末梢发松重分布的路由</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>将R1配置为stub路由器</li>
+</ul>
+<blockquote>
+<p>R1为STUB路由器，当R2上的链路失效，则不会向R1发送Query，可以节约资源</p>
+</blockquote>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">R1(config)#router eigrp 90</span><br><span class="line">R1(config-router)#eigrp stub </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在R2上查看邻居表的详细信息</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://s3.ax1x.com/2020/11/21/D1XypF.png"></p>
+</div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">~鑫~</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://shain.top/2020/11/21/EIGRP%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E7%8E%B0/">http://shain.top/2020/11/21/EIGRP%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E7%8E%B0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://shain.top" target="_blank">shain</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/EIGRP/">EIGRP</a></div><div class="post_share"></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" data-lazy-src="/img/alipay.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2020/11/17/OSPF%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%BA%8C/"><img class="next-cover" data-lazy-src="/null" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">OSPF综合实验二</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2020/08/28/EIGRP的简单应用/" title="EIGRP的简单应用"><img class="cover" data-lazy-src="/null"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-08-28</div><div class="title">EIGRP的简单应用</div></div></a></div></div></div></article></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By ~鑫~</div><!--if theme.footer.copyright--><!--  .framework-info--><!--    span= _p('footer.framework') + ' '--><!--    a(href='https://hexo.io')= 'Hexo'--><!--    span.footer-separator |--><!--    span= _p('footer.theme') + ' '--><!--    a(href='https://github.com/jerryc127/hexo-theme-butterfly')= 'Butterfly'--></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-heart.min.js" async="async" mobile="false"></script></div></body></html>
